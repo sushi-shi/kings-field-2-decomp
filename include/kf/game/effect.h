@@ -109,9 +109,9 @@ typedef char kf_effect_kind103_counter_size[sizeof(KfEffectKind103Counter) == 2 
 
 /* Kind 2 grows a radial effect until it reaches the requested scale. */
 typedef struct KfEffectKind2Scale {
-    u16 max_scale;
-    u16 scale_step;
-    u16 radial_damage_parameter;
+    s16 max_scale;
+    s16 scale_step;
+    s16 radial_damage_parameter;
 } KfEffectKind2Scale;
 
 typedef char kf_effect_kind2_scale_size[sizeof(KfEffectKind2Scale) == 6 ? 1 : -1];
@@ -301,9 +301,9 @@ typedef struct KfEffectRecord {
     u16 animation_phase_q12;
     VECTOR position;
     SVECTOR rotation;
-    u16 scale_x;
-    u16 scale_y;
-    u16 scale_z;
+    s16 scale_x;
+    s16 scale_y;
+    s16 scale_z;
     KfEffectScaleThreshold scale_threshold;
     SVECTOR direction;
     KfEffectCacheTail cache_tail;

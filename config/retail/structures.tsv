@@ -3,9 +3,11 @@
 name	size	layout_confidence	evidence	note
 KfActor	0x7c	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
 KfActorBallisticPhaseView	0x8	supported	actor_update_vertical_motion state 0x30	Vector extent with Y halfword interpreted as ballistic phase
+KfActorLoadRecord	0x10	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	map archive actor placement record
 KfActorModelScaleY	0x2	supported	game/actor.h;actor_group_position;actor_spatial_sound	Q12 Y model scale and signed high-byte sound-note view
 KfActorModelScaleYBytes	0x2	supported	game/actor.h;actor_spatial_sound	low and signed high bytes of Y model scale
 KfActorMotion	0x8	supported	actor_motion.c;actor_behavior_dispatch.c;effect_runtime.c	SVECTOR movement view with ballistic phase overlay
+KfActorOrientation	0x8	supported	game/actor.h;actor_update_behavior	actor rotation angles followed by two unresolved bytes
 KfActorState70	0x2	supported	game/actor.h;GAME 0x8003d8f0-0x8003d934;GAME 0x80038f7c	Signed halfword and two byte action-state views at actor +0x70
 KfActorState70Bytes	0x2	supported	game/actor.h;GAME 0x8003d8f0-0x8003da98	Two byte action-state view at actor +0x70/+0x71
 KfActorStateGame	0x93cc	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
@@ -18,10 +20,13 @@ KfActorWord24	0x2	supported	game/actor.h;GAME 0x80038d18 lh;GAME 0x8003f558 lh	A
 KfAnimClip	0x08	candidate	game/animation.h;animation_select_keyframe	prefix with one offset; additional keyframes extend the record
 KfAnimKeyframe	0x08	supported	game/animation.h;animation_select_keyframe	eight-byte keyframe prefix
 KfAssetHeader	0x14	supported	game headers;asm;xrefs;animation_select_keyframe	minimum archive header through the clip-table offset
+KfAudioVabSlot	0x8	supported	game/audio.h;audio_acquire_vab_stream_slot;audio_initialize_runtime	eight-byte VAB slot: SDK VAB id and the stream slot that loaded it
 KfAudioVabStreamSlot	0x08	supported	game/audio.h;audio_acquire_vab_stream_slot;audio_vab_stream_callback	stream slot state and transfer buffer
 KfAudioVoiceHandle	0x04	supported	game/audio.h;GAME 0x80014124/0x8001414c/0x80014364	four-byte handle stride; original typedef spelling unproved
 KfAudioVoiceParams	0x0a	supported	game/audio.h;GAME 0x80013fc8-0x80013fe0;GAME 0x80014214-0x80014224	ten-byte parameter stride; original typedef spelling unproved
+KfAudioVoiceState	0xa28	supported	game/audio.h;audio_allocate_voice_handle;audio_key_on	ten voice handles followed by 256 sound parameter rows inside audio_state
 KfBss801c7540	0x11844	supported	asm;game_main_loop startup clear;map-cell and collision-cache xrefs	layout from the reconstructed header
+KfCardAssets	0x120	supported	game/card.h;memory_card_write_slot;retail bytes at 0x80066680	initialized card-file title followed by one 16-color icon palette per save slot
 KfCardHeader	0x280	supported	game/card.h;GAME 0x80022990/0x80022994;GAME 0x80023054-0x800230d0	640-byte copied card-file header prefix; reserved spans and original typedef spelling unproved
 KfCardMenuList	0x34	supported	game/menu.h;menu_card_load_browser;menu_card_load_slot_browser;menu_card_save_browser	card list prefix and row, level, and experience pointers
 KfCardPlayerSnapshot	0x58	supported	game/card_payload.h;GAME 0x80048da8-0x8004906c;GAME 0x80049370-0x80049638	88-byte player snapshot view; original typedef spelling unproved
@@ -30,13 +35,14 @@ KfCardSlotGlyphRow	0x14	supported	game/menu.h;menu_card_build_slot_rows;menu_car
 KfCdArchive	0x0c	supported	game/cd.h;cd_archive_open;cd_archive_entry_extent	sector-offset table and file extent
 KfCdExtent	0x08	supported	game/cd.h;cd_file_load;cd_archive_open	CD location and byte extent
 KfCdRequest	0x28	supported	game/cd.h;asm;cd_initialize;func_80017d54	one queued asynchronous CD request
-KfCollisionCache	0x44	candidate	game/collision_cache.h;GAME 0x8002b67c and 0x8002b874 direct field references;focused strict matches	Typed interior view at bss_801c7540+0x11800; equipment-record boundary and original object ownership unresolved
 KfCdRequestPayload	0x08	supported	game/cd.h;cd_request_service_stream;audio_vab_stream_callback	overlaid image rectangle and VAB stream payload
 KfCdRequestPayloadVab	0x08	supported	game/cd.h;audio_vab_stream_callback	VAB stream phase and slot state
 KfCdState	0x2a4	supported	game/cd.h;asm;cd_initialize;cd_close_events;cd_read_sectors	CD events, VSync counters and request ring
+KfCollisionCache	0x44	candidate	game/player.h;GAME 0x8002b67c and 0x8002b874 direct field references;focused strict matches	Typed interior view at bss_801c7540+0x11800; equipment-record boundary and original object ownership unresolved
 KfCollisionDefaultRow	0x2c	supported	game/graphics.h;asm;collision defaults	44-byte initialized collision default row
 KfCollisionDefaultTail	0x6	supported	game/graphics.h;asm;collision defaults	six-byte default filter tail
 KfCollisionFilterPayload	0x2c	supported	game/graphics.h;asm;collision filter query	44-byte collision filter payload view
+KfCollisionHeights	0x14	supported	game/player.h;collision_evaluate_shape_records base pointer at bss_801c7540+0x1180c	Height results inside KfCollisionCache; original object ownership unresolved
 KfCollisionKinds	0x4	supported	game/graphics.h;asm;collision query	three collision-kind bytes and pad
 KfCollisionMaskPoint	0x08	supported	game/render_mask.h;GAME 0x8002bfd4/0x8002bfe0 lw;GAME 0x8002c968-0x8002c9f4 corner walk	Two 32-bit map-mask coordinates in the rasterizer call view; original standalone type unproved
 KfCollisionMotion	0x12	supported	game/graphics.h;asm;collision rows	nine signed motion halfwords
@@ -45,21 +51,31 @@ KfCollisionRow	0x68	supported	game/graphics.h;asm;collision rows	104-byte collis
 KfCollisionShapeOffsetTable	0x200	supported	game/collision_cache.h;GAME 0x2ab5c..0x2ab80	256 halfword offsets at the start of the loaded collision-shape bank; record layout unresolved
 KfCollisionTail	0x6	supported	game/graphics.h;asm;collision rows	six-byte runtime filter tail
 KfDisplayState	0x10028	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfEffectBallisticState	0x4	supported	game/effect.h	Ballistic kinds keep the launch Y and elapsed update count in the payload.
 KfEffectCacheTail	0x0c	supported	GAME 0x80032c4c effect+0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg;animation_prepare_asset_vertices owner_slot	Renderer animation-cache slot followed by eight bytes of kind-specific state
 KfEffectCollisionLatch	0x01	supported	game/effect.h;GAME 0x80042b3c lbu/0x80042b50 sb;effect_update_dispatch	One-byte collision-impact latch at effect record +0x40; overlaps other kind payloads
 KfEffectKind101Motion	0x04	supported	GAME 0x80045584/0x800455ac;effect_construct_record kind 101	Two unsigned halfword steps at effect record +0x40
-KfEffectKind10Targeting	0x02	supported	GAME 0x80044d78-0x80044e9c;GAME 0x800409cc	Kind-10 actor index and remaining emissions at record +0x40
 KfEffectKind102Payload	0x02	supported	GAME 0x800455f8 lh;effect_construct_record kind 102	Signed amplitude at effect record +0x40
+KfEffectKind103Counter	0x2	supported	game/effect.h	Kinds 103 and 121 decrement this count between fanout spawns.
 KfEffectKind105Attachment	0x04	supported	GAME 0x800441e8-0x80044364;effect_construct_record kind 105	Parent effect slot, actor slot, and signed animation vertex at record +0x40
-KfEffectKind109Target	0x01	observed	GAME 0x8004162c/0x80041638;GAME 0x80045b6c	Kind-109 linked effect record index at +0x40
+KfEffectKind106Children	0x1	supported	game/effect.h	Kind 106 waits for all fifteen spawned kind-8 children to finish.
+KfEffectKind109Target	0x1	candidate	GAME 0x8004162c/0x80041638;GAME 0x80045b6c	Kind-109 linked effect record index at +0x40
+KfEffectKind10Targeting	0x02	supported	GAME 0x80044d78-0x80044e9c;GAME 0x800409cc	Kind-10 actor index and remaining emissions at record +0x40
+KfEffectKind111Target	0x2	supported	game/effect.h	Kind 111 follows an actor, with 0xff selecting the effect's own position.
+KfEffectKind114State	0x8	supported	game/effect.h	Kind 114 keeps its launch Y after the preceding four payload bytes.
 KfEffectKind12Aim	0x08	supported	GAME 0x80040d90-0x80040db4;GAME 0x80043d44-0x80043d70	Four signed aiming parameters at record +0x40
+KfEffectKind1Stage	0x1	supported	game/effect.h	Kinds 1 and 28 advance through initial, collision, and fade stages.
 KfEffectKind23Attachment	0x06	supported	GAME 0x800415dc/0x800415e8/0x800415f8;GAME 0x80042940/0x80042984/0x80042a88	Signed actor and vertex indices followed by an unsigned animation-phase threshold at record +0x40
 KfEffectKind2Scale	0x06	supported	game/effect.h;GAME 0x80043c1c/0x80043c6c/0x80043c78/0x80043c9c	Three halfwords at effect record +0x40; kind-2 payload view, not a standalone object
+KfEffectKind42Countdown	0x1	supported	game/effect.h	Kind 42 counts down before its scale step.
 KfEffectKind46State	0x04	supported	GAME 0x80042dc8-0x80042ef0;effect_construct_record kind 46	Signed phase and linked-effect index, then unsigned Q12 age, at record +0x40
+KfEffectKind50Stage	0x1	supported	game/effect.h	Kind 50 advances from growth to collision response and cleanup.
 KfEffectKind5Fanout	0x04	supported	GAME 0x80043fd4-0x8004416c;GAME 0x80044320/0x80044384	Kind-5 initial child count, actor index, and signed remaining count at record +0x40
 KfEffectKind8State	0x04	supported	GAME 0x8004488c/0x80044938/0x80044ab4;effect_construct_record kind 8	Parent effect index and unsigned vertical step at record +0x40
-KfEffectKind9Target	0x01	observed	GAME 0x80040844/0x8004085c;GAME 0x8004441c	Kind-9 actor target index at +0x40; 0xfe player camera, 0xff unbound
+KfEffectKind9Target	0x1	candidate	GAME 0x80040844/0x8004085c;GAME 0x8004441c	Kind-9 actor target index at +0x40; 0xfe player camera, 0xff unbound
+KfEffectKindPayload	0x8	supported	game/effect.h;effect_construct_record;effect_update_dispatch	eight-byte kind-dependent payload at effect record +0x40
 KfEffectRecord	0x48	supported	asm;effect_magic_power;effect_pool;game_main_loop startup clear	layout from the reconstructed header
+KfEffectScaleStepArgument	0x2	supported	game/effect.h	Kinds 11, 45, and 54 pass this signed step to effect_scale_step.
 KfEffectScaleThreshold	0x02	supported	GAME 0x80042ec8-0x80042ecc;GAME 0x800449f0-0x80044b8c	Two signed halfword views of effect record +0x32 used by different effect kinds
 KfEffectState	0x2a8c	supported	asm;effect_pool;game_main_loop startup clear	layout from the reconstructed header
 KfEffectTrailChildLink	0x02	supported	GAME 0x80044fd0-0x80044fd8;GAME 0x80045504-0x8004552c	Kind-107 parent record and trail lag indices
@@ -73,6 +89,7 @@ KfEventControlFields	0x40	supported	game/event_state.h;event_state_initialize;ev
 KfEventControlObjectSlot	0x04	supported	game/event_state.h;event_scene_command_dispatch;map_object_update_actions	object index, resource ID, and unresolved final byte
 KfEventState	0x3918	supported	game/event_state.h;game_main_loop startup clear;func_800482f8;save pointer helpers	control region, memory arena and ten saved offsets
 KfFloorItem	0x18	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfGameAudioState	0xe9c	supported	game/audio.h;audio_initialize_runtime;audio_key_on;audio_state startup clear	0xe9c-byte GAME audio state: sequence, listener, VAB slots, voices and stream slots
 KfGpuGT3	0x28	supported	game/tmd_packets.h;SDK POLY_GT3;render_enqueue_map	SDK and packed views of one GT3 GPU packet
 KfGpuGT3Packed	0x28	supported	game/tmd_packets.h;SDK POLY_GT3;render_enqueue_map	40-byte packed GT3 GPU packet view
 KfGpuGT4	0x34	supported	game/tmd_packets.h;SDK POLY_GT4;render_enqueue_map	SDK and packed views of one GT4 GPU packet
@@ -90,8 +107,9 @@ KfMapObjectHingeMotion	0x04	supported	game/map_object.h;map_object_initialize_fr
 KfMapObjectLayerFadeState	0x04	supported	game/map_object.h;map_object_initialize_from_placements;map_object_update_actions	halfword countdown and byte layer mask at +0x40/+0x42; final byte is implicit alignment
 KfMapObjectOffsetMotionState	0x01	supported	game/map_object.h;map_object_step_offset_motion	single elapsed-frame byte view within map-object +0x40 union
 KfMapObjectPlacement	0x18	supported	game/map_object.h;GAME 0x800358e8-0x80035a48;GAME 0x8003602c-0x80036030	24-byte resource row; original allocation and typedef spelling unproved
+KfMapObjectRecord40	0x3a	candidate	game/map_object.h;player_apply_map_object_reaction;event_world_dispatch_interaction	observed prefix of the heap record referenced by map-object +0x40 during the player-reaction action; complete extent unresolved
 KfMapObjectResourceOffsets	0x03	supported	game/map_object.h;map_object_initialize_from_placements;map_object_update_actions	three signed resource-transition offset bytes in map-object +0x40 union
-KfMapObjectSavedLayerState	0x04	supported	GAME 0x80037f38/0x8003801c lbu;map_object_initialize_from_placements;map_object_update_actions	saved layer mask passed to action 0x54 map-cell pattern updates
+KfMapObjectSavedLayerState	0x1	supported	GAME 0x80037f38/0x8003801c lbu;map_object_initialize_from_placements;map_object_update_actions	saved layer mask passed to action 0x54 map-cell pattern updates
 KfMapObjectStateGame	0x8744	supported	asm;map_object_effect_pool_acquire;game_main_loop startup clear	layout from the reconstructed header
 KfMapObjectTail	0xc	supported	game/map_object.h;asm;map object reset	12-byte tail and word-reset view
 KfMapObjectTailAction51MarkerView	0xc	supported	GAME 0x80036800 lbu;map_object_apply_marker_signal action 0x51	Action-0x51 marker identifier overlays the high spawn-sequence byte used by effect objects
@@ -106,21 +124,29 @@ KfMapObjectTailCollisionProbeView	0xc	supported	GAME 0x80038148..0x800383c8;effe
 KfMapObjectTailCopyWords	0x08	supported	game/map_object.h;GAME 0x80035a3c-0x80035a48	two copied resource words; their action-specific meanings remain unresolved
 KfMapObjectTailEventEffectView	0xc	supported	game/map_object.h;event_spawn_effect_object	event effect-object index at map-object tail +0x39
 KfMapObjectTailFields	0xc	supported	game/map_object.h;asm;map object reset	12-byte map-object tail fields
+KfMapObjectTailGoldRewardView	0xc	supported	game/map_object.h	Kind 0x20 gives the player this amount when its interaction completes.
 KfMapObjectTailHalfword	0x2	supported	game/map_object.h;asm;map object collision	halfword and byte views in object tail
 KfMapObjectTailHalfwordBytes	0x2	supported	game/map_object.h;asm;map object collision	two bytes in object tail halfword
 KfMapObjectTailInitialRotationView	0xc	supported	GAME 0x80035abc..0x80035b1c and 0x80035da8..0x80035de8;map_object_initialize_from_placements	three byte codes initialize object rotation axes for placement kinds 0x40 and 0x0d
 KfMapObjectTailLinkedPropertyView	0xc	supported	GAME 0x800355d8;map_object_update_actions actions 5/8/22	linked map-object index used by property updates
 KfMapObjectTailMarkerView	0xc	supported	GAME 0x800367c4..0x80036894;map_object_apply_marker_signal;map_object_check_and_consume_marker	marker-driven actions compare and consume the tail +0x38 signal byte
+KfMapObjectTailMotionView	0xc	supported	game/map_object.h	Actions 0x60 and 0x62 reuse this halfword for vertical and angular motion.
 KfMapObjectTailNotificationView	0xc	supported	game/map_object.h;event_scene_command_dispatch;event_world_dispatch_interaction	Overlapping notification-byte view of the 12-byte tail; not a separate object
 KfMapObjectTailPair38View	0xc	supported	game/map_object.h;func_80047c98	halfword view of tail bytes +0x38 and +0x39
+KfMapObjectTailPlacement	0xc	supported	game/map_object.h;map_object_initialize_from_placements	placement view: unresolved word followed by the copied tail words
+KfMapObjectTailRegionActionView	0xc	supported	game/map_object.h	Action 225 uses the same camera-region bytes as action 224, followed by an operation byte, its operand, and the value written by operation 2.
 KfMapObjectTailResourceTriggerView	0xc	supported	game/map_object.h;map_object_update_actions;resource_request_transition	Overlapping action-0xe0 resource-selector view of the 12-byte tail; not a separate object
 KfMapObjectTailScaleLinkView	0xc	supported	GAME 0x8003860c..0x800386dc;map_object_update_actions	action 19 controls a linked object's scale in 1/32 units
+KfMapObjectTailScatteredEffectView	0xc	supported	game/map_object.h	The scattered effect pool stores the selected effect ID beside its spawn sequence; the preceding state bytes have action-specific uses elsewhere.
+KfMapObjectTailSceneInspectView	0xc	supported	game/map_object.h	Scene command 0x55 checks this camera region and opens the selected image.
+KfMapObjectTailSpawnByteFields	0xc	supported	game/map_object.h;map_object_effect_pool_acquire;map_object_spawn_effect	tail view whose spawn sequence halfword is also addressed by byte
 KfMapObjectTailTransitionView	0xc	supported	game/map_object.h;map_object_update_actions action 34	Overlapping destination-cell and yaw-code view of the 12-byte tail; not a separate object
-KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template
-KfMapObjectTemplateCellActionView	0x18	supported	GAME 0x8003718c..0x800372f0;0x80035c14..0x80035c30	rotated map-cell action reads template width, height, and spatial sound selector
-KfMapObjectTemplateCollisionView	0x18	supported	GAME 0x80038324..0x80038350	collision-probe action interprets template halfwords +0x0c/+0x0e/+0x10 as vertex, reach, height
-KfMapObjectTemplatePatternView	0x18	supported	GAME 0x80035e48;0x80037f40;0x80038024;map_object_cell_patterns	action 0x54 selects one of two adjacent map-cell pattern rows
-KfMapObjectTemplatePoseView	0x18	candidate	game/map_object.h;func_800475d8	pose offsets overlaid on marker bytes in the 24-byte template
+KfMapObjectTemplate	0x18	supported	game/map_object.h;func_800355d8;func_80036190	24-byte map object template with action-specific parameters
+KfMapObjectTemplateCollisionParams	0xc	supported	GAME 0x80038324..0x80038350	collision-probe action interprets template halfwords +0x0c/+0x0e/+0x10 as vertex, reach, height
+KfMapObjectTemplateMarkerParams	0xc	supported	asm;map_object_refresh_cell_markers;GAME 0x8003718c..0x800372f0;0x80035c14..0x80035c30	marker selectors, rotated map-cell copy size and spatial sound selector
+KfMapObjectTemplateParams	0xc	supported	game/map_object.h;map-object action readers	action-specific interpretations of template bytes +0x0c..+0x17
+KfMapObjectTemplatePatternParams	0xc	supported	GAME 0x80035e48;0x80037f40;0x80038024;map_object_cell_patterns	action 0x54 selects one of two adjacent map-cell pattern rows
+KfMapObjectTemplatePoseParams	0xc	candidate	game/map_object.h;func_800475d8	pose offsets overlaid on marker bytes
 KfMapOccupancyCell	0x0a	supported	asm;render_map_cell_object;map_object_set_cell_marker	two five-byte layer records at a ten-byte grid stride
 KfMapOccupancyLayer	0x05	supported	asm;render_map_cell_object;collision_occupancy_add	shared map object, orientation, and lighting bytes
 KfMapPlacedEntry	0x18	supported	asm;map_placed_expand_sources;map resource caller	128 runtime rows at graphics runtime +0x170f0
@@ -138,17 +164,19 @@ KfNotificationControl	0x04	supported	game headers;asm;xrefs	layout from the reco
 KfNotificationQuad	0x12	supported	game/notification_quad.h;notification_draw_quad;notification_quads	seven 18-byte textured notification descriptors
 KfOrderingTable	0x8000	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfPlayerDamageReaction	0x10	supported	asm;func_800293d4;func_80029464	rotation and motion view of the player reaction overlay
-KfPlayerFlags140	0x04	supported	asm;func_80029014;player_clear_motion	word and low-halfword views of player motion flags
-KfPlayerFlags140Halves	0x04	supported	asm;func_80028998	separate low and high flag halfwords
 KfPlayerLevelGrowth	0x0c	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPlayerMagicIdSequence	0x14	supported	asm;func_80026498;func_80028998;retail bytes	12 effect IDs followed by four u16 attack masks
+KfPlayerMagicSpawnFields	0x8	supported	game/player.h	One magic spawn offset; its SVECTOR pad slot carries the effect kind.
 KfPlayerMagicSpawnRecord	0x08	supported	asm;player_dispatch_magic_effect;retail bytes	Eight-byte offset copied as SVECTOR with signed effect kind at +6; original typedef spelling unresolved
 KfPlayerMovementSpeed	0x02	supported	asm;player_update_vertical_motion	one halfword read with both lh and lhu in vertical motion
+KfPlayerPadButtonHalves	0x4	supported	asm;player_update_frame PadRead(1) store and previous-frame copy;player_update_actions_and_charge	this frame's pad buttons followed by the previous frame's copy
+KfPlayerPadButtons	0x4	supported	asm;player_update_frame;player_handle_interaction_and_menu;player_clear_motion	pad button word read whole for press/hold edges or by halfword
 KfPlayerPositionReaction	0x14	supported	asm;func_800291ec	mode and three signed position words in the player reaction overlay
 KfPlayerReactionOverlay	0x14	supported	asm;func_800291ec;func_800293d4;func_80029464	three overlapping player reaction views
 KfPlayerState	0x160	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPlayerViewReaction	0x10	supported	asm;player_reset_view;player_get_camera_pose	camera view of the player reaction overlay
 KfPlayerViewRotation	0x08	supported	asm;player_get_camera_pose;player_reset_view	two rotation records copied by view reset
+KfPlayerViewRotationOffset	0x8	supported	game/player.h;player_reset_view;player_apply_map_object_reaction	pending view rotation offset, copied as an SVECTOR or cleared by halfword component
 KfPlayerVitals	0x08	supported	asm;xrefs;KF1 player.h counterpart	layout from the reconstructed header
 KfPoolRecord	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
 KfPrimitiveBuffer	0x0c	supported	game headers;asm;xrefs	layout from the reconstructed header
@@ -157,19 +185,29 @@ KfRenderGridState	0x24c	supported	asm;build_camera_map_cell_layer_masks;func_800
 KfRenderMaskScanState	0x20	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	observed 32-byte window and layer-mask scan state
 KfRenderModelRow	0x24	supported	asm;retail row bytes;func_80031024;render_game_frame	36-byte mutable model render row
 KfRenderState	0x88	supported	game headers;asm;xrefs	view transforms and cell origins
+KfResourceState	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
 KfResourceTransitionOffset	0x03	supported	GAME resource_request_transition;resource_advance_transition;resource_run_initial_transition	signed X/Z/Y transition offsets stored in three bytes
 KfScreenVertex	0x08	supported	game headers;asm;xrefs	layout from the reconstructed header
-KfState8017d118	0x1c	supported	asm;callback_invoke_slot_04_zero;game_main_loop startup clear	startup-cleared runtime state with an active callback-table pointer
+KfShapeCeilingRecord	0x4	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape record 0x11; record meaning from shape evaluation
+KfShapeHeightRecord	0x2	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape records 0x10, 0x18 and 0x19; record meaning from shape evaluation
+KfShapeLedgeRecord	0xa	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape record 0x31; record meaning from shape evaluation
+KfShapeSlopeRecord	0xc	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape records 0x30 and 0x32; record meaning from shape evaluation
+KfShapeWallRecord	0x8	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	operands of shape records 0x20-0x23; record meaning from shape evaluation
 KfTargetCandidate	0x2c	candidate	game/actor.h;GAME 0x80039108;GAME 0x8003e140-0x8003e1b4	minimum observed view through unsigned halfword +0x2a; full extent and stride unknown
 KfTargetCandidateAction25	0x1c	candidate	GAME 0x8003ed78-0x8003eecc;game/actor.h	Type-25 prefix plus first script halfword; variable payload extent and candidate stride unresolved
+KfTargetCandidateDamageReaction	0x2	supported	game/actor.h;actor_apply_magic_to_actor	word_02 damage-reaction view: reaction chance byte and an unused byte
+KfTargetCandidateSelectionScales	0x2	supported	game/actor.h;actor_score_target_candidate	word_02 target-selection view: initial and continuing score scales
+KfTargetCandidateWord02	0x2	supported	game/actor.h;actor_score_target_candidate;actor_apply_magic_to_actor	candidate word +0x02 read as selection scales or damage-reaction bytes
 KfTargetCandidateWord0c	0x2	supported	GAME 0x8003e824 lhu;GAME 0x8003e648 lbu	shared candidate +0x0c halfword and high-byte views
 KfTargetCandidateWord0cBytes	0x2	supported	GAME 0x8003e648 lbu	byte-addressable candidate +0x0c word view
 KfTargetCandidateWord0e	0x2	supported	GAME 0x800391d0/0x80039358 lbu;0x800394a8 lhu	overlapping candidate +0x0e byte and halfword views
 KfTargetCandidateWord0eBytes	0x2	supported	GAME 0x800391d0/0x80039358 lbu	low and high bytes of candidate +0x0e halfword
 KfTargetCandidateWord10	0x2	supported	GAME 0x800391ac lhu candidate+0x10;event byte consumers	overlapping halfword and byte views at candidate +0x10
+KfTargetCandidateWord10Attack	0x2	supported	game/actor.h;actor_update_behavior	word_10 attack view: fallback offset and damage component 3
 KfTargetCandidateWord10Bytes	0x2	supported	GAME event save/restore;message marker scan	two observed bytes at candidate +0x10 and +0x11
 KfTargetCandidateWord12	0x2	supported	GAME 0x80039108 lhu candidate+0x12;event byte consumers	overlapping halfword and byte views at candidate +0x12
 KfTargetCandidateWord12Bytes	0x2	supported	GAME event save/restore;message marker scan	two observed bytes at candidate +0x12 and +0x13
+KfTargetCandidateWord12Flight	0x2	supported	game/actor.h;actor_update_behavior	word_12 flight view: vertical velocity step and orientation change threshold
 KfTargetCandidateWord14	0x2	supported	GAME 0x800393f4 lhu candidate+0x14;event byte stream	overlapping halfword and two-byte stream prefix; complete stream extent unresolved
 KfTargetCandidateWord16	0x2	supported	GAME 0x80039108 lhu candidate+0x16;GAME 0x8003ef34/0x8003eff0 lbu	shared unsigned halfword and byte view
 KfTargetCandidateWord16Bytes	0x2	supported	GAME 0x8003ef34/0x8003eff0 lbu	byte-addressable candidate +0x16 word view
@@ -178,14 +216,20 @@ KfTargetCandidateWord18Bytes	0x2	supported	GAME 0x8003ebe0 lbu candidate+0x19	by
 KfTargetCandidateWord1a	0x2	supported	GAME 0x80039108 lhu candidate+0x1a;GAME 0x8003dc14 lbu candidate+0x1a	unsigned halfword and byte view
 KfTargetCandidateWord1c	0x2	supported	GAME 0x8003e294 lhu candidate+0x1c;GAME 0x8003e1d0/0x8003e1d4 lbu	unsigned halfword and byte view
 KfTargetCandidateWord1e	0x2	supported	GAME 0x8003e2d4 lhu candidate+0x1e;GAME 0x8003e1d8/0x8003e1f8 lbu	unsigned halfword and byte view
+KfTargetCandidateWord20	0x2	supported	game/actor.h;actor_update_behavior	candidate word +0x20 read as damage component 0 or animation phase start
+KfTargetCandidateWord22	0x2	supported	game/actor.h;actor_update_behavior	candidate word +0x22 read as damage component 1 or animation phase stop
 KfTargetCandidateWord24	0x2	supported	GAME 0x8003e1ec lhu;GAME 0x8003e298 lh candidate+0x24	unsigned damage value and signed motion-step views
 KfTargetCandidateWord26	0x2	supported	GAME 0x8003e154 lhu;GAME 0x8003e274 lh candidate+0x26	unsigned bound and signed motion-step views
 KfTargetGroup	0x78	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
+KfTargetGroupWord1a	0x2	supported	game/actor.h	Slot-state-3 actors can use the initial-health word as a local X fallback.
 KfTargetReference	0x4	supported	game/actor.h;asm;actor target fixup	relative offset and target pointer share one slot
+KfTargetSoundTrigger	0x2	supported	game/actor.h;actor_update_behavior	sound trigger word read whole and through its interval/mode bitfields
+KfTargetSoundTriggerFields	0x2	supported	game/actor.h	Low 14 bits: sound interval; high 2 bits: trigger mode.
 KfTmdF3	0x0c	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	flat triangle primitive body
 KfTmdF4	0x10	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	flat quadrilateral primitive body
 KfTmdFt3	0x14	supported	game/tmd_packets.h;render_enqueue_map;TMD primitive mode 0x24	textured triangle primitive source layout
 KfTmdFt4	0x1c	supported	game/tmd_packets.h;render_enqueue_map;TMD primitive mode 0x2c	textured quadrilateral primitive source layout
+KfTmdFt4TextureWords	0x10	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	four texture words copied from an FT4 packet body, or the first three of an FT3
 KfTmdG3	0x10	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	shaded triangle primitive body
 KfTmdG4	0x14	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	shaded quadrilateral primitive body
 KfTmdGt3	0x18	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	textured shaded triangle primitive body
@@ -195,6 +239,9 @@ KfTmdObject	0x1c	supported	game headers;asm;xrefs	layout from the reconstructed 
 KfTmdPreparedAsset	0x1000	supported	game/tmd_packets.h;render_map_cell_object;func_8002ff5c	4096-byte temporary header, object, and payload
 KfTmdPrimitive	0x20	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	mode-discriminated primitive body
 KfTmdState	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfTmdUvBytes	0x2	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	u,v texture coordinate byte pair
+KfTmdUvParts	0x4	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	u,v pair followed by its CLUT, tpage or pad halfword
+KfTmdUvWord	0x4	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	whole-word and component views of one texture word
 KfVecXZi	0x08	supported	lib/math.h;asm;angle_to_forward_xz;vector3i_add_xz	two signed horizontal word coordinates
 KfWeaponAssetBuffer	0xc000	candidate	asm;player_initialize_session;KF1 48KiB capacity	extent remains candidate
 KfWeaponRecordGame	0x44	supported	asm;player_recalculate_combat_stats	68-byte weapon record with eight attack halfwords at +6

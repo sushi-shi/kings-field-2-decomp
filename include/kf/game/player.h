@@ -56,9 +56,10 @@ enum {
     KF_PLAYER_REACTION_ROTATION_DAMAGE = 0x12
 };
 
-/* Low-halfword motion bits kept when the player's motion is cleared. */
+/* Buttons that stay pressed when the player's motion is cleared; the
+ * direction and shoulder buttons are dropped. */
 enum {
-    KF_PLAYER_MOTION_FLAGS_KEPT = 0x8b0
+    KF_PLAYER_PAD_KEPT_ON_STOP = PADstart | PADRleft | PADRright | PADRup
 };
 
 /*
@@ -189,22 +190,31 @@ typedef char kf_player_position_reaction_size[
 typedef char kf_player_position_reaction_position_offset[
     (u32)&((KfPlayerPositionReaction *)0)->position == 4 ? 1 : -1];
 
-typedef struct KfPlayerFlags140Halves {
-    u16 low;
-    u16 high;
-} KfPlayerFlags140Halves;
+/* PadRead(1) buttons for this frame, and the previous frame's copy taken
+ * after the player update. */
+typedef struct KfPlayerPadButtonHalves {
+    u16 current;
+    u16 previous;
+} KfPlayerPadButtonHalves;
 
-typedef union KfPlayerFlags140 {
+typedef union KfPlayerPadButtons {
     u32 word;
-    u16 low;
-    KfPlayerFlags140Halves halves;
-} KfPlayerFlags140;
+    u16 current;
+    KfPlayerPadButtonHalves halves;
+} KfPlayerPadButtons;
 
-typedef char kf_player_flags140_halves_size[
-    sizeof(KfPlayerFlags140Halves) == 4 ? 1 : -1];
-typedef char kf_player_flags140_high_offset[
-    (u32)&((KfPlayerFlags140 *)0)->halves.high == 2 ? 1 : -1];
-typedef char kf_player_flags140_size[sizeof(KfPlayerFlags140) == 4 ? 1 : -1];
+typedef char kf_player_pad_button_halves_size[
+    sizeof(KfPlayerPadButtonHalves) == 4 ? 1 : -1];
+typedef char kf_player_pad_buttons_previous_offset[
+    (u32)&((KfPlayerPadButtons *)0)->halves.previous == 2 ? 1 : -1];
+typedef char kf_player_pad_buttons_size[sizeof(KfPlayerPadButtons) == 4 ? 1 : -1];
+
+/* Whole-word tests of BUTTON in both frames: newly pressed, or held. */
+#define KF_PLAYER_PAD_BOTH_FRAMES(button) ((u32)(button) << 16 | (button))
+#define KF_PLAYER_PAD_PRESSED(pad, button) \
+    (((pad).word & KF_PLAYER_PAD_BOTH_FRAMES(button)) == (button))
+#define KF_PLAYER_PAD_HELD(pad, button) \
+    (((pad).word & KF_PLAYER_PAD_BOTH_FRAMES(button)) == KF_PLAYER_PAD_BOTH_FRAMES(button))
 
 typedef union KfPlayerReactionOverlay {
     KfPlayerDamageReaction damage;
@@ -260,6 +270,24 @@ typedef char kf_player_magic_id_sequence_size[
 typedef char kf_player_magic_attack_masks_offset[
     (u32)&((KfPlayerMagicIdSequence *)0)->attack_masks == 0x0c ? 1 : -1];
 
+/* One magic spawn offset; its SVECTOR pad slot carries the effect kind. */
+typedef struct KfPlayerMagicSpawnFields {
+    s16 x;
+    s16 y;
+    s16 z;
+    s16 effect_kind;
+} KfPlayerMagicSpawnFields;
+
+typedef union KfPlayerMagicSpawnRecord {
+    SVECTOR offset;
+    KfPlayerMagicSpawnFields fields;
+} KfPlayerMagicSpawnRecord;
+
+typedef char kf_player_magic_spawn_record_size[
+    sizeof(KfPlayerMagicSpawnRecord) == 8 ? 1 : -1];
+typedef char kf_player_magic_spawn_effect_kind_offset[
+    (u32)&((KfPlayerMagicSpawnRecord *)0)->fields.effect_kind == 6 ? 1 : -1];
+
 typedef struct KfMapOccupancyLayer {
     u8 object_index;
     u8 elevation;
@@ -283,13 +311,49 @@ typedef char kf_map_occupancy_cell_size[sizeof(KfMapOccupancyCell) == 10 ? 1 : -
 
 enum { KF_MAP_WORLD_GRID_SIDE = 80 };
 
+/* Heights produced by one shape query. The shape evaluator addresses them
+ * through a single pointer to this block. */
+typedef struct KfCollisionHeights {
+    s32 height;
+    s32 result;
+    s32 height_limit;
+    s32 lower_bound;
+    s32 upper_bound;
+} KfCollisionHeights;
+
+typedef char kf_collision_heights_size[sizeof(KfCollisionHeights) == 0x14 ? 1 : -1];
+
+/* Interior collision-query state within the startup-cleared BSS owner. */
+typedef struct KfCollisionCache {
+    KfMapOccupancyCell *cell;
+    KfMapOccupancyLayer *shape;
+    u8 unknown_08[2];
+    u16 layer;
+    KfCollisionHeights heights;
+    u32 flags;
+    s32 actor_index;
+    s32 object_index;
+    u8 unknown_2c[4];
+    VECTOR position;
+    u16 radius;
+    u16 interaction_height;
+} KfCollisionCache;
+
+typedef char kf_collision_cache_size[sizeof(KfCollisionCache) == 0x44 ? 1 : -1];
+typedef char kf_collision_cache_height_offset[
+    (u32)&((KfCollisionCache *)0)->heights == 0x0c ? 1 : -1];
+typedef char kf_collision_cache_position_offset[
+    (u32)&((KfCollisionCache *)0)->position == 0x30 ? 1 : -1];
+typedef char kf_collision_cache_radius_offset[
+    (u32)&((KfCollisionCache *)0)->radius == 0x40 ? 1 : -1];
+
 /* The resource transition loads 0xfa00 bytes of 80-by-80 map cells. Startup
  * clears the complete BSS region, whose later storage remains partly opaque. */
 typedef struct KfBss801c7540 {
     KfMapOccupancyCell map_cells[KF_MAP_WORLD_GRID_SIDE][KF_MAP_WORLD_GRID_SIDE];
     u8 unknown_fa00[0x600];
     u8 shape_bank[0x1800];
-    u8 unknown_11800[0x44];
+    KfCollisionCache collision_cache;
 } KfBss801c7540;
 
 typedef char kf_map_cells_loaded_size[
@@ -322,7 +386,7 @@ typedef struct KfPlayerState {
     s32 next_level_experience;
     u8 level;
     u8 unknown_09;
-    u8 force_actor_lifecycle_refresh;
+    b8 force_actor_lifecycle_refresh;
     u8 weapon_charge_delay;
     u8 unknown_0c;
     u8 movement_speed_adjustment_decay_latch;
@@ -375,8 +439,8 @@ typedef struct KfPlayerState {
     u8 equipped_weapon_id;
     u8 unknown_9c[2];
     u8 weapon_magic_shots_configured;
-    u8 weapon_attack_fully_charged;
-    u8 weapon_guard_active;
+    b8 weapon_attack_fully_charged;
+    b8 weapon_guard_active;
     KfEquipmentRecord *equipped_head_record;
     KfEquipmentRecord *equipped_body_record;
     KfEquipmentRecord *equipped_arm_record;
@@ -401,7 +465,7 @@ typedef struct KfPlayerState {
     u8 unknown_ce[2];
     u8 vertical_motion_state;
     KfQueuedMagicAction queued_magic_action;
-    u8 fatal_fall_latch;
+    b8 fatal_fall_latch;
     VECTOR camera_position;
     SVECTOR frame_displacement;
     KfPlayerViewRotation camera_rotation;
@@ -427,7 +491,7 @@ typedef struct KfPlayerState {
     s16 vertical_velocity;
     s16 damage_red_overlay_scale;
     s16 damage_red_overlay_decay;
-    KfPlayerFlags140 flags_140;
+    KfPlayerPadButtons pad_buttons;
     s32 movement_step_limit;
     s32 turn_step_limit;
     KfPlayerReactionOverlay reaction;
@@ -470,8 +534,8 @@ typedef char kf_player_death_rotation_offset[
     (u32)&((KfPlayerState *)0)->reaction == 0x14c ? 1 : -1];
 typedef char kf_player_movement_speed_offset[
     (u32)&((KfPlayerState *)0)->movement_speed == 0x12e ? 1 : -1];
-typedef char kf_player_flags140_offset[
-    (u32)&((KfPlayerState *)0)->flags_140 == 0x140 ? 1 : -1];
+typedef char kf_player_pad_buttons_offset[
+    (u32)&((KfPlayerState *)0)->pad_buttons == 0x140 ? 1 : -1];
 typedef char kf_player_turn_step_limit_offset[
     (u32)&((KfPlayerState *)0)->turn_step_limit == 0x148 ? 1 : -1];
 typedef char kf_player_movement_step_limit_offset[

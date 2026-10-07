@@ -18,6 +18,10 @@
 #include <LIBGPU.H>
 #include <LIBETC.H>
 
+/* LIBETC exports VSync, but Psy-Q 3.0's LIBETC.H omits its declaration;
+ * later releases declare it with this signature. */
+extern int VSync(int mode);
+
 /* REG.OBJ exports this helper, but Psy-Q 3.0's LIBGTE.H omits it. The second
  * pointer is inherited from the SLPS-00017 callers; review against KF2 calls. */
 extern void ReadSZ2(long *depth, long *unused_depth);

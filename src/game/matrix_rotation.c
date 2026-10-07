@@ -436,14 +436,14 @@ KfBool directed_intervals_overlap(s32 first, s32 first_width, s32 second, s32 se
 {
     if (second < first) {
         if (second < first - first_width) {
-            return 0;
+            return KF_FALSE;
         }
     } else {
         if (first < second - second_width) {
-            return 0;
+            return KF_FALSE;
         }
     }
-    return 1;
+    return KF_TRUE;
 }
 
 ADDRESS(0x800155a4, 0xf4)
@@ -560,17 +560,17 @@ s32 angle_lerp_shortest_q12(s32 start, s32 end, s32 fraction)
 }
 
 ADDRESS(0x800158b4, 0x64)
-void fixed_lerp_nine_halfwords_q12(const u16 *start, const u16 *end, u16 *output, s16 fraction)
+void fixed_lerp_nine_halfwords_q12(const s16 *start, const s16 *end, s16 *output, s16 fraction)
 {
-    const u16 *source = start;
-    const u16 *target = end;
-    u16 *destination = output;
+    const s16 *source = start;
+    const s16 *target = end;
+    s16 *destination = output;
     s32 index;
 
     for (index = LERP_HALFWORD_COUNT - 1; index != -1; index--) {
-        u16 value = *source++;
-        u16 next = *target++;
-        s32 delta = (s16)next - (s16)value;
+        s16 value = *source++;
+        s16 next = *target++;
+        s32 delta = next - value;
 
         *destination++ = value + ((delta * fraction) >> KF_FIXED12_BITS);
     }
@@ -588,7 +588,6 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
         - (((speed_squared * horizontal_distance) >> 10)
            * (horizontal_distance >> 2))
         - (((speed * acceleration) >> 3) * (vertical_distance >> 2));
-    s32 square_root;
     s32 midpoint;
     s32 longer_time;
     s32 shorter_time;
@@ -600,10 +599,10 @@ s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     if (discriminant < 0) {
         return -1;
     }
-    square_root = SquareRoot0(discriminant << 4) << 2;
+    discriminant = SquareRoot0(discriminant << 4) << 2;
     midpoint = (amplitude_squared >> 2) - ((vertical_distance * speed) >> 2);
-    longer_time = ((midpoint + square_root) << 1) / speed_squared;
-    shorter_time = ((midpoint - square_root) << 1) / speed_squared;
+    longer_time = ((midpoint + discriminant) << 1) / speed_squared;
+    shorter_time = ((midpoint - discriminant) << 1) / speed_squared;
     if (longer_time <= 0 && shorter_time <= 0) {
         return -1;
     }

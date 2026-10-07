@@ -94,21 +94,38 @@ typedef struct KfTmdFt4 {
     u16 pad2;
 } KfTmdFt4;
 
-/* The first subdivided FT4 child writes its two trailing index pairs as words. */
-typedef struct KfTmdFt4PackedIndices {
-    u16 uv0;
-    u16 clut;
-    u16 uv1;
-    u16 tpage;
-    u16 uv2;
-    u16 pad0;
-    u16 uv3;
-    u16 pad1;
-    u16 normal;
-    u16 vertex0;
-    u32 vertex1_vertex2;
-    u32 vertex3_pad2;
-} KfTmdFt4PackedIndices;
+/* Each FT3/FT4 texture word pairs a u,v byte coordinate with the CLUT, tpage
+ * or pad halfword; subdivision averages the coordinates of a copied run. */
+typedef struct KfTmdUvBytes {
+    u8 u;
+    u8 v;
+} KfTmdUvBytes;
+
+typedef struct KfTmdUvParts {
+    KfTmdUvBytes uv;
+    u16 texture_aux;
+} KfTmdUvParts;
+
+typedef union KfTmdUvWord {
+    KfTmdUvParts parts;
+    u32 word;
+} KfTmdUvWord;
+
+typedef struct KfTmdFt4TextureWords {
+    KfTmdUvWord uv0;
+    KfTmdUvWord uv1;
+    KfTmdUvWord uv2;
+    KfTmdUvWord uv3;
+} KfTmdFt4TextureWords;
+
+typedef char kf_tmd_uv_bytes_size[sizeof(KfTmdUvBytes) == 2 ? 1 : -1];
+typedef char kf_tmd_uv_word_size[sizeof(KfTmdUvWord) == 4 ? 1 : -1];
+typedef char kf_tmd_uv_parts_aux_offset[
+    (u32)&((KfTmdUvParts *)0)->texture_aux == 2 ? 1 : -1];
+typedef char kf_tmd_ft4_texture_words_size[
+    sizeof(KfTmdFt4TextureWords) == 16 ? 1 : -1];
+typedef char kf_tmd_ft4_texture_uv3_offset[
+    (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
 
 /* On-disk primitive bodies. Each index is a halfword until the preparation
  * pass converts it to a byte offset into the projected-vector array. */
@@ -264,10 +281,6 @@ typedef union KfGpuGT4 {
 
 typedef char kf_tmd_ft3_size[sizeof(KfTmdFt3) == 20 ? 1 : -1];
 typedef char kf_tmd_ft4_size[sizeof(KfTmdFt4) == 28 ? 1 : -1];
-typedef char kf_tmd_ft4_packed_indices_size[
-    sizeof(KfTmdFt4PackedIndices) == sizeof(KfTmdFt4) ? 1 : -1];
-typedef char kf_tmd_ft4_packed_indices_offset[
-    (u32)&((KfTmdFt4PackedIndices *)0)->vertex1_vertex2 == 20 ? 1 : -1];
 typedef char kf_tmd_ft3_normal_offset[
     (u32)&((KfTmdFt3 *)0)->normal == 12 ? 1 : -1];
 typedef char kf_tmd_ft4_normal_offset[
@@ -292,7 +305,6 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
                    u32 mode, s32 depth_bias);
 void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                    KfTmdPreparedAsset *prepared_asset);
-void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
-                   KfTmdPreparedAsset *prepared_asset);
+void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out);
 
 #endif

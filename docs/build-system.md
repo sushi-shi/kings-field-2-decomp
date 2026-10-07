@@ -81,6 +81,27 @@ therefore appear in retail order, which the address-ordered functions give
 for free; a string that lives inside the range is spelled as the literal the
 original used, not as a named extern.
 
+A unit compiled with a small-data profile (`small_data = 8`) may also claim
+its anonymous `.sdata` constants once:
+
+```c
+SDATA(0x8006d6a4, 0xb)
+```
+
+GCC 2.5.7's MIPS `SELECT_SECTION` sends every constant of at most `-G` bytes
+to `.sdata`, so a short literal (or a local `char buf[2] = " "` initializer)
+is an `.sdata` member, while the same text initializing a larger array keeps
+the array's type and stays in `.rdata`. ASPSX 1.07 still expands every access
+to `lui` plus a low instruction, so `-G8` changes placement, not code. The
+delinker packs the claimed range among the unit's `.sdata` `DATA()` claims in
+address order and resolves code references to it as `.sdata` offsets; the
+range never becomes a symbol. Small statics (`.lcomm`, rounded to eight
+bytes) land in `.sbss` and resolve through that section symbol; declare their
+eight-byte request in `data_reservations.tsv`. Exported COMMON requests stay
+`.bss` COMMON under ASPSX `-G8`. The GAME evidence is the game `.sdata` run
+between the LIBGPU `.data` tail and the first LIBCD `.sdata` export
+(0x8006d680-0x8006d714) and the zero-filled small BSS before the SDK `.sbss`.
+
 A unit with several claims is a module: a translation-unit hypothesis whose
 target object is the whole run carved as one section. Address proximity alone
 does not prove the original file boundary, so module names stay WIP (a class

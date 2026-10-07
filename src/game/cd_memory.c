@@ -37,9 +37,9 @@ enum {
 
 RODATA(0x80011074, 0x21)
 
-DATA(0x8006d680, 0x5, ".data")
+DATA(0x8006d680, 0x5, ".sdata")
 char cd_path_prefix[5] = "\\CD\\";
-DATA(0x8006d688, 0x3, ".data")
+DATA(0x8006d688, 0x3, ".sdata")
 char cd_version_suffix[3] = ";1";
 
 DATA(0x8009b0a0, 0x5f000, ".bss")
@@ -220,13 +220,13 @@ void memory_arena_coalesce_free(KfMemoryBlock *block)
     }
     do {
         if (block->kind == KF_MEMORY_BLOCK_FREE) {
-            block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+            block = NEXT_BLOCK(block);
             if (block->kind != KF_MEMORY_BLOCK_FREE) {
                 return;
             }
             first->size += sizeof(KfMemoryBlock) + block->size;
         } else {
-            block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+            block = NEXT_BLOCK(block);
         }
     } while (block->kind != KF_MEMORY_BLOCK_END);
 }
@@ -288,7 +288,7 @@ void memory_arena_wait_pending(KfMemoryBlock *arena)
         while (block->kind == KF_MEMORY_BLOCK_PENDING) {
             cd_request_wait_idle();
         }
-        block = (KfMemoryBlock *)((u8 *)(block + 1) + block->size);
+        block = NEXT_BLOCK(block);
     }
 }
 
@@ -342,8 +342,9 @@ ADDRESS(0x80017608, 0xb8)
 u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
 {
     KfMemoryBlock *block = memory_arena_find_block(arena, size);
-    u32 available;
     u32 remainder;
+    u32 usable;
+    u32 available;
     u8 *data;
 
     if (block == NULL) {
@@ -354,8 +355,8 @@ u8 *memory_arena_allocate_block(KfMemoryBlock *arena, u32 size, u8 **owner)
         }
     }
     available = block->size;
-    remainder = available - sizeof(KfMemoryBlock);
-    remainder -= size;
+    usable = available - sizeof(KfMemoryBlock);
+    remainder = usable - size;
     if ((s32)remainder >= 2060) {
         KfMemoryBlock *payload_end = (KfMemoryBlock *)((u8 *)block + size);
         payload_end[1].kind = KF_MEMORY_BLOCK_FREE;
@@ -419,7 +420,7 @@ u16 memory_block_tag(u8 *data)
 ADDRESS(0x8001771c, 0x38)
 u8 *memory_malloc_checked(u32 size)
 {
-    u8 *block = malloc(size);
+    u8 *block = (u8 *)malloc(size);
 
     if ((u32)block + MEMORY_RAM_BASE > KF_MAIN_RAM_BYTES - 1) {
         return NULL;

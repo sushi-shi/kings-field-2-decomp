@@ -38,66 +38,7 @@ enum {
     KF_MAP_CELL_PREPARED_LIMIT = 16
 };
 
-typedef struct KfTmdUvBytes {
-    u8 u, v;
-} KfTmdUvBytes;
-typedef char kf_tmd_uv_bytes_size[sizeof(KfTmdUvBytes) == 2 ? 1 : -1];
-
-typedef union KfTmdUvWord {
-    struct { KfTmdUvBytes uv; u16 texture_aux; } parts;
-    u32 word;
-} KfTmdUvWord;
-typedef char kf_tmd_uv_word_size[sizeof(KfTmdUvWord) == 4 ? 1 : -1];
-typedef struct KfTmdFt4TextureWords {
-    KfTmdUvWord uv0, uv1, uv2, uv3;
-} KfTmdFt4TextureWords;
-typedef char kf_tmd_ft4_texture_words_size[
-    sizeof(KfTmdFt4TextureWords) == 16 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv1_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv1 == 4 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv2_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv2 == 8 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv3_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
-typedef struct KfUvScratch { u32 word; } KfUvScratch;
-typedef char kf_tmd_uv_scratch_size[sizeof(KfUvScratch) == 4 ? 1 : -1];
-typedef union KfTmdIndexScratch {
-    u16 halves[2];
-    u8 bytes[4];
-} KfTmdIndexScratch;
-typedef char kf_tmd_index_scratch_size[sizeof(KfTmdIndexScratch) == 4 ? 1 : -1];
-#define WRITE_UV_CACHED(field, value) do { \
-    ((u8 *)&(field))[0] = (u8)(value).word; \
-    ((u8 *)&(field))[1] = (u8)((value).word >> 8); \
-} while (0)
-#define WRITE_INDEX(field, value) do { \
-    index_scratch.halves[0] = (u16)(value); \
-    COPY_SCRATCH_INDEX(field, 0); \
-} while (0)
-#define COPY_SCRATCH_INDEX(field, slot) do { \
-    ((u8 *)&(field))[0] = index_scratch.bytes[(slot) * 2]; \
-    ((u8 *)&(field))[1] = index_scratch.bytes[(slot) * 2 + 1]; \
-} while (0)
-#define WRITE_SCRATCH_INDEX(field, value, slot) do { \
-    index_scratch.halves[slot] = (value); \
-    COPY_SCRATCH_INDEX(field, slot); \
-} while (0)
-#define MID_INDEX(src, n) ((u16)(((src)->vertex_count + (n)) << 3))
-#define MID_VECTOR(dst, lhs, rhs) do { \
-    (dst)->vx = ((s32)(lhs)->vx + (s32)(rhs)->vx) >> 1; \
-    (dst)->vy = ((s32)(lhs)->vy + (s32)(rhs)->vy) >> 1; \
-    (dst)->vz = ((s32)(lhs)->vz + (s32)(rhs)->vz) >> 1; \
-} while (0)
-#define MID_UV_INTO(dst, lhs, rhs) do { \
-    (dst).word = (lhs).word; \
-    (dst).word &= 0xffff00ff; \
-    (dst).word |= (((u32)(lhs).parts.uv.v + (u32)(rhs).parts.uv.v) >> 1) << 8; \
-    (dst).word &= 0xffffff00; \
-    (dst).word |= ((u32)(lhs).parts.uv.u + (u32)(rhs).parts.uv.u) >> 1; \
-} while (0)
-
 enum {
-    KF_GPU_RESET_KEEP_DISPLAY = 3,
     KF_DISPLAY_WIDTH = 320,
     KF_DISPLAY_HEIGHT = 240,
     KF_PROJECTION_DISTANCE = 200,
@@ -119,7 +60,6 @@ enum {
 DATA(0x80063dcc, 0x20, ".data")
 MATRIX render_world_identity_matrix = {
     {{0x1000, 0, 0}, {0, 0x1000, 0}, {0, 0, 0x1000}},
-    0,
     {0, 0, 0}
 };
 
@@ -153,13 +93,13 @@ KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
     {KF_RENDER_MODEL_END}
 };
 
-DATA(0x8006d6d0, 0x4, ".data")
+DATA(0x8006d6d0, 0x4, ".sdata")
 CVECTOR map_textured_primitive_color = {128, 128, 128, 0};
 
-DATA(0x8006d6d4, 0x4, ".data")
+DATA(0x8006d6d4, 0x4, ".sdata")
 s32 render_model_yaw_smoothing_accumulator = 0;
 
-DATA(0x8006d6dc, 0x8, ".data")
+DATA(0x8006d6dc, 0x8, ".sdata")
 RECT menu_transition_rect = {KF_DISPLAY_WIDTH, 0, KF_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT};
 
 DATA(0x800fba58, 0x32000, ".bss")
@@ -305,9 +245,9 @@ void display_set_view_transform(const VECTOR *position, const SVECTOR *rotation)
     if (rotation != NULL)
         GRAPHICS.render_state.view_rotation = *rotation;
 
-    angles.x = (u16)GRAPHICS.render_state.view_rotation.vx;
-    angles.y = -(u16)GRAPHICS.render_state.view_rotation.vy;
-    angles.z = (u16)GRAPHICS.render_state.view_rotation.vz;
+    angles.x = GRAPHICS.render_state.view_rotation.vx;
+    angles.y = -GRAPHICS.render_state.view_rotation.vy;
+    angles.z = GRAPHICS.render_state.view_rotation.vz;
     matrix_set_rotation_xzy(&angles, &GRAPHICS.render_state.view_matrix);
     matrix_set_rotation_x(angles.x, &GRAPHICS.render_state.pitch_matrix);
 }
@@ -326,7 +266,7 @@ void tmd_prepare_primitive_indices(KfTmdHeader *tmd)
     object = TMD_OBJECTS(tmd);
     while (--objects_left != (u32)-1) {
         primitives_left = object->primitive_count;
-        packet = (u8 *)tmd + (object->primitive_offset + KF_TMD_HEADER_BYTES);
+        packet = TMD_SECTION(tmd, object->primitive_offset);
         while (--primitives_left != (u32)-1) {
             primitive = (KfTmdPrimitive *)TMD_PACKET_BODY(packet);
             header.word = *(u32 *)packet;
@@ -576,7 +516,10 @@ void tmd_project_vertices(s32 count)
     }
 }
 
-#define TMD_VERTEX(base, offset) ((KfScreenVertex *)((base) + (offset)))
+/* Prepared vertex and normal indices are byte offsets into their arrays;
+ * NormalClip and the GPU packets take each vertex's packed screen XY word. */
+#define TMD_VERTEX(base, offset) ((KfScreenVertex *)((u8 *)(base) + (offset)))
+#define TMD_VECTOR(base, offset) ((SVECTOR *)((u8 *)(base) + (offset)))
 #define TMD_XY(vertex) (*(long *)(vertex))
 
 ADDRESS(0x8002ddb4, 0x728)
@@ -589,10 +532,8 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
     u16 blend_bits = (u16)render_mode << 5;
 
     object = tmd_get_object(object_index);
-    packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-             (object->primitive_offset + KF_TMD_HEADER_BYTES);
-    normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-              (object->normal_offset + KF_TMD_HEADER_BYTES);
+    packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
+    normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
@@ -604,6 +545,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
         KfScreenVertex *vc;
         KfScreenVertex *vd;
         s32 depth;
+        s32 average;
 
         header.word = *(u32 *)packet;
         mode = header.word >> 24;
@@ -631,19 +573,18 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             *(u16 *)&prim->u0 = face->ft3.uv0;
             *(u16 *)&prim->u1 = face->ft3.uv1;
             *(u16 *)&prim->u2 = face->ft3.uv2;
-            NormalColorDpq((SVECTOR *)(normals + face->ft3.normal),
+            NormalColorDpq(TMD_VECTOR(normals, face->ft3.normal),
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
-            ((u8 *)&prim->tag)[3] = 7;
+            setlen(prim, 7);
             prim->code = 0x26;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -667,21 +608,20 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             prim->packed.uv0 = face->gt3.uv0;
             prim->packed.uv1 = face->gt3.uv1;
             prim->packed.uv2 = face->gt3.uv2;
-            NormalColorDpq3((SVECTOR *)(normals + face->gt3.normal0),
-                            (SVECTOR *)(normals + face->gt3.normal1),
-                            (SVECTOR *)(normals + face->gt3.normal2),
+            NormalColorDpq3(TMD_VECTOR(normals, face->gt3.normal0),
+                            TMD_VECTOR(normals, face->gt3.normal1),
+                            TMD_VECTOR(normals, face->gt3.normal2),
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 9;
+            setlen(&prim->sdk, 9);
             prim->sdk.code = 0x36;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -708,21 +648,21 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             prim->packed.uv1 = face->gt4.uv1;
             prim->packed.uv2 = face->gt4.uv2;
             prim->packed.uv3 = face->gt4.uv3;
-            NormalColorDpq3((SVECTOR *)(normals + face->gt4.normal0),
-                            (SVECTOR *)(normals + face->gt4.normal1),
-                            (SVECTOR *)(normals + face->gt4.normal2),
+            NormalColorDpq3(TMD_VECTOR(normals, face->gt4.normal0),
+                            TMD_VECTOR(normals, face->gt4.normal1),
+                            TMD_VECTOR(normals, face->gt4.normal2),
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            NormalColorDpq((SVECTOR *)(normals + face->gt4.normal3),
+            NormalColorDpq(TMD_VECTOR(normals, face->gt4.normal3),
                            &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 12;
+            setlen(&prim->sdk, 12);
             prim->sdk.code = 0x3e;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
@@ -751,16 +691,16 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mod
             *(u16 *)&prim->u1 = face->ft4.uv1;
             *(u16 *)&prim->u2 = face->ft4.uv2;
             *(u16 *)&prim->u3 = face->ft4.uv3;
-            NormalColorDpq((SVECTOR *)(normals + face->ft4.normal),
+            NormalColorDpq(TMD_VECTOR(normals, face->ft4.normal),
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
-            ((u8 *)&prim->tag)[3] = 9;
+            setlen(prim, 9);
             prim->code = 0x2e;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
@@ -780,10 +720,8 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
     u32 remaining;
 
     object = tmd_get_object(object_index);
-    packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-             (object->primitive_offset + KF_TMD_HEADER_BYTES);
-    normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-              (object->normal_offset + KF_TMD_HEADER_BYTES);
+    packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
+    normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
@@ -794,6 +732,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
         KfScreenVertex *vc;
         KfScreenVertex *vd;
         s32 depth;
+        s32 average;
 
         header.word = *(u32 *)packet;
         mode = header.word >> 24;
@@ -821,11 +760,11 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             *(u16 *)&prim->u0 = face->ft3.uv0;
             *(u16 *)&prim->u1 = face->ft3.uv1;
             *(u16 *)&prim->u2 = face->ft3.uv2;
-            NormalColorDpq((SVECTOR *)(normals + face->ft3.normal),
+            NormalColorDpq(TMD_VECTOR(normals, face->ft3.normal),
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue) / 3,
                            (CVECTOR *)&prim->r0);
-            ((u8 *)&prim->tag)[3] = 7;
+            setlen(prim, 7);
             prim->code = mode;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
@@ -856,21 +795,20 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             prim->packed.uv0 = face->gt3.uv0;
             prim->packed.uv1 = face->gt3.uv1;
             prim->packed.uv2 = face->gt3.uv2;
-            NormalColorDpq3((SVECTOR *)(normals + face->gt3.normal0),
-                            (SVECTOR *)(normals + face->gt3.normal1),
-                            (SVECTOR *)(normals + face->gt3.normal2),
+            NormalColorDpq3(TMD_VECTOR(normals, face->gt3.normal0),
+                            TMD_VECTOR(normals, face->gt3.normal1),
+                            TMD_VECTOR(normals, face->gt3.normal2),
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 9;
+            setlen(&prim->sdk, 9);
             prim->sdk.code = mode;
             depth = (va->sz + vb->sz + vc->sz) / 3;
             if (depth <= 0)
                 break;
             depth += depth_bias;
-            if ((u32)depth >= KF_MAP_OT_DEPTH_LIMIT)
-                break;
-            AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -897,21 +835,21 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             prim->packed.uv1 = face->gt4.uv1;
             prim->packed.uv2 = face->gt4.uv2;
             prim->packed.uv3 = face->gt4.uv3;
-            NormalColorDpq3((SVECTOR *)(normals + face->gt4.normal0),
-                            (SVECTOR *)(normals + face->gt4.normal1),
-                            (SVECTOR *)(normals + face->gt4.normal2),
+            NormalColorDpq3(TMD_VECTOR(normals, face->gt4.normal0),
+                            TMD_VECTOR(normals, face->gt4.normal1),
+                            TMD_VECTOR(normals, face->gt4.normal2),
                             &map_textured_primitive_color, va->depth_cue,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            NormalColorDpq((SVECTOR *)(normals + face->gt4.normal3),
+            NormalColorDpq(TMD_VECTOR(normals, face->gt4.normal3),
                            &map_textured_primitive_color, va->depth_cue,
                            &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 12;
+            setlen(&prim->sdk, 12);
             prim->sdk.code = mode;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
             break;
@@ -940,16 +878,16 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             *(u16 *)&prim->u1 = face->ft4.uv1;
             *(u16 *)&prim->u2 = face->ft4.uv2;
             *(u16 *)&prim->u3 = face->ft4.uv3;
-            NormalColorDpq((SVECTOR *)(normals + face->ft4.normal),
+            NormalColorDpq(TMD_VECTOR(normals, face->ft4.normal),
                            &map_textured_primitive_color,
                            (va->depth_cue + vb->depth_cue + vc->depth_cue + vd->depth_cue) >> 2,
                            (CVECTOR *)&prim->r0);
-            ((u8 *)&prim->tag)[3] = 9;
+            setlen(prim, 9);
             prim->code = mode;
-            depth = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (depth <= 0)
+            average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
+            if (average <= 0)
                 break;
-            depth += depth_bias;
+            depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
             break;
@@ -966,15 +904,11 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
     u8 *normals;
     u8 *packet;
     u32 remaining;
-    u32 blend_bits;
 
-    blend_bits = (u32)blend_mode;
     object = tmd_get_object(object_index);
-    blend_bits <<= 5;
-    packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-             (object->primitive_offset + KF_TMD_HEADER_BYTES);
-    normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-              (object->normal_offset + KF_TMD_HEADER_BYTES);
+    blend_mode <<= 5;
+    packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
+    normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
@@ -985,7 +919,6 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
         KfScreenVertex *vb;
         KfScreenVertex *vc;
         KfScreenVertex *vd;
-        void *enqueue_prim;
         s32 depth_index;
 
         header.word = *(u32 *)packet;
@@ -1007,23 +940,26 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt3.clut;
-            prim->packed.tpage = (face->gt3.tpage & 0xff9f) | blend_bits;
+            prim->packed.tpage = (face->gt3.tpage & 0xff9f) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
             prim->packed.uv0 = face->gt3.uv0;
             prim->packed.uv1 = face->gt3.uv1;
             prim->packed.uv2 = face->gt3.uv2;
-            NormalColorCol3((SVECTOR *)(normals + face->gt3.normal0),
-                            (SVECTOR *)(normals + face->gt3.normal1),
-                            (SVECTOR *)(normals + face->gt3.normal2),
+            NormalColorCol3(TMD_VECTOR(normals, face->gt3.normal0),
+                            TMD_VECTOR(normals, face->gt3.normal1),
+                            TMD_VECTOR(normals, face->gt3.normal2),
                             &map_textured_primitive_color,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 9;
+            setlen(&prim->sdk, 9);
             prim->sdk.code = (mode & 2) | 0x34;
-            enqueue_prim = &prim->sdk;
-            goto enqueue;
+            depth_index = (s16)fixed_depth;
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        &prim->sdk);
+            break;
         }
         case KF_TMD_MODE_GT4: {
             KfGpuGT4 *prim;
@@ -1040,7 +976,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
                 game_graphics_runtime.display_state.primitive_buffer->end)
                 return;
             prim->packed.clut = face->gt4.clut;
-            prim->packed.tpage = (face->gt4.tpage & 0xff9f) | blend_bits;
+            prim->packed.tpage = (face->gt4.tpage & 0xff9f) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
             prim->packed.xy1 = TMD_XY(vb);
             prim->packed.xy2 = TMD_XY(vc);
@@ -1049,19 +985,22 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             prim->packed.uv1 = face->gt4.uv1;
             prim->packed.uv2 = face->gt4.uv2;
             prim->packed.uv3 = face->gt4.uv3;
-            NormalColorCol3((SVECTOR *)(normals + face->gt4.normal0),
-                            (SVECTOR *)(normals + face->gt4.normal1),
-                            (SVECTOR *)(normals + face->gt4.normal2),
+            NormalColorCol3(TMD_VECTOR(normals, face->gt4.normal0),
+                            TMD_VECTOR(normals, face->gt4.normal1),
+                            TMD_VECTOR(normals, face->gt4.normal2),
                             &map_textured_primitive_color,
                             &prim->packed.color0, &prim->packed.color1,
                             &prim->packed.color2);
-            NormalColorCol((SVECTOR *)(normals + face->gt4.normal3),
+            NormalColorCol(TMD_VECTOR(normals, face->gt4.normal3),
                            &map_textured_primitive_color,
                            &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 12;
+            setlen(&prim->sdk, 12);
             prim->sdk.code = (mode & 2) | 0x3c;
-            enqueue_prim = &prim->sdk;
-            goto enqueue;
+            depth_index = (s16)fixed_depth;
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        &prim->sdk);
+            break;
         }
         case KF_TMD_MODE_G3: {
             POLY_G3 *prim;
@@ -1079,16 +1018,19 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             *(long *)&prim->x0 = TMD_XY(va);
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
-            NormalColorCol3((SVECTOR *)(normals + face->g3.normal0),
-                            (SVECTOR *)(normals + face->g3.normal1),
-                            (SVECTOR *)(normals + face->g3.normal2),
+            NormalColorCol3(TMD_VECTOR(normals, face->g3.normal0),
+                            TMD_VECTOR(normals, face->g3.normal1),
+                            TMD_VECTOR(normals, face->g3.normal2),
                             &face->g3.color,
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
-            ((u8 *)&prim->tag)[3] = 6;
+            setlen(prim, 6);
             prim->code = 0x30;
-            enqueue_prim = prim;
-            goto enqueue;
+            depth_index = (s16)fixed_depth;
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        prim);
+            break;
         }
         case KF_TMD_MODE_G4: {
             POLY_G4 *prim;
@@ -1108,38 +1050,27 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
             *(long *)&prim->x3 = TMD_XY(vd);
-            NormalColorCol3((SVECTOR *)(normals + face->g4.normal0),
-                            (SVECTOR *)(normals + face->g4.normal1),
-                            (SVECTOR *)(normals + face->g4.normal2),
+            NormalColorCol3(TMD_VECTOR(normals, face->g4.normal0),
+                            TMD_VECTOR(normals, face->g4.normal1),
+                            TMD_VECTOR(normals, face->g4.normal2),
                             &face->g4.color,
                             (CVECTOR *)&prim->r0, (CVECTOR *)&prim->r1,
                             (CVECTOR *)&prim->r2);
-            NormalColorCol((SVECTOR *)(normals + face->g4.normal3),
+            NormalColorCol(TMD_VECTOR(normals, face->g4.normal3),
                            &face->g4.color,
                            (CVECTOR *)&prim->r3);
-            ((u8 *)&prim->tag)[3] = 8;
+            setlen(prim, 8);
             prim->code = 0x38;
-            enqueue_prim = prim;
-            goto enqueue;
+            depth_index = (s16)fixed_depth;
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                        prim);
+            break;
         }
         }
-        goto next_packet;
-enqueue:
-        depth_index = (s16)fixed_depth;
-        if (depth_index <= 0)
-            goto next_packet;
-        if ((u32)depth_index >= KF_MAP_OT_DEPTH_LIMIT)
-            goto next_packet;
-        AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
-                enqueue_prim);
-next_packet:
         packet += TMD_PACKET_BODY_BYTES(header.word);
     }
 }
-
-/* The prepared indices in an FT packet are byte offsets into this array. */
-#define MAP_VERTEX(base, offset) ((KfScreenVertex *)((u8 *)(base) + (offset)))
-#define MAP_XY(vertex) (*(long *)(vertex))
 
 ADDRESS(0x8002f194, 0x41c)
 void render_enqueue_map(u16 object_index)
@@ -1156,11 +1087,9 @@ void render_enqueue_map(u16 object_index)
     KfScreenVertex *vd;
 
     object = tmd_get_object(object_index);
-    normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-        (object->normal_offset + KF_TMD_HEADER_BYTES);
+    normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     tmd_project_vertices_with_fog(object->vertex_count);
-    packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-        (object->primitive_offset + KF_TMD_HEADER_BYTES);
+    packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
     remaining = object->primitive_count;
     while (remaining-- != 0) {
         u8 *vertices = (u8 *)game_graphics_runtime.tmd_projected_vertices;
@@ -1173,14 +1102,14 @@ void render_enqueue_map(u16 object_index)
             KfGpuGT4 *prim;
             s32 depth;
 
-            va = MAP_VERTEX(vertices, face->vertex0);
-            vb = MAP_VERTEX(vertices, face->vertex1);
-            vc = MAP_VERTEX(vertices, face->vertex2);
-            if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+            va = TMD_VERTEX(vertices, face->vertex0);
+            vb = TMD_VERTEX(vertices, face->vertex1);
+            vc = TMD_VERTEX(vertices, face->vertex2);
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
             }
             prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
-            vd = MAP_VERTEX(vertices, face->vertex3);
+            vd = TMD_VERTEX(vertices, face->vertex3);
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT4);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
                 game_graphics_runtime.display_state.primitive_buffer->end) {
@@ -1188,21 +1117,21 @@ void render_enqueue_map(u16 object_index)
             }
             prim->packed.clut = face->clut;
             prim->packed.tpage = face->tpage;
-            prim->packed.xy0 = MAP_XY(va);
-            prim->packed.xy1 = MAP_XY(vb);
-            prim->packed.xy2 = MAP_XY(vc);
-            prim->packed.xy3 = MAP_XY(vd);
+            prim->packed.xy0 = TMD_XY(va);
+            prim->packed.xy1 = TMD_XY(vb);
+            prim->packed.xy2 = TMD_XY(vc);
+            prim->packed.xy3 = TMD_XY(vd);
             prim->packed.uv0 = face->uv0;
             prim->packed.uv1 = face->uv1;
             prim->packed.uv2 = face->uv2;
             prim->packed.uv3 = face->uv3;
-            NormalColorCol((SVECTOR *)(normals + face->normal),
+            NormalColorCol(TMD_VECTOR(normals, face->normal),
                            &map_textured_primitive_color, &shade);
             DpqColor(&shade, va->depth_cue, &prim->packed.color0);
             DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
             DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
             DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
-            ((u8 *)&prim->sdk.tag)[3] = 0x0c;
+            setlen(&prim->sdk, 0x0c);
             prim->sdk.code = header.bytes.mode | 0x3c;
             depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) +
                 KF_MAP_OT_DEPTH_BIAS;
@@ -1217,10 +1146,10 @@ void render_enqueue_map(u16 object_index)
             KfGpuGT3 *prim;
             s32 depth;
 
-            va = MAP_VERTEX(vertices, face->vertex0);
-            vb = MAP_VERTEX(vertices, face->vertex1);
-            vc = MAP_VERTEX(vertices, face->vertex2);
-            if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+            va = TMD_VERTEX(vertices, face->vertex0);
+            vb = TMD_VERTEX(vertices, face->vertex1);
+            vc = TMD_VERTEX(vertices, face->vertex2);
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
             }
             prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
@@ -1231,18 +1160,18 @@ void render_enqueue_map(u16 object_index)
             }
             prim->packed.clut = face->clut;
             prim->packed.tpage = face->tpage;
-            prim->packed.xy0 = MAP_XY(va);
-            prim->packed.xy1 = MAP_XY(vb);
-            prim->packed.xy2 = MAP_XY(vc);
+            prim->packed.xy0 = TMD_XY(va);
+            prim->packed.xy1 = TMD_XY(vb);
+            prim->packed.xy2 = TMD_XY(vc);
             prim->packed.uv0 = face->uv0;
             prim->packed.uv1 = face->uv1;
             prim->packed.uv2 = face->uv2;
-            NormalColorCol((SVECTOR *)(normals + face->normal),
+            NormalColorCol(TMD_VECTOR(normals, face->normal),
                            &map_textured_primitive_color, &shade);
             DpqColor(&shade, va->depth_cue, &prim->packed.color0);
             DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
             DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
-            ((u8 *)&prim->sdk.tag)[3] = 0x09;
+            setlen(&prim->sdk, 0x09);
             prim->sdk.code = header.bytes.mode | 0x34;
             depth = (va->sz + vb->sz + vc->sz) / 3 + KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
@@ -1272,7 +1201,6 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
     CVECTOR first_color;
     u32 packet_code;
     EVECTOR **next;
-    s32 triangle_count;
 
     if (NormalClip(CLIPPED_MAP_XY(CLIPPED_MAP_VERTEX(0)),
                    CLIPPED_MAP_XY(CLIPPED_MAP_VERTEX(1)),
@@ -1287,9 +1215,8 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
     second = *next++;
     DpqColor(&shade, second->sxyz.pad >> 1, &second->rgb);
 
-    triangle_count = vertex_count - 2;
-    goto loop_test;
-loop_body: {
+    vertex_count -= 2;
+    while (vertex_count-- > 0) {
         KfGpuGT3 *packet;
         s32 depth;
         s32 summed_depth;
@@ -1307,13 +1234,13 @@ loop_body: {
         packet->packed.xy0 = CLIPPED_MAP_XY(first);
         packet->packed.xy1 = CLIPPED_MAP_XY(second);
         packet->packed.xy2 = CLIPPED_MAP_XY(third);
-        packet->packed.uv0 = first->txuv;
-        packet->packed.uv1 = second->txuv;
-        packet->packed.uv2 = third->txuv;
+        *(u16 *)&packet->sdk.u0 = first->txuv;
+        *(u16 *)&packet->sdk.u1 = second->txuv;
+        *(u16 *)&packet->sdk.u2 = third->txuv;
         *(u32 *)&packet->packed.color0 = *(u32 *)&first_color;
         *(u32 *)&packet->packed.color1 = *(u32 *)&second->rgb;
         *(u32 *)&packet->packed.color2 = *(u32 *)&third->rgb;
-        ((u8 *)&packet->sdk.tag)[3] = 9;
+        setlen(&packet->sdk, 9);
         packet->sdk.code = packet_code;
         summed_depth = first->sxyz.vz + second->sxyz.vz + third->sxyz.vz;
         depth = summed_depth / 12 + depth_bias;
@@ -1325,49 +1252,53 @@ loop_body: {
 
         second = third;
     }
-loop_test:
-    if (triangle_count-- > 0) {
-        goto loop_body;
-    }
 }
 
 #define MAP_OUTSIDE_Y(delta) ((u32)(delta) + 511u >= 1023u)
 #define MAP_OUTSIDE_X(delta) ((u32)(delta) + 1023u >= 2047u)
-#define MAP_ORIGINAL_VERTEX(base, offset) ((SVECTOR *)((u8 *)(base) + (offset)))
+
+/* Faces are read through the packet cursor itself; retail keeps no copy. */
+#define FT4_FACE ((KfTmdFt4 *)packet)
+#define FT3_FACE ((KfTmdFt3 *)packet)
 
 ADDRESS(0x8002f808, 0x754)
 void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                    KfTmdPreparedAsset *prepared_asset)
 {
+    KfTmdPacketHeader header;
     KfTmdObject *object;
     u8 *normals;
     u8 *packet;
     u8 *vertices;
     SVECTOR *original_vertices;
     u32 remaining;
-    KfTmdPacketHeader header;
+    /* Unreferenced: the clipper writes clip_result_vertices instead, but this
+     * array still occupies the retail frame below shade. */
+    EVECTOR *clip_vertices[10];
     CVECTOR shade;
+    KfScreenVertex *va;
+    KfScreenVertex *vb;
+    KfScreenVertex *vc;
+    KfScreenVertex *vd;
+    s32 dy0, dy1, dy2, dy3, dy4;
+    s32 dx0, dx1, dx2, dx3, dx4;
 
     if (prepared_asset != NULL) {
         object = &prepared_asset->object;
-        normals = (u8 *)prepared_asset +
-            (object->normal_offset + KF_TMD_HEADER_BYTES);
+        normals = TMD_SECTION(prepared_asset, object->normal_offset);
         game_graphics_runtime.current_tmd_vertices =
-            (SVECTOR *)((u8 *)prepared_asset +
-                        (object->vertex_offset + KF_TMD_HEADER_BYTES));
+            (SVECTOR *)TMD_SECTION(prepared_asset, object->vertex_offset);
     } else {
         object = tmd_get_object(object_index);
-        normals = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-            (object->normal_offset + KF_TMD_HEADER_BYTES);
+        normals = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->normal_offset);
     }
     original_vertices = game_graphics_runtime.current_tmd_vertices;
     tmd_project_vertices_mark_clipped(object->vertex_count);
     if (prepared_asset != NULL) {
-        packet = (u8 *)prepared_asset +
-            (object->primitive_offset + KF_TMD_HEADER_BYTES);
+        packet = TMD_SECTION(prepared_asset, object->primitive_offset);
     } else {
-        packet = (u8 *)game_graphics_runtime.tmd_state.current_asset +
-            (object->primitive_offset + KF_TMD_HEADER_BYTES);
+        packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset,
+                             object->primitive_offset);
     }
     remaining = object->primitive_count;
     if (remaining-- != 0) {
@@ -1377,42 +1308,31 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
             packet += KF_TMD_PACKET_HEADER_BYTES;
             switch (header.bytes.mode & KF_TMD_MODE_MASK) {
             case KF_TMD_MODE_FT4: {
-                KfTmdFt4 *face = (KfTmdFt4 *)packet;
-                KfScreenVertex *va = MAP_VERTEX(vertices, face->vertex0);
-                KfScreenVertex *vb = MAP_VERTEX(vertices, face->vertex1);
-                KfScreenVertex *vc = MAP_VERTEX(vertices, face->vertex2);
-                KfScreenVertex *vd = MAP_VERTEX(vertices, face->vertex3);
-                s32 dy01;
-                s32 dy13;
-                s32 dy32;
-                s32 dy20;
-                s32 dy12;
-                s32 dx01;
-                s32 dx13;
-                s32 dx32;
-                s32 dx20;
-                s32 dx12;
                 s32 clipped_count;
                 s32 depth;
                 KfGpuGT4 *prim;
 
-                dy01 = va->y - vb->y;
-                dy13 = vb->y - vd->y;
-                dy32 = vd->y - vc->y;
-                dy20 = vc->y - va->y;
-                dy12 = vb->y - vc->y;
-                dx01 = va->x - vb->x;
-                dx13 = vb->x - vd->x;
-                dx32 = vd->x - vc->x;
-                dx20 = vc->x - va->x;
-                dx12 = vb->x - vc->x;
+                va = TMD_VERTEX(vertices, FT4_FACE->vertex0);
+                vb = TMD_VERTEX(vertices, FT4_FACE->vertex1);
+                vc = TMD_VERTEX(vertices, FT4_FACE->vertex2);
+                vd = TMD_VERTEX(vertices, FT4_FACE->vertex3);
+                dy0 = va->y - vb->y;
+                dy1 = vb->y - vd->y;
+                dy2 = vd->y - vc->y;
+                dy3 = vc->y - va->y;
+                dy4 = vb->y - vc->y;
+                dx0 = va->x - vb->x;
+                dx1 = vb->x - vd->x;
+                dx2 = vd->x - vc->x;
+                dx3 = vc->x - va->x;
+                dx4 = vb->x - vc->x;
                 if (!((s16)(va->sz | vb->sz | vc->sz | vd->sz) == -1 ||
-                    MAP_OUTSIDE_Y(dy01) || MAP_OUTSIDE_Y(dy13) ||
-                    MAP_OUTSIDE_Y(dy32) || MAP_OUTSIDE_Y(dy20) ||
-                    MAP_OUTSIDE_Y(dy12) || MAP_OUTSIDE_X(dx01) ||
-                    MAP_OUTSIDE_X(dx13) || MAP_OUTSIDE_X(dx32) ||
-                    MAP_OUTSIDE_X(dx20) || MAP_OUTSIDE_X(dx12))) {
-                    if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+                    MAP_OUTSIDE_Y(dy0) || MAP_OUTSIDE_Y(dy1) ||
+                    MAP_OUTSIDE_Y(dy2) || MAP_OUTSIDE_Y(dy3) ||
+                    MAP_OUTSIDE_Y(dy4) || MAP_OUTSIDE_X(dx0) ||
+                    MAP_OUTSIDE_X(dx1) || MAP_OUTSIDE_X(dx2) ||
+                    MAP_OUTSIDE_X(dx3) || MAP_OUTSIDE_X(dx4))) {
+                    if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                         break;
                     }
                     prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
@@ -1421,23 +1341,23 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                         game_graphics_runtime.display_state.primitive_buffer->end) {
                         return;
                     }
-                    prim->packed.clut = face->clut;
-                    prim->packed.tpage = face->tpage;
-                    prim->packed.xy0 = MAP_XY(va);
-                    prim->packed.xy1 = MAP_XY(vb);
-                    prim->packed.xy2 = MAP_XY(vc);
-                    prim->packed.xy3 = MAP_XY(vd);
-                    prim->packed.uv0 = face->uv0;
-                    prim->packed.uv1 = face->uv1;
-                    prim->packed.uv2 = face->uv2;
-                    prim->packed.uv3 = face->uv3;
-                    NormalColorCol((SVECTOR *)(normals + face->normal),
+                    prim->packed.clut = FT4_FACE->clut;
+                    prim->packed.tpage = FT4_FACE->tpage;
+                    prim->packed.xy0 = TMD_XY(va);
+                    prim->packed.xy1 = TMD_XY(vb);
+                    prim->packed.xy2 = TMD_XY(vc);
+                    prim->packed.xy3 = TMD_XY(vd);
+                    prim->packed.uv0 = FT4_FACE->uv0;
+                    prim->packed.uv1 = FT4_FACE->uv1;
+                    prim->packed.uv2 = FT4_FACE->uv2;
+                    prim->packed.uv3 = FT4_FACE->uv3;
+                    NormalColorCol(TMD_VECTOR(normals, FT4_FACE->normal),
                                    &map_textured_primitive_color, &shade);
                     DpqColor(&shade, va->depth_cue, &prim->packed.color0);
                     DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
                     DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
                     DpqColor(&shade, vd->depth_cue, &prim->packed.color3);
-                    ((u8 *)&prim->sdk.tag)[3] = 12;
+                    setlen(&prim->sdk, 12);
                     prim->sdk.code = (header.bytes.mode & 2) | 0x3c;
                     depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) + depth_bias;
                     if (depth < 16) {
@@ -1446,50 +1366,43 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
                             &prim->sdk);
                 } else {
-                    clipped_count = Clip4FTP(MAP_ORIGINAL_VERTEX(original_vertices, face->vertex0),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex1),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex2),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex3),
-                                             (short *)&face->uv0,
-                                             (short *)&face->uv1,
-                                             (short *)&face->uv2,
-                                             (short *)&face->uv3,
+                    clipped_count = Clip4FTP(TMD_VECTOR(original_vertices, FT4_FACE->vertex0),
+                                             TMD_VECTOR(original_vertices, FT4_FACE->vertex1),
+                                             TMD_VECTOR(original_vertices, FT4_FACE->vertex2),
+                                             TMD_VECTOR(original_vertices, FT4_FACE->vertex3),
+                                             (short *)&FT4_FACE->uv0,
+                                             (short *)&FT4_FACE->uv1,
+                                             (short *)&FT4_FACE->uv2,
+                                             (short *)&FT4_FACE->uv3,
                                              game_graphics_runtime.clip_result_vertices);
                     if (clipped_count >= 3) {
                         render_enqueue_clipped_tmd_polygon(clipped_count,
-                                       (SVECTOR *)(normals + face->normal),
-                                       face->clut, face->tpage,
+                                       TMD_VECTOR(normals, FT4_FACE->normal),
+                                       FT4_FACE->clut, FT4_FACE->tpage,
                                        header.bytes.mode & 2, depth_bias);
                     }
                 }
                 break;
             }
             case KF_TMD_MODE_FT3: {
-                KfTmdFt3 *face = (KfTmdFt3 *)packet;
-                KfScreenVertex *va = MAP_VERTEX(vertices, face->vertex0);
-                KfScreenVertex *vb = MAP_VERTEX(vertices, face->vertex1);
-                KfScreenVertex *vc = MAP_VERTEX(vertices, face->vertex2);
-                s32 dy01;
-                s32 dy12;
-                s32 dy20;
-                s32 dx01;
-                s32 dx12;
-                s32 dx20;
                 s32 clipped_count;
                 s32 depth;
                 KfGpuGT3 *prim;
 
-                dy01 = va->y - vb->y;
-                dy12 = vb->y - vc->y;
-                dy20 = vc->y - va->y;
-                dx01 = va->x - vb->x;
-                dx12 = vb->x - vc->x;
-                dx20 = vc->x - va->x;
+                va = TMD_VERTEX(vertices, FT3_FACE->vertex0);
+                vb = TMD_VERTEX(vertices, FT3_FACE->vertex1);
+                vc = TMD_VERTEX(vertices, FT3_FACE->vertex2);
+                dy0 = va->y - vb->y;
+                dy1 = vb->y - vc->y;
+                dy2 = vc->y - va->y;
+                dx0 = va->x - vb->x;
+                dx1 = vb->x - vc->x;
+                dx2 = vc->x - va->x;
                 if (!((s16)(va->sz | vb->sz | vc->sz) == -1 ||
-                    MAP_OUTSIDE_Y(dy01) || MAP_OUTSIDE_Y(dy12) ||
-                    MAP_OUTSIDE_Y(dy20) || MAP_OUTSIDE_X(dx01) ||
-                    MAP_OUTSIDE_X(dx12) || MAP_OUTSIDE_X(dx20))) {
-                    if (NormalClip(MAP_XY(va), MAP_XY(vb), MAP_XY(vc)) <= 0) {
+                    MAP_OUTSIDE_Y(dy0) || MAP_OUTSIDE_Y(dy1) ||
+                    MAP_OUTSIDE_Y(dy2) || MAP_OUTSIDE_X(dx0) ||
+                    MAP_OUTSIDE_X(dx1) || MAP_OUTSIDE_X(dx2))) {
+                    if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                         break;
                     }
                     prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
@@ -1498,20 +1411,20 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                         game_graphics_runtime.display_state.primitive_buffer->end) {
                         return;
                     }
-                    prim->packed.clut = face->clut;
-                    prim->packed.tpage = face->tpage;
-                    prim->packed.xy0 = MAP_XY(va);
-                    prim->packed.xy1 = MAP_XY(vb);
-                    prim->packed.xy2 = MAP_XY(vc);
-                    prim->packed.uv0 = face->uv0;
-                    prim->packed.uv1 = face->uv1;
-                    prim->packed.uv2 = face->uv2;
-                    NormalColorCol((SVECTOR *)(normals + face->normal),
+                    prim->packed.clut = FT3_FACE->clut;
+                    prim->packed.tpage = FT3_FACE->tpage;
+                    prim->packed.xy0 = TMD_XY(va);
+                    prim->packed.xy1 = TMD_XY(vb);
+                    prim->packed.xy2 = TMD_XY(vc);
+                    prim->packed.uv0 = FT3_FACE->uv0;
+                    prim->packed.uv1 = FT3_FACE->uv1;
+                    prim->packed.uv2 = FT3_FACE->uv2;
+                    NormalColorCol(TMD_VECTOR(normals, FT3_FACE->normal),
                                    &map_textured_primitive_color, &shade);
                     DpqColor(&shade, va->depth_cue, &prim->packed.color0);
                     DpqColor(&shade, vb->depth_cue, &prim->packed.color1);
                     DpqColor(&shade, vc->depth_cue, &prim->packed.color2);
-                    ((u8 *)&prim->sdk.tag)[3] = 9;
+                    setlen(&prim->sdk, 9);
                     prim->sdk.code = (header.bytes.mode & 2) | 0x34;
                     depth = (va->sz + vb->sz + vc->sz) / 3 + depth_bias;
                     if (depth < 16) {
@@ -1520,17 +1433,17 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
                             &prim->sdk);
                 } else {
-                    clipped_count = Clip3FTP(MAP_ORIGINAL_VERTEX(original_vertices, face->vertex0),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex1),
-                                             MAP_ORIGINAL_VERTEX(original_vertices, face->vertex2),
-                                             (short *)&face->uv0,
-                                             (short *)&face->uv1,
-                                             (short *)&face->uv2,
+                    clipped_count = Clip3FTP(TMD_VECTOR(original_vertices, FT3_FACE->vertex0),
+                                             TMD_VECTOR(original_vertices, FT3_FACE->vertex1),
+                                             TMD_VECTOR(original_vertices, FT3_FACE->vertex2),
+                                             (short *)&FT3_FACE->uv0,
+                                             (short *)&FT3_FACE->uv1,
+                                             (short *)&FT3_FACE->uv2,
                                              game_graphics_runtime.clip_result_vertices);
                     if (clipped_count >= 3) {
                         render_enqueue_clipped_tmd_polygon(clipped_count,
-                                       (SVECTOR *)(normals + face->normal),
-                                       face->clut, face->tpage,
+                                       TMD_VECTOR(normals, FT3_FACE->normal),
+                                       FT3_FACE->clut, FT3_FACE->tpage,
                                        header.bytes.mode & 2, depth_bias);
                     }
                 }
@@ -1542,232 +1455,231 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
     }
 }
 
+#undef FT4_FACE
+#undef FT3_FACE
+
+/* The packet word is read bytewise and as signed halves through its address. */
+#define WORD_BYTE(n) (((u8 *)&word)[n])
+#define WORD_HALF(n) (((s16 *)&word)[n])
+
+#define SUBDIVIDE_CORNER(corner, half) do { \
+    SVECTOR *vertex = (SVECTOR *)(base + source->vertex_offset + WORD_HALF(half)); \
+    *(u32 *)&(corner).vx = *(u32 *)&vertex->vx; \
+    *(u32 *)&(corner).vz = *(u32 *)&vertex->vz; \
+} while (0)
+/* The last corner forms its vertex address in its own contour and copies the
+ * vertex after it; the earlier corners copy inside theirs. */
+#define SUBDIVIDE_LAST_CORNER(corner, half) { \
+    SVECTOR *vertex; \
+    do { \
+        vertex = (SVECTOR *)(base + source->vertex_offset + WORD_HALF(half)); \
+    } while (0); \
+    *(u32 *)&(corner).vx = *(u32 *)&vertex->vx; \
+    *(u32 *)&(corner).vz = *(u32 *)&vertex->vz; \
+}
+#define SUBDIVIDE_MIDPOINT(lhs, rhs) { \
+    midpoint_end->vx = ((lhs).vx + (rhs).vx) >> 1; \
+    midpoint_end->vy = ((lhs).vy + (rhs).vy) >> 1; \
+    midpoint_end->vz = ((lhs).vz + (rhs).vz) >> 1; \
+    midpoint_end++; \
+}
+#define SUBDIVIDE_UV(dst, lhs, rhs) { \
+    (dst).parts.uv.v = ((lhs).parts.uv.v + (rhs).parts.uv.v) >> 1; \
+    (dst).parts.uv.u = ((lhs).parts.uv.u + (rhs).parts.uv.u) >> 1; \
+}
+#define SUBDIVIDE_INDEX(n) ((count + (n)) << 3)
+#define SUBDIVIDE_WRITE_UV(offset, value) { \
+    out[offset] = (value).parts.uv.u; \
+    out[(offset) + 1] = (value).parts.uv.v; \
+}
+#define SUBDIVIDE_WRITE_INDEX(offset, value) { \
+    WORD_HALF(((offset) >> 1) & 1) = (value); \
+    out[offset] = WORD_BYTE((offset) & 3); \
+    out[(offset) + 1] = WORD_BYTE(((offset) & 3) + 1); \
+}
+#define SUBDIVIDE_WRITE_INDEX_WORD(offset, lo, hi) { \
+    WORD_HALF(0) = (lo); \
+    WORD_HALF(1) = (hi); \
+    out[offset] = WORD_BYTE(0); \
+    out[(offset) + 1] = WORD_BYTE(1); \
+    out[(offset) + 2] = WORD_BYTE(2); \
+    out[(offset) + 3] = WORD_BYTE(3); \
+}
+#define SUBDIVIDE_NEXT_PACKET() do { \
+    word = *(u32 *)packet; \
+    packet += (WORD_BYTE(1) + 1) * KF_TMD_WORD_BYTES; \
+} while (0)
+
 ADDRESS(0x8002ff5c, 0xcbc)
-void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index,
-                   KfTmdPreparedAsset *prepared_asset)
+void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out)
 {
-    u8 *base;
-    KfTmdObject *source;
-    KfTmdObject *target;
-    u8 *source_packet;
-    u8 *output_packet;
-    union { SVECTOR vector; u32 words[2]; } corners[4];
+    SVECTOR corners[4];
     KfTmdFt4TextureWords tex;
     SVECTOR midpoints[128];
-    SVECTOR *midpoint_end;
+    u32 word;
+    u8 *base;
     u32 midpoint_count;
-    u32 source_vertex_count;
-    u32 output_packet_bytes;
+    KfTmdObject *source;
+    KfTmdObject *target;
+    u32 output_bytes;
     u32 remaining;
+    KfTmdUvWord uv0, uv1, uv2, uv3, uv4;
+    u8 *packet;
+    SVECTOR *midpoint_end;
+    u32 count;
+    u32 source_vertex_count;
 
     midpoint_count = 0;
-    output_packet_bytes = 0;
+    output_bytes = 0;
     midpoint_end = midpoints;
-    target = &prepared_asset->object;
-    output_packet = (u8 *)target;
-    target->primitive_offset = sizeof(KfTmdObject);
-    output_packet += target->primitive_offset;
+    out += KF_TMD_HEADER_BYTES;
+    target = (KfTmdObject *)out;
     base = (u8 *)asset + KF_TMD_HEADER_BYTES;
-    source = &TMD_OBJECTS(asset)[object_index];
+    source = (KfTmdObject *)base + object_index;
+    out += sizeof(KfTmdObject);
+    target->primitive_offset = sizeof(KfTmdObject);
     target->primitive_count = source->primitive_count;
+    packet = base + source->primitive_offset;
     remaining = source->primitive_count;
-    source_packet = base + source->primitive_offset;
     while (--remaining != (u32)-1) {
-        KfTmdPacketHeader header;
-        KfUvScratch uv_ab, uv_ac, uv_ad, uv_cd, uv_bd;
-        header.word = *(u32 *)source_packet;
-        if (header.bytes.mode == 0x2c || header.bytes.mode == 0x2e) {
-            KfTmdFt4 *face = (KfTmdFt4 *)(source_packet + 4);
-            KfTmdFt4PackedIndices *first =
-                (KfTmdFt4PackedIndices *)(output_packet + 4);
-            KfTmdFt4 *second;
-            KfTmdFt4 *third;
-            KfTmdFt4 *fourth;
-            u16 ab, ac, ad, cd, bd;
-            KfTmdIndexScratch index_scratch;
-
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex0);
-                corners[0].words[0] = vertex[0];
-                corners[0].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex1);
-                corners[1].words[0] = vertex[0];
-                corners[1].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex2);
-                corners[2].words[0] = vertex[0];
-                corners[2].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex3);
-                corners[3].words[0] = vertex[0];
-                corners[3].words[1] = vertex[1];
-            }
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[1].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[2].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[3].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[2].vector, &corners[3].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[1].vector, &corners[3].vector);
-            midpoint_end++;
-            resource_copy_words((u32 *)&tex, (u32 *)(source_packet + 4), 4);
-            MID_UV_INTO(uv_ab, tex.uv0, tex.uv1);
-            MID_UV_INTO(uv_ac, tex.uv0, tex.uv2);
-            MID_UV_INTO(uv_ad, tex.uv0, tex.uv3);
-            MID_UV_INTO(uv_cd, tex.uv2, tex.uv3);
-            MID_UV_INTO(uv_bd, tex.uv1, tex.uv3);
-            ab = MID_INDEX(source, midpoint_count);
-            ac = MID_INDEX(source, midpoint_count + 1);
-            ad = MID_INDEX(source, midpoint_count + 2);
-            cd = MID_INDEX(source, midpoint_count + 3);
-            bd = MID_INDEX(source, midpoint_count + 4);
-            WRITE_UV_CACHED(first->uv1, uv_ab);
-            WRITE_UV_CACHED(first->uv2, uv_ac);
-            WRITE_UV_CACHED(first->uv3, uv_ad);
-            first->vertex1_vertex2 = (u32)ab | ((u32)ac << 16);
-            first->vertex3_pad2 = (u32)ad | ((u32)ac << 16);
-            output_packet += 32;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
-            second = (KfTmdFt4 *)(output_packet + 4);
-            WRITE_UV_CACHED(second->uv0, uv_ab);
-            WRITE_UV_CACHED(second->uv2, uv_ad);
-            WRITE_UV_CACHED(second->uv3, uv_bd);
-            WRITE_INDEX(second->vertex0, ab);
-            WRITE_INDEX(second->vertex2, ad);
-            WRITE_INDEX(second->vertex3, bd);
-            output_packet += 32;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
-            third = (KfTmdFt4 *)(output_packet + 4);
-            WRITE_UV_CACHED(third->uv0, uv_ac);
-            WRITE_UV_CACHED(third->uv1, uv_ad);
-            WRITE_UV_CACHED(third->uv3, uv_cd);
-            WRITE_INDEX(third->vertex0, ac);
-            WRITE_INDEX(third->vertex1, ad);
-            WRITE_INDEX(third->vertex3, cd);
-            output_packet += 32;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 8);
-            fourth = (KfTmdFt4 *)(output_packet + 4);
-            WRITE_UV_CACHED(fourth->uv0, uv_ad);
-            WRITE_UV_CACHED(fourth->uv1, uv_bd);
-            WRITE_UV_CACHED(fourth->uv2, uv_cd);
-            WRITE_INDEX(fourth->vertex0, ad);
-            WRITE_INDEX(fourth->vertex1, bd);
-            WRITE_INDEX(fourth->vertex2, cd);
-            output_packet += 32;
-            output_packet_bytes += 128;
+        /* Retail stores the header word twice before testing its mode. */
+        word = *(u32 *)packet;
+        word = *(u32 *)packet;
+        if (WORD_BYTE(3) == 0x2c || WORD_BYTE(3) == 0x2e) {
+            resource_copy_words((u32 *)out, (u32 *)packet, 8);
+            word = *(u32 *)(packet + 20);
+            SUBDIVIDE_CORNER(corners[0], 1);
+            word = *(u32 *)(packet + 24);
+            SUBDIVIDE_CORNER(corners[1], 0);
+            SUBDIVIDE_CORNER(corners[2], 1);
+            word = *(u32 *)(packet + 28);
+            SUBDIVIDE_LAST_CORNER(corners[3], 0);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[1]);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[2]);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[3]);
+            SUBDIVIDE_MIDPOINT(corners[2], corners[3]);
+            SUBDIVIDE_MIDPOINT(corners[1], corners[3]);
+            resource_copy_words((u32 *)&tex, (u32 *)(packet + 4), 4);
+            SUBDIVIDE_UV(uv0, tex.uv0, tex.uv1);
+            SUBDIVIDE_UV(uv1, tex.uv0, tex.uv2);
+            SUBDIVIDE_UV(uv2, tex.uv0, tex.uv3);
+            SUBDIVIDE_UV(uv3, tex.uv2, tex.uv3);
+            SUBDIVIDE_UV(uv4, tex.uv1, tex.uv3);
+            count = midpoint_count + source->vertex_count;
+            SUBDIVIDE_WRITE_UV(8, uv0);
+            SUBDIVIDE_WRITE_UV(12, uv1);
+            SUBDIVIDE_WRITE_UV(16, uv2);
+            WORD_HALF(0) = SUBDIVIDE_INDEX(0);
+            WORD_HALF(1) = SUBDIVIDE_INDEX(1);
+            *(u32 *)(out + 24) = word;
+            WORD_HALF(0) = SUBDIVIDE_INDEX(2);
+            *(u32 *)(out + 28) = word;
+            out += 32;
+            resource_copy_words((u32 *)out, (u32 *)packet, 8);
+            SUBDIVIDE_WRITE_UV(4, uv0);
+            SUBDIVIDE_WRITE_UV(12, uv2);
+            SUBDIVIDE_WRITE_UV(16, uv4);
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(0));
+            SUBDIVIDE_WRITE_INDEX(26, SUBDIVIDE_INDEX(2));
+            SUBDIVIDE_WRITE_INDEX(28, SUBDIVIDE_INDEX(4));
+            out += 32;
+            resource_copy_words((u32 *)out, (u32 *)packet, 8);
+            SUBDIVIDE_WRITE_UV(4, uv1);
+            SUBDIVIDE_WRITE_UV(8, uv2);
+            SUBDIVIDE_WRITE_UV(16, uv3);
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(1));
+            SUBDIVIDE_WRITE_INDEX(24, SUBDIVIDE_INDEX(2));
+            SUBDIVIDE_WRITE_INDEX(28, SUBDIVIDE_INDEX(3));
+            out += 32;
+            resource_copy_words((u32 *)out, (u32 *)packet, 8);
+            SUBDIVIDE_WRITE_UV(4, uv2);
+            SUBDIVIDE_WRITE_UV(8, uv4);
+            SUBDIVIDE_WRITE_UV(12, uv3);
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(2));
+            SUBDIVIDE_WRITE_INDEX_WORD(24, SUBDIVIDE_INDEX(4), SUBDIVIDE_INDEX(3));
+            out += 32;
+            output_bytes += 128;
             midpoint_count += 5;
             target->primitive_count += 3;
-        } else if (header.bytes.mode == 0x24 || header.bytes.mode == 0x26) {
-            KfTmdFt3 *face = (KfTmdFt3 *)(source_packet + 4);
-            KfTmdFt3 *first = (KfTmdFt3 *)(output_packet + 4);
-            KfTmdFt3 *second;
-            KfTmdFt3 *third;
-            KfTmdFt3 *fourth;
-            u16 ab, ac, bc;
-            KfTmdIndexScratch index_scratch;
-
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex0);
-                corners[0].words[0] = vertex[0];
-                corners[0].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex1);
-                corners[1].words[0] = vertex[0];
-                corners[1].words[1] = vertex[1];
-            }
-            {
-                const u32 *vertex = (const u32 *)(base + source->vertex_offset + (s16)face->vertex2);
-                corners[2].words[0] = vertex[0];
-                corners[2].words[1] = vertex[1];
-            }
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[1].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[0].vector, &corners[2].vector);
-            midpoint_end++;
-            MID_VECTOR(midpoint_end, &corners[1].vector, &corners[2].vector);
-            midpoint_end++;
-            resource_copy_words((u32 *)&tex, (u32 *)(source_packet + 4), 3);
-            MID_UV_INTO(uv_ab, tex.uv0, tex.uv1);
-            MID_UV_INTO(uv_ac, tex.uv0, tex.uv2);
-            MID_UV_INTO(uv_bd, tex.uv1, tex.uv2);
-            ab = MID_INDEX(source, midpoint_count);
-            ac = MID_INDEX(source, midpoint_count + 1);
-            bc = MID_INDEX(source, midpoint_count + 2);
-            WRITE_UV_CACHED(first->uv1, uv_ab);
-            WRITE_UV_CACHED(first->uv2, uv_ac);
-            index_scratch.halves[0] = ab;
-            index_scratch.halves[1] = ac;
-            COPY_SCRATCH_INDEX(first->vertex1, 0);
-            COPY_SCRATCH_INDEX(first->vertex2, 1);
-            output_packet += 24;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
-            second = (KfTmdFt3 *)(output_packet + 4);
-            WRITE_UV_CACHED(second->uv0, uv_ab);
-            WRITE_UV_CACHED(second->uv2, uv_bd);
-            WRITE_SCRATCH_INDEX(second->vertex0, ab, 1);
-            WRITE_SCRATCH_INDEX(second->vertex2, bc, 1);
-            output_packet += 24;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
-            third = (KfTmdFt3 *)(output_packet + 4);
-            WRITE_UV_CACHED(third->uv0, uv_ac);
-            WRITE_UV_CACHED(third->uv1, uv_bd);
-            WRITE_SCRATCH_INDEX(third->vertex0, ac, 1);
-            WRITE_SCRATCH_INDEX(third->vertex1, bc, 0);
-            output_packet += 24;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, 6);
-            fourth = (KfTmdFt3 *)(output_packet + 4);
-            WRITE_UV_CACHED(fourth->uv0, uv_ab);
-            WRITE_UV_CACHED(fourth->uv1, uv_bd);
-            WRITE_UV_CACHED(fourth->uv2, uv_ac);
-            WRITE_SCRATCH_INDEX(fourth->vertex0, ab, 1);
-            WRITE_SCRATCH_INDEX(fourth->vertex1, bc, 0);
-            WRITE_SCRATCH_INDEX(fourth->vertex2, ac, 1);
-            output_packet += 24;
-            output_packet_bytes += 96;
+        } else if (WORD_BYTE(3) == 0x24 || WORD_BYTE(3) == 0x26) {
+            resource_copy_words((u32 *)out, (u32 *)packet, 6);
+            word = *(u32 *)(packet + 16);
+            SUBDIVIDE_CORNER(corners[0], 1);
+            word = *(u32 *)(packet + 20);
+            SUBDIVIDE_CORNER(corners[1], 0);
+            SUBDIVIDE_LAST_CORNER(corners[2], 1);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[1]);
+            SUBDIVIDE_MIDPOINT(corners[0], corners[2]);
+            SUBDIVIDE_MIDPOINT(corners[1], corners[2]);
+            resource_copy_words((u32 *)&tex, (u32 *)(packet + 4), 3);
+            SUBDIVIDE_UV(uv0, tex.uv0, tex.uv1);
+            SUBDIVIDE_UV(uv1, tex.uv0, tex.uv2);
+            SUBDIVIDE_UV(uv2, tex.uv1, tex.uv2);
+            count = midpoint_count + source->vertex_count;
+            SUBDIVIDE_WRITE_UV(8, uv0);
+            SUBDIVIDE_WRITE_UV(12, uv1);
+            SUBDIVIDE_WRITE_INDEX_WORD(20, SUBDIVIDE_INDEX(0), SUBDIVIDE_INDEX(1));
+            out += 24;
+            resource_copy_words((u32 *)out, (u32 *)packet, 6);
+            SUBDIVIDE_WRITE_UV(4, uv0);
+            SUBDIVIDE_WRITE_UV(12, uv2);
+            SUBDIVIDE_WRITE_INDEX(18, SUBDIVIDE_INDEX(0));
+            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(2));
+            out += 24;
+            resource_copy_words((u32 *)out, (u32 *)packet, 6);
+            SUBDIVIDE_WRITE_UV(4, uv1);
+            SUBDIVIDE_WRITE_UV(8, uv2);
+            SUBDIVIDE_WRITE_INDEX(18, SUBDIVIDE_INDEX(1));
+            SUBDIVIDE_WRITE_INDEX(20, SUBDIVIDE_INDEX(2));
+            out += 24;
+            resource_copy_words((u32 *)out, (u32 *)packet, 6);
+            SUBDIVIDE_WRITE_UV(4, uv0);
+            SUBDIVIDE_WRITE_UV(8, uv2);
+            SUBDIVIDE_WRITE_UV(12, uv1);
+            SUBDIVIDE_WRITE_INDEX(18, SUBDIVIDE_INDEX(0));
+            SUBDIVIDE_WRITE_INDEX_WORD(20, SUBDIVIDE_INDEX(2), SUBDIVIDE_INDEX(1));
+            out += 24;
+            output_bytes += 96;
             midpoint_count += 3;
             target->primitive_count += 3;
         } else {
-            u32 input_words = header.bytes.input_length + 1;
-            resource_copy_words((u32 *)output_packet, (u32 *)source_packet, input_words);
-            output_packet += input_words * KF_TMD_WORD_BYTES;
-            output_packet_bytes += input_words * KF_TMD_WORD_BYTES;
+            count = WORD_BYTE(1) + 1;
+            resource_copy_words((u32 *)out, (u32 *)packet, count);
+            count <<= 2;
+            out += count;
+            output_bytes += count;
         }
-        header.word = *(u32 *)source_packet;
-        source_packet += (header.bytes.input_length + 1) * KF_TMD_WORD_BYTES;
+        SUBDIVIDE_NEXT_PACKET();
     }
-    target->vertex_offset = target->primitive_offset + output_packet_bytes;
-    target->vertex_count = source->vertex_count + midpoint_count;
+    target->vertex_offset = output_bytes + target->primitive_offset;
+    target->vertex_count = midpoint_count + source->vertex_count;
     source_vertex_count = source->vertex_count;
-    resource_copy_words((u32 *)output_packet, (u32 *)(base + source->vertex_offset),
+    resource_copy_words((u32 *)out, (u32 *)(base + source->vertex_offset),
                         source_vertex_count * 2);
-    output_packet += source_vertex_count * sizeof(SVECTOR);
-    resource_copy_words((u32 *)output_packet, (u32 *)midpoints, midpoint_count * 2);
-    target->normal_offset = target->vertex_offset +
-        source_vertex_count * sizeof(SVECTOR) + midpoint_count * sizeof(SVECTOR);
+    output_bytes = source_vertex_count * sizeof(SVECTOR);
+    out += output_bytes;
+    resource_copy_words((u32 *)out, (u32 *)midpoints, midpoint_count * 2);
+    output_bytes += midpoint_count * sizeof(SVECTOR);
+    target->normal_offset = output_bytes + target->vertex_offset;
     target->normal_count = source->normal_count;
-    resource_copy_words((u32 *)(output_packet + midpoint_count * sizeof(SVECTOR)),
+    resource_copy_words((u32 *)(out + midpoint_count * sizeof(SVECTOR)),
                         (u32 *)(base + source->normal_offset), source->normal_count * 2);
 }
-#undef MID_INDEX
-#undef MID_VECTOR
-#undef MID_UV_INTO
-#undef WRITE_UV_CACHED
-#undef WRITE_INDEX
-#undef COPY_SCRATCH_INDEX
-#undef WRITE_SCRATCH_INDEX
+#undef WORD_BYTE
+#undef WORD_HALF
+#undef SUBDIVIDE_CORNER
+#undef SUBDIVIDE_LAST_CORNER
+#undef SUBDIVIDE_MIDPOINT
+#undef SUBDIVIDE_UV
+#undef SUBDIVIDE_INDEX
+#undef SUBDIVIDE_WRITE_UV
+#undef SUBDIVIDE_WRITE_INDEX
+#undef SUBDIVIDE_WRITE_INDEX_WORD
+#undef SUBDIVIDE_NEXT_PACKET
 
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
-                            u32 flags)
+                            u8 flags)
 {
     MATRIX cell_matrix;
     long gte_flags;
@@ -1794,7 +1706,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                  lighting->filter.kinds.types[2]);
 
     object_index = shape->object_index;
-    if (state_8017d118.transition_active == 1 && state_8017d118.tmd_object_limit_active &&
+    if (resource_state.transition_active == 1 && resource_state.tmd_object_limit_active &&
         object_index >= game_graphics_runtime.tmd_state.current_asset->flags) {
         return;
     }
@@ -1805,7 +1717,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                 KfTmdPreparedAsset prepared_asset;
 
                 tmd_prepare_subdivided_object(game_graphics_runtime.tmd_state.current_asset,
-                              object_index, &prepared_asset);
+                              object_index, (u8 *)&prepared_asset);
                 render_enqueue_tmd_with_clipping(object_index, 240, &prepared_asset);
                 return;
             }
@@ -1832,33 +1744,33 @@ void render_map_cell_layers(s32 x, s32 z, u8 flags)
     s32 object_index = cell->layer[0].object_index;
     SVECTOR position;
 
-    if ((flags & 1) && object_index < (s32)KF_MAP_GRID_EMPTY_OBJECT) {
+    if ((flags & 1) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
         position.vx = x * KF_MAP_GRID_CELL_LENGTH -
-                      (u16)game_graphics_runtime.render_state.view_position.vx +
+                      game_graphics_runtime.render_state.view_position.vx +
                       KF_MAP_GRID_CELL_MIDPOINT;
         position.vy = -cell->layer[0].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                      (u16)game_graphics_runtime.render_state.view_position.vy;
+                      game_graphics_runtime.render_state.view_position.vy;
         position.vz = z * KF_MAP_GRID_CELL_LENGTH -
-                      (u16)game_graphics_runtime.render_state.view_position.vz +
+                      game_graphics_runtime.render_state.view_position.vz +
                       KF_MAP_GRID_CELL_MIDPOINT;
         render_map_cell_object(&cell->layer[0], &position, flags);
 
         object_index = cell->layer[1].object_index;
-        if ((flags & 2) && object_index < (s32)KF_MAP_GRID_EMPTY_OBJECT) {
+        if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vy;
+                          game_graphics_runtime.render_state.view_position.vy;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
     } else {
         object_index = cell->layer[1].object_index;
-        if ((flags & 2) && object_index < (s32)KF_MAP_GRID_EMPTY_OBJECT) {
+        if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vx = x * KF_MAP_GRID_CELL_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vx +
+                          game_graphics_runtime.render_state.view_position.vx +
                           KF_MAP_GRID_CELL_MIDPOINT;
             position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vy;
+                          game_graphics_runtime.render_state.view_position.vy;
             position.vz = z * KF_MAP_GRID_CELL_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vz +
+                          game_graphics_runtime.render_state.view_position.vz +
                           KF_MAP_GRID_CELL_MIDPOINT;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
@@ -1961,8 +1873,8 @@ void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
     }
 
     setPolyFT4(quad);
-    if (semitrans != 0xff && semitrans != 0) {
-        setSemiTrans(quad, 1);
+    if (semitrans != 0xff) {
+        setSemiTrans(quad, semitrans);
     }
     setRGB0(quad, red, green, blue);
     quad->tpage = tpage;
@@ -2126,7 +2038,6 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     long gte_flags;
     KfCollisionRow *lighting;
     KfCollisionRow *override;
-    KfCollisionRow *light_rotation;
     KfTmdObject *object;
     u16 object_index;
     s32 red;
@@ -2140,12 +2051,9 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         KfMapOccupancyCell *row;
         KfMapOccupancyLayer *lighting_layer;
 
-        relative.vx = (s16)position->vx -
-                      (s16)game_graphics_runtime.render_state.view_position.vx;
-        relative.vy = (s16)position->vy -
-                      (s16)game_graphics_runtime.render_state.view_position.vy;
-        relative.vz = (s16)position->vz -
-                      (s16)game_graphics_runtime.render_state.view_position.vz;
+        relative.vx = position->vx - game_graphics_runtime.render_state.view_position.vx;
+        relative.vy = position->vy - game_graphics_runtime.render_state.view_position.vy;
+        relative.vz = position->vz - game_graphics_runtime.render_state.view_position.vz;
         RotTrans(&relative, (VECTOR *)&model.t, &gte_flags);
         row = bss_801c7540.map_cells[position->vz >> 11];
         cell = &row[position->vx >> 11];
@@ -2188,19 +2096,17 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     if (lighting_override != 0xff) {
         override = &game_graphics_runtime.collision_rows[lighting_override];
         if (override->motion.values[0] != -1) {
-            fixed_lerp_nine_halfwords_q12((const u16 *)lighting->motion.values,
-                          (const u16 *)override->motion.values,
-                          (u16 *)&color_matrix, lighting_blend);
+            fixed_lerp_nine_halfwords_q12(lighting->motion.values, override->motion.values,
+                          color_matrix.m[0], lighting_blend);
             SetColorMatrix(&color_matrix);
         } else {
             SetColorMatrix((MATRIX *)&lighting->motion);
         }
-        light_rotation = lighting;
         if (override->rotations[0].m[0][0] != -1) {
-            light_rotation = override;
+            MulMatrix0((MATRIX *)&override->rotations[0], &model, &light_matrix);
+        } else {
+            MulMatrix0((MATRIX *)&lighting->rotations[0], &model, &light_matrix);
         }
-        MulMatrix0((MATRIX *)&light_rotation->rotations[0], &model,
-                   &light_matrix);
         if (override->filter.angle != -1) {
             fog_set_near(fixed_lerp_q12(lighting->filter.angle,
                                        override->filter.angle,
@@ -2264,15 +2170,14 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
 }
 
 ADDRESS(0x80031d8c, 0x214)
-void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotation,
-                   KfPoolRecord **cache, s32 clip, u16 phase,
+void render_animated_object(u16 asset_index, const struct KfEulerAngles *rotation,
+                   KfPoolRecord **cache, u16 clip, u16 phase,
                    s32 blend_mode, s32 lighting_flags, s16 depth)
 {
     MATRIX model;
-    MATRIX reversed_light;
+    KfCollisionRotation reversed_light;
     KfCollisionRow *lighting;
     KfTmdObject *object;
-    s32 object_index;
 
     model.t[2] = 0;
     model.t[1] = 0;
@@ -2297,23 +2202,23 @@ void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotatio
         reversed_light.m[2][0] = -lighting->rotations[0].m[2][0];
         reversed_light.m[2][1] = -lighting->rotations[0].m[2][1];
         reversed_light.m[2][2] = -lighting->rotations[0].m[2][2];
-        SetLightMatrix(&reversed_light);
+        SetLightMatrix((MATRIX *)&reversed_light);
     } else {
         SetLightMatrix((MATRIX *)&lighting->rotations[0]);
     }
 
-    object_index = asset_index & 0xffff;
-    asset_registry_select(object_index);
+    asset_registry_select(asset_index);
     object = tmd_get_object(0);
-    if (animation_prepare_asset_vertices(cache, object_index, clip & 0xffff, phase,
+    if (animation_prepare_asset_vertices(cache, asset_index, clip, phase,
                       object->vertex_count) == 0) {
         tmd_select_object_vertices(0);
         object = tmd_get_object(0);
         tmd_project_vertices(object->vertex_count);
+        render_enqueue_tmd_fixed_depth(0, blend_mode, depth);
     } else {
         tmd_project_vertices(object->vertex_count);
+        render_enqueue_tmd_fixed_depth(0, blend_mode, depth);
     }
-    render_enqueue_tmd_fixed_depth(0, blend_mode, depth);
 }
 
 ADDRESS(0x80031fa0, 0x68)
@@ -2335,7 +2240,7 @@ void resource_tmd_read_complete(u8 *data)
 {
     KfAssetHeader *asset = (KfAssetHeader *)data;
 
-    tmd_prepare_primitive_indices((KfTmdHeader *)(data + asset->tmd_data_offset));
+    tmd_prepare_primitive_indices(ASSET_TMD(asset));
     memory_block_set_kind(data, 2);
 }
 
@@ -2361,31 +2266,27 @@ u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
     u8 mask = 0;
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
     s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
-    s32 row_offset = z * KF_MAP_CELL_GRID_SIDE;
-    const u8 *row = &game_graphics_runtime.render_grid.map_cell_layer_masks[0][0] + row_offset;
-    s32 row_count;
+    s32 x;
+    s32 rows;
+    s32 columns;
 
-    radius = (s32)((u32)radius << 1);
-    row_count = radius;
-
+    radius *= 2;
+    rows = radius;
     do {
-        if (row_offset >= 0 && (u32)row_offset < sizeof(game_graphics_runtime.render_grid.map_cell_layer_masks)) {
-            s32 x = x0;
-            s32 column_count = radius;
-
+        if (z >= 0 && (u32)z < KF_MAP_CELL_GRID_SIDE) {
+            x = x0;
+            columns = radius;
             do {
                 if (x >= 0 && (u32)x < KF_MAP_CELL_GRID_SIDE) {
-                    mask |= row[x];
+                    mask |= game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
                 }
                 x++;
-                column_count--;
-            } while (column_count != -1);
+                columns--;
+            } while (columns != -1);
         }
-        row += KF_MAP_CELL_GRID_SIDE;
-        row_offset += KF_MAP_CELL_GRID_SIDE;
-        row_count--;
-    } while (row_count != -1);
-
+        z++;
+        rows--;
+    } while (rows != -1);
     return mask;
 }
 
@@ -2394,27 +2295,16 @@ s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
 {
     s32 z = position->vz >> KF_MAP_CELL_SHIFT;
     s32 x;
-    s32 visible = 0;
 
-    if (game_graphics_runtime.render_state.view_cell_z
-        < (s32)((u32)z - (u32)radius_z)) {
-        goto done;
+    if (z - radius_z <= game_graphics_runtime.render_state.view_cell_z &&
+        game_graphics_runtime.render_state.view_cell_z <= z + radius_z) {
+        x = position->vx >> KF_MAP_CELL_SHIFT;
+        if (x - radius_x <= game_graphics_runtime.render_state.view_cell_x &&
+            game_graphics_runtime.render_state.view_cell_x <= x + radius_x) {
+            return 1;
+        }
     }
-    if ((s32)((u32)z + (u32)radius_z)
-        < game_graphics_runtime.render_state.view_cell_z) {
-        goto done;
-    }
-
-    x = position->vx >> KF_MAP_CELL_SHIFT;
-    if (game_graphics_runtime.render_state.view_cell_x
-        < (s32)((u32)x - (u32)radius_x)) {
-        goto done;
-    }
-    visible = (s32)((u32)x + (u32)radius_x)
-        >= game_graphics_runtime.render_state.view_cell_x;
-
-done:
-    return visible;
+    return 0;
 }
 
 ADDRESS(0x800321d8, 0x9c)
@@ -2489,26 +2379,22 @@ ADDRESS(0x8003247c, 0xb70)
 void render_scene_and_update_resources(void)
 {
     struct KfEulerAngles rotation;
+    /* Unreferenced 8-byte slot between rotation and actor_position. */
+    SVECTOR unused;
     VECTOR actor_position;
     u8 tmd_flags[320];
     /* The second stack region spans 320 bytes; the VAB updater reads 64. */
     u8 vab_flags[320];
     KfActor *actor;
-    const VECTOR *actor_position_ptr;
     KfMapObject *object;
     KfEffectRecord *effect;
-    KfPoolRecord **effect_cache;
-    SVECTOR *effect_scale_ptr;
-    const struct KfEulerAngles *effect_rotation_ptr;
     KfMapPlacedEntry *placed;
-    const VECTOR *camera_position;
     s32 frame;
     s16 remaining;
 
     repeat_store_word((u32 *)tmd_flags, 0, 32);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     actor = actor_state.actors;
-    actor_position_ptr = &actor->position;
     remaining = KF_ACTOR_CAPACITY - 1;
     while (remaining != -1) {
         u32 layer;
@@ -2524,7 +2410,7 @@ void render_scene_and_update_resources(void)
             layer = actor->current_map_layer;
         }
         if (actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) goto actor_radius_check;
-        if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) goto actor_next;
+        if ((map_cell_layer_mask(&actor->position) & layer) == 0) goto actor_next;
 actor_visible:
         if (resource_registry_get(actor->definition_id + 0x80) != NULL) {
             position = actor_resolve_group_position(actor, &actor_position);
@@ -2532,9 +2418,8 @@ actor_visible:
                 rotation.z = 0;
                 rotation.y = 0;
                 rotation.x = 0;
-                position = actor_position_ptr;
                 render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
-                               position, &rotation, (SVECTOR *)&actor->model_scale_x,
+                               &actor->position, &rotation, (SVECTOR *)&actor->model_scale_x,
                                &actor->animation_cache, &render_world_identity_matrix,
                                actor->animation_id, actor->animation_phase,
                                actor->lighting_override, actor->lighting_blend,
@@ -2558,11 +2443,9 @@ actor_visible:
         tmd_flags[actor->definition_id] = 1;
         goto actor_next;
 actor_radius_check:
-        if (map_cell_layer_mask_radius(actor_position_ptr, 3) &
+        if (map_cell_layer_mask_radius(&actor->position, 3) &
             actor->current_map_layer) goto actor_visible;
 actor_next:
-        actor_position_ptr = (const VECTOR *)((const u8 *)actor_position_ptr +
-                                               sizeof *actor);
         actor++;
         remaining--;
     }
@@ -2574,7 +2457,6 @@ actor_next:
     repeat_store_word((u32 *)vab_flags, 0, 16);
     object = map_object_state.objects;
     remaining = KF_MAP_OBJECT_CAPACITY - 1;
-    camera_position = &player_state.camera_position;
     while (remaining != -1) {
         u32 visibility;
 
@@ -2604,7 +2486,7 @@ actor_next:
 map_sound_action: {
             s32 sound;
             s32 distance;
-            s32 radius;
+            s32 nearest;
             s32 volume;
 
             if (player_camera_within_map_region(object->position.vx >> 11,
@@ -2620,26 +2502,29 @@ map_sound_action: {
             if ((s32)(object->extra_40.next_sound_frame - frame) < 0) {
                 object->extra_40.next_sound_frame = frame +
                     object->tail.ambient_sound.repeat_delay_units * 6;
-                distance = camera_position->vx -
-                    (object->tail.ambient_sound.region_width * 0x400 + object->position.vx);
+                /* One local carries each half extent, the audible radius and
+                 * finally the volume. */
+                volume = object->tail.ambient_sound.region_width * 0x400;
+                nearest = player_state.camera_position.vx - (volume + object->position.vx);
+                if (nearest < 0) nearest = -nearest;
+                nearest = volume - nearest;
+                volume = object->tail.ambient_sound.region_depth * 0x400;
+                distance = player_state.camera_position.vz - (volume + object->position.vz);
                 if (distance < 0) distance = -distance;
-                volume = object->tail.ambient_sound.region_width * 0x400 - distance;
-                distance = camera_position->vz -
-                    (object->tail.ambient_sound.region_depth * 0x400 + object->position.vz);
-                if (distance < 0) distance = -distance;
-                distance = object->tail.ambient_sound.region_depth * 0x400 - distance;
-                if (distance < volume) volume = distance;
-                radius = object->tail.ambient_sound.audible_radius_code << 11;
-                if (volume >= radius) {
+                distance = volume - distance;
+                if (distance < nearest) nearest = distance;
+                volume = object->tail.ambient_sound.audible_radius_code << 11;
+                if (nearest >= volume) {
                     volume = object->tail.ambient_sound.maximum_volume;
                 } else {
-                    if (radius == 0) goto map_object_next;
-                    volume = object->tail.ambient_sound.maximum_volume * volume / radius;
+                    if (volume == 0) goto map_object_next;
+                    volume = object->tail.ambient_sound.maximum_volume * nearest / volume;
                 }
                 if (object->tail.ambient_sound.vertical_attenuation_flags & 1) {
                     distance = player_state.camera_position.vy - object->position.vy;
                     if (distance < 0) distance = -distance;
-                    volume -= object->tail.ambient_sound.maximum_volume * distance >> 13;
+                    distance = object->tail.ambient_sound.maximum_volume * distance >> 13;
+                    volume -= distance;
                 }
                 if (volume > 19) {
                     audio_play_sound(object->tail.ambient_sound.sound_id, volume);
@@ -2654,6 +2539,7 @@ map_sound_outside:
 map_ordinary_object: {
             u8 render_mode;
             KfMapObjectTemplate *object_template;
+            SVECTOR *scale;
             if (object->collision_flags & 2) goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
             if ((visibility & object->layer_mask) == 0) goto map_object_next;
@@ -2661,6 +2547,7 @@ map_ordinary_object: {
 map_ordinary_visible:
             tmd_flags[object->object_id] = 1;
             vab_flags[object_template->vab_resource_index] = 1;
+            scale = &object->scale;
             if (resource_registry_get(object->object_id + 0x100) != NULL) {
                 rotation.x = object->rotation.vx;
                 rotation.y = object->rotation.vy + 0x800;
@@ -2670,20 +2557,20 @@ map_ordinary_visible:
                     render_mode = (visibility & 0x80) ? 0xfe : 0xff;
                 }
                 render_world_model(object->layer_mask, object->object_id + 0x100,
-                               &object->position, &rotation, &object->scale,
+                               &object->position, &rotation, scale,
                                (KfPoolRecord **)&object->tail,
                                &game_graphics_runtime.render_state.view_matrix,
                                object->asset_clip_selector, object->phase_q12,
                                object->lighting_override_index, object->lighting_blend_q12,
                                render_mode,
-                               (s16)object->render_depth_offset);
+                               object->render_depth_offset);
                 object->collision_flags |= 0x80;
             }
             goto map_object_next;
 map_radius_check:
             object_template = &map_object_state.templates[object->object_id];
             visibility = map_cell_layer_mask_radius(&object->position,
-                object_template->marker_action_05);
+                object_template->params.marker.marker_action_05);
             if (visibility & object->layer_mask) goto map_ordinary_visible;
         }
 map_object_next:
@@ -2694,9 +2581,6 @@ map_object_next:
     resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
-    effect_cache = &effect->cache_tail.animation_cache;
-    effect_scale_ptr = (SVECTOR *)&effect->scale_x;
-    effect_rotation_ptr = (const struct KfEulerAngles *)&effect->rotation;
     remaining = KF_EFFECT_CAPACITY - 1;
     while (remaining != -1) {
         if (effect->type == KF_EFFECT_SLOT_FREE ||
@@ -2710,8 +2594,8 @@ map_object_next:
             rotation.y = effect->rotation.vy + 0x800;
             rotation.z = effect->rotation.vz;
             render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
-                           &effect->position, &rotation, effect_scale_ptr,
-                           effect_cache,
+                           &effect->position, &rotation, (SVECTOR *)&effect->scale_x,
+                           &effect->cache_tail.animation_cache,
                            &game_graphics_runtime.render_state.view_matrix,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
@@ -2719,8 +2603,8 @@ map_object_next:
             break;
         case 4:
             render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
-                           &effect->position, effect_rotation_ptr,
-                           effect_scale_ptr, effect_cache,
+                           &effect->position, (const struct KfEulerAngles *)&effect->rotation,
+                           (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
                            &render_world_identity_matrix,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
@@ -2728,8 +2612,8 @@ map_object_next:
             break;
         case 8:
             render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
-                           &effect->position, effect_rotation_ptr,
-                           effect_scale_ptr, effect_cache,
+                           &effect->position, (const struct KfEulerAngles *)&effect->rotation,
+                           (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
                            &game_graphics_runtime.render_state.pitch_matrix,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
@@ -2738,9 +2622,9 @@ map_object_next:
         case 12:
             render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
                            &effect->position,
-                           effect_rotation_ptr,
-                           effect_scale_ptr,
-                           effect_cache, NULL,
+                           (const struct KfEulerAngles *)&effect->rotation,
+                           (SVECTOR *)&effect->scale_x,
+                           &effect->cache_tail.animation_cache, NULL,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, 0x14);
@@ -2748,10 +2632,6 @@ map_object_next:
         }
 effect_next:
         effect++;
-        effect_cache = (KfPoolRecord **)((u8 *)effect_cache + sizeof *effect);
-        effect_scale_ptr = (SVECTOR *)((u8 *)effect_scale_ptr + sizeof *effect);
-        effect_rotation_ptr = (const struct KfEulerAngles *)(
-            (const u8 *)effect_rotation_ptr + sizeof *effect);
         remaining--;
     }
 
@@ -3091,8 +2971,7 @@ void asset_registry_select(u16 index)
 {
     KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[index];
 
-    game_graphics_runtime.tmd_state.current_asset =
-        (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+    game_graphics_runtime.tmd_state.current_asset = ASSET_TMD(asset);
 }
 
 enum { KF_ANIMATION_BLEND_ONE = 0x1000, KF_ANIMATION_BLEND_SHIFT = 12 };
@@ -3101,8 +2980,8 @@ ADDRESS(0x80033b34, 0xc8)
 KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, s32 clip_index, s32 phase,
                                           s32 *keyframe_index, u32 *blend_fraction)
 {
-    u32 *clip_table = (u32 *)((u8 *)asset + asset->clip_table_offset);
-    KfAnimClip *clip = (KfAnimClip *)((u8 *)asset + clip_table[clip_index]);
+    u32 *clip_table = ASSET_CLIP_TABLE(asset);
+    KfAnimClip *clip = ASSET_CLIP(asset, clip_table[clip_index]);
     u32 *offsets = clip->keyframe_offsets;
     s32 remaining = clip->keyframe_count;
     s32 index = 0;
@@ -3112,7 +2991,7 @@ KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, s32 clip_index, 
     KfAnimKeyframe *keyframe;
 
     for (--remaining; remaining != -1; --remaining) {
-        keyframe = (KfAnimKeyframe *)((u8 *)asset + *offsets++);
+        keyframe = ASSET_KEYFRAME(asset, *offsets++);
 
         phase_end += keyframe->duration;
         if (phase < phase_end) {
@@ -3341,17 +3220,17 @@ allocate_vertices:
                                           &blend_fraction);
     if (record->clip_index != clip || record->keyframe_index != keyframe_index) {
         tmd_select_object_vertices(0);
-        morph_offsets = (u32 *)((u8 *)asset + asset->morph_offsets_offset);
+        morph_offsets = ASSET_MORPH_OFFSETS(asset);
         remaining = keyframe->morph_count;
         if (remaining != 0) {
             morph_indices = (u16 *)(keyframe + 1);
             animation_expand_sparse_vertices(
                 record->cached_vertices, game_graphics_runtime.current_tmd_vertices,
-                (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]));
+                ASSET_MORPH(asset, morph_offsets[*morph_indices++]));
             for (--remaining; remaining != 0; --remaining) {
                 animation_decode_sparse_vertices(
                     record->cached_vertices,
-                    (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]));
+                    ASSET_MORPH(asset, morph_offsets[*morph_indices++]));
             }
         } else {
             const u32 *source = (const u32 *)game_graphics_runtime.current_tmd_vertices;
@@ -3379,7 +3258,7 @@ allocate_vertices:
         } while (--copy_count != 0);
     }
     animation_apply_sparse_morph(game_graphics_runtime.animation_vertex_scratch,
-                   (const s16 *)((u8 *)asset + record->rest_morph_offset),
+                   ASSET_MORPH(asset, record->rest_morph_offset),
                    blend_fraction);
     tmd_set_current_vertices(game_graphics_runtime.animation_vertex_scratch);
     record->state = KF_ANIMATION_CACHE_LIVE;
@@ -3409,7 +3288,7 @@ s32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_ind
         return 1;
     }
 
-    tmd = (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+    tmd = ASSET_TMD(asset);
     if (clip >= KF_ASSET_OBJECT_SELECT_BIT) {
 copy_object_vertex:
         vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[clip & KF_ASSET_OBJECT_INDEX_MASK]);
@@ -3425,12 +3304,12 @@ copy_object_vertex:
     keyframe = animation_select_keyframe(asset, clip, phase, &keyframe_index,
                                           &blend_fraction);
     vertex = vertices[vertex_index];
-    morph_offsets = (u32 *)((u8 *)asset + asset->morph_offsets_offset);
+    morph_offsets = ASSET_MORPH_OFFSETS(asset);
     remaining = keyframe->morph_count;
     morph_indices = (u16 *)(keyframe + 1);
     for (--remaining; remaining != -1; --remaining) {
         encoded = animation_find_sparse_vertex(
-            (const s16 *)((u8 *)asset + morph_offsets[*morph_indices++]),
+            ASSET_MORPH(asset, morph_offsets[*morph_indices++]),
             vertex_index);
         if (encoded != NULL) {
             vertex.vx = *encoded++;
@@ -3439,7 +3318,7 @@ copy_object_vertex:
         }
     }
     encoded = animation_find_sparse_vertex(
-        (const s16 *)((u8 *)asset + morph_offsets[keyframe->rest_index]),
+        ASSET_MORPH(asset, morph_offsets[keyframe->rest_index]),
         vertex_index);
     if (encoded != NULL) {
         vertex.vx = (((*encoded++ - vertex.vx) * (s32)blend_fraction) >> 12) + vertex.vx;
@@ -3460,7 +3339,7 @@ u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index)
     if (asset == NULL) {
         return 0;
     }
-    tmd = (KfTmdHeader *)((u8 *)asset + asset->tmd_data_offset);
+    tmd = ASSET_TMD(asset);
     if (encoded_object_index >= KF_ASSET_OBJECT_SELECT_BIT) {
         return TMD_OBJECTS(tmd)[encoded_object_index & KF_ASSET_OBJECT_INDEX_MASK].vertex_count;
     }
@@ -3597,15 +3476,14 @@ void tim_upload_images(u8 *tim_data)
     }
 }
 
-#define MENU_FADE_NEXT_QUAD() do { \
-    KfPrimitiveBuffer *buffer = game_graphics_runtime.display_state.primitive_buffer; \
-    quad = (POLY_FT4 *)buffer->cursor; \
-    buffer->cursor += sizeof(POLY_FT4); \
+#define MENU_FADE_NEXT_QUAD() { \
+    quad = (POLY_FT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor; \
+    game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_FT4); \
     if (game_graphics_runtime.display_state.primitive_buffer->cursor > \
         game_graphics_runtime.display_state.primitive_buffer->end) \
         goto present; \
     SetPolyFT4(quad); \
-} while (0)
+}
 
 enum {
     KF_MENU_FADE_WAIT_FOR_RELEASE = -1,
@@ -3665,20 +3543,20 @@ present:
         DrawSync(0);
         display_present_frame();
         level += step;
-        if (((u32)level - 1u) < 119u) {
-            buttons = PadRead(1);
-            if (state == KF_MENU_FADE_WAIT_FOR_RELEASE) {
-                if (buttons == 0)
-                    state = KF_MENU_FADE_WAIT_FOR_PRESS;
-            } else if (buttons != 0) {
-                DrawSync(0);
-                return level;
-            }
-        } else {
+        if (level <= 0 || level >= 120) {
+            break;
+        }
+        buttons = PadRead(1);
+        if (state == KF_MENU_FADE_WAIT_FOR_RELEASE) {
+            if (buttons == 0)
+                state = KF_MENU_FADE_WAIT_FOR_PRESS;
+        } else if (buttons != 0) {
             DrawSync(0);
-            return state;
+            return level;
         }
     }
+    DrawSync(0);
+    return state;
 }
 
 #undef MENU_FADE_NEXT_QUAD

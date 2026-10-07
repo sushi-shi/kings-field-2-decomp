@@ -11,6 +11,9 @@
 /* GAME.EXE double-buffered display and the graphics runtime region cleared
  * by game_main_loop (0x5f3c words at 0x8017d140). Members are named where a
  * reconstructed function establishes them; the rest stay opaque. */
+/* ResetGraph mode 3 reinitializes the GPU but keeps the display environment. */
+enum { KF_GPU_RESET_KEEP_DISPLAY = 3 };
+
 enum {
     KF_DISPLAY_BUFFER_COUNT = 2,
     KF_GAME_ORDERING_TABLE_LENGTH = 0x2000,
@@ -259,9 +262,6 @@ typedef char kf_clip_evector_uv_offset[
 
 extern KfGraphicsRuntimeGame game_graphics_runtime;
 extern KfCollisionDefaultRow collision_default_rows[KF_COLLISION_ROW_COUNT];
-extern POLY_FT4 *current_poly_ft4;
-extern KfPrimitiveBuffer menu_saved_primitive_buffers[KF_DISPLAY_BUFFER_COUNT];
-extern u8 menu_saved_music_enabled;
 /* Primitive memory the display reset splits into the two primitive buffers. */
 extern u8 display_primitive_memory[KF_DISPLAY_BUFFER_COUNT * KF_GAME_PRIMITIVE_BUFFER_BYTES];
 /* Cleared with the per-frame counters; no other reference is known yet. */
@@ -283,7 +283,7 @@ void display_initialize(void);
 void display_reset(void);
 void refresh_collision_row_rotations(void);
 void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
-                   s32 kind, s32 width_bytes, u16 height);
+                   s32 kind, ...);
 void display_begin_frame(void);
 void display_present_frame(void);
 void display_set_view_transform(const VECTOR *position, const SVECTOR *rotation);

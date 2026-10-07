@@ -47,6 +47,47 @@ enum {
     KF_MAP_OBJECT_PROPERTY_SET_RENDER_DEPTH = 3
 };
 
+/* The last twelve template bytes are interpreted by the object's action:
+ * marker and map-cell actions, the scene pose path, the collision probe and
+ * the pattern-pair action each read their own layout. */
+typedef struct KfMapObjectTemplateMarkerParams {
+    u8 marker_action_05;
+    u8 cell_width;
+    u8 cell_height;
+    u8 sound_id;
+    u8 unknown_04[7];
+    u8 marker_action_51;
+} KfMapObjectTemplateMarkerParams;
+
+typedef struct KfMapObjectTemplatePoseParams {
+    s16 height_offset;
+    s16 depth_offset;
+    u16 unknown_04;
+    u8 unknown_06[6];
+} KfMapObjectTemplatePoseParams;
+
+typedef struct KfMapObjectTemplateCollisionParams {
+    u16 vertex_index;
+    u16 reach;
+    u16 height;
+    u8 impact_magic_values[4];
+    u8 sound_id;
+    u8 marker_action_51;
+} KfMapObjectTemplateCollisionParams;
+
+typedef struct KfMapObjectTemplatePatternParams {
+    u8 unknown_00[2];
+    u8 pattern_pair_index;
+    u8 unknown_03[9];
+} KfMapObjectTemplatePatternParams;
+
+typedef union KfMapObjectTemplateParams {
+    KfMapObjectTemplateMarkerParams marker;
+    KfMapObjectTemplatePoseParams pose;
+    KfMapObjectTemplateCollisionParams collision;
+    KfMapObjectTemplatePatternParams pattern;
+} KfMapObjectTemplateParams;
+
 typedef struct KfMapObjectTemplate {
     u8 collision_kind;
     u8 kind;
@@ -56,13 +97,11 @@ typedef struct KfMapObjectTemplate {
     u16 interaction_radius;
     u16 interaction_height;
     u16 initial_render_depth_offset;
-    u8 marker_action_05;
-    u8 unknown_0d[2];
-    u8 sound_id;
-    u8 unknown_10[7];
-    u8 marker_action_51;
+    KfMapObjectTemplateParams params;
 } KfMapObjectTemplate;
 
+typedef char kf_map_object_template_params_size[
+    sizeof(KfMapObjectTemplateParams) == 12 ? 1 : -1];
 typedef char kf_map_object_template_size[sizeof(KfMapObjectTemplate) == 24 ? 1 : -1];
 typedef char kf_map_object_template_vab_resource_index_offset[
     (u32)&((KfMapObjectTemplate *)0)->vab_resource_index == 2 ? 1 : -1];
@@ -76,83 +115,20 @@ typedef char kf_map_object_template_interaction_height_offset[
     (u32)&((KfMapObjectTemplate *)0)->interaction_height == 8 ? 1 : -1];
 typedef char kf_map_object_template_initial_render_depth_offset_offset[
     (u32)&((KfMapObjectTemplate *)0)->initial_render_depth_offset == 0x0a ? 1 : -1];
+typedef char kf_map_object_template_params_offset[
+    (u32)&((KfMapObjectTemplate *)0)->params == 0x0c ? 1 : -1];
 typedef char kf_map_object_template_sound_id_offset[
-    (u32)&((KfMapObjectTemplate *)0)->sound_id == 0x0f ? 1 : -1];
-
-/* The scene pose path reads two signed offsets through the same template bytes
- * used by marker actions. Keep both interpretations of the 24-byte record. */
-typedef struct KfMapObjectTemplatePoseView {
-    u8 unknown_00[0x0c];
-    s16 height_offset;
-    s16 depth_offset;
-    u16 unknown_10;
-    u8 unknown_12[6];
-} KfMapObjectTemplatePoseView;
-
-typedef char kf_map_object_template_pose_size[
-    sizeof(KfMapObjectTemplatePoseView) == sizeof(KfMapObjectTemplate) ? 1 : -1];
-typedef char kf_map_object_template_pose_height_offset[
-    (u32)&((KfMapObjectTemplatePoseView *)0)->height_offset == 0x0c ? 1 : -1];
-typedef char kf_map_object_template_pose_depth_offset[
-    (u32)&((KfMapObjectTemplatePoseView *)0)->depth_offset == 0x0e ? 1 : -1];
-typedef char kf_map_object_template_pose_unknown_10_offset[
-    (u32)&((KfMapObjectTemplatePoseView *)0)->unknown_10 == 0x10 ? 1 : -1];
-
-/* The collision-probe action interprets the same template bytes as unsigned
- * vertex, reach, and height values. */
-typedef struct KfMapObjectTemplateCollisionView {
-    u8 unknown_00[0x0c];
-    u16 vertex_index;
-    u16 reach;
-    u16 height;
-    u8 impact_magic_values[4];
-    u8 sound_id;
-    u8 marker_action_51;
-} KfMapObjectTemplateCollisionView;
-
-typedef char kf_map_object_template_collision_view_size[
-    sizeof(KfMapObjectTemplateCollisionView) == sizeof(KfMapObjectTemplate) ? 1 : -1];
-typedef char kf_map_object_template_collision_vertex_offset[
-    (u32)&((KfMapObjectTemplateCollisionView *)0)->vertex_index == 0x0c ? 1 : -1];
-typedef char kf_map_object_template_collision_reach_offset[
-    (u32)&((KfMapObjectTemplateCollisionView *)0)->reach == 0x0e ? 1 : -1];
-typedef char kf_map_object_template_collision_height_offset[
-    (u32)&((KfMapObjectTemplateCollisionView *)0)->height == 0x10 ? 1 : -1];
+    (u32)&((KfMapObjectTemplate *)0)->params.marker.sound_id == 0x0f ? 1 : -1];
+typedef char kf_map_object_template_marker_action_51_offset[
+    (u32)&((KfMapObjectTemplate *)0)->params.marker.marker_action_51 == 0x17 ? 1 : -1];
+typedef char kf_map_object_template_pose_tail_offset[
+    (u32)&((KfMapObjectTemplate *)0)->params.pose.unknown_04 == 0x10 ? 1 : -1];
 typedef char kf_map_object_template_collision_magic_values_offset[
-    (u32)&((KfMapObjectTemplateCollisionView *)0)->impact_magic_values == 0x12 ? 1 : -1];
+    (u32)&((KfMapObjectTemplate *)0)->params.collision.impact_magic_values == 0x12 ? 1 : -1];
 typedef char kf_map_object_template_collision_sound_offset[
-    (u32)&((KfMapObjectTemplateCollisionView *)0)->sound_id == 0x16 ? 1 : -1];
-
-/* Rotated map-cell actions use two dimensions and a sound selector from the
- * template bytes that other actions interpret differently. */
-typedef struct KfMapObjectTemplateCellActionView {
-    u8 unknown_00[0x0d];
-    u8 cell_width;
-    u8 cell_height;
-    u8 sound_id;
-    u8 unknown_10[8];
-} KfMapObjectTemplateCellActionView;
-
-typedef char kf_map_object_template_cell_action_view_size[
-    sizeof(KfMapObjectTemplateCellActionView) == sizeof(KfMapObjectTemplate) ? 1 : -1];
-typedef char kf_map_object_template_cell_action_width_offset[
-    (u32)&((KfMapObjectTemplateCellActionView *)0)->cell_width == 0x0d ? 1 : -1];
-typedef char kf_map_object_template_cell_action_height_offset[
-    (u32)&((KfMapObjectTemplateCellActionView *)0)->cell_height == 0x0e ? 1 : -1];
-typedef char kf_map_object_template_cell_action_sound_offset[
-    (u32)&((KfMapObjectTemplateCellActionView *)0)->sound_id == 0x0f ? 1 : -1];
-
-/* Action 0x54 selects a pair of map-cell patterns, then uses one state bit
- * to choose which of the two rows to apply. */
-typedef struct KfMapObjectTemplatePatternView {
-    u8 unknown_00[0x0e];
-    u8 pattern_pair_index;
-    u8 unknown_0f[9];
-} KfMapObjectTemplatePatternView;
-typedef char kf_map_object_template_pattern_view_size[
-    sizeof(KfMapObjectTemplatePatternView) == sizeof(KfMapObjectTemplate) ? 1 : -1];
+    (u32)&((KfMapObjectTemplate *)0)->params.collision.sound_id == 0x16 ? 1 : -1];
 typedef char kf_map_object_template_pattern_pair_offset[
-    (u32)&((KfMapObjectTemplatePatternView *)0)->pattern_pair_index == 0x0e ? 1 : -1];
+    (u32)&((KfMapObjectTemplate *)0)->params.pattern.pattern_pair_index == 0x0e ? 1 : -1];
 
 /* The placement's final two words copy together into the object tail. */
 typedef struct KfMapObjectTailCopyWords {
@@ -575,6 +551,13 @@ typedef char kf_map_object_tail_scattered_effect_size[
 typedef char kf_map_object_tail_scattered_effect_id_offset[
     (u32)&((KfMapObjectTailScatteredEffectView *)0)->effect_id == 6 ? 1 : -1];
 
+typedef struct KfMapObjectTailPlacement {
+    u32 unknown_34;
+    KfMapObjectTailCopyWords copy_words;
+} KfMapObjectTailPlacement;
+typedef char kf_map_object_tail_placement_size[
+    sizeof(KfMapObjectTailPlacement) == 12 ? 1 : -1];
+
 typedef union KfMapObjectTail {
     KfMapObjectTailFields fields;
     KfMapObjectTailMotionView motion;
@@ -602,16 +585,27 @@ typedef union KfMapObjectTail {
     KfMapObjectTailSpawnByteFields spawn_bytes;
     KfMapObjectTailScatteredEffectView scattered_effect;
     u32 reset_words[3];
-    struct {
-        u32 unknown_34;
-        KfMapObjectTailCopyWords copy_words;
-    } placement;
+    KfMapObjectTailPlacement placement;
 } KfMapObjectTail;
 typedef char kf_map_object_tail_size[sizeof(KfMapObjectTail) == 12 ? 1 : -1];
 
-/* The +0x40 word is a pointer in the player reaction path and byte state in
- * map-object motion. The pointed object's complete extent is unresolved. */
-typedef struct KfMapObjectRecord40 KfMapObjectRecord40;
+/* The +0x40 word points to this heap record while the object runs the player
+ * reaction action; other actions keep byte state there. Only this prefix is
+ * observed, and the record's complete extent is unresolved. */
+typedef struct KfMapObjectRecord40 {
+    u8 unknown_00;
+    u8 reaction_mode;
+    u8 unknown_02[0x0a];
+    SVECTOR reaction_rotation_vector;
+    u8 unknown_14[0x24];
+    s16 reaction_rotation_scale_q15;
+} KfMapObjectRecord40;
+typedef char kf_map_object_record40_reaction_mode_offset[
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_mode == 0x01 ? 1 : -1];
+typedef char kf_map_object_record40_rotation_vector_offset[
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_vector == 0x0c ? 1 : -1];
+typedef char kf_map_object_record40_rotation_scale_offset[
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_scale_q15 == 0x38 ? 1 : -1];
 
 typedef struct KfMapObjectHingeMotion {
     u16 progress_ticks;

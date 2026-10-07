@@ -61,15 +61,23 @@ typedef struct KfTargetCandidateWord0cBytes {
 typedef char kf_target_candidate_word0c_bytes_size[
     sizeof(KfTargetCandidateWord0cBytes) == 2 ? 1 : -1];
 
+typedef struct KfTargetCandidateSelectionScales {
+    u8 initial_score_scale;
+    u8 continuing_score_scale;
+} KfTargetCandidateSelectionScales;
+typedef char kf_target_candidate_selection_scales_size[
+    sizeof(KfTargetCandidateSelectionScales) == 2 ? 1 : -1];
+
+typedef struct KfTargetCandidateDamageReaction {
+    u8 reaction_chance;
+    u8 unused;
+} KfTargetCandidateDamageReaction;
+typedef char kf_target_candidate_damage_reaction_size[
+    sizeof(KfTargetCandidateDamageReaction) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord02 {
-    struct {
-        u8 initial_score_scale;
-        u8 continuing_score_scale;
-    } target_selection;
-    struct {
-        u8 reaction_chance;
-        u8 unused;
-    } damage_reaction;
+    KfTargetCandidateSelectionScales target_selection;
+    KfTargetCandidateDamageReaction damage_reaction;
 } KfTargetCandidateWord02;
 typedef char kf_target_candidate_word02_size[
     sizeof(KfTargetCandidateWord02) == 2 ? 1 : -1];
@@ -104,13 +112,17 @@ typedef struct KfTargetCandidateWord10Bytes {
 typedef char kf_target_candidate_word10_bytes_size[
     sizeof(KfTargetCandidateWord10Bytes) == 2 ? 1 : -1];
 
+typedef struct KfTargetCandidateWord10Attack {
+    u8 fallback_offset;
+    u8 damage_component3;
+} KfTargetCandidateWord10Attack;
+typedef char kf_target_candidate_word10_attack_size[
+    sizeof(KfTargetCandidateWord10Attack) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord10 {
     u16 value;
     KfTargetCandidateWord10Bytes bytes;
-    struct {
-        u8 fallback_offset;
-        u8 damage_component3;
-    } attack;
+    KfTargetCandidateWord10Attack attack;
 } KfTargetCandidateWord10;
 typedef char kf_target_candidate_word10_size[
     sizeof(KfTargetCandidateWord10) == 2 ? 1 : -1];
@@ -122,13 +134,17 @@ typedef struct KfTargetCandidateWord12Bytes {
 typedef char kf_target_candidate_word12_bytes_size[
     sizeof(KfTargetCandidateWord12Bytes) == 2 ? 1 : -1];
 
+typedef struct KfTargetCandidateWord12Flight {
+    u8 vertical_velocity_step;
+    u8 orientation_change_threshold;
+} KfTargetCandidateWord12Flight;
+typedef char kf_target_candidate_word12_flight_size[
+    sizeof(KfTargetCandidateWord12Flight) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord12 {
     u16 value;
     KfTargetCandidateWord12Bytes bytes;
-    struct {
-        u8 vertical_velocity_step;
-        u8 orientation_change_threshold;
-    } flight;
+    KfTargetCandidateWord12Flight flight;
 } KfTargetCandidateWord12;
 typedef char kf_target_candidate_word12_size[
     sizeof(KfTargetCandidateWord12) == 2 ? 1 : -1];
@@ -217,6 +233,21 @@ typedef union KfTargetCandidateWord22 {
 typedef char kf_target_candidate_word22_size[
     sizeof(KfTargetCandidateWord22) == 2 ? 1 : -1];
 
+/* Low 14 bits: sound interval; high 2 bits: trigger mode. */
+typedef struct KfTargetSoundTriggerFields {
+    u16 interval : 14;
+    u16 mode : 2;
+} KfTargetSoundTriggerFields;
+typedef char kf_target_sound_trigger_fields_size[
+    sizeof(KfTargetSoundTriggerFields) == 2 ? 1 : -1];
+
+typedef union KfTargetSoundTrigger {
+    u16 value;
+    KfTargetSoundTriggerFields fields;
+} KfTargetSoundTrigger;
+typedef char kf_target_sound_trigger_size[
+    sizeof(KfTargetSoundTrigger) == 2 ? 1 : -1];
+
 /* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
     u8 type;
@@ -226,7 +257,7 @@ typedef struct KfTargetCandidate {
     u8 unknown_05[2];
     u8 start_vertical_motion_on_entry;
     u16 animation_step;
-    u16 sound_trigger;
+    KfTargetSoundTrigger sound_trigger;
     KfTargetCandidateWord0c word_0c;
     KfTargetCandidateWord0e word_0e;
     KfTargetCandidateWord10 word_10;
@@ -409,7 +440,7 @@ typedef char kf_actor_model_scale_y_bytes_size[
     sizeof(KfActorModelScaleYBytes) == 2 ? 1 : -1];
 
 typedef union KfActorModelScaleY {
-    u16 value;
+    s16 value;
     KfActorModelScaleYBytes bytes;
 } KfActorModelScaleY;
 typedef char kf_actor_model_scale_y_size[sizeof(KfActorModelScaleY) == 2 ? 1 : -1];
@@ -538,12 +569,12 @@ typedef struct KfActor {
     s32 ballistic_origin_y;
     struct KfEulerAngles rotation;
     u8 unknown_46[2];
-    u16 model_scale_x;
+    s16 model_scale_x;
     KfActorModelScaleY model_scale_y;
-    u16 model_scale_z;
+    s16 model_scale_z;
     u8 unknown_4e[2];
     KfActorMotion motion;
-    u16 turn_rate;
+    s16 turn_rate;
     struct KfPoolRecord *animation_cache;
     KfTargetCandidate *target;
     s16 movement_yaw;
@@ -648,7 +679,7 @@ typedef struct KfActorStateGame {
     u32 current_group_index;
     u32 active_actor_count;
     u32 actor_update_frame_count;
-    KfActor *actor_93c8;
+    KfActor *player_view_target;
 } KfActorStateGame;
 
 typedef char kf_actor_state_size[sizeof(KfActorStateGame) == 0x93cc ? 1 : -1];
@@ -670,7 +701,26 @@ typedef char kf_actor_state_update_frame_count_offset[
 
 extern KfActorStateGame actor_state;
 
-struct KfActorLoadRecord;
+/* One 16-byte actor placement record from a map archive; the loader copies
+ * KF_ACTOR_CAPACITY consecutive records into the actor pool. */
+typedef struct KfActorLoadRecord {
+    u8 slot_state;
+    u8 group_index;
+    u8 placement_flags;
+    u8 cell_z;
+    u8 cell_x;
+    u8 spawn_chance;
+    u8 death_drop_object_id;
+    u8 home_map_layer;
+    u16 initial_actor_word_20;
+    u16 initial_actor_word_22;
+    u16 initial_actor_word_24;
+    u16 vertical_anchor_offset;
+} KfActorLoadRecord;
+
+typedef char kf_actor_load_record_size[sizeof(KfActorLoadRecord) == 16 ? 1 : -1];
+typedef char kf_actor_load_record_word_20_offset[
+    (u32)&((KfActorLoadRecord *)0)->initial_actor_word_20 == 8 ? 1 : -1];
 
 KfActor *actor_pool_find_free(void);
 void actor_set_home_position(KfActor *actor);
@@ -683,7 +733,7 @@ void actor_initialize_from_group(KfActor *actor);
 void actor_prepare_and_initialize(KfActor *actor);
 void actor_bind_current(KfActor *actor);
 void actor_fixup_group_targets(void);
-void actor_load_records(const struct KfActorLoadRecord *records);
+void actor_load_records(const KfActorLoadRecord *records);
 void actor_update_lifecycle_for_player_range(void);
 void actor_update_behavior(void);
 KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, u8 type);

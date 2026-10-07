@@ -18,6 +18,7 @@
 #include <kf/game/resources.h>
 #include <stdarg.h>
 #include <psyq/sdk.h>
+#include <psyq/pad.h>
 #include <kf/game/card.h>
 #include <kf/game/card_payload.h>
 #include <psyq/libc.h>
@@ -48,12 +49,12 @@ RODATA(0x80012890, 0x3a8)
 
 /* Unreferenced return stubs; original roles and TU owner remain unresolved. */
 ADDRESS(0x80045f10, 0x8)
-void func_80045f10(void)
+void event_unused_stub_0(void)
 {
 }
 
 ADDRESS(0x80045f18, 0x8)
-void func_80045f18(void)
+void event_unused_stub_1(void)
 {
 }
 
@@ -98,12 +99,17 @@ void scene_pose_interpolate(
     }
 }
 
+#define ACTOR_ANIMATION_ADVANCE(actor, delta) do { \
+    (actor)->animation_phase = \
+        ((delta) + (actor)->animation_phase) & KF_ACTOR_ANIMATION_PHASE_MAX; \
+} while (0)
+
 ADDRESS(0x800460a0, 0xa4)
 void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_phase, s32 phase_step)
 {
     s32 step;
-    u32 half_step;
     s32 final_phase;
+    u32 half_step;
 
     if ((u16)phase_step == 0) {
         return;
@@ -116,7 +122,7 @@ void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_
     actor->animation_phase = phase;
 
     while (!angle_within_tolerance(actor->animation_phase, (u16)final_phase, half_step)) {
-        actor->animation_phase = (step + actor->animation_phase) & KF_ACTOR_ANIMATION_PHASE_MAX;
+        ACTOR_ANIMATION_ADVANCE(actor, step);
         render_game_frame(NULL, NULL);
     }
 
@@ -251,7 +257,7 @@ void event_target_stream_execute(KfActor *actor)
         case 4:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
-            state_8017d118.active_table[4](actor, *cursor);
+            ((void (*)(KfActor *, s32))resource_state.active_table[4])(actor, *cursor);
             goto advance;
         case 5:
             cursor++;
@@ -280,7 +286,6 @@ execute:
         if (restore_state == 0 && candidate->animation_id != 0xff) {
             s32 phase = actor->animation_phase;
             saved_state = actor->animation_id;
-            restore_state = 1;
             if (phase != 0) {
                 actor_animation_seek_phase(actor, actor->animation_id,
                               phase, 0, actor->animation_step);
@@ -288,6 +293,7 @@ execute:
             actor_animation_seek_phase(actor, candidate->animation_id, 0,
                           KF_ACTOR_ANIMATION_PHASE_MAX,
                           candidate->animation_step);
+            restore_state = 1;
         }
         menu_show_transition_image(3, candidate->word_0c.value + *cursor);
 
@@ -426,7 +432,7 @@ object_control_action:
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index =
                     object - map_object_state.objects;
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id =
-                    state_8017d118.active_resource_ids[0];
+                    resource_state.active_resource_ids[0];
                 event_state.interaction_handled = 1;
                 game_counter_decrement(command);
                 object->extra_40.bytes[0] = 0;
@@ -453,7 +459,7 @@ transition_action: {
         s16 yaw;
 
         /* The retail gate checks only the low byte of the saved object index. */
-        if (state_8017d118.active_resource_ids[0] == 7 ||
+        if (resource_state.active_resource_ids[0] == 7 ||
             event_state.control.bytes[object_control_offset] == 0xff ||
             player_state.vitals.current_mp < 10) {
             break;
@@ -465,8 +471,8 @@ transition_action: {
         do {
             cd_request_yield();
             resource_advance_transition();
-        } while (state_8017d118.transition_active != 0);
-        if (previous_value != state_8017d118.active_resource_ids[0]) {
+        } while (resource_state.transition_active != 0);
+        if (previous_value != resource_state.active_resource_ids[0]) {
             resource_request_transition(previous_value, previous_value, previous_value,
                           0xff, 0xff, 0x7f, 0x7f, 0x7f);
         } else {
@@ -476,7 +482,7 @@ transition_action: {
         do {
             cd_request_yield();
             resource_advance_transition();
-        } while (state_8017d118.transition_active != 0);
+        } while (resource_state.transition_active != 0);
         cd_request_wait_idle();
 
         object_index = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->object_index;
@@ -751,7 +757,7 @@ decay_update:
     }
 
 invoke_callback:
-    ((KfEventCommandCallback)state_8017d118.active_table[2])(
+    ((KfEventCommandCallback)resource_state.active_table[2])(
         position, rotation, command);
     if (event_state.interaction_handled == 0) {
         notify_enqueue(0x14);
@@ -774,7 +780,7 @@ s32 game_counter_increment(s32 index)
 {
     if (game_counter_bytes[index] < 99) {
         game_counter_bytes[index]++;
-        state_8017d118.active_table[6]();
+        resource_state.active_table[6]();
         return 0;
     }
 
@@ -813,8 +819,7 @@ void event_map_object_interact(KfMapObject *object, ...)
     va_list arguments;
     s32 spawn_object_id;
     s32 spawned_id = -1;
-    const KfMapObjectTemplate *template;
-    const KfMapObjectTemplatePoseView *pose;
+    const KfMapObjectTemplate *object_template;
     SVECTOR next_angles;
     SVECTOR first_angles;
     VECTOR next_position;
@@ -822,12 +827,11 @@ void event_map_object_interact(KfMapObject *object, ...)
     s32 first_yaw;
     s32 current_yaw;
     s32 target_yaw;
-    u16 initial_render_depth_offset;
+    s16 initial_render_depth_offset;
     s16 target_render_depth_offset;
     s32 fraction;
     u32 previous_buttons;
-    u32 buttons;
-    s32 remove_object;
+    u32 buttons; /* reused as the remove-object flag after the button wait */
 
     if (object == NULL) {
         va_start(arguments, object);
@@ -846,13 +850,12 @@ void event_map_object_interact(KfMapObject *object, ...)
         object->tail.fields.unknown_38 = 0xff;
     }
 
-    template = &map_object_state.templates[object->object_id];
-    pose = (const KfMapObjectTemplatePoseView *)template;
+    object_template = &map_object_state.templates[object->object_id];
     initial_render_depth_offset = object->render_depth_offset;
     if (object->tail.fields.unknown_38 != 0xff) {
         return;
     }
-    if (template->kind == 0x20) {
+    if (object_template->kind == 0x20) {
         notify_enqueue(0x15, object->tail.gold_reward.gold_amount);
         object->object_id = 0xff;
         player_state.gold += object->tail.gold_reward.gold_amount;
@@ -881,19 +884,21 @@ void event_map_object_interact(KfMapObject *object, ...)
         target_yaw = 0xf00;
     }
     previous_buttons = PadRead(1);
-    target_render_depth_offset = (-pose->depth_offset) / 4 - 200;
+    target_render_depth_offset = (-object_template->params.pose.depth_offset) / 4 - 200;
 
     if (spawned_id != -1) {
         scene_position_from_camera_offset(0, 500, 1500, target_yaw,
                       player_state.camera_rotation.angles[1],
-                      pose->height_offset, pose->depth_offset,
+                      object_template->params.pose.height_offset,
+                      object_template->params.pose.depth_offset,
                       &object->position);
     } else {
         first_angles = object->rotation;
         first_position = object->position;
         scene_position_from_camera_offset(0, 500, 1500, target_yaw,
                       player_state.camera_rotation.angles[1],
-                      pose->height_offset, pose->depth_offset,
+                      object_template->params.pose.height_offset,
+                      object_template->params.pose.depth_offset,
                       &next_position);
         next_angles.vz = 0;
         next_angles.vx = 0;
@@ -907,7 +912,7 @@ void event_map_object_interact(KfMapObject *object, ...)
                           &next_position, &first_angles, &next_angles,
                           fraction);
             object->render_depth_offset = value_approach(
-                (s16)initial_render_depth_offset, target_render_depth_offset, fraction);
+                initial_render_depth_offset, target_render_depth_offset, fraction);
             player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(
                 first_yaw, target_yaw, fraction);
             cd_request_service_vab();
@@ -952,7 +957,7 @@ button_pressed:
             }
             break;
         }
-        remove_object = 1;
+        buttons = 1;
         scene_position_from_camera_offset(-500, 500, 0, target_yaw,
                       player_state.camera_rotation.angles[1], 0, 0,
                       &first_position);
@@ -966,7 +971,7 @@ button_pressed:
     }
 
 return_pose:
-    remove_object = 0;
+    buttons = 0;
     while (!angle_within_tolerance(object->rotation.vy,
                                    first_angles.vy, 0x80)) {
         object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
@@ -985,10 +990,10 @@ interpolate_back:
         player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(
             current_yaw, first_yaw, fraction);
         object->render_depth_offset = value_approach(
-            target_render_depth_offset, (s16)initial_render_depth_offset, fraction);
+            target_render_depth_offset, initial_render_depth_offset, fraction);
         render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
     }
-    if (remove_object) {
+    if (buttons) {
         object->object_id = 0xff;
     } else if (object->object_id == 0xd) {
         object->object_id = 0x12;
@@ -1039,6 +1044,8 @@ void event_world_dispatch_interaction(const VECTOR *position,
         if (object_index == -1) {
             break;
         }
+        /* Dead read, superseded by the template kind below. */
+        kind = objects[object_index].action;
         object = &objects[object_index];
         object_id = object->object_id;
         event_state.interaction_handled = 1;
@@ -1097,20 +1104,16 @@ void event_world_dispatch_interaction(const VECTOR *position,
         case 3:
         case 4:
             if (object->action_timer == 0) {
-                if (object->tail.marker.marker_id >= 0xfc) {
-                    if ((object->tail.marker.marker_id & 1) &&
-                        angle_within_tolerance(rotation->angles[1],
-                                               object->rotation.vy, 900)) {
-                        object->action_timer = 1;
-                        break;
-                    }
-                    if ((object->tail.marker.marker_id & 2) &&
-                        angle_within_tolerance(rotation->angles[1],
-                                               object->rotation.vy + 0x800,
-                                               900)) {
-                        object->action_timer = 1;
-                        break;
-                    }
+                if (object->tail.marker.marker_id >= 0xfc &&
+                    (((object->tail.marker.marker_id & 1) &&
+                      angle_within_tolerance(rotation->angles[1],
+                                             object->rotation.vy, 900)) ||
+                     ((object->tail.marker.marker_id & 2) &&
+                      angle_within_tolerance(rotation->angles[1],
+                                             object->rotation.vy + 0x800,
+                                             900)))) {
+                    object->action_timer = 1;
+                    break;
                 }
                 if (object->tail.marker.marker_id == 0x0f && game_counter_bytes[0x0f] != 0) {
                     object->action_timer = 1;
@@ -1163,11 +1166,11 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case KF_MAP_OBJECT_ACTION_PLAYER_REACTION:
             if (player_state.death_state == 0) {
-                u8 *linked_state;
+                KfMapObjectRecord40 *record;
                 player_begin_view_reaction(object_index);
-                linked_state = (u8 *)object->extra_40.record;
-                if (linked_state[1] == 1) {
-                    linked_state[1] = 5;
+                record = object->extra_40.record;
+                if (record->reaction_mode == 1) {
+                    record->reaction_mode = 5;
                 }
             }
             break;
@@ -1181,7 +1184,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             color_overlay_transition(0x200, 0x80, 0xc8, 0xff, 0, 0, 0);
             break;
         case 0x0e:
-            event_world_state_save_slot(state_8017d118.active_resource_ids[0]);
+            event_world_state_save_slot(resource_state.active_resource_ids[0]);
             player_render_frame_and_release_pool();
             menu_card_save_browser();
             break;
@@ -1190,7 +1193,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
 
 invoke_callback:
     ((void (*)(const VECTOR *, const KfPlayerViewRotation *))
-        state_8017d118.active_table[0])(&probe, rotation);
+        resource_state.active_table[0])(&probe, rotation);
 }
 
 
@@ -1239,7 +1242,7 @@ void event_state_initialize(void)
 ADDRESS(0x800483a8, 0x30)
 void callback_invoke_slot_04_zero(void)
 {
-    state_8017d118.active_table[1](0);
+    ((void (*)(s32))resource_state.active_table[1])(0);
 }
 
 ADDRESS(0x800483d8, 0x50)
@@ -1376,7 +1379,7 @@ void event_world_state_save_slot(s32 save_slot)
             switch (object->action) {
             case KF_MAP_OBJECT_ACTION_FALL_AND_TIP:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_60;
-                *write++ = *(const u8 *)&object->object_id;
+                *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -1387,7 +1390,7 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             case KF_MAP_OBJECT_ACTION_FALL_AND_SPIN:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_61;
-                *write++ = *(const u8 *)&object->object_id;
+                *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -1397,7 +1400,7 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             case KF_MAP_OBJECT_ACTION_BOUNCE:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_62;
-                *write++ = *(const u8 *)&object->object_id;
+                *write++ = object->object_id;
                 *write++ = (u32)object->position.vx >> 2;
                 *write++ = (u32)object->position.vx >> 10;
                 *write++ = (u32)object->position.vz >> 2;
@@ -1408,7 +1411,7 @@ void event_world_state_save_slot(s32 save_slot)
                 break;
             case KF_MAP_OBJECT_MOTION_ACTION:
                 *write++ = KF_EVENT_WORLD_SAVE_ACTION_70;
-                *write++ = *(const u8 *)&object->object_id;
+                *write++ = object->object_id;
                 *write++ = object->tail.fields.unknown_38;
                 break;
             default:
@@ -1474,8 +1477,6 @@ void event_world_state_restore_slot(s32 save_slot)
     u8 *saved[KF_EVENT_SAVED_SLOT_COUNT];
     u8 *stream;
     s32 index;
-    KfActor *actors;
-    KfTargetGroup *groups;
     KfMapObject *object;
 
     event_saved_offsets_decode(saved);
@@ -1484,23 +1485,25 @@ void event_world_state_restore_slot(s32 save_slot)
         return;
     }
 
-    actors = actor_state.actors;
     for (;;) {
         s32 actor_index = *stream++;
+        KfActor *actor;
         if (actor_index == 0xff) {
             break;
         }
-        actors[actor_index].lifecycle = *stream++;
+        actor = &actor_state.actors[actor_index];
+        actor->lifecycle = *stream++;
     }
 
-    groups = actor_state.target_groups;
     for (;;) {
         s32 group_index = *stream++;
+        KfTargetGroup *group;
         KfTargetCandidate *candidate;
         if (group_index == 0xff) {
             break;
         }
-        candidate = groups[group_index].targets[0].pointer;
+        group = &actor_state.target_groups[group_index];
+        candidate = group->targets[0].pointer;
         candidate->word_10.bytes.fallback_offset = *stream++;
         candidate->word_12.bytes.marker_state = *stream++;
     }
@@ -1602,7 +1605,7 @@ void card_payload_capture_game_state(u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy(buffer, state_8017d118.active_resource_ids, 5);
+    memcpy(buffer, resource_state.active_resource_ids, 5);
     memcpy(&payload->camera_position, &player_state.camera_position, 16);
     memcpy(buffer + KF_CARD_SAVE_ROTATION_OFFSET,
         &player_state.camera_rotation_target, 8);
@@ -1676,11 +1679,11 @@ void card_payload_restore_game_state(const u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy(state_8017d118.active_resource_ids, buffer, 5);
-    state_8017d118.active_resource_ids[1] = state_8017d118.active_resource_ids[0];
-    state_8017d118.active_resource_ids[2] = state_8017d118.active_resource_ids[0];
-    state_8017d118.active_resource_ids[3] = state_8017d118.active_resource_ids[0];
-    state_8017d118.active_resource_ids[4] = state_8017d118.active_resource_ids[0];
+    memcpy(resource_state.active_resource_ids, buffer, 5);
+    resource_state.active_resource_ids[1] = resource_state.active_resource_ids[0];
+    resource_state.active_resource_ids[2] = resource_state.active_resource_ids[0];
+    resource_state.active_resource_ids[3] = resource_state.active_resource_ids[0];
+    resource_state.active_resource_ids[4] = resource_state.active_resource_ids[0];
     memcpy(&player_state.camera_position, &payload->camera_position, 16);
     memcpy(&player_state.camera_rotation_target,
         buffer + KF_CARD_SAVE_ROTATION_OFFSET, 8);

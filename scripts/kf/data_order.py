@@ -70,13 +70,18 @@ def _initialized_claims(manifest: Manifest) -> dict[tuple[str, str], list[Claim]
             sections[(unit.image, ".rdata")].append(
                 Claim(unit.image, ".rdata", va, va + size, unit.unit, "RODATA")
             )
+        if unit.sdata is not None:
+            va, size = unit.sdata
+            sections[(unit.image, ".sdata")].append(
+                Claim(unit.image, ".sdata", va, va + size, unit.unit, "SDATA")
+            )
     for claims in sections.values():
         claims.sort(key=lambda claim: (claim.start, claim.end))
     return sections
 
 
 def find_overlaps(manifest: Manifest) -> tuple[Overlap, ...]:
-    """Find overlapping initialized claims, including anonymous RODATA runs."""
+    """Find overlapping initialized claims, including anonymous RODATA/SDATA runs."""
     found: list[Overlap] = []
     for claims in _initialized_claims(manifest).values():
         for index, first in enumerate(claims):

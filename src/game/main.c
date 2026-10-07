@@ -26,8 +26,7 @@ u32 game_main_exit_flag;
 enum {
     GAME_MAIN_RUNNING = 0,
     GAME_MAIN_EXIT_REQUESTED = 1,
-    GAME_INITIAL_MASTER_VOLUME = 0x7f,
-    KF_GPU_RESET_KEEP_DISPLAY = 3
+    GAME_INITIAL_MASTER_VOLUME = 0x7f
 };
 
 /*
@@ -53,8 +52,8 @@ void game_main_loop(void)
     VECTOR camera_position;
     SVECTOR camera_rotation;
 
-    repeat_store_word((u32 *)&state_8017d118, 0,
-        sizeof state_8017d118 / sizeof(u32));
+    repeat_store_word((u32 *)&resource_state, 0,
+        sizeof resource_state / sizeof(u32));
     repeat_store_word((u32 *)&game_graphics_runtime, 0,
         sizeof game_graphics_runtime / sizeof(u32));
     repeat_store_word((u32 *)&player_state, 0,
@@ -109,7 +108,7 @@ void game_main_loop(void)
         player_update_frame();
         actor_update_frame();
         effect_pool_sweep();
-        player_state.force_actor_lifecycle_refresh = 0;
+        player_state.force_actor_lifecycle_refresh = KF_FALSE;
         callback_invoke_slot_04_zero();
         resource_advance_transition();
         player_get_camera_pose(&camera_position, &camera_rotation);

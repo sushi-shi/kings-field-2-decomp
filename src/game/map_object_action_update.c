@@ -15,14 +15,15 @@
 #include <kf/game/resources.h>
 #include <kf/lib/math.h>
 #include <psyq/sdk.h>
+#include <psyq/libc.h>
 
-DATA(0x8006d6e4, 0x8, ".data")
+DATA(0x8006d6e4, 0x8, ".sdata")
 SVECTOR map_object_motion_action15_start_offset = {0, -1424, 0, 0};
-DATA(0x8006d6ec, 0x8, ".data")
+DATA(0x8006d6ec, 0x8, ".sdata")
 SVECTOR map_object_motion_action15_end_offset = {0, -912, 0, 0};
-DATA(0x8006d6f4, 0x8, ".data")
+DATA(0x8006d6f4, 0x8, ".sdata")
 SVECTOR map_object_motion_action17_start_offset = {0, -100, 300, 0};
-DATA(0x8006d6fc, 0x8, ".data")
+DATA(0x8006d6fc, 0x8, ".sdata")
 SVECTOR map_object_motion_action17_end_offset = {0, 0, 64, 0};
 
 /* The three adjacent retail tables dispatch actions and subactions. */
@@ -46,9 +47,12 @@ void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
 {
     VECTOR position;
     SVECTOR angles;
+    s32 end = last_phase;
+    s32 increment = step;
+    s32 level = phase;
 
     for (;;) {
-        s32 brightness = (phase * phase) >> 16;
+        s32 brightness = (level * level) >> 16;
 
         if (brightness >= FRAME_COLOR_LEVELS) {
             brightness = FRAME_COLOR_MAX;
@@ -58,10 +62,10 @@ void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
         cd_request_service_stream();
         player_get_camera_pose(&position, &angles);
         render_game_frame(&position, &angles);
-        if (phase == last_phase) {
+        if (level == end) {
             break;
         }
-        phase += step;
+        level += increment;
     }
 }
 
@@ -72,18 +76,18 @@ void map_object_update_actions(void)
     s32 remaining = KF_MAP_OBJECT_CAPACITY;
 
     do {
-        KfMapObjectTemplate *template;
+        KfMapObjectTemplate *object_template;
         if (object->action != KF_MAP_OBJECT_ACTION_NONE) {
             map_object_state.current_collision_object = object;
-            template = &map_object_state.templates[object->object_id];
-            map_object_state.current_template = template;
+            object_template = &map_object_state.templates[object->object_id];
+            map_object_state.current_template = object_template;
 
             switch (object->action) {
         case 2:
             switch (object->action_timer) {
             case 1:
                 if (object->phase_q12 == 0) {
-                    map_object_play_spatial_sound(object, template->sound_id);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 object->phase_q12 += 72;
                 if (object->phase_q12 == MAP_OBJECT_CELL_PATTERN_SWITCH_PHASE) {
@@ -103,7 +107,7 @@ void map_object_update_actions(void)
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 0, 0xff);
                     object->action_timer = 21;
-                    map_object_play_spatial_sound(object, template->sound_id);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 break;
             case 21:
@@ -122,8 +126,6 @@ void map_object_update_actions(void)
             break;
 
         case 3: {
-            const KfMapObjectTemplateCellActionView *cell_template =
-                (const KfMapObjectTemplateCellActionView *)template;
             switch (object->action_timer) {
             case 0: {
                 u8 phase_byte = object->tail.marker.marker_id;
@@ -136,13 +138,14 @@ void map_object_update_actions(void)
                 if (object->phase_q12 == 0) {
                     map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.cell_copy.source_x +
-                                      cell_template->cell_width,
+                                      object_template->params.marker.cell_width,
                                   object->tail.cell_copy.source_z,
                                   object->tail.cell_copy.destination_x,
                                   object->tail.cell_copy.destination_z,
-                                  cell_template->cell_width,
-                                  cell_template->cell_height, object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
-                    map_object_play_spatial_sound(object, cell_template->sound_id);
+                                  object_template->params.marker.cell_width,
+                                  object_template->params.marker.cell_height, object->rotation.vy,
+                                  MAP_OBJECT_CELL_COPY_FIELDS);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 object->phase_q12 += 72;
                 if (object->phase_q12 == MAP_OBJECT_CELL_PATTERN_SWITCH_PHASE) {
@@ -151,8 +154,9 @@ void map_object_update_actions(void)
                                   object->tail.cell_copy.source_z,
                                   object->tail.cell_copy.destination_x,
                                   object->tail.cell_copy.destination_z,
-                                  cell_template->cell_width,
-                                  cell_template->cell_height, object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
+                                  object_template->params.marker.cell_width,
+                                  object_template->params.marker.cell_height, object->rotation.vy,
+                                  MAP_OBJECT_CELL_COPY_FIELDS);
                 }
                 if (object->phase_q12 > 0xfff) {
                     object->phase_q12 = 0xfff;
@@ -167,13 +171,14 @@ void map_object_update_actions(void)
                     object->action_timer = 21;
                     map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.cell_copy.source_x +
-                                      cell_template->cell_width,
+                                      object_template->params.marker.cell_width,
                                   object->tail.cell_copy.source_z,
                                   object->tail.cell_copy.destination_x,
                                   object->tail.cell_copy.destination_z,
-                                  cell_template->cell_width,
-                                  cell_template->cell_height, object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
-                    map_object_play_spatial_sound(object, cell_template->sound_id);
+                                  object_template->params.marker.cell_width,
+                                  object_template->params.marker.cell_height, object->rotation.vy,
+                                  MAP_OBJECT_CELL_COPY_FIELDS);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 break;
             }
@@ -184,12 +189,13 @@ void map_object_update_actions(void)
                     object->action_timer = 0;
                     map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.cell_copy.source_x +
-                                      cell_template->cell_width * 2,
+                                      object_template->params.marker.cell_width * 2,
                                   object->tail.cell_copy.source_z,
                                   object->tail.cell_copy.destination_x,
                                   object->tail.cell_copy.destination_z,
-                                  cell_template->cell_width,
-                                  cell_template->cell_height, object->rotation.vy, MAP_OBJECT_CELL_COPY_FIELDS);
+                                  object_template->params.marker.cell_width,
+                                  object_template->params.marker.cell_height, object->rotation.vy,
+                                  MAP_OBJECT_CELL_COPY_FIELDS);
                 }
                 break;
             default:
@@ -231,7 +237,7 @@ void map_object_update_actions(void)
                 if (object->action_timer == 1) {
                     object->action_timer = 2;
                     object->extra_40.hinge.progress_ticks = 0;
-                    map_object_play_spatial_sound(object, template->sound_id);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 previous = object->extra_40.hinge.progress_ticks++;
                 if (previous < 32) {
@@ -275,7 +281,8 @@ void map_object_update_actions(void)
                                           object->tail.cell_copy.destination_x,
                                           object->tail.cell_copy.destination_z,
                                           2, 2, 0, MAP_OBJECT_CELL_COPY_FIELDS);
-                            map_object_play_spatial_sound(object, template->sound_id);
+                            map_object_play_spatial_sound(object,
+                                                          object_template->params.marker.sound_id);
                         }
                         object->rotation.vy -= 32;
                         if (linked != NULL) {
@@ -312,7 +319,7 @@ void map_object_update_actions(void)
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
                                             1, object->layer_mask);
-                    map_object_play_spatial_sound(object, template->sound_id);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 break;
             case 2: {
@@ -355,7 +362,7 @@ void map_object_update_actions(void)
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
                                             1, object->layer_mask);
-                    map_object_play_spatial_sound(object, template->sound_id);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 break;
             case 2: {
@@ -388,7 +395,8 @@ void map_object_update_actions(void)
                     linked->render_depth_offset += 200;
                 }
                 if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
-                    map_object_set_cell_marker(object, 1, template->marker_action_05);
+                    map_object_set_cell_marker(object, 1,
+                                               object_template->params.marker.marker_action_05);
                     object->phase_q12 = 0xfff;
                     object->action_timer = 3;
                 } else {
@@ -403,8 +411,9 @@ void map_object_update_actions(void)
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
                                             1, object->layer_mask);
-                    map_object_play_spatial_sound(object, template->sound_id);
-                    map_object_set_cell_marker(object, 1, template->marker_action_05);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
+                    map_object_set_cell_marker(object, 1,
+                                               object_template->params.marker.marker_action_05);
                 }
                 break;
             case 2:
@@ -421,7 +430,7 @@ void map_object_update_actions(void)
         case 83:
             switch (object->action_timer) {
             case 1:
-                map_object_play_spatial_sound(object, template->sound_id);
+                map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 switch (object->tail.action_83.transition_mode) {
                 case 0:
                 case 1:
@@ -452,7 +461,7 @@ void map_object_update_actions(void)
                     object->action_timer = 99;
                     break;
                 case 1:
-                    map_object_play_spatial_sound(object, template->sound_id);
+                    map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                     object->action_timer = 4;
                     break;
                 case 2:
@@ -602,7 +611,7 @@ void map_object_update_actions(void)
         case 16:
             object->rotation.vy += 128;
             object->position.vy = object->extra_40.bob_base_y +
-                                  (rsin((s16)object->rotation.vy) >> 6);
+                                  (rsin(object->rotation.vy) >> 6);
             break;
 
         case 84:
@@ -620,7 +629,7 @@ void map_object_update_actions(void)
                     map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
-                                      ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
+                                      object_template->params.pattern.pattern_pair_index * 2 +
                                       (object->tail.action_84_pattern.pattern_flags & 1)],
                                   1, 0x80);
                     object->action_timer = 1;
@@ -652,7 +661,7 @@ void map_object_update_actions(void)
                     map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[
-                                      ((const KfMapObjectTemplatePatternView *)template)->pattern_pair_index * 2 +
+                                      object_template->params.pattern.pattern_pair_index * 2 +
                                       (object->tail.action_84_pattern.pattern_flags & 1)],
                                   0, 0);
                     object->scale.vz = 0;
@@ -719,15 +728,17 @@ void map_object_update_actions(void)
                     object->phase_q12 = 0;
                     object->asset_clip_selector = 0;
                     object->extra_40.bytes[0] = 0;
-                    map_object_play_spatial_sound(object, ((const KfMapObjectTemplateCollisionView *)template)->sound_id);
+                    map_object_play_spatial_sound(object,
+                                                  object_template->params.collision.sound_id);
                 }
                 break;
             case 1:
                 if (object->tail.collision_probe.camera_region_width != 0xff) {
                     if (object->phase_q12 == 0) {
                         map_object_set_cell_marker(object, 1,
-                                                   ((const KfMapObjectTemplateCollisionView *)template)->marker_action_51);
-                        map_object_play_spatial_sound(object, ((const KfMapObjectTemplateCollisionView *)template)->sound_id);
+                            object_template->params.collision.marker_action_51);
+                        map_object_play_spatial_sound(object,
+                                                      object_template->params.collision.sound_id);
                     } else if (object->phase_q12 >= 1500 &&
                                object->phase_q12 < 1500 + increment) {
                         map_object_play_spatial_sound(object, 0x4e);
@@ -746,23 +757,22 @@ void map_object_update_actions(void)
                         object->phase_q12 = 0;
                         object->action_timer = 0;
                         map_object_set_cell_marker(object, 0,
-                                                   ((const KfMapObjectTemplateCollisionView *)template)->marker_action_51);
+                            object_template->params.collision.marker_action_51);
                         break;
                     }
-                    map_object_play_spatial_sound(object, ((const KfMapObjectTemplateCollisionView *)template)->sound_id);
+                    map_object_play_spatial_sound(object,
+                                                  object_template->params.collision.sound_id);
                     object->phase_q12 &= 0xfff;
                 }
                 {
-                    const KfMapObjectTemplateCollisionView *probe_template =
-                        (const KfMapObjectTemplateCollisionView *)template;
                     VECTOR position;
-                    u16 vertex_index = probe_template->vertex_index;
+                    u16 vertex_index = object_template->params.collision.vertex_index;
                     u16 reach;
                     u16 height;
                     s32 kind;
                     map_object_sample_world_vertex(object, vertex_index, &position);
-                    reach = probe_template->reach;
-                    height = probe_template->height;
+                    reach = object_template->params.collision.reach;
+                    height = object_template->params.collision.height;
                     kind = collision_query_world(position.vx, position.vy, position.vz,
                                          reach, height, 0x90);
                     if (kind == 0) {
@@ -772,10 +782,10 @@ void map_object_update_actions(void)
                         object->extra_40.bytes[0] = 1;
                         effect_dispatch_magic_impact(kind, 0x20, 5000, 5,
                                       object->tail.collision_probe.damage_multiplier_tenths,
-                                      probe_template->impact_magic_values[0],
-                                      probe_template->impact_magic_values[1],
-                                      probe_template->impact_magic_values[2],
-                                      probe_template->impact_magic_values[3],
+                                      object_template->params.collision.impact_magic_values[0],
+                                      object_template->params.collision.impact_magic_values[1],
+                                      object_template->params.collision.impact_magic_values[2],
+                                      object_template->params.collision.impact_magic_values[3],
                                       0, 0, 0, 0, 0, &position);
                     }
                 }
@@ -876,7 +886,7 @@ void map_object_update_actions(void)
             case 1: {
                 s32 chance = game_counter_bytes[0x4c];
                 if (chance < 16 && rand() >= chance * 2048) {
-                    s16 scale = (u16)linked->scale.vz + 1;
+                    s16 scale = linked->scale.vz + 1;
                     linked->scale.vz = scale;
                     linked->scale.vy = scale;
                     linked->scale.vx = scale;
@@ -907,8 +917,8 @@ void map_object_update_actions(void)
             switch (object->action_timer) {
             case 0: {
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
-                                             object->position.vz, template->collision_radius,
-                                             template->interaction_height);
+                                             object->position.vz, object_template->collision_radius,
+                                             object_template->interaction_height);
                 object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += object->tail.motion.motion_velocity.signed_value;
                 object->tail.motion.motion_velocity.value += 20;
@@ -933,8 +943,8 @@ void map_object_update_actions(void)
         case KF_MAP_OBJECT_ACTION_FALL_AND_SPIN:
             if (object->action_timer == 0) {
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
-                                             object->position.vz, template->collision_radius,
-                                             template->interaction_height);
+                                             object->position.vz, object_template->collision_radius,
+                                             object_template->interaction_height);
                 object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += 20;
                 object->rotation.vy = (object->rotation.vy + 0x100) & KF_ANGLE_WRAP_MASK;
@@ -948,8 +958,8 @@ void map_object_update_actions(void)
         case KF_MAP_OBJECT_ACTION_BOUNCE:
             if (object->action_timer < 2) {
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
-                                             object->position.vz, template->collision_radius,
-                                             template->interaction_height);
+                                             object->position.vz, object_template->collision_radius,
+                                             object_template->interaction_height);
                 s16 velocity;
                 object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
                 object->position.vy += object->tail.motion.motion_velocity.signed_value;
@@ -988,7 +998,7 @@ void map_object_update_actions(void)
                     }
                     switch (object->tail.region_action.operation_flags & 0x0f) {
                     case 0:
-                        ((void (*)(KfMapObject *))state_8017d118.active_table[3])(object);
+                        ((void (*)(KfMapObject *))resource_state.active_table[3])(object);
                         break;
                     case 1:
                         map_object_apply_marker_signal(object->tail.region_action.operand);
@@ -1048,7 +1058,7 @@ void map_object_update_actions(void)
             break;
 
         default:
-            ((void (*)(void))state_8017d118.active_table[9])();
+            ((void (*)(void))resource_state.active_table[9])();
             break;
             }
         }

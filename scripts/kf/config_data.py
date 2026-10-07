@@ -124,6 +124,8 @@ def load(config_dir: Path = RETAIL_CONFIG, modules: tuple[Module, ...] = ()) -> 
                 overlaps.extend((d.va, d.size) for d in module.data)
                 if module.rodata:
                     overlaps.append(module.rodata)
+                if module.sdata:
+                    overlaps.append(module.sdata)
         overlaps.extend((c.va, c.size) for c in result if c.image == image)
         if any(start < va + size and va < start + extent for start, extent in overlaps):
             raise ValueError(f"{unit}: contribution overlaps another code/source/data owner")

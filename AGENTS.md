@@ -140,8 +140,11 @@
 - Keep declarations shared when several functions operate on one object
   family. Do not create incompatible per-file structure views to improve one
   function.
-- Never add fake locals, volatile carriers, dead statements, artificial
-  padding, forced calls, or inline assembly solely to steer code generation.
+- Fake locals (extra temporaries introduced to steer allocation or
+  scheduling) and dead or repeated statements are accepted matching devices
+  once semantics agree; original code produced them through macros and
+  ordinary mistakes. Never add volatile carriers, artificial padding,
+  forced calls, or inline assembly solely to steer code generation.
 
 ## Relocations, data, and generated inventories
 

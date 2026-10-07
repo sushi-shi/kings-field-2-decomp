@@ -104,8 +104,8 @@ do not create a wall taxonomy or run permutation.
 - `lui` + signed-low and `lui` + `ori` have different relocation semantics.
 - Propagate widths and signedness through the whole caller/callee family.
 - Prefer shared typed structs for proved object families. Do not retain casts,
-  offset macros, fake locals, volatile carriers, or inline assembly as codegen
-  steering devices.
+  offset macros, volatile carriers, or inline assembly as codegen steering
+  devices. Fake locals are allowed once types, referents, calls, and CFG agree.
 - Keep one function per unit until TU grouping is independently evidenced.
 
 ## Verify and hand off

@@ -20,26 +20,31 @@ enum {
 };
 
 ADDRESS(0x80034f90, 0x204)
-void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angle,
+void map_cell_apply_rotated_pattern(u8 mode, s32 world_x, s32 world_z, s32 angle,
                    const KfMapCellPattern *patterns, s32 variant_index,
                    s32 layer_flag)
 {
-    s32 cell_origin_x = world_x >> KF_MAP_CELL_POSITION_SHIFT;
-    s32 cell_origin_z = world_z >> KF_MAP_CELL_POSITION_SHIFT;
-    s32 cosine = rcos(angle);
-    s32 sine = rsin(angle);
-    s32 first_layer_offset = ((mode & 0xff) == KF_PATTERN_MODE_FIRST_LAYER)
+    s32 cosine;
+    s32 sine;
+    s32 first_layer_offset;
+    s32 second_layer_offset;
+
+    world_x >>= KF_MAP_CELL_POSITION_SHIFT;
+    world_z >>= KF_MAP_CELL_POSITION_SHIFT;
+    cosine = rcos(angle);
+    sine = rsin(angle);
+    first_layer_offset = (mode == KF_PATTERN_MODE_FIRST_LAYER)
                                  ? 0 : sizeof(KfMapOccupancyLayer);
-    s32 second_layer_offset = first_layer_offset == 0
+    second_layer_offset = first_layer_offset == 0
                                   ? sizeof(KfMapOccupancyLayer) : 0;
 
     while (patterns->variant[0].first_collision_shape_id != KF_PATTERN_END) {
         s32 local_x = patterns->offset_x;
         s32 local_z = patterns->offset_z;
         s32 cell_x = ((local_x * cosine - local_z * sine) >> 12) +
-                     cell_origin_x;
+                     world_x;
         s32 cell_z = ((local_z * cosine + local_x * sine) >> 12) +
-                     cell_origin_z;
+                     world_z;
         KfMapOccupancyCell *cell = &bss_801c7540.map_cells[cell_z][cell_x];
         const KfMapCellPatternVariant *variant = &patterns->variant[variant_index];
         KfMapOccupancyLayer *first_layer =
@@ -74,7 +79,7 @@ void map_cell_apply_rotated_pattern(s32 mode, s32 world_x, s32 world_z, s32 angl
 enum { KF_MAP_CELL_COPY_DISABLED_WIDTH = 0xff };
 
 ADDRESS(0x80035194, 0x370)
-void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
+void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                    s32 destination_x, s32 destination_z,
                    s32 width, s32 height, s32 rotation, u32 field_mask)
 {
@@ -82,14 +87,14 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
     KfMapOccupancyCell *destination_row;
     s32 inner_step;
     s32 row_step;
-    s32 quarter_turns;
     s32 rows_remaining;
 
     if (width == KF_MAP_CELL_COPY_DISABLED_WIDTH) {
         return;
     }
-    quarter_turns = -(rotation >> 10) & KF_PATTERN_ORIENTATION_MASK;
-    switch (quarter_turns) {
+    /* The rotation argument is reduced to quarter turns in place. */
+    rotation = -(rotation >> 10) & KF_PATTERN_ORIENTATION_MASK;
+    switch (rotation) {
     case 0:
         inner_step = 1;
         row_step = KF_MAP_WORLD_GRID_SIDE;
@@ -113,19 +118,14 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
     }
     source_row = &bss_801c7540.map_cells[source_z][source_x];
     destination_row = &bss_801c7540.map_cells[destination_z][destination_x];
-    rows_remaining = height - 1;
-    if (height == 0) {
-        return;
-    }
-    do {
+    for (rows_remaining = height; --rows_remaining != -1;) {
         KfMapOccupancyCell *source = source_row;
-        KfMapOccupancyCell *destination = destination_row;
+        KfMapOccupancyCell *destination;
         s32 columns_remaining;
         source_row += KF_MAP_WORLD_GRID_SIDE;
+        destination = destination_row;
         destination_row += row_step;
-        columns_remaining = width - 1;
-        if (columns_remaining != -1) {
-            do {
+        for (columns_remaining = width; --columns_remaining != -1;) {
             if (layer_select & KF_PATTERN_SELECT_FIRST_LAYER) {
                 if (field_mask & KF_MAP_CELL_COPY_OBJECT_INDEX) {
                     destination->layer[0].object_index = source->layer[0].object_index;
@@ -137,7 +137,7 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                     destination->layer[0].quarter_turns =
                         (destination->layer[0].quarter_turns &
                          KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
-                        ((source->layer[0].quarter_turns + quarter_turns) &
+                        ((source->layer[0].quarter_turns + rotation) &
                          KF_PATTERN_ORIENTATION_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
@@ -170,7 +170,7 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                     destination->layer[1].quarter_turns =
                         (destination->layer[1].quarter_turns &
                          KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
-                        ((source->layer[1].quarter_turns + quarter_turns) &
+                        ((source->layer[1].quarter_turns + rotation) &
                          KF_PATTERN_ORIENTATION_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
@@ -192,11 +192,8 @@ void map_cell_copy_rotated_fields(u32 layer_select, s32 source_x, s32 source_z,
                         (destination->layer[1].lighting_index & 0x7f);
                 }
             }
-                source++;
-                destination += inner_step;
-                columns_remaining--;
-            } while (columns_remaining != -1);
+            source++;
+            destination += inner_step;
         }
-        rows_remaining--;
-    } while (rows_remaining != -1);
+    }
 }

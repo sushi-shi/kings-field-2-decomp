@@ -221,7 +221,7 @@ def render_executable_block(
     similarity = _percent(2 * total_equal, total_bytes) if total_bytes else 100.0
     nonzero_similarity = _percent(2 * total_nonzero_equal, total_nonzero) if total_nonzero else 100.0
     overall = (
-        f"**Overall ({len(images)}/4 images): {similarity:.2f}% "
+        f"**Overall ({len(images)}/{len(IMAGE_LAYOUTS)} images): {similarity:.2f}% "
         f"island-aligned byte similarity &middot; "
         f"{nonzero_similarity:.2f}% nonzero-byte similarity.**"
         if images else "**No current EXE comparison reports are available.**")

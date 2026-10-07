@@ -260,14 +260,14 @@ class InventoryTests(unittest.TestCase):
                          [(0, 1), (4, 8), (12, 1)])
 
     def test_curated_inventories_cover_the_wip_universe(self) -> None:
-        # Initial SLPS-00069 seed: every carveable non-vendored function has a
+        # Every carveable non-vendored function in the four images has a
         # (candidate) identity row; update these counts with each admission.
         counts = validate(RETAIL_CONFIG)
-        self.assertEqual(counts["functions"], 544)
-        self.assertEqual(counts["signatures_started"], 544)
-        self.assertEqual(counts["data"], 3306)
-        self.assertGreaterEqual(counts["functions_named"], 147)
-        self.assertEqual(counts["structures"], 34)
+        self.assertEqual(counts["functions"], 564)
+        self.assertEqual(counts["signatures_started"], 564)
+        self.assertEqual(counts["data"], 758)
+        self.assertGreaterEqual(counts["functions_named"], 562)
+        self.assertEqual(counts["structures"], 244)
 
     def test_static_signature_hint_tracks_live_arguments_and_result(self) -> None:
         parameters, result, shape = _signature_hints(words(

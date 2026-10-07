@@ -2,6 +2,7 @@
 #define KF_GAME_ASSET_H
 
 #include <kf/lib/types.h>
+#include <kf/game/tmd.h>
 
 enum {
     KF_ASSET_ARCHIVE_HEADER_BYTES = 4,
@@ -20,6 +21,13 @@ typedef struct KfAssetHeader {
 typedef char kf_asset_header_size[sizeof(KfAssetHeader) == 20 ? 1 : -1];
 typedef char kf_asset_morph_offsets_offset[
     (u32)&((KfAssetHeader *)0)->morph_offsets_offset == 0x0c ? 1 : -1];
+
+/* Each asset section is addressed by a byte offset from its header. */
+#define ASSET_BYTES(asset, offset) ((u8 *)(asset) + (offset))
+#define ASSET_TMD(asset) ((KfTmdHeader *)ASSET_BYTES(asset, (asset)->tmd_data_offset))
+#define ASSET_MORPH_OFFSETS(asset) \
+    ((u32 *)ASSET_BYTES(asset, (asset)->morph_offsets_offset))
+#define ASSET_CLIP_TABLE(asset) ((u32 *)ASSET_BYTES(asset, (asset)->clip_table_offset))
 
 void asset_registry_load_tmd_archive(u16 first_asset_id, u8 *archive);
 void asset_registry_set(u16 index, KfAssetHeader *asset);

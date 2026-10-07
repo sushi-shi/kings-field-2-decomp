@@ -1,6 +1,7 @@
 #ifndef KF_GAME_CALLBACK_H
 #define KF_GAME_CALLBACK_H
 
+#include <kf/lib/bool.h>
 #include <kf/lib/types.h>
 
 /* The initialized table has 32 function-pointer rows; the BSS table's extent
@@ -26,38 +27,40 @@ typedef char kf_resource_transition_offset_size[
 
 /* Startup clears this 0x1c-byte runtime state. Its active table pointer is
  * replaced by both an initialized table and a BSS table. */
-typedef struct KfState8017d118 {
+typedef struct KfResourceState {
     s16 transition_active;
     s16 transition_phase;
     u8 active_resource_ids[KF_RESOURCE_SLOT_COUNT];
     u8 current_map_region_id;
     KfCallback *active_table;
     u8 requested_resource_ids[KF_RESOURCE_SLOT_COUNT];
-    u8 world_shift_applied;
-    u8 tmd_object_limit_active;
+    b8 world_shift_applied;
+    b8 tmd_object_limit_active;
     KfResourceTransitionOffset transition_offset;
     s16 sequence_fade_volume;
-} KfState8017d118;
+} KfResourceState;
 
-typedef char kf_state_8017d118_size[sizeof(KfState8017d118) == 0x1c ? 1 : -1];
-typedef char kf_state_8017d118_table_offset[(u32)&((KfState8017d118 *)0)->active_table == 0xc ? 1 : -1];
-typedef char kf_state_8017d118_active_resource_ids_offset[(u32)&((KfState8017d118 *)0)->active_resource_ids == 0x04 ? 1 : -1];
-typedef char kf_state_8017d118_current_map_region_id_offset[(u32)&((KfState8017d118 *)0)->current_map_region_id == 0x09 ? 1 : -1];
-typedef char kf_state_8017d118_requested_resource_ids_offset[(u32)&((KfState8017d118 *)0)->requested_resource_ids == 0x10 ? 1 : -1];
-typedef char kf_state_8017d118_world_shift_applied_offset[(u32)&((KfState8017d118 *)0)->world_shift_applied == 0x15 ? 1 : -1];
-typedef char kf_state_8017d118_tmd_object_limit_active_offset[(u32)&((KfState8017d118 *)0)->tmd_object_limit_active == 0x16 ? 1 : -1];
-typedef char kf_state_8017d118_transition_offset_offset[(u32)&((KfState8017d118 *)0)->transition_offset == 0x17 ? 1 : -1];
-typedef char kf_state_8017d118_sequence_fade_volume_offset[(u32)&((KfState8017d118 *)0)->sequence_fade_volume == 0x1a ? 1 : -1];
+typedef char kf_resource_state_size[sizeof(KfResourceState) == 0x1c ? 1 : -1];
+typedef char kf_resource_state_table_offset[(u32)&((KfResourceState *)0)->active_table == 0xc ? 1 : -1];
+typedef char kf_resource_state_active_resource_ids_offset[(u32)&((KfResourceState *)0)->active_resource_ids == 0x04 ? 1 : -1];
+typedef char kf_resource_state_current_map_region_id_offset[(u32)&((KfResourceState *)0)->current_map_region_id == 0x09 ? 1 : -1];
+typedef char kf_resource_state_requested_resource_ids_offset[(u32)&((KfResourceState *)0)->requested_resource_ids == 0x10 ? 1 : -1];
+typedef char kf_resource_state_world_shift_applied_offset[(u32)&((KfResourceState *)0)->world_shift_applied == 0x15 ? 1 : -1];
+typedef char kf_resource_state_tmd_object_limit_active_offset[(u32)&((KfResourceState *)0)->tmd_object_limit_active == 0x16 ? 1 : -1];
+typedef char kf_resource_state_transition_offset_offset[(u32)&((KfResourceState *)0)->transition_offset == 0x17 ? 1 : -1];
+typedef char kf_resource_state_sequence_fade_volume_offset[(u32)&((KfResourceState *)0)->sequence_fade_volume == 0x1a ? 1 : -1];
 
-extern KfState8017d118 state_8017d118;
+extern KfResourceState resource_state;
 extern KfCallback callback_default_table[32];
 
 void callback_invoke_slot_04_zero(void);
 void resource_noop_callback();
-void resource_transition_set_phase_1(void);
-void resource_transition_set_phase_2(void);
-void resource_transition_set_phase_3(void);
-void resource_transition_set_phase_4(void);
-void resource_transition_set_phase_6(void);
+/* CD request completion callbacks; the finished request is unused. */
+struct KfCdRequest;
+void resource_transition_set_phase_1(struct KfCdRequest *request);
+void resource_transition_set_phase_2(struct KfCdRequest *request);
+void resource_transition_set_phase_3(struct KfCdRequest *request);
+void resource_transition_set_phase_4(struct KfCdRequest *request);
+void resource_transition_set_phase_6(struct KfCdRequest *request);
 
 #endif

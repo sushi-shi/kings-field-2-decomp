@@ -29,6 +29,15 @@ enum {
     KF_MENU_SPRITE_PANEL_TOP_LEFT = 11
 };
 
+/* Menu sound cues; each nonzero cue is also the sound ID it keys on. */
+enum {
+    KF_MENU_SOUND_NONE = 0,
+    KF_MENU_SOUND_ITEM_USED = 13,
+    KF_MENU_SOUND_CURSOR = 16,
+    KF_MENU_SOUND_CONFIRM = 17,
+    KF_MENU_SOUND_CANCEL = 18
+};
+
 enum {
     KF_MENU_CHOICE_ACCEPT = 0,
     KF_MENU_CONFIRM_REQUESTED = 1
@@ -138,7 +147,7 @@ typedef struct KfItemMenuList {
     KfMenuGlyphRow *rows;
     u8 unknown_28[4];
     u8 *values;
-    u32 *codes;
+    s32 *prices;
 } KfItemMenuList;
 
 /* Card catalogue rows carry ten glyph codes; the renderer advances 20 bytes. */
@@ -180,7 +189,7 @@ typedef char kf_menu_list_prefix_size[sizeof(KfMenuList) == 36 ? 1 : -1];
 typedef char kf_item_menu_list_size[sizeof(KfItemMenuList) == 52 ? 1 : -1];
 typedef char kf_item_menu_list_rows_offset[(u32)&((KfItemMenuList *)0)->rows == 0x24 ? 1 : -1];
 typedef char kf_item_menu_list_values_offset[(u32)&((KfItemMenuList *)0)->values == 0x2c ? 1 : -1];
-typedef char kf_item_menu_list_codes_offset[(u32)&((KfItemMenuList *)0)->codes == 0x30 ? 1 : -1];
+typedef char kf_item_menu_list_prices_offset[(u32)&((KfItemMenuList *)0)->prices == 0x30 ? 1 : -1];
 typedef char kf_card_slot_glyph_row_size[sizeof(KfCardSlotGlyphRow) == 20 ? 1 : -1];
 typedef char kf_card_menu_list_size[sizeof(KfCardMenuList) == 52 ? 1 : -1];
 typedef char kf_card_menu_list_rows_offset[(u32)&((KfCardMenuList *)0)->rows == 0x24 ? 1 : -1];
@@ -202,18 +211,13 @@ extern KfMenuLabelSuffix menu_label_suffixes[16];
 extern KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT];
 extern s32 menu_cursor_animation_frame;
 extern s32 menu_cursor_animation_direction;
-extern u_long *menu_frame_upload_pixels;
-extern RECT menu_frame_upload_rect;
 extern s32 menu_item_model_allocation_pending;
 /* Shared item quantity; original containing data object is unresolved. */
 extern s32 menu_item_quantity;
-extern SVECTOR menu_item_preview_translation;
-extern SVECTOR menu_item_preview_rotation;
-extern s32 menu_item_preview_rotation_step;
 extern KfMenuGlyphRow menu_glyph_rows[120];
 extern KfMenuGlyphRow menu_glyph_rows_extra[20];
 extern KfMenuLabelSuffix menu_equipment_category_labels[10];
-extern s16 menu_none_option_glyphs[4];
+extern KfMenuLabelSuffix menu_none_option_glyphs;
 extern u8 menu_item_mask_pages[6][120];
 void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows);
 extern u16 menu_item_code_primary[6][120];
@@ -222,12 +226,12 @@ extern u16 menu_item_code_secondary[5][120];
 void menu_list_init(KfMenuList *list, s32 window_kind, s32 row);
 u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
     s32 *selection, s32 *result);
-s32 menu_preview_choice(void *list_state, s32 label_kind,
+s32 menu_preview_choice(const KfMenuList *list, s32 label_kind,
     s32 render_mode, u8 item_id);
 void menu_show_map_preview(s32 menu_code);
 s32 menu_card_browser(void);
 /* Menu modes reinterpret the four payload words after the common list prefix. */
-void menu_render_list(const void *list_state, s32 render_mode);
+void menu_render_list(const KfMenuList *menu, s32 render_mode);
 void menu_blit_sprite(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_blit_sprite_fixed_clut(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
 void menu_blit_sprite_translucent(const KfMenuSpriteDef *sprite, const KfMenuPoint *position);
@@ -259,9 +263,9 @@ void menu_draw_player_status(void);
 void menu_draw_location_number(void);
 s32 menu_collect_available_magic_rows(const struct KfMagicRecord *records,
     KfMenuGlyphRow *rows, s32 *values, u8 *indices, s32 first, s32 last);
-void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, u32 *prices,
+void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, s32 *prices,
     const u8 *indices, s32 first, s32 last, s32 group);
-void menu_fill_item_prices(u32 *prices, const u8 *indices,
+void menu_fill_item_prices(s32 *prices, const u8 *indices,
     s32 first, s32 last, s32 group);
 s32 menu_card_build_slot_rows(const struct DIRENTRY *card_entries, s16 *glyph_rows,
     s32 *experience_values, u8 *levels, s32 *slot_ids);

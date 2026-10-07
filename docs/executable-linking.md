@@ -26,12 +26,17 @@ hash-pinned ASPSX 1.07 inherited from the SLPS-00017 setup; the kit's ASPSX
 a reproducible source-to-EXE chain, while exact historical compiler and
 assembler attribution remains open.
 
-Overlay startup uses `BSS_START` and `BSS_END` from zero-byte boundary
-declarations in `config/link/overlay_bounds.asm`. A separately pinned native
-ASMPSX 2.34 assembles those declarations because the C assembler lacks named
-sections and the kit's ASMPSX 1.21 is not yet validated under DOSBox. PSYLINK
-places the labels around `.bss`; their object contains no instructions or
-storage. Startup derives its word count and heap size from RAM/stack settings.
+GAME startup passes `BSS_END` to `InitHeap`. Retail loads it with a
+relocated `lui`/`addiu` pair and subtracts it at run time, so the original
+referenced a link-time symbol rather than a folded number (KF1's startup, by
+contrast, used compile-time numbers). PSYLINK defines no section-end symbols
+and an LNK XDEF is a section plus offset, so the label must come from an
+object placed after `.bss`; `config/link/overlay_bounds.asm` stands in for
+that unrecovered object with one zero-byte label. A separately pinned native
+ASMPSX 2.34 assembles it because the C assembler lacks named sections and the
+kit's ASMPSX 1.21 is not yet validated under DOSBox. No retail code uses a
+`.bss` start label, so none is declared. OPEN and END pass numeric heap
+bounds.
 
 Derived ELF objects, delinked retail modules, objdiff projects, and semantic
 reports are analysis views. Source compilation in `kf analyze` and `kf try`

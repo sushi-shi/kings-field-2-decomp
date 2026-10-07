@@ -8,428 +8,395 @@
 #include <kf/game/render_mask.h>
 #include <psyq/sdk.h>
 
-typedef struct KfCollisionShapeHeader {
-  s16 radius_scale;
-  s16 command_count;
-} KfCollisionShapeHeader;
-
-typedef char kf_collision_shape_header_size[
-    sizeof(KfCollisionShapeHeader) == 4 ? 1 : -1];
-typedef char kf_collision_shape_count_offset[
-    (u32)&((KfCollisionShapeHeader *)0)->command_count == 2 ? 1 : -1];
-
-/* The runtime shape bank remains a WIP ownership view. */
+/* Lower the query floor to FLOOR, reporting FLAG when the probe is below it. */
+#define KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, flag) do { \
+    if ((floor) < (heights)->result) {                         \
+        (heights)->result = (floor);                           \
+        if ((floor) < (y)) {                                   \
+            (flags) |= (flag);                                 \
+        }                                                      \
+    }                                                          \
+} while (0)
 
 RODATA(0x8001134c, 0xc4)
 
 ADDRESS(0x8002aaa4, 0xb60)
 s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height)
-
 {
-  s32 visited_second_layer;
-  s32 special_floor_found;
-  u32 height_flags;
-  int saved_height_limit;
-  s32 record_value;
-  u16 shape_offset;
-  int quotient;
-  int candidate_height;
-  u32 case_value;
-  u16 *record;
-  u16 *operand;
-  u16 *next_record;
-  u32 result_flags;
-  u32 z_fraction;
-  u32 x_fraction;
-  int radius_complement;
-  int bottom_y;
-  int records_left;
-  u32 x_remaining;
-  u32 z_remaining;
-  s32 x_minus_z;
-  s32 z_minus_x;
-  s32 x_plus_z;
-  s32 neg_x_minus_z;
-  s32 x_plus_cell;
-  s32 z_plus_cell;
-  KfMapOccupancyLayer *selected_layer;
-  KfCollisionShapeHeader *shape;
-  KfCollisionCache *cache;
-  u8 *shape_bank;
+    u32 flags;
+    s32 base_floor_hit;
+    s32 base_ceiling_hit;
+    s32 other_layer_visited;
+    KfMapOccupancyLayer *layer;
+    s16 *record;
+    s32 records_left;
+    s32 bottom;
+    KfCollisionHeights *heights;
+    s32 cell_x;
+    s32 cell_z;
+    s16 local_x;
+    s16 local_z;
+    u32 height_mode;
+    s32 wall_flags;
+    s32 limit;
+    s32 floor;
+    s32 step;
+    KfShapeWallRecord *wall;
+    KfShapeSlopeRecord *slope;
 
-  result_flags = 0;
-  special_floor_found = 0;
-  visited_second_layer = 0;
-  KF_COLLISION_CACHE_RESULT = 100000;
-  KF_COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT + -40000;
-  KF_COLLISION_CACHE_LOWER_BOUND = 100000;
-  KF_COLLISION_CACHE_UPPER_BOUND = 100000;
-  KF_COLLISION_CACHE_SHAPE = (KfMapOccupancyLayer *)
-      ((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
-  selected_layer = KF_COLLISION_CACHE_SHAPE;
-  height_flags = (u32)height & 0xf0000000;
-  height &= 0x0fffffff;
-LAB_8002ab5c:
-  shape_offset = ((KfCollisionShapeOffsetTable *)KF_COLLISION_SHAPE_BANK)
-      ->offsets[selected_layer->collision_shape_id];
-  shape_bank = KF_COLLISION_SHAPE_BANK;
-  shape = (KfCollisionShapeHeader *)(shape_bank + shape_offset);
-  bottom_y = (s32)((u32)y - (u32)height);
-  records_left = shape->command_count + -1;
-  radius = radius * shape->radius_scale >> 0xc;
-  if (records_left == -1) {
-    return result_flags;
-  }
-  radius_complement = 0x800 - radius;
-  x_fraction = x & 0x7ff;
-  x_remaining = 0x800 - x_fraction;
-  z_fraction = z & 0x7ff;
-  z_remaining = 0x800 - z_fraction;
-  x_minus_z = (s32)x_fraction - (s32)z_fraction;
-  z_minus_x = (s32)z_fraction - (s32)x_fraction;
-  x_plus_z = (s32)x_fraction + (s32)z_fraction;
-  neg_x_minus_z = -(s32)x_fraction - (s32)z_fraction;
-  x_plus_cell = (s32)x_fraction + 0x800;
-  z_plus_cell = (s32)z_fraction + 0x800;
-  cache = &KF_COLLISION_CACHE;
-  record = (u16 *)(shape + 1);
-  do {
-    operand = record + 1;
-    next_record = operand;
-    switch ((s16)*record++) {
-    case 0x10:
-      next_record = record + 1;
-      if (!special_floor_found) {
-        candidate_height = (s16)*operand + cache->height;
-        if (candidate_height < cache->result) {
-          cache->result = candidate_height;
+    flags = 0;
+    base_floor_hit = 0;
+    /* No record sets this; ceiling records are always evaluated. */
+    base_ceiling_hit = 0;
+    other_layer_visited = 0;
+    KF_COLLISION_CACHE_RESULT = 100000;
+    KF_COLLISION_CACHE_HEIGHT_LIMIT = KF_COLLISION_CACHE_HEIGHT - 40000;
+    KF_COLLISION_CACHE_LOWER_BOUND = 100000;
+    KF_COLLISION_CACHE_UPPER_BOUND = 100000;
+    layer = (KfMapOccupancyLayer *)
+        ((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
+    KF_COLLISION_CACHE_SHAPE = layer;
+    height_mode = height & 0xf0000000;
+    height &= 0x0fffffff;
+
+next_layer:
+    record = (s16 *)(KF_COLLISION_SHAPE_BANK +
+        ((KfCollisionShapeOffsetTable *)KF_COLLISION_SHAPE_BANK)
+            ->offsets[layer->collision_shape_id]);
+    radius = radius * *record++ >> 12;
+    bottom = y - height;
+    records_left = *record++;
+    while (--records_left != -1) {
+        heights = &KF_COLLISION_CACHE.heights;
+        cell_x = x & 0x7ff;
+        cell_z = z & 0x7ff;
+        local_x = x & 0x7ff;
+        local_z = z & 0x7ff;
+        switch (*record++) {
+        case 0x10: {
+            KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
+
+            record = (s16 *)(level + 1);
+            if (!base_floor_hit) {
+                if (level->height + heights->height < heights->result) {
+                    heights->result = level->height + heights->height;
+                }
+                if (heights->result < y) {
+                    flags |= KF_COLLISION_HIT_FLOOR;
+                }
+            }
+            break;
         }
-        candidate_height = cache->result;
-LAB_8002b3b8:
-        if (candidate_height < y) {
-          result_flags = result_flags | KF_COLLISION_HIT_FLOOR;
+        case 0x11: {
+            KfShapeCeilingRecord *ceiling = (KfShapeCeilingRecord *)record;
+            s32 top;
+
+            record = (s16 *)(ceiling + 1);
+            if (!base_ceiling_hit) {
+                top = ceiling->limit + heights->height;
+                if (bottom < top) {
+                    floor = ceiling->floor + heights->height;
+                    if (floor < bottom) {
+                        flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
+                    } else {
+                        if (floor < heights->result) {
+                            heights->result = floor;
+                        }
+                        heights->height_limit = -100000;
+                        break;
+                    }
+                }
+                KF_COLLISION_CACHE_HEIGHT_LIMIT = top;
+            }
+            break;
         }
-      }
-      break;
-    case 0x11:
-      next_record = operand + 2;
-      saved_height_limit = (s16)*operand + cache->height;
-      if (bottom_y < saved_height_limit) {
-        candidate_height = (s16)operand[1] + cache->height;
-        if (candidate_height < bottom_y) {
-          result_flags = result_flags | KF_COLLISION_HIT_HEIGHT_LIMIT;
+        case 0x20:
+            wall = (KfShapeWallRecord *)record;
+            record = (s16 *)(wall + 1);
+            wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
+            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
+            case 0:
+                if (wall->offset + radius < cell_x) {
+                    break;
+                }
+            wall_hit:
+                limit = wall->limit;
+                limit += heights->height;
+                floor = wall->floor + heights->height;
+                if (bottom < limit) {
+                    KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, wall_flags);
+                } else {
+                    heights->height_limit = limit;
+                }
+                break;
+            case 1:
+                if (0x800 - wall->offset - radius <= cell_z) {
+                    goto wall_hit;
+                }
+                break;
+            case 2:
+                if (0x800 - wall->offset - radius <= cell_x) {
+                    goto wall_hit;
+                }
+                break;
+            case 3:
+                if (cell_z <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            }
+            break;
+        case 0x21:
+            wall = (KfShapeWallRecord *)record;
+            record = (s16 *)(wall + 1);
+            wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
+            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
+            case 0:
+                if (cell_x <= wall->offset + radius
+                    || 0x800 - wall->offset - radius <= cell_z) {
+                    goto wall_hit;
+                }
+                break;
+            case 1:
+                if (0x800 - wall->offset - radius <= cell_z
+                    || 0x800 - wall->offset - radius <= cell_x) {
+                    goto wall_hit;
+                }
+                break;
+            case 2:
+                if (0x800 - wall->offset - radius <= cell_x
+                    || cell_z <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            case 3:
+                if (cell_z <= wall->offset + radius
+                    || cell_x <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            }
+            break;
+        case 0x22:
+            wall = (KfShapeWallRecord *)record;
+            record = (s16 *)(wall + 1);
+            wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
+            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
+            case 0:
+                if (cell_x <= wall->offset + radius
+                    && 0x800 - wall->offset - radius <= cell_z) {
+                    goto wall_hit;
+                }
+                break;
+            case 1:
+                if (0x800 - wall->offset - radius <= cell_z
+                    && 0x800 - wall->offset - radius <= cell_x) {
+                    goto wall_hit;
+                }
+                break;
+            case 2:
+                if (0x800 - wall->offset - radius <= cell_x
+                    && cell_z <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            case 3:
+                if (cell_z <= wall->offset + radius
+                    && cell_x <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            }
+            break;
+        case 0x23: {
+            s32 reach;
+
+            wall = (KfShapeWallRecord *)record;
+            record = (s16 *)(wall + 1);
+            wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_DIAGONAL;
+            switch ((layer->quarter_turns + wall->quarter_turns) & 3) {
+            case 0:
+                reach = radius - 0x800;
+                if (local_x - local_z <= wall->offset + reach) {
+                    goto wall_hit;
+                }
+                break;
+            case 1:
+                reach = radius - 0x1000;
+                if (-local_x - local_z <= wall->offset + reach) {
+                    goto wall_hit;
+                }
+                break;
+            case 2:
+                reach = radius - 0x800;
+                if (local_z - local_x <= wall->offset + reach) {
+                    goto wall_hit;
+                }
+                break;
+            case 3:
+                if (local_x + local_z <= wall->offset + radius) {
+                    goto wall_hit;
+                }
+                break;
+            }
+            break;
         }
-        else {
-          if (candidate_height < cache->result) {
-            cache->result = candidate_height;
-          }
-          cache->height_limit = -100000;
-          break;
+        case 0x30:
+            slope = (KfShapeSlopeRecord *)record;
+            record = (s16 *)(slope + 1);
+            switch ((layer->quarter_turns + slope->quarter_turns) & 3) {
+            case 0:
+                if (local_x < slope->start - radius || slope->end + radius < local_x) {
+                    break;
+                }
+                step = cell_z / slope->run;
+            stair_floor:
+                step = (step + 1) * slope->rise;
+                floor = slope->floor + heights->height - step;
+                KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, KF_COLLISION_HIT_FLOOR);
+                break;
+            case 1:
+                if (0x800 - slope->start + radius < local_z
+                    || local_z < 0x800 - slope->end - radius) {
+                    break;
+                }
+                step = cell_x / slope->run;
+                goto stair_floor;
+            case 2:
+                if (0x800 - slope->start + radius < local_x
+                    || local_x < 0x800 - slope->end - radius) {
+                    break;
+                }
+                step = (0x800 - cell_z) / slope->run;
+                goto stair_floor;
+            case 3:
+                if (local_z < slope->start - radius || slope->end + radius < local_z) {
+                    break;
+                }
+                step = (0x800 - cell_x) / slope->run;
+                goto stair_floor;
+            }
+            break;
+        case 0x32:
+            slope = (KfShapeSlopeRecord *)record;
+            record = (s16 *)(slope + 1);
+            switch ((layer->quarter_turns + slope->quarter_turns) & 3) {
+            case 0:
+                step = 0x800 - local_x + local_z;
+            ramp_floor:
+                if (step < slope->start) {
+                    step = slope->start;
+                } else if (slope->end < step) {
+                    step = slope->end;
+                }
+                step = (step - slope->start) / slope->run;
+                step *= slope->rise;
+                floor = slope->floor + heights->height - step;
+                KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, KF_COLLISION_HIT_FLOOR);
+                break;
+            case 1:
+                step = local_x + local_z;
+                goto ramp_floor;
+            case 2:
+                step = 0x800 - local_z + local_x;
+                goto ramp_floor;
+            case 3:
+                step = 0x1000 - local_x - local_z;
+                goto ramp_floor;
+            }
+            break;
+        case 0x31:
+            /* Only an axis hit is tested, and its record is skipped only then. */
+            if (flags & KF_COLLISION_HIT_AXIS) {
+                KfShapeLedgeRecord *ledge = (KfShapeLedgeRecord *)record;
+                s16 distance;
+                s16 x_distance;
+
+                record = (s16 *)(ledge + 1);
+                distance = cell_z;
+                x_distance = cell_x;
+                switch ((layer->quarter_turns + ledge->quarter_turns) & 3) {
+                case 0:
+                ledge_floor:
+                    if (distance >= ledge->start + radius
+                        && distance <= ledge->end - radius) {
+                        KF_COLLISION_CACHE_RESULT =
+                            ledge->floor + KF_COLLISION_CACHE_HEIGHT;
+                        KF_COLLISION_CACHE_HEIGHT_LIMIT =
+                            ledge->limit + KF_COLLISION_CACHE_HEIGHT;
+                        if (bottom < KF_COLLISION_CACHE_HEIGHT_LIMIT) {
+                            flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
+                        }
+                        if (y <= KF_COLLISION_CACHE_RESULT) {
+                            flags &= ~(KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS);
+                        }
+                    }
+                    break;
+                case 1:
+                    distance = x_distance;
+                    goto ledge_floor;
+                case 2:
+                    distance = 0x800 - cell_z;
+                    goto ledge_floor;
+                case 3:
+                    distance = 0x800 - cell_x;
+                    goto ledge_floor;
+                }
+            }
+            break;
+        case 0x40:
+            if (other_layer_visited) {
+                return flags;
+            }
+            {
+                u16 *layer_offset = &KF_COLLISION_CACHE_LAYER;
+
+                *layer_offset = *layer_offset == 0 ? sizeof(KfMapOccupancyLayer) : 0;
+                layer = (KfMapOccupancyLayer *)
+                    ((u8 *)KF_COLLISION_CACHE_CELL + *layer_offset);
+            }
+            KF_COLLISION_CACHE_HEIGHT = -layer->elevation * 0x80;
+            other_layer_visited = 1;
+            goto next_layer;
+        case 0x18: {
+            KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
+
+            record = (s16 *)(level + 1);
+            floor = level->height + KF_COLLISION_CACHE_HEIGHT;
+            KF_COLLISION_CACHE_LOWER_BOUND = floor;
+            if (height_mode & KF_COLLISION_HEIGHT_CHECK_FLOOR) {
+                KF_COLLISION_CACHE_RESULT = floor;
+                if (floor < y) {
+                    flags |= KF_COLLISION_HIT_FLOOR;
+                    base_floor_hit = 1;
+                }
+            }
+            if (height_mode & KF_COLLISION_HEIGHT_CHECK_LIMIT) {
+                KF_COLLISION_CACHE_HEIGHT_LIMIT = floor;
+                if (bottom <= floor) {
+                    flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
+                }
+            }
+            break;
         }
-      }
-      KF_COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
-      break;
-    case 0x20:
-      next_record = record + 4;
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      if (record_value != 1) {
-        if (record_value < 2) {
-          if (record_value == 0 &&
-              (int)x_fraction <= (s16)*operand + radius) goto LAB_8002ada4;
+        case 0x19: {
+            KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
+
+            record = (s16 *)(level + 1);
+            KF_COLLISION_CACHE_UPPER_BOUND = level->height + KF_COLLISION_CACHE_HEIGHT;
+            break;
         }
-        else if (record_value == 2) {
-          if (radius_complement - (s16)*operand <= (int)x_fraction) goto LAB_8002ada4;
         }
-        else if (record_value == 3) {
-          candidate_height = (s16)*operand + radius;
-          goto LAB_8002afc4;
-        }
-        break;
-      }
-      candidate_height = radius_complement - (s16)*operand;
-LAB_8002af70:
-      next_record = record + 4;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      if (candidate_height <= (int)z_fraction) goto LAB_8002ada4;
-      break;
-LAB_8002afc4:
-      next_record = record + 4;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      if ((int)z_fraction <= candidate_height) goto LAB_8002ada4;
-      break;
-    case 0x21:
-      next_record = record + 4;
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      switch (record_value) {
-      case 1:
-        candidate_height = radius_complement - (s16)*operand;
-        if ((int)z_fraction < candidate_height) goto LAB_8002af9c;
-        break;
-      case 0:
-        candidate_height = radius_complement - (s16)*operand;
-        if ((s16)*operand + radius < (int)x_fraction) goto LAB_8002af70;
-        break;
-      case 2:
-        candidate_height = (s16)*operand + radius;
-        if ((int)x_fraction < radius_complement - (s16)*operand) goto LAB_8002afc4;
-        break;
-      case 3:
-        candidate_height = (s16)*operand + radius;
-        if (candidate_height < (int)z_fraction) goto LAB_8002aff0;
-        break;
-      default:
-        goto LAB_8002b5c8;
-      }
-LAB_8002ada4:
-      next_record = record + 4;
-      candidate_height = (s16)operand[2] + cache->height;
-      saved_height_limit = (s16)operand[1] + cache->height;
-      if (bottom_y < saved_height_limit) {
-        if (candidate_height < cache->result) {
-          cache->result = candidate_height;
-          if (candidate_height < y) {
-            result_flags |= case_value;
-          }
-        }
-      }
-      else {
-        cache->height_limit = saved_height_limit;
-      }
-      break;
-    case 0x22:
-      next_record = record + 4;
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR;
-      switch (record_value) {
-      case 1:
-        candidate_height = radius_complement - (s16)*operand;
-        if (candidate_height <= (int)z_fraction) goto LAB_8002af9c;
-        break;
-      case 0:
-        candidate_height = radius_complement - (s16)*operand;
-        if ((int)x_fraction <= (s16)*operand + radius) goto LAB_8002af70;
-        break;
-      case 2:
-        candidate_height = (s16)*operand + radius;
-        if (radius_complement - (s16)*operand <= (int)x_fraction) goto LAB_8002afc4;
-        break;
-      case 3:
-        candidate_height = (s16)*operand + radius;
-        if ((int)z_fraction <= candidate_height) goto LAB_8002aff0;
-        break;
-      default:
-        goto LAB_8002b5c8;
-      }
-      break;
-LAB_8002af9c:
-      if ((int)x_fraction >= candidate_height) goto LAB_8002ada4;
-      break;
-LAB_8002aff0:
-      if ((int)x_fraction <= candidate_height) goto LAB_8002ada4;
-      break;
-    case 0x23:
-      next_record = record + 4;
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      case_value = KF_COLLISION_HIT_DIAGONAL | KF_COLLISION_HIT_FLOOR;
-      switch (record_value) {
-      case 1:
-        candidate_height = (int)(s16)*operand + radius + -0x1000;
-        saved_height_limit = neg_x_minus_z;
-        break;
-      case 0:
-        candidate_height = (int)(s16)*operand + radius + -0x800;
-        saved_height_limit = x_minus_z;
-        break;
-      case 2:
-        candidate_height = (int)(s16)*operand + radius + -0x800;
-        saved_height_limit = z_minus_x;
-        break;
-      case 3:
-        candidate_height = (s16)*operand + radius;
-        saved_height_limit = x_plus_z;
-        break;
-      default:
-        goto LAB_8002b5c8;
-      }
-      if (saved_height_limit <= candidate_height) goto LAB_8002ada4;
-      break;
-    case 0x30:
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      next_record = record + 6;
-      switch (record_value) {
-      case 1:
-        if (((int)z_fraction <= (radius + 0x800) - (int)(s16)operand[1]) &&
-           (radius_complement - (s16)operand[2] <= (int)z_fraction)) {
-          candidate_height = (int)(s16)operand[5];
-          quotient = (int)x_fraction / candidate_height;
-          goto LAB_8002b168;
-        }
-        break;
-      case 0:
-        if (((s16)operand[1] - radius <= (int)x_fraction) &&
-           ((int)x_fraction <= (s16)operand[2] + radius)) {
-          candidate_height = (int)(s16)operand[5];
-          quotient = (int)z_fraction / candidate_height;
-          goto LAB_8002b168;
-        }
-        break;
-      case 2:
-        if (((int)x_fraction <= (radius + 0x800) - (int)(s16)operand[1]) &&
-           (radius_complement - (s16)operand[2] <= (int)x_fraction)) {
-          candidate_height = (int)(s16)operand[5];
-          quotient = (int)z_remaining / candidate_height;
-LAB_8002b168:
-          quotient += 1;
-          candidate_height = quotient * (s16)operand[4];
-          goto LAB_8002b38c;
-        }
-        break;
-      case 3:
-        if (((s16)operand[1] - radius <= (int)z_fraction) &&
-           ((int)z_fraction <= (s16)operand[2] + radius)) {
-          candidate_height = (int)(s16)operand[5];
-          quotient = (int)x_remaining / candidate_height;
-          goto LAB_8002b168;
-        }
-        break;
-      }
-      break;
-    case 0x32:
-      record_value = (u16)selected_layer->quarter_turns + operand[3] & 3;
-      next_record = record + 6;
-      switch (record_value) {
-      case 1:
-        candidate_height = x_plus_z;
-        break;
-      case 0:
-        candidate_height = z_plus_cell - (s32)x_fraction;
-        break;
-      case 2:
-        candidate_height = x_plus_cell - (s32)z_fraction;
-        break;
-      case 3:
-        candidate_height = (0x1000 - z_fraction) - x_fraction;
-        break;
-      default:
-        goto LAB_8002b5c8;
-      }
-      quotient = (int)(s16)operand[1];
-      if (candidate_height < quotient) {
-        candidate_height = quotient;
-      }
-      else {
-        quotient = (int)(s16)operand[2];
-        if (quotient < candidate_height) {
-          candidate_height = quotient;
-        }
-      }
-      quotient = (int)(s16)operand[5];
-      candidate_height = ((candidate_height - (s16)operand[1]) / quotient) * (int)(s16)operand[4];
-LAB_8002b38c:
-      candidate_height = ((s16)*operand + cache->height) - candidate_height;
-      if (candidate_height < cache->result) {
-        cache->result = candidate_height;
-        if (candidate_height < y) {
-          result_flags |= KF_COLLISION_HIT_FLOOR;
-        }
-      }
-      break;
-    case 0x31:
-      if ((result_flags & KF_COLLISION_HIT_AXIS) != 0) {
-        next_record = operand + 5;
-        record_value = (u16)selected_layer->quarter_turns + operand[4] & 3;
-        case_value = x_fraction;
-        if (record_value != 1) {
-          if (record_value < 2) {
-            case_value = z_fraction;
-            if (record_value == 0) goto LAB_8002b450;
-          }
-          else {
-            case_value = z_remaining;
-            if ((record_value == 2) || (case_value = x_remaining, record_value == 3)) goto LAB_8002b450;
-          }
-          break;
-        }
-LAB_8002b450:
-        if (((s16)*operand + radius <= (int)(s16)case_value) &&
-           ((int)(s16)case_value <= (s16)operand[1] - radius)) {
-          KF_COLLISION_CACHE_RESULT = (s16)operand[2] + KF_COLLISION_CACHE_HEIGHT;
-          saved_height_limit = (s16)operand[3] + KF_COLLISION_CACHE_HEIGHT;
-          KF_COLLISION_CACHE_HEIGHT_LIMIT = saved_height_limit;
-          if (bottom_y < saved_height_limit) {
-            result_flags = result_flags | KF_COLLISION_HIT_HEIGHT_LIMIT;
-          }
-          if (y <= KF_COLLISION_CACHE_RESULT) {
-            result_flags &= ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR);
-          }
-        }
-      }
-      break;
-    case 0x40: {
-      u16 *layer_offset;
-      if (visited_second_layer) {
-        return result_flags;
-      }
-      layer_offset = &KF_COLLISION_CACHE_LAYER;
-      *layer_offset = *layer_offset == 0 ? sizeof(KfMapOccupancyLayer) : 0;
-      selected_layer = (KfMapOccupancyLayer *)((u8 *)KF_COLLISION_CACHE_CELL + *layer_offset);
-      KF_COLLISION_CACHE_HEIGHT = -(s32)selected_layer->elevation * 0x80;
-      visited_second_layer = 1;
-      goto LAB_8002ab5c;
     }
-    case 0x18:
-      next_record = record + 1;
-      candidate_height = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
-      KF_COLLISION_CACHE_LOWER_BOUND = candidate_height;
-      if ((s32)height_flags < 0) {
-        KF_COLLISION_CACHE_RESULT = candidate_height;
-        if (candidate_height < y) {
-          result_flags |= KF_COLLISION_HIT_FLOOR;
-          special_floor_found = 1;
-        }
-      }
-      if (height_flags & KF_COLLISION_HEIGHT_CHECK_LIMIT) {
-        KF_COLLISION_CACHE_HEIGHT_LIMIT = candidate_height;
-        if (bottom_y <= candidate_height) {
-          result_flags |= KF_COLLISION_HIT_HEIGHT_LIMIT;
-        }
-      }
-      break;
-    case 0x19:
-      next_record = record + 1;
-      KF_COLLISION_CACHE_UPPER_BOUND = (s16)*operand + KF_COLLISION_CACHE_HEIGHT;
-      break;
-    }
-LAB_8002b5c8:
-    --records_left;
-    record = next_record;
-    if (records_left == -1) {
-      return result_flags;
-    }
-  } while( 1 );
+    return flags;
 }
-
-
-#define COLLISION_CACHE_CELL KF_COLLISION_CACHE_CELL
-#define COLLISION_CACHE_SHAPE KF_COLLISION_CACHE_SHAPE
-#define COLLISION_CACHE_LAYER KF_COLLISION_CACHE_LAYER
-#define COLLISION_CACHE_HEIGHT KF_COLLISION_CACHE_HEIGHT
-#define COLLISION_CACHE_RESULT KF_COLLISION_CACHE_RESULT
-#define COLLISION_CACHE_FLAGS KF_COLLISION_CACHE_FLAGS
-#define COLLISION_CACHE_ACTOR_INDEX KF_COLLISION_CACHE_ACTOR_INDEX
-#define COLLISION_CACHE_OBJECT_INDEX KF_COLLISION_CACHE_OBJECT_INDEX
-#define COLLISION_CACHE_POSITION KF_COLLISION_CACHE_POSITION
-#define COLLISION_CACHE_RADIUS KF_COLLISION_CACHE_RADIUS
-#define COLLISION_CACHE_INTERACTION_HEIGHT KF_COLLISION_CACHE_INTERACTION_HEIGHT
 
 ADDRESS(0x8002b604, 0x78)
 s32 collision_probe_floor_height(s32 x, s32 y, s32 z, s32 radius, s32 height)
 {
     collision_sample_map_cell_layer(x, y - 1280, z);
     collision_evaluate_shape_records(x, y, z, radius, height);
-    return COLLISION_CACHE_RESULT;
+    return KF_COLLISION_CACHE_RESULT;
 }
 
 ADDRESS(0x8002b67c, 0xc0)
@@ -440,16 +407,16 @@ s32 collision_sample_map_layer_height(u8 kind, s32 x, s32 z, s32 radius, s32 hei
     s32 elevation;
 
     if (kind == 2) {
-        COLLISION_CACHE_LAYER = sizeof(KfMapOccupancyLayer);
+        KF_COLLISION_CACHE_LAYER = sizeof(KfMapOccupancyLayer);
         elevation = -(s32)cell->layer[1].elevation;
     } else {
-        COLLISION_CACHE_LAYER = 0;
+        KF_COLLISION_CACHE_LAYER = 0;
         elevation = -(s32)cell->layer[0].elevation;
     }
-    COLLISION_CACHE_HEIGHT = elevation * (1 << KF_MAP_CELL_ELEVATION_SHIFT);
-    COLLISION_CACHE_CELL = cell;
-    collision_evaluate_shape_records(x, COLLISION_CACHE_HEIGHT, z, radius, height);
-    return COLLISION_CACHE_RESULT;
+    KF_COLLISION_CACHE_HEIGHT = elevation * (1 << KF_MAP_CELL_ELEVATION_SHIFT);
+    KF_COLLISION_CACHE_CELL = cell;
+    collision_evaluate_shape_records(x, KF_COLLISION_CACHE_HEIGHT, z, radius, height);
+    return KF_COLLISION_CACHE_RESULT;
 }
 
 ADDRESS(0x8002b73c, 0xbc)
@@ -462,14 +429,17 @@ void map_cell_add_layer_occupancy(s32 x, s32 z, s32 radius, s32 amount)
     s32 height = ((z + expanded) >> KF_MAP_CELL_POSITION_SHIFT) - first_z;
     KfMapOccupancyCell *row = &bss_801c7540.map_cells[first_z][first_x];
     u32 value = (u32)amount << 2;
+    KfMapOccupancyCell *cell;
+    s32 col;
+    s32 remaining;
+    s32 row_index = first_z;
 
     do {
-        KfMapOccupancyCell *current_row = row;
+        cell = row;
         row += KF_MAP_WORLD_GRID_SIDE;
-        if ((u32)first_z < KF_MAP_WORLD_GRID_SIDE) {
-            KfMapOccupancyCell *cell = current_row;
-            s32 col = first_x;
-            s32 remaining = width;
+        if ((u32)row_index < KF_MAP_WORLD_GRID_SIDE) {
+            col = first_x;
+            remaining = width;
             do {
                 if ((u32)col < KF_MAP_WORLD_GRID_SIDE) {
                     cell->layer[0].quarter_turns =
@@ -480,7 +450,7 @@ void map_cell_add_layer_occupancy(s32 x, s32 z, s32 radius, s32 amount)
                 remaining--;
             } while (remaining != -1);
         }
-        first_z++;
+        row_index++;
         height--;
     } while (height != -1);
 }
@@ -495,70 +465,71 @@ s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s3
 ADDRESS(0x8002b874, 0x160)
 void collision_cache_load_hit_bounds(void)
 {
-    if (COLLISION_CACHE_FLAGS & KF_COLLISION_HIT_PLAYER) {
-        COLLISION_CACHE_POSITION = player_state.camera_position;
-        COLLISION_CACHE_RADIUS = 800;
-        COLLISION_CACHE_INTERACTION_HEIGHT = KF_PLAYER_HEIGHT;
-    } else if (COLLISION_CACHE_ACTOR_INDEX != -1) {
-        KfActor *actor = &actor_state.actors[COLLISION_CACHE_ACTOR_INDEX];
-        COLLISION_CACHE_POSITION = actor->position;
-        COLLISION_CACHE_RADIUS = actor->collision_radius;
-        COLLISION_CACHE_INTERACTION_HEIGHT = actor->collision_height;
+    if (KF_COLLISION_CACHE_FLAGS & KF_COLLISION_HIT_PLAYER) {
+        KF_COLLISION_CACHE_POSITION = player_state.camera_position;
+        KF_COLLISION_CACHE_RADIUS = 800;
+        KF_COLLISION_CACHE_INTERACTION_HEIGHT = KF_PLAYER_HEIGHT;
+    } else if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
+        KfActor *actor = &actor_state.actors[KF_COLLISION_CACHE_ACTOR_INDEX];
+        KF_COLLISION_CACHE_POSITION = actor->position;
+        KF_COLLISION_CACHE_RADIUS = actor->collision_radius;
+        KF_COLLISION_CACHE_INTERACTION_HEIGHT = actor->collision_height;
     } else {
         KfMapObject *object;
         KfMapObjectTemplate *object_template;
 
-        if (COLLISION_CACHE_OBJECT_INDEX == -1) {
+        if (KF_COLLISION_CACHE_OBJECT_INDEX == -1) {
             return;
         }
-        object = &map_object_state.objects[COLLISION_CACHE_OBJECT_INDEX];
+        object = &map_object_state.objects[KF_COLLISION_CACHE_OBJECT_INDEX];
         object_template = &map_object_state.templates[object->object_id];
-        COLLISION_CACHE_POSITION = object->position;
-        COLLISION_CACHE_RADIUS = object_template->collision_radius;
-        COLLISION_CACHE_INTERACTION_HEIGHT = object_template->interaction_height;
+        KF_COLLISION_CACHE_POSITION = object->position;
+        KF_COLLISION_CACHE_RADIUS = object_template->collision_radius;
+        KF_COLLISION_CACHE_INTERACTION_HEIGHT = object_template->interaction_height;
     }
 }
 
 ADDRESS(0x8002b9d4, 0x244)
-s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
+s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
 {
     s32 result = 0;
 
     if (mode & KF_COLLISION_QUERY_SHAPES) {
         result = collision_query_shapes_with_layer_sample(x, y, z, radius, height);
         if ((mode & KF_COLLISION_QUERY_LAYER_FLAG_40) &&
-            (COLLISION_CACHE_SHAPE->lighting_index & KF_MAP_CELL_LAYER_COLLISION_FLAG_40)) {
-            COLLISION_CACHE_RESULT = -100000;
+            (KF_COLLISION_CACHE_SHAPE->lighting_index & KF_MAP_CELL_LAYER_COLLISION_FLAG_40)) {
+            KF_COLLISION_CACHE_RESULT = -100000;
             result |= KF_COLLISION_HIT_AXIS;
         }
     } else {
-        COLLISION_CACHE_CELL = &bss_801c7540.map_cells[z >> 11][x >> 11];
+        KF_COLLISION_CACHE_CELL = &bss_801c7540.map_cells
+            [z >> KF_MAP_CELL_POSITION_SHIFT][x >> KF_MAP_CELL_POSITION_SHIFT];
     }
 
     height &= 0x0fffffff;
-    if (COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
+    if (KF_COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
         if (mode & KF_COLLISION_QUERY_ACTORS) {
-            COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
-            if (COLLISION_CACHE_ACTOR_INDEX != -1) {
+            KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
+            if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
                 result |= KF_COLLISION_HIT_ACTOR;
             }
         } else {
             if (mode & KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3) {
-                COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap(x, y, z, radius, height);
-                if (COLLISION_CACHE_ACTOR_INDEX != -1) {
+                KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap(x, y, z, radius, height);
+                if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
                     result |= KF_COLLISION_HIT_ACTOR;
                 }
             }
-            COLLISION_CACHE_ACTOR_INDEX = -1;
+            KF_COLLISION_CACHE_ACTOR_INDEX = -1;
         }
 
         if (mode & KF_COLLISION_QUERY_MAP_OBJECTS) {
-            COLLISION_CACHE_OBJECT_INDEX = map_object_find_collision_at_point(x, y, z, radius, height);
-            if (COLLISION_CACHE_OBJECT_INDEX != -1) {
+            KF_COLLISION_CACHE_OBJECT_INDEX = map_object_find_collision_at_point(x, y, z, radius, height);
+            if (KF_COLLISION_CACHE_OBJECT_INDEX != -1) {
                 result |= KF_COLLISION_HIT_MAP_OBJECT;
             }
         } else {
-            COLLISION_CACHE_OBJECT_INDEX = -1;
+            KF_COLLISION_CACHE_OBJECT_INDEX = -1;
         }
 
         if ((mode & KF_COLLISION_QUERY_PLAYER) &&
@@ -566,11 +537,11 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, s32 mode)
             result |= KF_COLLISION_HIT_PLAYER;
         }
     } else {
-        COLLISION_CACHE_ACTOR_INDEX = -1;
-        COLLISION_CACHE_OBJECT_INDEX = -1;
+        KF_COLLISION_CACHE_ACTOR_INDEX = -1;
+        KF_COLLISION_CACHE_OBJECT_INDEX = -1;
     }
 
-    COLLISION_CACHE_FLAGS = result;
+    KF_COLLISION_CACHE_FLAGS = result;
     return result;
 }
 
@@ -625,14 +596,12 @@ void interpolate_collision_row_fields(s32 flags, const KfCollisionFilterPayload 
                    KfCollisionRow *row, s32 amount)
 {
     if (flags & 2) {
-        fixed_lerp_nine_halfwords_q12((const u16 *)row->motion.values,
-                      (const u16 *)payload->motion.values,
-                      (u16 *)row->motion.values, amount);
+        fixed_lerp_nine_halfwords_q12(row->motion.values, payload->motion.values,
+                      row->motion.values, amount);
     }
     if (flags & 1) {
-        fixed_lerp_nine_halfwords_q12((const u16 *)&row->rotations[0],
-                      (const u16 *)&payload->rotation,
-                      (u16 *)&row->rotations[0], amount);
+        fixed_lerp_nine_halfwords_q12(row->rotations[0].m[0], payload->rotation.m[0],
+                      row->rotations[0].m[0], amount);
     }
     if (flags & 4) {
         row->filter.kinds.types[0] = fixed_lerp_q12(
@@ -664,22 +633,22 @@ void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *paylo
 }
 
 ADDRESS(0x8002bf38, 0x74)
-void interpolate_collision_filter_rows(u8 arg0, u8 arg1, u8 arg2, s32 angle, u16 value)
+void interpolate_collision_filter_rows(u8 type0, u8 type1, u8 type2, s32 angle, u16 amount)
 {
     KfCollisionFilterPayload payload;
     s32 flags = 0;
 
-    if (arg0 != 0xff || arg1 != arg0 || arg2 != arg1) {
-        payload.filter.kinds.types[0] = arg0;
-        payload.filter.kinds.types[1] = arg1;
-        payload.filter.kinds.types[2] = arg2;
+    if (type0 != 0xff || type1 != type0 || type2 != type1) {
+        payload.filter.kinds.types[0] = type0;
+        payload.filter.kinds.types[1] = type1;
+        payload.filter.kinds.types[2] = type2;
         flags |= 4;
     }
     if (angle != -1) {
         payload.filter.angle = angle;
         flags |= 8;
     }
-    interpolate_collision_rows(flags, &payload, (s16)value);
+    interpolate_collision_rows(flags, &payload, (s16)amount);
 }
 
 ADDRESS(0x8002bfac, 0x28)
@@ -699,40 +668,34 @@ ADDRESS(0x8002bfd4, 0x19c)
 void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
                    const KfCollisionMaskPoint *end, u8 value)
 {
-    /* The rasterizer uses 16-bit origins and truncates grid coordinates. */
-    u16 origin_x = (u16)game_graphics_runtime.render_state.cell_origin_x;
-    u16 origin_z = (u16)game_graphics_runtime.render_state.cell_origin_z;
-    s32 x = ((u32)start->x >> 12) + origin_x;
-    s32 z = ((u32)start->z >> 12) + origin_z;
-    s32 end_x = ((u32)end->x >> 12) + origin_x;
-    s32 end_z = ((u32)end->z >> 12) + origin_z;
-    s32 dx = end_x - x;
-    s32 dz = end_z - z;
-    s32 step_x;
-    s32 step_z;
+    /* The rasterizer reads 16-bit origins and steps 16-bit grid coordinates. */
+    u16 x = ((u32)start->x >> 12) + (u16)game_graphics_runtime.render_state.cell_origin_x;
+    u16 z = ((u32)start->z >> 12) + (u16)game_graphics_runtime.render_state.cell_origin_z;
+    s16 dx = (((u32)end->x >> 12) + (u16)game_graphics_runtime.render_state.cell_origin_x) - x;
+    s16 dz = (((u32)end->z >> 12) + (u16)game_graphics_runtime.render_state.cell_origin_z) - z;
+    s16 step_x;
+    s16 step_z;
     s16 count;
     s16 error;
 
-    if ((s16)dx < 0) {
+    if (dx < 0) {
         dx = -dx;
         step_x = -1;
     } else {
         step_x = 1;
     }
     step_z = 1;
-    if ((s16)dz < 0) {
+    if (dz < 0) {
         dz = -dz;
         step_z = -1;
     }
 
-    if ((s16)dx >= (s16)dz) {
-        error = (s16)dx >> 1;
+    if (dx >= dz) {
+        error = dx >> 1;
         count = dx;
         do {
-            if ((u16)x < KF_MAP_CELL_GRID_SIDE &&
-                (u16)z < KF_MAP_CELL_GRID_SIDE) {
-                game_graphics_runtime.render_grid
-                    .map_cell_layer_masks[(u16)z][(u16)x] = value;
+            if (x < KF_MAP_CELL_GRID_SIDE && z < KF_MAP_CELL_GRID_SIDE) {
+                game_graphics_runtime.render_grid.map_cell_layer_masks[z][x] = value;
             }
             error -= dz;
             if (error <= 0) {
@@ -743,13 +706,11 @@ void rasterize_map_cell_layer_mask_line(const KfCollisionMaskPoint *start,
             count--;
         } while (count >= 0);
     } else {
-        error = (s16)dz >> 1;
+        error = dz >> 1;
         count = dz;
         do {
-            if ((u16)x < KF_MAP_CELL_GRID_SIDE &&
-                (u16)z < KF_MAP_CELL_GRID_SIDE) {
-                game_graphics_runtime.render_grid
-                    .map_cell_layer_masks[(u16)z][(u16)x] = value;
+            if (x < KF_MAP_CELL_GRID_SIDE && z < KF_MAP_CELL_GRID_SIDE) {
+                game_graphics_runtime.render_grid.map_cell_layer_masks[z][x] = value;
             }
             error -= dx;
             if (error <= 0) {
@@ -879,9 +840,6 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
 
     count--;
     if (count != -1) {
-        const u8 *first_layer_mask = &render_mask_scan_state.first_layer_mask;
-        const u8 *second_layer_mask = &render_mask_scan_state.second_layer_mask;
-
         do {
             if ((u32)window_x < 24 && (u32)window_z < 24 && *cursor != 0) {
                 if ((u32)map_x < 80 && (u32)map_z < 80) {
@@ -889,17 +847,16 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
                     u8 second = cursor[second_offset];
                     KfMapOccupancyCell *cell;
                     KfMapOccupancyLayer *first_layer;
-                    KfMapOccupancyLayer *second_layer;
 
-                    if (first & *first_layer_mask) {
+                    if (first & render_mask_scan_state.first_layer_mask) {
                         goto check_first_layer;
                     }
-                    if (second & *first_layer_mask) {
+                    if (second & render_mask_scan_state.first_layer_mask) {
                         goto check_first_layer;
                     }
                     cell = &bss_801c7540.map_cells[map_z][map_x];
     clear_first_layer:
-                    *cursor &= ~*first_layer_mask;
+                    *cursor &= ~render_mask_scan_state.first_layer_mask;
                     goto check_second_layer;
     check_first_layer:
                     cell = &bss_801c7540.map_cells[map_z][map_x];
@@ -912,14 +869,13 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
                         goto check_second_layer;
                     }
     set_second_layer:
-                    *cursor |= *second_layer_mask;
+                    *cursor |= render_mask_scan_state.second_layer_mask;
                     goto advance_iteration;
     check_second_layer:
-                    second_layer = (KfMapOccupancyLayer *)((u8 *)cell +
-                                   render_mask_scan_state.second_layer_byte_offset);
-                    if (second_layer->object_index != 0xff) {
-                        if ((first & *second_layer_mask) ||
-                            (second & *second_layer_mask)) {
+                    if (((KfMapOccupancyLayer *)((u8 *)cell +
+                         render_mask_scan_state.second_layer_byte_offset))->object_index != 0xff) {
+                        if ((first & render_mask_scan_state.second_layer_mask) ||
+                            (second & render_mask_scan_state.second_layer_mask)) {
                             goto set_second_layer;
                         }
                     }
@@ -946,6 +902,14 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
 
 
 
+/* Moves the mask scan one cell, updating both map and window coordinates. */
+#define MASK_SCAN_STEP(dx, dz) ( \
+    render_mask_scan_state.map_x += (dx), \
+    render_mask_scan_state.map_z += (dz), \
+    render_mask_scan_state.window_x += (dx), \
+    render_mask_scan_state.window_z += (dz), \
+    render_mask_scan_state.mask_cursor += (dz) * 24 + (dx))
+
 ADDRESS(0x8002c670, 0x7bc)
 void build_camera_map_cell_layer_masks(void)
 {
@@ -962,7 +926,6 @@ void build_camera_map_cell_layer_masks(void)
     s32 z;
     s32 shape_index;
     s32 index;
-    u16 layer;
     u8 *first_lighting;
     u8 *mask;
     s32 lighting_offset;
@@ -972,9 +935,7 @@ void build_camera_map_cell_layer_masks(void)
     shape_cursor = shape;
     shape_index = 6;
     do {
-        s16 near = pair->near;
-        s16 far = pair->far;
-        *shape_cursor = (((far - near) * pitch_weight) >> 12) + near;
+        *shape_cursor = (((pair->far - pair->near) * pitch_weight) >> 12) + pair->near;
         pair++;
         shape_cursor++;
     } while (--shape_index != -1);
@@ -1004,11 +965,10 @@ void build_camera_map_cell_layer_masks(void)
                      << 1);
     collision_sample_map_cell_layer(game_graphics_runtime.render_state.view_position.vx, game_graphics_runtime.render_state.view_position.vy,
                   game_graphics_runtime.render_state.view_position.vz);
-    layer = KF_COLLISION_CACHE_LAYER;
-    render_mask_scan_state.first_layer_byte_offset = layer;
+    render_mask_scan_state.first_layer_byte_offset = KF_COLLISION_CACHE_LAYER;
     render_mask_scan_state.second_layer_byte_offset =
-        sizeof(KfMapOccupancyLayer) - layer;
-    if (layer == 0) {
+        sizeof(KfMapOccupancyLayer) - render_mask_scan_state.first_layer_byte_offset;
+    if (render_mask_scan_state.first_layer_byte_offset == 0) {
         render_mask_scan_state.first_layer_mask = 1;
         render_mask_scan_state.second_layer_mask = 2;
     } else {
@@ -1037,10 +997,9 @@ void build_camera_map_cell_layer_masks(void)
     lighting_offset = render_mask_scan_state.map_z * sizeof(bss_801c7540.map_cells[0]) +
         render_mask_scan_state.map_x * sizeof(bss_801c7540.map_cells[0][0]) +
         render_mask_scan_state.first_layer_byte_offset;
-    /* The cache stores a byte offset (0 or 5) into the two-layer cell;
-     * address it from the complete grid using the typed field offset. */
-    first_lighting = (u8 *)&bss_801c7540.map_cells + lighting_offset +
-        (u32)&((KfMapOccupancyCell *)0)->layer[0].lighting_index;
+    /* The scan stores a byte offset (0 or 5) into the two-layer cell. */
+    first_lighting = &((KfMapOccupancyLayer *)
+        ((u8 *)bss_801c7540.map_cells + lighting_offset))->lighting_index;
     if (*first_lighting & KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER) {
         *render_mask_scan_state.mask_cursor = 3;
     } else {
@@ -1049,63 +1008,43 @@ void build_camera_map_cell_layer_masks(void)
 
     for (index = 0; index < 14; index++) {
         render_mask_scan_state.map_z++;
-        render_mask_scan_state.mask_cursor += 24;
         render_mask_scan_state.window_z++;
+        render_mask_scan_state.mask_cursor += 24;
         update_current_map_cell_layer_mask(-24);
-        render_mask_scan_state.map_x--;
-        render_mask_scan_state.window_x--;
-        render_mask_scan_state.mask_cursor--;
+        MASK_SCAN_STEP(-1, 0);
         sweep_map_cell_layer_mask_line(-24, -23, -1, 0, -1, index);
         update_current_map_cell_layer_mask(-23);
-
-        render_mask_scan_state.map_z--;
-        render_mask_scan_state.mask_cursor -= 24;
-        render_mask_scan_state.window_z--;
+        MASK_SCAN_STEP(0, -1);
         sweep_map_cell_layer_mask_line(1, -23, 0, -1, -24, index);
         update_current_map_cell_layer_mask(1);
-        render_mask_scan_state.map_z--;
-        render_mask_scan_state.mask_cursor -= 24;
-        render_mask_scan_state.window_z--;
+        MASK_SCAN_STEP(0, -1);
         sweep_map_cell_layer_mask_line(1, 25, 0, -1, -24, index);
         update_current_map_cell_layer_mask(25);
-
-        render_mask_scan_state.map_x++;
-        render_mask_scan_state.window_x++;
-        render_mask_scan_state.mask_cursor++;
+        MASK_SCAN_STEP(1, 0);
         sweep_map_cell_layer_mask_line(24, 25, 1, 0, 1, index);
         update_current_map_cell_layer_mask(24);
-        render_mask_scan_state.map_x++;
-        render_mask_scan_state.window_x++;
-        render_mask_scan_state.mask_cursor++;
+        MASK_SCAN_STEP(1, 0);
         sweep_map_cell_layer_mask_line(24, 23, 1, 0, 1, index);
         update_current_map_cell_layer_mask(23);
-
-        render_mask_scan_state.map_z++;
-        render_mask_scan_state.mask_cursor += 24;
-        render_mask_scan_state.window_z++;
+        MASK_SCAN_STEP(0, 1);
         sweep_map_cell_layer_mask_line(-1, 23, 0, 1, 24, index);
         update_current_map_cell_layer_mask(-1);
-        render_mask_scan_state.map_z++;
-        render_mask_scan_state.mask_cursor += 24;
-        render_mask_scan_state.window_z++;
+        MASK_SCAN_STEP(0, 1);
         sweep_map_cell_layer_mask_line(-1, -25, 0, 1, 24, index);
         update_current_map_cell_layer_mask(-25);
-
-        render_mask_scan_state.map_x--;
-        render_mask_scan_state.window_x--;
-        render_mask_scan_state.mask_cursor--;
+        MASK_SCAN_STEP(-1, 0);
         sweep_map_cell_layer_mask_line(-24, -25, -1, 0, -1, index);
     }
 
     mask[-25] |= 0x80;
-    mask[-23] |= 0x80;
     mask[-24] |= 0xc0;
-    mask[0] |= 0xc0;
+    mask[-23] |= 0x80;
     mask[-1] |= 0xc0;
-    mask[23] |= 0x80;
+    mask[0] |= 0xc0;
     mask[1] |= 0xc0;
-    mask[25] |= 0x80;
+    mask[23] |= 0x80;
     mask[24] |= 0xc0;
+    mask[25] |= 0x80;
 }
 
 

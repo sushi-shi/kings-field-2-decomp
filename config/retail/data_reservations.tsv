@@ -1,1 +1,13 @@
 image	va	name	size	class	evidence
+GAME.EXE	0x8006d9e0	current_poly_ft4	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the static to an eight-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006d9e8	menu_saved_music_enabled	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the static to an eight-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006d9f0	menu_frame_upload_pixels	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the static to an eight-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006d9f8	menu_frame_upload_rect	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the static to an eight-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da00	menu_item_preview_translation	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the static to an eight-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da08	menu_item_preview_rotation	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the static to an eight-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da10	menu_item_preview_rotation_step	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the static to an eight-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da18	memory_card_io_end_event	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da20	memory_card_timeout_event	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da28	memory_card_new_device_event	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da30	memory_card_error_event	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride
+GAME.EXE	0x8006da58	memory_card_buffer	0x8	fixed	GCC 2.5.7 ASM_OUTPUT_LOCAL rounds the 4-byte static to an 8-byte .lcomm request;retail eight-byte stride

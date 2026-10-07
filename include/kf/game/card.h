@@ -11,6 +11,14 @@ enum {
     KF_CARD_EVENT_ERROR = 3
 };
 
+/* Nonzero results of memory_card_read_slot and memory_card_write_slot. */
+enum {
+    KF_CARD_READ_IO_FAILURE = 1,
+    KF_CARD_READ_CHECKSUM_FAILURE = 2,
+    KF_CARD_WRITE_IO_FAILURE = 1,
+    KF_CARD_WRITE_NO_SPACE = 2
+};
+
 enum {
     KF_CARD_BLOCK_BYTES = 0x4000,
     KF_CARD_HEADER_BYTES = 0x400,
@@ -54,11 +62,19 @@ typedef char kf_card_header_frames_offset[
 typedef char kf_card_header_checksum_offset[
     (u32)&((KfCardHeader *)0)->payload_checksum == 0x200 ? 1 : -1];
 
+/* Initialized card-file title and one icon palette per save slot. */
+typedef struct KfCardAssets {
+    char title[0x40];
+    u16 icon_palette[KF_CARD_SAVE_SLOT_COUNT][KF_CARD_ICON_PALETTE_COLORS];
+} KfCardAssets;
+typedef char kf_card_assets_size[sizeof(KfCardAssets) == 0x120 ? 1 : -1];
+typedef char kf_card_assets_icon_palette_offset[
+    (u32)&((KfCardAssets *)0)->icon_palette == 0x40 ? 1 : -1];
+
 /* Set to 1 after nonzero PadRead; cleared by input-release/menu handlers. */
 extern b32 input_press_pending;
 extern s32 menu_cursor_animation_frame;
 /* Memory-card file I/O buffer and the pointer the card code reads through. */
-extern u8 memory_card_buffer_storage[KF_CARD_BLOCK_BYTES];
 extern char memory_card_file_prefix[16];
 extern u8 memory_card_loaded_slot;
 

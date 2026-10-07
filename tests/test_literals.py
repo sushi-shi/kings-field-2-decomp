@@ -6,7 +6,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from scripts.kf.literals import build_domains, collect, load_kf1
+from scripts.kf.literals import build_domains, collect, load_kf1, typed_enum_literals
 from scripts.kf.manifest import Manifest, Profile, Unit
 
 
@@ -136,6 +136,39 @@ int count(int frames) { return frames; }
         timer = domain_of(report, "Object.timer")
         self.assertEqual(timer["verdict"], "quantity")
         self.assertNotIn("tick:arg1", {member["slot"] for member in timer["members"]})
+
+    def test_literals_reaching_enum_typed_slots_are_reported(self) -> None:
+        sources = {"include/probe.h": """
+#define KF_ENUM_BEGIN(name, storage) typedef storage name; enum {
+#define KF_ENUM_END(name) };
+#define KF_ENUM_PROMOTED(name) int
+KF_ENUM_BEGIN(Op, unsigned char)
+    OP_IDLE = 0xff,
+    OP_RUN = 5
+KF_ENUM_END(Op)
+typedef struct Object { Op op; unsigned char other; } Object;
+""", "src/probe.c": """#include <probe.h>
+void tick(Object *object) {
+    KF_ENUM_PROMOTED(Op) local = object->op;
+    object->op = OP_RUN;
+    object->other = 5;
+    if (local == OP_IDLE) object->op = (Op)5;
+    switch (local) { case 7: break; }
+}
+"""}
+        with TemporaryDirectory() as directory:
+            repo = Path(directory)
+            for name, source in sources.items():
+                (repo / name).parent.mkdir(parents=True, exist_ok=True)
+                (repo / name).write_text(source)
+            (repo / "sdk").mkdir()
+            profile = Profile("c", "c", "gcc257-native", "O2", 0, "1.07", ())
+            unit = Unit("game.probe", "GAME.EXE", "src/probe.c", "c", ())
+            sites = typed_enum_literals(repo=repo, sdk=repo / "sdk", jobs=1,
+                                        manifest=Manifest({"c": profile}, (unit,)))
+        self.assertEqual(sorted((row["line"], row["spelling"], row["sink"]["target"])
+                                for row in sites),
+                         [(6, "5", "Object.op"), (7, "7", "tick::local")])
 
     def test_hubs_do_not_weld_domains(self) -> None:
         sites = [{"sink": {"kind": "assign", "target": name}, "value": value,

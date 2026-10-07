@@ -281,7 +281,8 @@ class Scanner:
             declaration = self.adopt(cursor.referenced)
             if declaration is None:
                 return None
-            key = f"{self.record_name(self.adopt(declaration.semantic_parent))}.{declaration.spelling}"
+            owner = self.record_name(self.adopt(declaration.semantic_parent))
+            key = f"{owner}.{declaration.spelling}"
             return self.declare(key, declaration, declaration.type, "field", declaration.spelling)
         if kind == self.ck.CXCursor_DeclRefExpr:
             declaration = self.adopt(cursor.referenced)
@@ -1091,7 +1092,8 @@ ENUM_BLOCK = re.compile(r"KF_ENUM_BEGIN\(\s*(\w+)\s*,\s*(\w+)\s*\)(.*?)KF_ENUM_E
                         re.S)
 ENUM_MEMBER = re.compile(r"\b([A-Z][A-Z0-9_]+)\s*=\s*([^,\n]+)")
 STORAGE_FIELD = re.compile(
-    r"(?:KF_ENUM_STORAGE|KF_ENUM_PARAM|KF_ENUM_PROMOTED)\(\s*(\w+)\s*(?:,\s*\w+\s*)?\)\s*\**\s*(\w+)")
+    r"(?:KF_ENUM_STORAGE|KF_ENUM_PARAM|KF_ENUM_PROMOTED)"
+    r"\(\s*(\w+)\s*(?:,\s*\w+\s*)?\)\s*\**\s*(\w+)")
 
 
 def _strip_comments(text: str) -> str:
@@ -1266,7 +1268,8 @@ def collect(*, images: tuple[str, ...] = (), names: tuple[str, ...] = (), jobs: 
     units = select_units(manifest or load_manifest(), images=images, names=names)
     work = []
     for unit in units:
-        flags = [*MODES["retail"], *FLAGS, "-I", str(repo / "include"),
+        flags = [*MODES["retail"], *FLAGS, "-Wno-unknown-warning-option",
+                 "-I", str(repo / "include"),
                  "-I", str(repo / "vendor/include"), "-isystem", str(sdk),
                  *(f"-D{define}" for define in unit.defines)]
         work.append((unit, repo, flags))
@@ -1347,6 +1350,13 @@ def default_kf1(repo: Path = REPO) -> Path | None:
         if (candidate / "include/kf").is_dir():
             return candidate
     return None
+
+
+def typed_enum_literals(**selection: Any) -> list[dict[str, Any]]:
+    """Written literals whose sink slot is declared with a scoped enum type."""
+    report = collect(**selection)
+    return [row for row in report["sites"]
+            if row["origin"] in WRITTEN and row["class"] == "typed-enum"]
 
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:

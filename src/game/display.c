@@ -2859,8 +2859,8 @@ void render_game_frame(const VECTOR *position, const SVECTOR *rotation)
     pool_mark_allocated();
     render_player_weapon();
 
-    render_model_rows[0].state = player_state.compass_enabled;
-    row_state = player_state.hud_gauges_enabled;
+    render_model_rows[0].state = KF_ENUM_ENCODE(u8, player_state.compass_enabled);
+    row_state = KF_ENUM_ENCODE(u8, player_state.hud_gauges_enabled);
     render_model_rows[13].state = row_state;
     render_model_rows[12].state = row_state;
     render_model_rows[11].state = row_state;

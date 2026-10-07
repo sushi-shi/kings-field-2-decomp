@@ -104,7 +104,7 @@ void audio_initialize_runtime(void)
 ADDRESS(0x80013ae4, 0x98)
 void audio_start_sequence(void)
 {
-    if (player_state.audio_music_enabled != 0 && audio_state.sequence_ready != 0) {
+    if (player_state.audio_music_enabled != KF_PLAYER_OPTION_OFF && audio_state.sequence_ready != 0) {
         audio_state.sequence_id = SsSeqOpen(
             audio_state.sequence_buffer, audio_state.vab_slots[AUDIO_SEQUENCE_VAB_SLOT].vab_id);
         SsSeqSetVol(audio_state.sequence_id, AUDIO_SEQUENCE_VOLUME, AUDIO_SEQUENCE_VOLUME);
@@ -339,7 +339,7 @@ void audio_key_on(s32 sound, s32 left_volume, s32 right_volume, s32 note_offset)
     KfAudioVabSlot *vab;
     KfAudioVoiceHandle *handle;
 
-    if (sound == KF_AUDIO_SOUND_NONE || player_state.audio_effects_enabled == 0) {
+    if (sound == KF_AUDIO_SOUND_NONE || player_state.audio_effects_enabled == KF_PLAYER_OPTION_OFF) {
         return;
     }
     voice = &audio_state.voices.params[(u8)sound];

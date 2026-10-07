@@ -23,6 +23,13 @@ enum {
     KF_PLAYER_TRAINING_POINTS_PER_GAIN = 100
 };
 
+/* Player option bytes, their card copies and the options menu rows share
+ * off/on (KF1 KfPlayerOption). */
+KF_ENUM_BEGIN(KfPlayerOption, u8)
+    KF_PLAYER_OPTION_OFF = 0,
+    KF_PLAYER_OPTION_ON = 1
+KF_ENUM_END(KfPlayerOption)
+
 /* Vertical extent of the player in distance tests (King's Field's
  * KF_COLLISION_PLAYER_HEIGHT). */
 enum {
@@ -457,12 +464,12 @@ typedef struct KfPlayerState {
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_shield_id;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_accessory_id;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_extra_id;
-    u8 audio_effects_enabled;
-    u8 audio_music_enabled;
-    u8 hud_gauges_enabled;
-    u8 compass_enabled;
-    u8 item_preview_enabled;
-    u8 walking_bob_enabled;
+    KfPlayerOption audio_effects_enabled;
+    KfPlayerOption audio_music_enabled;
+    KfPlayerOption hud_gauges_enabled;
+    KfPlayerOption compass_enabled;
+    KfPlayerOption item_preview_enabled;
+    KfPlayerOption walking_bob_enabled;
     u8 death_state;
     u8 unknown_ce[2];
     u8 vertical_motion_state;

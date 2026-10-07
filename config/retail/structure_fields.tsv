@@ -191,12 +191,12 @@ KfCardPlayerSnapshot	0x4b	0x1	primary_magic_shortcut_id	KfEffectKind	supported	g
 KfCardPlayerSnapshot	0x4c	0x1	secondary_magic_shortcut_id	KfEffectKind	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	secondary_magic_shortcut_id access in exact source
 KfCardPlayerSnapshot	0x4d	0x1	secondary_item_shortcut_id	KF_ENUM_STORAGE(KfObjectId, u8)	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	secondary_item_shortcut_id access in exact source
 KfCardPlayerSnapshot	0x4e	0x1	equipped_weapon_id	KF_ENUM_STORAGE(KfObjectId, u8)	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	equipped_weapon_id access in exact source
-KfCardPlayerSnapshot	0x4f	0x1	audio_effects_enabled	u8	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	audio_effects_enabled access in exact source
-KfCardPlayerSnapshot	0x50	0x1	audio_music_enabled	u8	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	audio_music_enabled access in exact source
-KfCardPlayerSnapshot	0x51	0x1	hud_gauges_enabled	u8	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	hud_gauges_enabled access in exact source
-KfCardPlayerSnapshot	0x52	0x1	compass_enabled	u8	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	compass_enabled access in exact source
-KfCardPlayerSnapshot	0x53	0x1	item_preview_enabled	u8	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	item_preview_enabled access in exact source
-KfCardPlayerSnapshot	0x54	0x1	walking_bob_enabled	u8	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	walking_bob_enabled access in exact source
+KfCardPlayerSnapshot	0x4f	0x1	audio_effects_enabled	KfPlayerOption	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	audio_effects_enabled access in exact source
+KfCardPlayerSnapshot	0x50	0x1	audio_music_enabled	KfPlayerOption	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	audio_music_enabled access in exact source
+KfCardPlayerSnapshot	0x51	0x1	hud_gauges_enabled	KfPlayerOption	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	hud_gauges_enabled access in exact source
+KfCardPlayerSnapshot	0x52	0x1	compass_enabled	KfPlayerOption	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	compass_enabled access in exact source
+KfCardPlayerSnapshot	0x53	0x1	item_preview_enabled	KfPlayerOption	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	item_preview_enabled access in exact source
+KfCardPlayerSnapshot	0x54	0x1	walking_bob_enabled	KfPlayerOption	supported	game/card_payload.h;card_payload_capture_game_state;card_payload_restore_game_state	walking_bob_enabled access in exact source
 KfCardSavePayload	0x0000	0x05	active_resource_ids	u8[5]	supported	game/card_payload.h;GAME 0x80048d30-0x80048d44;GAME 0x800492e8-0x80049308	five active resource IDs copied at the start of the card payload
 KfCardSavePayload	0x0005	0x100	event_control	u8[256]	supported	game/card_payload.h;GAME 0x80049144-0x800491e0;card_payload_restore_game_state	256-byte event control copy
 KfCardSavePayload	0x0105	0x3800	event_arena	u8[14336]	supported	game/card_payload.h;GAME 0x800491e4-0x80049278;card_payload_restore_game_state	0x3800-byte event arena copy
@@ -985,12 +985,12 @@ KfPlayerState	0xc3	0x01	equipped_leg_id	KF_ENUM_STORAGE(KfObjectId, u8)	supporte
 KfPlayerState	0xc4	0x01	equipped_shield_id	KF_ENUM_STORAGE(KfObjectId, u8)	supported	asm;player_set_equipment_slot	player equipment item ID
 KfPlayerState	0xc5	0x01	equipped_accessory_id	KF_ENUM_STORAGE(KfObjectId, u8)	supported	asm;player_set_equipment_slot	player equipment item ID
 KfPlayerState	0xc6	0x01	equipped_extra_id	KF_ENUM_STORAGE(KfObjectId, u8)	supported	asm;player_set_equipment_slot	player equipment item ID
-KfPlayerState	0xc7	0x01	audio_effects_enabled	u8	supported	asm;audio_key_on;KF1 player.h	controls player effect sound
-KfPlayerState	0xc8	0x01	audio_music_enabled	u8	supported	asm;sequence start;KF1 player.h	controls player music
-KfPlayerState	0xc9	0x01	hud_gauges_enabled	u8	supported	asm;render_game_frame;menu_card_choice_controller;KF1 player.h	gates HUD digits and charge bars in render model rows 1 through 13
-KfPlayerState	0xca	0x01	compass_enabled	u8	supported	asm;render_game_frame;menu_card_choice_controller;KF1 player.h	gates rotating compass render model row 0
-KfPlayerState	0xcb	0x01	item_preview_enabled	u8	supported	asm;menu_load_item_model;menu_update_item_preview	gates 3D item preview loading and drawing
-KfPlayerState	0xcc	0x01	walking_bob_enabled	u8	supported	asm;player_update_vertical_motion	gates sinusoidal walking camera bob
+KfPlayerState	0xc7	0x01	audio_effects_enabled	KfPlayerOption	supported	asm;audio_key_on;KF1 player.h	controls player effect sound
+KfPlayerState	0xc8	0x01	audio_music_enabled	KfPlayerOption	supported	asm;sequence start;KF1 player.h	controls player music
+KfPlayerState	0xc9	0x01	hud_gauges_enabled	KfPlayerOption	supported	asm;render_game_frame;menu_card_choice_controller;KF1 player.h	gates HUD digits and charge bars in render model rows 1 through 13
+KfPlayerState	0xca	0x01	compass_enabled	KfPlayerOption	supported	asm;render_game_frame;menu_card_choice_controller;KF1 player.h	gates rotating compass render model row 0
+KfPlayerState	0xcb	0x01	item_preview_enabled	KfPlayerOption	supported	asm;menu_load_item_model;menu_update_item_preview	gates 3D item preview loading and drawing
+KfPlayerState	0xcc	0x01	walking_bob_enabled	KfPlayerOption	supported	asm;player_update_vertical_motion	gates sinusoidal walking camera bob
 KfPlayerState	0xcd	0x01	death_state	u8	supported	GAME 0x80029be0 lbu and 0x00..0x12 jump-table dispatch;player reaction setters	General camera, overlap, damage, and death reaction state
 KfPlayerState	0xce	0x02	unknown_ce	u8[2]	opaque	asm;player_death_begin	not yet modelled
 KfPlayerState	0xd0	0x01	vertical_motion_state	u8	supported	asm;player_update_vertical_motion;player_begin_moving_damage_reaction;KF1 player.h	vertical-motion switch state for grounded, falling and landing responses

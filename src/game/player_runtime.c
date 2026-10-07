@@ -898,12 +898,12 @@ void game_initialize_session(void)
 {
     player_state.weapon_asset_buffer = (KfAssetHeader *)&player_weapon_asset_buffer;
     player_initialize_state();
-    player_state.audio_effects_enabled = 1;
-    player_state.audio_music_enabled = 1;
-    player_state.hud_gauges_enabled = 1;
-    player_state.compass_enabled = 1;
-    player_state.item_preview_enabled = 1;
-    player_state.walking_bob_enabled = 1;
+    player_state.audio_effects_enabled = KF_PLAYER_OPTION_ON;
+    player_state.audio_music_enabled = KF_PLAYER_OPTION_ON;
+    player_state.hud_gauges_enabled = KF_PLAYER_OPTION_ON;
+    player_state.compass_enabled = KF_PLAYER_OPTION_ON;
+    player_state.item_preview_enabled = KF_PLAYER_OPTION_ON;
+    player_state.walking_bob_enabled = KF_PLAYER_OPTION_ON;
     player_state.force_actor_lifecycle_refresh = KF_FALSE;
 }
 
@@ -2310,7 +2310,7 @@ landing:
 
 finish:
     if (player_state.vertical_motion_state == KF_PLAYER_VERTICAL_GROUNDED) {
-        if (player_state.walking_bob_enabled != 0) {
+        if (player_state.walking_bob_enabled != KF_PLAYER_OPTION_OFF) {
             player_state.walking_bob_phase =
                 (player_state.walking_bob_phase + player_state.movement_speed.unsigned_value)
                 & KF_ANGLE_WRAP_MASK;
@@ -2743,11 +2743,11 @@ void player_update_reaction_rotation_offsets(void)
 ADDRESS(0x80028fa8, 0x6c)
 void player_render_frame_and_release_pool(void)
 {
-    u8 saved_hud_gauges = player_state.hud_gauges_enabled;
-    u8 saved_compass = player_state.compass_enabled;
+    KfPlayerOption saved_hud_gauges = player_state.hud_gauges_enabled;
+    KfPlayerOption saved_compass = player_state.compass_enabled;
 
-    player_state.hud_gauges_enabled = 0;
-    player_state.compass_enabled = 0;
+    player_state.hud_gauges_enabled = KF_PLAYER_OPTION_OFF;
+    player_state.compass_enabled = KF_PLAYER_OPTION_OFF;
     render_game_frame(NULL, NULL);
     player_state.hud_gauges_enabled = saved_hud_gauges;
     player_state.compass_enabled = saved_compass;

@@ -79,8 +79,8 @@ void opening_play_movie(void)
     SsSeqSetVol(audio_movie_sequence_id, 0, 0);
     mode = CdlModeSpeed;
     CdControlB(CdlSetmode, &mode, NULL);
-    DecDCToutCallback(0);
-    CdDataCallback(0);
+    DecDCToutCallback(NULL);
+    CdDataCallback(NULL);
     CdReadyCallback(NULL);
     CdControlB(CdlPause, NULL, NULL);
     SetDefDrawEnv(&display_buffers[0].draw, 0, 0, OPENING_TITLE_DISPLAY_WIDTH, KF_DISPLAY_HEIGHT);

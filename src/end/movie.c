@@ -68,8 +68,8 @@ void ending_play_movie(void)
      * SetDef*Env calls and the address-taken mode byte (retail's 72 bytes). */
     mode = CdlModeSpeed;
     CdControlB(CdlSetmode, &mode, NULL);
-    DecDCToutCallback(0);
-    CdDataCallback(0);
+    DecDCToutCallback(NULL);
+    CdDataCallback(NULL);
     CdReadyCallback(NULL);
     CdControlB(CdlPause, NULL, NULL);
     SetDefDrawEnv(&display_buffers[0].draw, 0, 0, 320, KF_DISPLAY_HEIGHT);

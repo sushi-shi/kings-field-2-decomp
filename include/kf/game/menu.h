@@ -6,6 +6,7 @@
 #include <kf/lib/types.h>
 #include <kf/lib/enum.h>
 #include <kf/game/item.h>
+#include <kf/game/player.h>
 #include <psyq/sdk.h>
 
 struct DIRENTRY;
@@ -445,6 +446,6 @@ void menu_buy_masked_stock_items(void);
 void menu_buy_owned_items(void);
 void menu_draw_combat_attributes(void);
 void menu_draw_options_rows(KfMenuGlyphString *left, KfMenuGlyphString *right,
-    const u8 *selected);
+    const KfPlayerOption *selected);
 
 #endif

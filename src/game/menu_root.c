@@ -1288,7 +1288,7 @@ enum {
 ADDRESS(0x8001b2dc, 0x278)
 void menu_options_controller(void)
 {
-    u8 selected[KF_MENU_OPTION_COUNT];
+    KfPlayerOption selected[KF_MENU_OPTION_COUNT];
     KfMenuGlyphString labels[2];
     s32 choice = 0;
     s32 result = KF_MENU_RESULT_PENDING;
@@ -1309,12 +1309,12 @@ void menu_options_controller(void)
     labels[1].glyphs.codes[2] = 244;
     labels[1].glyphs.codes[3] = KF_MENU_TEXT_END;
 
-    selected[KF_MENU_OPTION_EFFECTS_ROW] = KF_ENUM_ENCODE(u8, player_state.audio_effects_enabled);
-    selected[KF_MENU_OPTION_MUSIC_ROW] = KF_ENUM_ENCODE(u8, player_state.audio_music_enabled);
-    selected[KF_MENU_OPTION_GAUGES_ROW] = KF_ENUM_ENCODE(u8, player_state.hud_gauges_enabled);
-    selected[KF_MENU_OPTION_COMPASS_ROW] = KF_ENUM_ENCODE(u8, player_state.compass_enabled);
-    selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW] = KF_ENUM_ENCODE(u8, player_state.item_preview_enabled);
-    selected[KF_MENU_OPTION_WALKING_BOB_ROW] = KF_ENUM_ENCODE(u8, player_state.walking_bob_enabled);
+    selected[KF_MENU_OPTION_EFFECTS_ROW] = player_state.audio_effects_enabled;
+    selected[KF_MENU_OPTION_MUSIC_ROW] = player_state.audio_music_enabled;
+    selected[KF_MENU_OPTION_GAUGES_ROW] = player_state.hud_gauges_enabled;
+    selected[KF_MENU_OPTION_COMPASS_ROW] = player_state.compass_enabled;
+    selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW] = player_state.item_preview_enabled;
+    selected[KF_MENU_OPTION_WALKING_BOB_ROW] = player_state.walking_bob_enabled;
 
     for (;;) {
         if (result != KF_MENU_RESULT_PENDING) {
@@ -1344,7 +1344,7 @@ void menu_options_controller(void)
             if (choice < last_row) {
                 menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
                 confirmed = KF_TRUE;
-                selected[choice] = selected[choice] == 0;
+                selected[choice] = KF_ENUM_DECODE(KfPlayerOption, selected[choice] == KF_PLAYER_OPTION_OFF);
             } else if (buttons & PADRright) {
                 menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
                 result = KF_MENU_RESULT_CANCELLED;
@@ -1364,12 +1364,12 @@ void menu_options_controller(void)
         }
     }
 
-    player_state.audio_effects_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_EFFECTS_ROW]);
-    player_state.audio_music_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_MUSIC_ROW]);
-    player_state.hud_gauges_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_GAUGES_ROW]);
-    player_state.compass_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_COMPASS_ROW]);
-    player_state.item_preview_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW]);
-    player_state.walking_bob_enabled = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfPlayerOption), selected[KF_MENU_OPTION_WALKING_BOB_ROW]);
+    player_state.audio_effects_enabled = selected[KF_MENU_OPTION_EFFECTS_ROW];
+    player_state.audio_music_enabled = selected[KF_MENU_OPTION_MUSIC_ROW];
+    player_state.hud_gauges_enabled = selected[KF_MENU_OPTION_GAUGES_ROW];
+    player_state.compass_enabled = selected[KF_MENU_OPTION_COMPASS_ROW];
+    player_state.item_preview_enabled = selected[KF_MENU_OPTION_ITEM_PREVIEW_ROW];
+    player_state.walking_bob_enabled = selected[KF_MENU_OPTION_WALKING_BOB_ROW];
 }
 
 ADDRESS(0x8001b554, 0x2e0)
@@ -2455,7 +2455,7 @@ DATA(0x8006d9e0, 0x4, ".sbss")
 static POLY_FT4 *current_poly_ft4;
 #endif
 DATA(0x8006d9e8, 0x1, ".sbss")
-static u8 menu_saved_music_enabled;
+static KfPlayerOption menu_saved_music_enabled;
 DATA(0x8006d9f0, 0x4, ".sbss")
 static u_long *menu_frame_upload_pixels;
 DATA(0x8006d9f8, 0x8, ".sbss")
@@ -3503,7 +3503,7 @@ void menu_draw_combat_attributes(void)
 
 ADDRESS(0x8001f798, 0x120)
 void menu_draw_options_rows(KfMenuGlyphString *left, KfMenuGlyphString *right,
-    const u8 *selected)
+    const KfPlayerOption *selected)
 {
     s32 left_y = left->position.y;
     s32 right_y = right->position.y;
@@ -3511,7 +3511,7 @@ void menu_draw_options_rows(KfMenuGlyphString *left, KfMenuGlyphString *right,
 
     row = 0;
     do {
-        if (*selected == 1) {
+        if (*selected == KF_PLAYER_OPTION_ON) {
             menu_blit_sprite_fixed_clut(&menu_sprite_defs[KF_MENU_SPRITE_SELECTION_CURSOR], &left->position);
             menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_OPTION_HIGHLIGHT], &left->position);
             menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_OPTION_BACKGROUND],
@@ -4277,7 +4277,7 @@ void menu_enter_display_state(s32 mode)
     StoreImage(&menu_frame_upload_rect, menu_frame_upload_pixels);
     DrawSync(0);
 
-    menu_saved_music_enabled = KF_ENUM_ENCODE(u8, player_state.audio_music_enabled);
+    menu_saved_music_enabled = player_state.audio_music_enabled;
     if (player_state.audio_music_enabled == KF_PLAYER_OPTION_ON && audio_state.sequence_active == KF_TRUE)
         SsSeqPause(audio_state.sequence_id);
 }
@@ -4285,7 +4285,7 @@ void menu_enter_display_state(s32 mode)
 ADDRESS(0x80021e00, 0x110)
 void menu_exit_display_state(b32 stop_sequence)
 {
-    u8 music_enabled;
+    KfPlayerOption music_enabled;
 
     game_graphics_runtime.display_state.primitive_buffers[0] =
         menu_saved_primitive_buffers[0];
@@ -4299,13 +4299,13 @@ void menu_exit_display_state(b32 stop_sequence)
     if (stop_sequence == KF_TRUE) {
         audio_stop_sequence();
     } else {
-        music_enabled = KF_ENUM_ENCODE(u8, player_state.audio_music_enabled);
+        music_enabled = player_state.audio_music_enabled;
         if (music_enabled != menu_saved_music_enabled) {
-            if (music_enabled == 0)
+            if (music_enabled == KF_PLAYER_OPTION_OFF)
                 audio_stop_sequence();
             else
                 audio_start_sequence();
-        } else if (music_enabled == 1 && audio_state.sequence_active == KF_TRUE) {
+        } else if (music_enabled == KF_PLAYER_OPTION_ON && audio_state.sequence_active == KF_TRUE) {
             SsSeqReplay(audio_state.sequence_id);
         }
     }

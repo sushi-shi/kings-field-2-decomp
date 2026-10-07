@@ -295,37 +295,37 @@ void memory_arena_wait_pending(KfMemoryBlock *arena)
 ADDRESS(0x80017504, 0xe4)
 void memory_arena_compact(KfMemoryBlock *arena)
 {
-    KfMemoryBlock *read = arena;
-    KfMemoryBlock *write = arena;
+    KfMemoryBlock *read_block = arena;
+    KfMemoryBlock *write_block = arena;
 
     memory_arena_wait_pending(arena);
-    if (read->kind != KF_MEMORY_BLOCK_END) {
+    if (read_block->kind != KF_MEMORY_BLOCK_END) {
         do {
-            KfMemoryBlock *next = (KfMemoryBlock *)((u8 *)read + read->size + sizeof(KfMemoryBlock));
+            KfMemoryBlock *next = (KfMemoryBlock *)((u8 *)read_block + read_block->size + sizeof(KfMemoryBlock));
 
-            if (read->kind == KF_MEMORY_BLOCK_RECLAIMABLE) {
-                memory_arena_free(read);
+            if (read_block->kind == KF_MEMORY_BLOCK_RECLAIMABLE) {
+                memory_arena_free(read_block);
             }
-            if (read->kind == KF_MEMORY_BLOCK_OWNED) {
-                if (read != write) {
-                    u32 *source = (u32 *)read;
-                    u32 *destination = (u32 *)write;
-                    u32 word_count = (read->size + sizeof(KfMemoryBlock)) >> 2;
+            if (read_block->kind == KF_MEMORY_BLOCK_OWNED) {
+                if (read_block != write_block) {
+                    u32 *source = (u32 *)read_block;
+                    u32 *destination = (u32 *)write_block;
+                    u32 word_count = (read_block->size + sizeof(KfMemoryBlock)) >> 2;
 
                     do {
                         *destination++ = *source++;
                     } while (--word_count != 0);
-                    *write->owner = (u8 *)(write + 1);
-                    write = (KfMemoryBlock *)destination;
+                    *write_block->owner = (u8 *)(write_block + 1);
+                    write_block = (KfMemoryBlock *)destination;
                 } else {
-                    write = next;
+                    write_block = next;
                 }
             }
-            read = next;
-        } while (read->kind != KF_MEMORY_BLOCK_END);
+            read_block = next;
+        } while (read_block->kind != KF_MEMORY_BLOCK_END);
     }
-    write->kind = KF_MEMORY_BLOCK_FREE;
-    write->size = (u8 *)read - (u8 *)write - sizeof(KfMemoryBlock);
+    write_block->kind = KF_MEMORY_BLOCK_FREE;
+    write_block->size = (u8 *)read_block - (u8 *)write_block - sizeof(KfMemoryBlock);
 }
 
 ADDRESS(0x800175e8, 0x20)
@@ -437,7 +437,7 @@ u8 *memory_allocate(u32 size)
 ADDRESS(0x8001777c, 0x20)
 void memory_free(u8 *data)
 {
-    free(data);
+    free((void *)data);
 }
 
 /* Services the VAB and stream requests at the head of the CD queue, then
@@ -543,7 +543,7 @@ void cd_data_ready_handler(void)
 
     if (request->kind != KF_CD_REQUEST_IDLE &&
         request->kind == KF_CD_REQUEST_SECTOR_CALLBACK) {
-        CdGetSector(request->destination, KF_CD_SECTOR_WORDS);
+        CdGetSector((void *)request->destination, KF_CD_SECTOR_WORDS);
         request->sector_count--;
         if (request->on_complete != NULL) {
             request->on_complete(request);
@@ -634,7 +634,7 @@ void cd_request_wait_done(KfCdRequest *request)
 /* Nonzero unless the last word of DATA equals KF_CD_CHECKSUM_SEED plus the
  * sum of every preceding word. */
 ADDRESS(0x80017d00, 0x54)
-s32 cd_sectors_corrupt(u32 *data, s32 sector_count)
+b32 cd_sectors_corrupt(u32 *data, s32 sector_count)
 {
     u32 sum = KF_CD_CHECKSUM_SEED;
     s32 last = sector_count * KF_CD_SECTOR_WORDS - 1;
@@ -764,7 +764,7 @@ ADDRESS(0x80018100, 0x140)
 void cd_read_sectors(CdlLOC *location, u_long *destination, s32 sector_count)
 {
     s32 attempt = 0;
-    s32 failed = 1;
+    b32 failed = KF_TRUE;
     s32 result;
 
     cd_request_wait_idle();
@@ -779,14 +779,14 @@ void cd_read_sectors(CdlLOC *location, u_long *destination, s32 sector_count)
         }
         CdPause();
         if (result == 0) {
-            failed = 0;
+            failed = KF_FALSE;
             break;
         }
     }
     EnableEvent(cd_state.error_event);
     EnableEvent(cd_state.complete_event);
     EnableEvent(cd_state.data_ready_event);
-    if (failed == 1) {
+    if (failed == KF_TRUE) {
         cd_report_error(KF_CD_ERROR_READ);
     }
 }
@@ -836,7 +836,7 @@ u8 *cd_file_load(const char *name)
     u32 size;
     u8 *data;
 
-    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
+    memcpy((void *)path, (const void *)cd_path_prefix, sizeof cd_path_prefix);
     strcat(path, name);
     strcat(path, cd_version_suffix);
     cd_request_wait_idle();
@@ -860,7 +860,7 @@ s32 cd_file_load_into(u_long *destination, const char *name, u32 size)
      * and retail keeps its frame slot. */
     CdlLOC start;
 
-    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
+    memcpy((void *)path, (const void *)cd_path_prefix, sizeof cd_path_prefix);
     strcat(path, name);
     strcat(path, cd_version_suffix);
     cd_request_wait_idle();
@@ -885,7 +885,7 @@ void cd_archive_open(u16 slot, const char *name)
     char path[CD_PATH_BYTES];
     KfCdArchive *archive = &cd_archives[slot];
 
-    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
+    memcpy((void *)path, (const void *)cd_path_prefix, sizeof cd_path_prefix);
     strcat(path, name);
     strcat(path, cd_version_suffix);
     if (CdSearchFile(&file, path) == NULL) {

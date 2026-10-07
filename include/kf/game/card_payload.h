@@ -1,6 +1,7 @@
 #ifndef KF_GAME_CARD_PAYLOAD_H
 #define KF_GAME_CARD_PAYLOAD_H
 
+#include <kf/lib/offsetof.h>
 #include <kf/game/card.h>
 #include <kf/game/player.h>
 
@@ -64,25 +65,25 @@ typedef struct KfCardSavePayload {
 } KfCardSavePayload;
 
 typedef char kf_card_snapshot_level_offset[
-    (u32)&((KfCardPlayerSnapshot *)0)->level == 66 ? 1 : -1];
+    offsetof(KfCardPlayerSnapshot, level) == 66 ? 1 : -1];
 typedef char kf_card_snapshot_size[sizeof(KfCardPlayerSnapshot) == 88 ? 1 : -1];
 typedef char kf_card_save_control_offset[
-    (u32)&((KfCardSavePayload *)0)->event_control == 5 ? 1 : -1];
+    offsetof(KfCardSavePayload, event_control) == 5 ? 1 : -1];
 typedef char kf_card_save_arena_offset[
-    (u32)&((KfCardSavePayload *)0)->event_arena == 261 ? 1 : -1];
+    offsetof(KfCardSavePayload, event_arena) == 261 ? 1 : -1];
 typedef char kf_card_save_offsets_offset[
-    (u32)&((KfCardSavePayload *)0)->saved_event_offsets == 14598 ? 1 : -1];
+    offsetof(KfCardSavePayload, saved_event_offsets) == 14598 ? 1 : -1];
 typedef char kf_card_save_counters_offset[
-    (u32)&((KfCardSavePayload *)0)->game_counters == 14618 ? 1 : -1];
+    offsetof(KfCardSavePayload, game_counters) == 14618 ? 1 : -1];
 typedef char kf_card_save_magic_offset[
-    (u32)&((KfCardSavePayload *)0)->magic_menu_available == 14738 ? 1 : -1];
+    offsetof(KfCardSavePayload, magic_menu_available) == 14738 ? 1 : -1];
 typedef char kf_card_save_position_offset[
-    (u32)&((KfCardSavePayload *)0)->camera_position == 14804 ? 1 : -1];
+    offsetof(KfCardSavePayload, camera_position) == 14804 ? 1 : -1];
 typedef char kf_card_save_rotation_offset[
-    (u32)&((KfCardSavePayload *)0)->camera_rotation_target ==
+    offsetof(KfCardSavePayload, camera_rotation_target) ==
     KF_CARD_SAVE_ROTATION_OFFSET ? 1 : -1];
 typedef char kf_card_save_player_offset[
-    (u32)&((KfCardSavePayload *)0)->player == 14828 ? 1 : -1];
+    offsetof(KfCardSavePayload, player) == 14828 ? 1 : -1];
 typedef char kf_card_save_payload_size[
     sizeof(KfCardSavePayload) == KF_CARD_PAYLOAD_BYTES ? 1 : -1];
 

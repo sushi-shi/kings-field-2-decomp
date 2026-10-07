@@ -1,5 +1,7 @@
 #ifndef KF_GAME_CD_H
 #define KF_GAME_CD_H
+#include <kf/lib/bool.h>
+#include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <psyq/cd.h>
 #include <psyq/sdk.h>
@@ -80,9 +82,9 @@ typedef union KfCdRequestPayload {
 typedef char kf_cd_request_payload_size[
     sizeof(KfCdRequestPayload) == 8 ? 1 : -1];
 typedef char kf_cd_vab_slot_index_offset[
-    (u32)&((KfCdRequestPayloadVab *)0)->slot_index == 2 ? 1 : -1];
+    offsetof(KfCdRequestPayloadVab, slot_index) == 2 ? 1 : -1];
 typedef char kf_cd_vab_stream_slot_offset[
-    (u32)&((KfCdRequestPayloadVab *)0)->stream_slot == 4 ? 1 : -1];
+    offsetof(KfCdRequestPayloadVab, stream_slot) == 4 ? 1 : -1];
 
 /* One queued asynchronous CD request. */
 struct KfCdRequest {
@@ -101,9 +103,9 @@ struct KfCdRequest {
 
 typedef char kf_cd_request_size[sizeof(KfCdRequest) == 40 ? 1 : -1];
 typedef char kf_cd_request_destination_offset[
-    (u32)&((KfCdRequest *)0)->destination == 0x0c ? 1 : -1];
+    offsetof(KfCdRequest, destination) == 0x0c ? 1 : -1];
 typedef char kf_cd_request_stream_complete_offset[
-    (u32)&((KfCdRequest *)0)->stream_complete == 0x24 ? 1 : -1];
+    offsetof(KfCdRequest, stream_complete) == 0x24 ? 1 : -1];
 
 void cd_stream_limit_chunk(KfCdRequest *request);
 
@@ -149,7 +151,7 @@ KfCdRequest *cd_request_enqueue(s32 kind, CdlLOC *location, u32 byte_size,
 void cd_request_yield(void);
 void cd_request_service_vab(void);
 void cd_request_service_stream(void);
-s32 cd_sectors_corrupt(u32 *data, s32 sector_count);
+b32 cd_sectors_corrupt(u32 *data, s32 sector_count);
 u32 cd_archive_entry_extent(u16 slot, u16 entry, CdlLOC *location);
 void cd_archive_queue_read(u16 slot, u16 entry, u_long *destination,
     KfCdRequestCallback on_complete);

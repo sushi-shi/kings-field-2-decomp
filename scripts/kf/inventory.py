@@ -402,6 +402,7 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
         "KfBoolU32": (4, 4),
         "KfBool8": (1, 1),
         "KfBool16": (2, 2),
+        "KfBoolS16": (2, 2),
         "b8": (1, 1),
         "b16": (2, 2),
         "b32": (4, 4),

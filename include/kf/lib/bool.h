@@ -48,6 +48,7 @@ typedef KfBoolStorage<s32> KfBool32;
 typedef KfBoolStorage<u32> KfBoolU32;
 typedef KfBoolStorage<u8> KfBool8;
 typedef KfBoolStorage<u16> KfBool16;
+typedef KfBoolStorage<s16> KfBoolS16;
 #define KF_FALSE false
 #define KF_TRUE true
 #else
@@ -57,6 +58,8 @@ typedef s32 KfBool32;
 typedef u32 KfBoolU32;
 typedef u8 KfBool8;
 typedef u16 KfBool16;
+/* Retail loads some halfword flags with lh; keep that signedness. */
+typedef s16 KfBoolS16;
 #define KF_FALSE 0
 #define KF_TRUE 1
 #endif

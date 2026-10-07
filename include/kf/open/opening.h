@@ -1,5 +1,6 @@
 #ifndef KF_OPEN_OPENING_H
 #define KF_OPEN_OPENING_H
+#include <kf/lib/bool.h>
 #include <kf/lib/types.h>
 #include <sys/types.h>
 
@@ -35,8 +36,8 @@ extern short audio_movie_sequence_id;
 void opening_fade_out(s32 prompt_mode);
 void opening_load_data(void);
 void opening_open_audio(void);
-s32 opening_draw_title(s32 mode);
-s32 opening_draw_banner(s32 mode);
+b32 opening_draw_title(s32 mode);
+b32 opening_draw_banner(s32 mode);
 void opening_draw_prompt(s32 mode);
 s32 opening_poll_pad(s32 *prompt_mode, s32 *idle_frames);
 void primitive_buffer_begin_poly_ft4(void);

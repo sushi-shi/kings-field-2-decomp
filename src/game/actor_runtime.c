@@ -860,7 +860,7 @@ void actor_apply_area_magic(VECTOR *position, s32 minimum_distance, s32 reach,
 }
 
 ADDRESS(0x8003a614, 0x164)
-s32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance, s32 y_offset,
+b32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance, s32 y_offset,
                   s32 angle_tolerance, u16 damage0, u16 damage1,
                   u16 damage2, u16 damage3)
 {
@@ -883,19 +883,19 @@ s32 actor_try_damage_player_in_cone(s32 minimum_distance, s32 maximum_distance, 
                                         player_state.camera_position.vz,
                                         maximum_distance, 0, 1700);
     if (distance == -1 || distance < minimum_distance) {
-        return 0;
+        return KF_FALSE;
     }
 
     camera_position = &player_state.camera_position;
     angle = vector_xz_to_angle(camera_position->vx - origin.vx,
                                camera_position->vz - origin.vz);
     if (!angle_within_tolerance(actor->rotation.y, angle, angle_tolerance)) {
-        return 0;
+        return KF_FALSE;
     }
 
     player_apply_damage(damage0, damage1, damage2, damage3,
                   0, 0, 0, 0, 0, 0x1000, 10, &origin);
-    return 1;
+    return KF_TRUE;
 }
 
 ADDRESS(0x8003a778, 0x27c)
@@ -1108,8 +1108,8 @@ s32 actor_move_horizontal_with_collision(SVECTOR *motion, s32 flags)
     s32 original_z;
     VECTOR proposed;
     s32 collision;
-    s32 axis_attempted;
-    s32 diagonal_attempted;
+    b32 axis_attempted;
+    b32 diagonal_attempted;
     s32 retry_count;
     s32 result = 0;
 
@@ -1117,8 +1117,8 @@ s32 actor_move_horizontal_with_collision(SVECTOR *motion, s32 flags)
         return 0;
     }
     retry_count = 0;
-    diagonal_attempted = 0;
-    axis_attempted = 0;
+    diagonal_attempted = KF_FALSE;
+    axis_attempted = KF_FALSE;
     original_x = motion_x = motion->vx;
     original_z = motion_z = motion->vz;
 
@@ -1249,7 +1249,7 @@ try_axis:
         } else {
             motion_z = original_z;
         }
-        axis_attempted = 1;
+        axis_attempted = KF_TRUE;
         goto retry_move;
     }
 check_diagonal:
@@ -1270,7 +1270,7 @@ check_diagonal:
         motion_z = -motion_x;
         break;
     }
-    diagonal_attempted = 1;
+    diagonal_attempted = KF_TRUE;
     goto retry_move;
 
 finish:
@@ -1614,7 +1614,7 @@ s32 actor_sample_rotated_animation_vertex(KfActor *actor, s32 vertex_index, VECT
     SVECTOR offset;
 
     if (animation_sample_vertex(actor->definition_id + 128, actor->animation_id,
-                      actor->animation_phase, vertex_index, &offset) != 0) {
+                      actor->animation_phase, vertex_index, &offset)) {
         offset.vx = 0;
         offset.vy = -(s32)actor->collision_height >> 1;
         offset.vz = -(s32)actor->collision_radius;
@@ -3308,12 +3308,12 @@ void actor_fixup_group_targets(void)
     KfTargetReference *slot;
 
     group_index = 0;
-    while (group_index < 40) {
+    while (group_index < KF_COUNTOF(actor_state.target_groups)) {
         if (group->definition_id == 0xff) {
             break;
         }
         slot = group->targets;
-        for (slot_index = 0; slot_index < 16; slot_index++, slot++) {
+        for (slot_index = 0; slot_index < KF_COUNTOF(group->targets); slot_index++, slot++) {
             if (slot->relative_offset == -1) {
                 slot->pointer = NULL;
             } else {

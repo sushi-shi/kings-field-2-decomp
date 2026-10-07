@@ -214,8 +214,8 @@ KfCdArchive	0x00	0x04	sector_offsets	u16 *	supported	game/cd.h;cd_archive_open	s
 KfCdArchive	0x04	0x08	extent	KfCdExtent	supported	game/cd.h;cd_archive_entry_extent	archive file extent
 KfCdExtent	0x00	0x04	pos	CdlLOC	supported	game/cd.h;cd_file_load	CD location
 KfCdExtent	0x04	0x04	size	u_long	supported	game/cd.h;cd_file_load	byte size
-KfCdRequest	0x00	0x01	kind	u8	supported	game/cd.h;asm;cd_initialize	request kind, zero when idle
-KfCdRequest	0x01	0x01	phase	u8	supported	game/cd.h;asm;cd_initialize	request phase
+KfCdRequest	0x00	0x01	kind	KfCdRequestKind	supported	game/cd.h;asm;cd_initialize	request kind, zero when idle
+KfCdRequest	0x01	0x01	phase	KfCdRequestPhase	supported	game/cd.h;asm;cd_initialize	request phase
 KfCdRequest	0x02	0x04	location	CdlLOC	supported	game/cd.h;cd_request_enqueue	current CD location
 KfCdRequest	0x06	0x04	initial_location	CdlLOC	supported	game/cd.h;cd_request_enqueue	initial CD location
 KfCdRequest	0x0c	0x04	destination	u_long *	supported	game/cd.h;cd_request_enqueue	sector destination
@@ -224,10 +224,10 @@ KfCdRequest	0x14	0x04	on_complete	KfCdRequestCallback	supported	game/cd.h;cd_com
 KfCdRequest	0x18	0x08	payload	KfCdRequestPayload	supported	game/cd.h;audio_vab_stream_callback;cd_request_service_stream	overlaid stream and image payload
 KfCdRequest	0x20	0x02	chunk_sectors	s16	supported	game/cd.h;cd_stream_limit_chunk	sectors in this chunk
 KfCdRequest	0x22	0x02	remaining_sectors	s16	supported	game/cd.h;cd_stream_limit_chunk	sectors remaining
-KfCdRequest	0x24	0x01	stream_complete	u8	supported	game/cd.h;asm;cd_stream_mark_complete	CD stream completion flag
+KfCdRequest	0x24	0x01	stream_complete	KfCdStreamState	supported	game/cd.h;asm;cd_stream_mark_complete	CD stream completion flag
 KfCdRequestPayload	0x00	0x08	vab	KfCdRequestPayloadVab	supported	game/cd.h;audio_vab_stream_callback	VAB stream view
 KfCdRequestPayload	0x00	0x08	image_rect	RECT	supported	game/cd.h;cd_request_service_stream	image rectangle view
-KfCdRequestPayloadVab	0x00	0x01	phase	u8	supported	game/cd.h;audio_vab_stream_callback	VAB transfer phase
+KfCdRequestPayloadVab	0x00	0x01	phase	KfCdVabPhase	supported	game/cd.h;audio_vab_stream_callback	VAB transfer phase
 KfCdRequestPayloadVab	0x02	0x02	slot_index	s16	supported	game/cd.h;audio_vab_stream_callback	VAB slot index
 KfCdRequestPayloadVab	0x04	0x04	stream_slot	KfAudioVabStreamSlot *	supported	game/cd.h;audio_vab_stream_callback	VAB stream slot pointer
 KfCdState	0x00	0x04	vsync_event	long	supported	game/cd.h;asm;cd_initialize	RCntCNT3 interrupt event

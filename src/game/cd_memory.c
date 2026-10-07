@@ -18,8 +18,6 @@ enum {
     CD_READ_ATTEMPTS = 3,
     CD_READ_SYNC_POLL = 1,
     CD_PATH_BYTES = 64,
-    CD_STREAM_WAITING = 0,
-    CD_STREAM_CHUNK_READY = 1,
     MEMORY_ARENA_END_MARKER_BYTES = sizeof(u32)
 };
 
@@ -58,7 +56,7 @@ u8 cd_stream_work_buffer[0x11000];
 ADDRESS(0x80016ed4, 0xc)
 void cd_stream_mark_complete(KfCdRequest *request)
 {
-    request->stream_complete = CD_STREAM_CHUNK_READY;
+    request->stream_complete = KF_CD_STREAM_CHUNK_READY;
 }
 
 ADDRESS(0x80016ee0, 0x30)
@@ -92,12 +90,12 @@ void cd_request_service_stream(void)
     if (request->kind != KF_CD_REQUEST_IMAGE_STREAM) {
         goto leave_critical;
     }
-    if (request->stream_complete != CD_STREAM_CHUNK_READY) {
+    if (request->stream_complete != KF_CD_STREAM_CHUNK_READY) {
         goto leave_critical;
     }
     consumed = 0;
     source = (u16 *)request->destination;
-    request->stream_complete = CD_STREAM_WAITING;
+    request->stream_complete = KF_CD_STREAM_WAITING;
     ExitCriticalSection();
 
     for (;;) {
@@ -133,7 +131,7 @@ void cd_request_service_stream(void)
             source[2] != source[6] || source[3] != source[7] ||
             source[2] == 0 || source[3] == 0) {
             request->payload.image_rect.h = 0;
-            request->stream_complete = CD_STREAM_WAITING;
+            request->stream_complete = KF_CD_STREAM_WAITING;
             request->remaining_sectors = request->chunk_sectors;
             request->location = request->initial_location;
             cd_stream_limit_chunk(request);
@@ -648,7 +646,7 @@ b32 cd_sectors_corrupt(u32 *data, s32 sector_count)
 }
 
 ADDRESS(0x80017d54, 0x118)
-KfCdRequest *cd_request_enqueue(s32 kind, CdlLOC *location, u32 byte_size,
+KfCdRequest *cd_request_enqueue(KF_ENUM_PARAM(KfCdRequestKind, s32) kind, CdlLOC *location, u32 byte_size,
     u_long *destination, KfCdRequestCallback on_complete)
 {
     KfCdRequest *request = cd_state.tail;
@@ -727,7 +725,7 @@ void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
 
     cd_request_wait_done(request);
     request->payload.image_rect.h = 0;
-    request->stream_complete = CD_STREAM_WAITING;
+    request->stream_complete = KF_CD_STREAM_WAITING;
     size = cd_archive_entry_extent((u16)slot, (u16)entry, &location);
     request->remaining_sectors = size >> KF_CD_SECTOR_SHIFT;
     request->chunk_sectors = request->remaining_sectors;

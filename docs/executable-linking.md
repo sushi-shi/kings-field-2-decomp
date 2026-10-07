@@ -38,6 +38,67 @@ kit's ASMPSX 1.21 is not yet validated under DOSBox. No retail code uses a
 `.bss` start label, so none is declared. OPEN and END pass numeric heap
 bounds.
 
+## SDK member order
+
+PSYLINK, not the build script, places SDK library members. The build only
+chooses the explicit objects and the `inclib` order (`LIBRARIES` in
+`scripts/psxbuild/link.py`). Relinks of the same objects that change only
+that order show these PSYLINK 1.29 rules:
+
+- Archives are visited in `inclib` order. The groups of members from each
+  archive follow one another in the linked text in that order.
+- After it takes a member, the linker searches again from the first archive.
+  A dependency in an archive listed earlier is placed directly after the
+  member that needs it: in all three overlays LIBAPI's `GPU_cw` (C73) follows
+  LIBGPU `SYS` and precedes `TMD`. A dependency in an archive listed later
+  waits for that archive's group.
+- Inside one archive, members follow the linker's own symbol-table order.
+  This is neither archive order nor first-reference order. LIBAPI and LIBCARD
+  hold byte-identical `C112` (`_bu_init`) members. Both retail and the relink
+  put it in the LIBAPI group, although LIBCARD is visited first. These
+  placements come from running PSYLINK, not from a model of it.
+
+The retail placements in `config/retail/functions_vendored.tsv` fix the order:
+
+| Image | Explicit objects after the game units | `inclib` order |
+| --- | --- | --- |
+| `GAME.EXE` | `NONE2.OBJ`, `MALLOC.OBJ`, `CARD.OBJ` | LIBSN, LIBCARD, LIBCD, LIBSPU, LIBSND, LIBGTE, LIBETC, LIBAPI, LIBC, LIBGPU |
+| `OPEN.EXE`, `END.EXE` | `NONE2.OBJ` before the movie units; `MALLOC.OBJ` | LIBSN, LIBAPI, LIBC, LIBPRESS, LIBGPU, LIBGTE, LIBCD, LIBETC, LIBSND, LIBSPU |
+
+The GAME evidence:
+
+- Retail GAME text holds the member groups CARD, CD, SPU, SND, GTE, ETC, API,
+  C, GPU.
+- The SND members that call SPU sit inside the SPU group. For example,
+  `VS_VTBP` is followed by its `S_STM`, `S_WP` and `S_GTSA`, and `UT_REV`
+  by `S_SR`. So LIBSPU comes before LIBSND.
+- No GAME member comes from LIBPRESS, so LIBPRESS is not linked.
+- LIBSN supplies no member to an overlay and has no effect on the output.
+
+`CARD.OBJ` (Psy-Q 3.0 `LIB/CARD.OBJ`) is linked explicitly. Retail places its
+`_card_clear` directly after `MALLOC.OBJ`, and no GAME code calls it. Its
+`_new_card` and `_card_write` references pull LIBCARD A80 and A78.
+`MALLOC.OBJ` supplies the overlay `InitHeap`, `malloc` and `free` in place
+of the LIBAPI/LIBC BIOS stubs, and it pulls LIBC `bcopy` and `bzero`.
+
+With this order the relinked GAME text has the same 120 SDK member runs, in
+the same order, as the retail inventory. Two inventory rows cover two members
+each: `S_R|S_W` is the archive-ambiguous pair, and the `EVENT` row also covers
+`96VEC`. OPEN and END already matched member for member. In the SDK text of
+all three overlays, every differing word is a relocated field:
+
+| Image | `jal`/`j` targets | `lui` | 16-bit low/offset fields | Other |
+| --- | ---: | ---: | ---: | ---: |
+| GAME (retail VA = candidate VA + 4) | 1249, each exactly 4 lower | 899 | 2078 | 0 |
+| OPEN | 0 | 748 | 2019 | 0 |
+| END | 0 | 865 | 1967 | 0 |
+
+So no SDK member differs from the pinned archives. The GAME call targets
+differ by the text's 4-byte start offset. The `lui` and low fields address
+data whose placement is game-data work. In OPEN and END, retail puts the
+game's small initialized block (0x34 and 0x18 bytes) at the end of `.data`,
+just before `.sdata`; the candidate puts it at the start.
+
 Derived ELF objects, delinked retail modules, objdiff projects, and semantic
 reports are analysis views. Source compilation in `kf analyze` and `kf try`
 uses the same CPPPSX/CC1PSX/ASPSX implementation as `kf build`. The reader

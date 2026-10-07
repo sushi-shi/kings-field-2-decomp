@@ -12,10 +12,18 @@ from .sdk_compat import library_input
 
 
 # Ordinary linker inputs. The native linker selects members from these archives.
+# PSYLINK 1.29 visits the archives in this order and returns to the first one
+# after every member it takes, so the `inclib` order is the order of the SDK
+# member groups in the linked text, and a member's dependencies on an archive
+# listed earlier follow it directly (GPU SYS -> LIBAPI GPU_cw). Within one
+# archive the linker's own symbol-table order applies.
 LIBRARIES = {
     'PSX.EXE': ('LIBSN', 'LIBAPI'),
-    'GAME.EXE': ('LIBSN', 'LIBCD', 'LIBSND', 'LIBSPU', 'LIBGTE', 'LIBGPU',
-                 'LIBETC', 'LIBAPI', 'LIBPRESS', 'LIBCARD', 'LIBC'),
+    # Retail GAME text holds the groups CARD, CD, SPU (with the SND members
+    # that need SPU interleaved), SND, GTE, ETC, API, C, GPU; no LIBPRESS
+    # member is linked.
+    'GAME.EXE': ('LIBSN', 'LIBCARD', 'LIBCD', 'LIBSPU', 'LIBSND', 'LIBGTE',
+                 'LIBETC', 'LIBAPI', 'LIBC', 'LIBGPU'),
     # Retail overlay RODATA and first SDK text runs place these archives in
     # PRESS, GPU, GTE, CD, ETC, SND, SPU order after the API/C helpers.
     'OPEN.EXE': ('LIBSN', 'LIBAPI', 'LIBC', 'LIBPRESS', 'LIBGPU', 'LIBGTE',
@@ -30,6 +38,14 @@ OVERLAY_STARTUP = 'NONE2.OBJ'
 # GAME's startup placement is still unresolved and keeps the append order.
 OVERLAY_STARTUP_AFTER_UNITS = {'OPEN.EXE': 8, 'END.EXE': 6}
 MALLOC_OBJECT_SHA256 = '628e405fd0e3acfff2ce9d4a15d481f0aa36398c14e9eae0a82b7ff0a86a74c9'
+# Every overlay links the Release 2.5 allocator object after the startup.
+ALLOCATOR_IMAGES = ('GAME.EXE', 'OPEN.EXE', 'END.EXE')
+# GAME also links the kit's memory-card CARD.OBJ explicitly: retail places its
+# _card_clear directly after MALLOC although no GAME code calls it, and its
+# _new_card/_card_write references pull those LIBCARD members.
+CARD_OBJECT = 'CARD.OBJ'
+CARD_OBJECT_SHA256 = '4ab0873cddbf26d99aded93f8b654c861f44409cee408b3bff7026fc59665387'
+CARD_IMAGES = ('GAME.EXE',)
 
 
 def file_hash(path: Path) -> str:
@@ -101,7 +117,7 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
         if report['startup']:
             tool_succeeded(root, 'BOUNDS.TXT', 'BOUNDS.OBJ', b'LNK\x02')
             report['boundaries']['object_sha256'] = file_hash(root / 'BOUNDS.OBJ')
-        if name in ('OPEN.EXE', 'END.EXE'):
+        if name in ALLOCATOR_IMAGES:
             source = Path(os.environ['PSYQ_MALLOC_OBJ'])
             if file_hash(source) != MALLOC_OBJECT_SHA256:
                 raise ValueError(f'{source}: expected the retail-matching Sony MALLOC.OBJ')
@@ -110,6 +126,15 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
                 'file': 'MALLOC.OBJ', 'path': str(source),
                 'sha256': MALLOC_OBJECT_SHA256,
                 'provenance': 'hash-pinned Psy-Q Release 2.5 object; retail fixed text bytes exact',
+            }
+        if name in CARD_IMAGES:
+            source = Path(os.environ['PSYQ_LIB']) / CARD_OBJECT
+            if file_hash(source) != CARD_OBJECT_SHA256:
+                raise ValueError(f'{source}: expected the Psy-Q 3.0 CARD.OBJ')
+            shutil.copyfile(source, root / CARD_OBJECT)
+            report['card'] = {
+                'file': CARD_OBJECT, 'path': str(source), 'sha256': CARD_OBJECT_SHA256,
+                'provenance': 'Psy-Q 3.0 LIB object; retail _card_clear text follows MALLOC',
             }
         for library in LIBRARIES[name]:
             filename = library + '.LIB'
@@ -134,6 +159,7 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
                     *object_inputs,
                     *(['\tinclude "BOUNDS.OBJ"'] if report['startup'] else []),
                     *(['\tinclude "MALLOC.OBJ"'] if report.get('allocator') else []),
+                    *([f'\tinclude "{CARD_OBJECT}"'] if report.get('card') else []),
                     *(f'\tinclib "{library["file"]}"' for library in report['libraries']),
                     'bssdata group bss', '\tsection .sbss,bssdata',
                     '\tsection .bss,bssdata',

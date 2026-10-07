@@ -20,6 +20,7 @@ from scripts.kf import executable
 from scripts.kf.executable import build_image, compare, cpe_loads
 from scripts.kf.manifest import Manifest, Profile, Unit
 from scripts.kf.sema.image import RetailImage
+from scripts.psxbuild.link import LIBRARIES
 
 
 class ComparisonTests(unittest.TestCase):
@@ -109,7 +110,7 @@ class ComparisonTests(unittest.TestCase):
 
 @unittest.skipUnless(all(shutil.which(tool) for tool in ('cpppsx-257', 'cc1psx-257', 'dosbox-x'))
                      and all(os.environ.get(key) for key in ('PSYQ_ASPSX', 'PSYQ_BIN', 'PSYQ_LIB',
-                                                             'PSYQ_INCLUDE', 'PSYQ_H2000_LIB')),
+                                                             'PSYQ_INCLUDE', 'PSYQ_MALLOC_OBJ')),
                      'requires pinned compiler, original DOS tools and SDK libraries')
 class NativeBuildControls(unittest.TestCase):
     def manifest(self, root: Path, sources: tuple[str, ...], image: str = 'PSX.EXE') -> Manifest:
@@ -189,6 +190,13 @@ class NativeBuildControls(unittest.TestCase):
                     Path(report['startup']['path']).read_bytes(),
                 )
                 self.assertEqual(report['retail_payload_inputs'], [])
+                commands = (output / 'LINK.LNK').read_text().splitlines()
+                explicit = [line.split('"')[1] for line in commands if 'include' in line]
+                expected = ['MALLOC.OBJ', 'CARD.OBJ'] if image == 'GAME.EXE' else ['MALLOC.OBJ']
+                self.assertEqual(explicit[explicit.index('BOUNDS.OBJ') + 1:], expected)
+                self.assertEqual([line.split('"')[1] for line in commands if 'inclib' in line],
+                                 [library + '.LIB' for library in LIBRARIES[image]])
+                self.assertEqual('card' in report, image == 'GAME.EXE')
                 actual = (output / image).read_bytes()
                 base = struct.unpack_from('<I', actual, 0x18)[0]
                 entry, loads = cpe_loads((output / (image[:-4] + '.CPE')).read_bytes())

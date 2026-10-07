@@ -2049,7 +2049,6 @@ enum {
     KF_TARGET_SOUND_BASE_ID = 96,
     KF_TARGET_SOUND_ALTERNATE_RANGE = 0x80,
     KF_TARGET_SOUND_INDEX_MASK = 0x7f,
-    KF_TARGET_SOUND_TRIGGER_INTERVAL_MASK = 0x3fff,
     KF_TARGET_SOUND_TRIGGER_MODE_MASK = 0xc000,
     KF_TARGET_SOUND_TRIGGER_STAGGERED = 0x4000,
     KF_TARGET_SOUND_TRIGGER_RANDOM = 0x8000
@@ -2089,7 +2088,6 @@ void actor_update_behavior(void)
     KfActor *actor = actor_state.current;
     KfTargetGroup *group = actor_state.active_group;
     KfTargetCandidate *target = actor->target;
-    u16 trigger;
     s32 interval;
 
     if ((actor->flags & KF_ACTOR_FLAG_STATIC_COLLISION_ONLY) != 0) {
@@ -2104,9 +2102,8 @@ void actor_update_behavior(void)
                    actor->collision_radius, -1);
 
     if (target->sound_code != KF_AUDIO_SOUND_NONE) {
-        trigger = target->sound_trigger;
-        interval = trigger & KF_TARGET_SOUND_TRIGGER_INTERVAL_MASK;
-        switch (trigger & KF_TARGET_SOUND_TRIGGER_MODE_MASK) {
+        interval = target->sound_trigger.fields.interval;
+        switch (target->sound_trigger.value & KF_TARGET_SOUND_TRIGGER_MODE_MASK) {
         case 0:
             if (actor_animation_crossed_phase(actor, interval)) {
                 goto play_sound;
@@ -2117,12 +2114,14 @@ void actor_update_behavior(void)
                 goto play_sound;
             }
             break;
-        case KF_TARGET_SOUND_TRIGGER_STAGGERED:
-            if ((interval * actor_state.current_actor_slot_index / 3) % interval ==
-                (s32)actor_state.actor_update_frame_count % interval) {
+        case KF_TARGET_SOUND_TRIGGER_STAGGERED: {
+            s32 phase = (interval * actor_state.current_actor_slot_index / 3) % interval;
+
+            if ((s32)actor_state.actor_update_frame_count % interval == phase) {
                 goto play_sound;
             }
             break;
+        }
         }
     }
     goto dispatch_action;
@@ -2377,7 +2376,7 @@ case3_motion:
         s32 delta_y;
         s32 delta_z;
         s32 distance;
-        struct KfEulerAngles opposite;
+        SVECTOR opposite;
 
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
@@ -2407,10 +2406,10 @@ case3_motion:
                           group->movement_step,
                           group->turn_acceleration, 17);
         } else {
-            opposite.x = -512;
-            opposite.y = actor->tail_72.angles.y + 2048;
-            opposite.z = 0;
-            actor_turn_and_move_along_euler_angles(&opposite, target->word_0c.value,
+            opposite.vx = -512;
+            opposite.vy = actor->tail_72.angles.y + 2048;
+            opposite.vz = 0;
+            actor_turn_and_move_along_euler_angles((struct KfEulerAngles *)&opposite, target->word_0c.value,
                           target->word_0e.value,
                           group->movement_step,
                           group->turn_acceleration, 17);
@@ -2587,8 +2586,8 @@ case3_motion:
         actor_damp_horizontal_motion(target->word_0c.bytes.high, 10);
         break;
     case 24: {
-        s32 speed;
         s32 step;
+        s32 speed;
         s32 angle;
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
@@ -2636,14 +2635,14 @@ case3_motion:
         case 0:
             actor_advance_animation_clamped(actor, target->animation_step);
             if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
-                struct KfEulerAngles toward_player;
+                SVECTOR toward_player;
 
                 vector_displacement_to_pitch_yaw(
                     player_state.camera_position.vx - actor->position.vx,
                     player_state.camera_position.vy - actor->position.vy,
                     player_state.camera_position.vz - actor->position.vz,
-                    &toward_player);
-                pitch_yaw_to_forward_vector(&toward_player,
+                    (struct KfEulerAngles *)&toward_player);
+                pitch_yaw_to_forward_vector((struct KfEulerAngles *)&toward_player,
                                             &actor->tail_72.direction);
                 actor->state_70.signed_state = 1;
             }
@@ -2653,8 +2652,8 @@ case3_motion:
             SVECTOR outer;
             s32 collision;
 
-            forward = actor->tail_72.direction;
-            outer = forward;
+            outer = actor->tail_72.direction;
+            forward = outer;
             vector3s_scale_shift12(target->word_14.value, &forward);
             vector3s_scale_shift12(target->word_18.value, &outer);
             actor->motion.vector.vx = value_approach(actor->motion.vector.vx,

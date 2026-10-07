@@ -217,6 +217,17 @@ typedef union KfTargetCandidateWord22 {
 typedef char kf_target_candidate_word22_size[
     sizeof(KfTargetCandidateWord22) == 2 ? 1 : -1];
 
+/* Low 14 bits: sound interval; high 2 bits: trigger mode. */
+typedef union KfTargetSoundTrigger {
+    u16 value;
+    struct {
+        u16 interval : 14;
+        u16 mode : 2;
+    } fields;
+} KfTargetSoundTrigger;
+typedef char kf_target_sound_trigger_size[
+    sizeof(KfTargetSoundTrigger) == 2 ? 1 : -1];
+
 /* This is the observed prefix; complete extent and stride remain under study. */
 typedef struct KfTargetCandidate {
     u8 type;
@@ -226,7 +237,7 @@ typedef struct KfTargetCandidate {
     u8 unknown_05[2];
     u8 start_vertical_motion_on_entry;
     u16 animation_step;
-    u16 sound_trigger;
+    KfTargetSoundTrigger sound_trigger;
     KfTargetCandidateWord0c word_0c;
     KfTargetCandidateWord0e word_0e;
     KfTargetCandidateWord10 word_10;

@@ -15,8 +15,10 @@ enum {
 
 extern u8 *overlay_next_request;
 
-/* Boundaries supplied by the program's link layout (config/link/overlay_bounds.asm). */
-extern u8 BSS_START[];
+/* End of the program's linked .bss. GAME retail loads it as a relocated
+ * symbol (lui/addiu, run-time subtraction), so it is a link-time label, not a
+ * folded number; the original object that defined it is unrecovered
+ * (config/link/overlay_bounds.asm stands in for it). */
 extern u8 BSS_END[];
 
 enum {

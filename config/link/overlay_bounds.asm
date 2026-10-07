@@ -1,8 +1,4 @@
-; Zero-byte labels for the overlay's linked .bss boundaries.
-
-	section .bss_start
-	xdef BSS_START
-BSS_START:
+; Zero-byte label placed after the overlay's linked .bss.
 
 	section .bss_end
 	xdef BSS_END

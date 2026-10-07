@@ -136,7 +136,6 @@ def build_image(name, root, units, compile_one, *, repo, load_address, bounds_so
                     *(['\tinclude "MALLOC.OBJ"'] if report.get('allocator') else []),
                     *(f'\tinclib "{library["file"]}"' for library in report['libraries']),
                     'bssdata group bss', '\tsection .sbss,bssdata',
-                    *(['\tsection .bss_start,bssdata'] if report['startup'] else []),
                     '\tsection .bss,bssdata',
                     *(['\tsection .bss_end,bssdata'] if report['startup'] else []),
                     f'\tregs pc={ENTRY}']

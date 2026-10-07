@@ -160,6 +160,14 @@ source-to-codegen links in the 2.5.7 sources and RTL dumps (`-dr -dL -dl
   (`collision_evaluate_shape_records`). Jump2 cross-jumping deletes the
   earlier of two identical tails, so shared code that retail keeps in the
   first switch arm was a `goto` target in the source.
+- **Stack arguments read in place (function.c `assign_parms`).** A
+  parameter whose address is taken gets no pseudo, so `va_start (ap, kind)`
+  keeps `kind` in its incoming slot and every use reloads it; the unnamed
+  arguments after it are read through the folded cursor
+  (`floor_item_capture_image`: `lbu`/`lw 56`, `lw 60`, `lhu 64`). An
+  old-style `__builtin_va_alist` definition anchors the cursor at the first
+  argument itself, as `player_dispatch_magic_effect` does, but its first
+  read is still forwarded by cse2 in that function.
 - **Other folds.** Combine's nonzero-bits tracking covers only pseudos set
   once, so `x = (x << 8) >> 12` on a reassigned variable stays `sll`/`sra`.
   Reading a bitfield of a word defeats CSE against a plain read of that word.

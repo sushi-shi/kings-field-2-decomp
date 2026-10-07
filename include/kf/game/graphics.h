@@ -280,7 +280,7 @@ void display_initialize(void);
 void display_reset(void);
 void refresh_collision_row_rotations(void);
 void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
-                   s32 kind, s32 width_bytes, u16 height);
+                   s32 kind, ...);
 void display_begin_frame(void);
 void display_present_frame(void);
 void display_set_view_transform(const VECTOR *position, const SVECTOR *rotation);

@@ -182,9 +182,7 @@ KfCdState	0x2a0	0x04	current	KfCdRequest *	supported	game/cd.h;asm;cd_initialize
 KfCollisionCache	0x00	0x04	cell	KfMapOccupancyCell *	supported	game/collision_cache.h;GAME 0x8002aa8c sw	selected map cell pointer; containing BSS ownership remains WIP
 KfCollisionCache	0x04	0x04	shape	KfMapOccupancyLayer *	supported	game/collision_cache.h;GAME 0x80045ee0 lw;collision_probe_forward_shape_0x20	selected occupancy-layer pointer; containing BSS ownership remains WIP
 KfCollisionCache	0x0a	0x02	layer	u16	supported	game/collision_cache.h;GAME 0x8002aa10/0x8002aa28/0x8002aa7c sh	selected layer byte offset within the two-layer cell
-KfCollisionCache	0x0c	0x04	height	s32	supported	game/collision_cache.h;GAME 0x8002aa40 sw/0x8002aa94 lw	scaled selected-layer height returned to caller
-KfCollisionCache	0x18	0x04	lower_bound	s32	supported	game/collision_cache.h;player_update_collision_bounds;GAME 0x8002338c lw	lower collision bound used for player clearance
-KfCollisionCache	0x1c	0x04	upper_bound	s32	supported	game/collision_cache.h;player_update_collision_bounds;GAME 0x800233d8 lw	upper collision bound used for player clearance
+KfCollisionCache	0x0c	0x14	heights	KfCollisionHeights	supported	game/collision_cache.h;collision_evaluate_shape_records base pointer at bss_801c7540+0x1180c	height results addressed through one pointer by the shape evaluator
 KfCollisionDefaultRow	0x0	0x14	rotation	KfCollisionRotation	supported	game/graphics.h;asm;collision defaults	44-byte initialized collision default row
 KfCollisionDefaultRow	0x14	0x12	motion	KfCollisionMotion	supported	game/graphics.h;asm;collision defaults	44-byte initialized collision default row
 KfCollisionDefaultRow	0x26	0x6	filter	KfCollisionDefaultTail	supported	game/graphics.h;asm;collision defaults	44-byte initialized collision default row
@@ -193,6 +191,11 @@ KfCollisionDefaultTail	0x4	0x2	angle	u16	supported	game/graphics.h;asm;collision
 KfCollisionFilterPayload	0x0	0x14	rotation	KfCollisionRotation	supported	game/graphics.h;interpolate_collision_row_fields	Rotation fields read through the typed filter payload
 KfCollisionFilterPayload	0x14	0x12	motion	KfCollisionMotion	supported	game/graphics.h;interpolate_collision_row_fields	Motion halfwords read through the typed filter payload
 KfCollisionFilterPayload	0x26	0x6	filter	KfCollisionTail	supported	game/graphics.h;asm;collision filter query	44-byte collision filter payload view
+KfCollisionHeights	0x00	0x04	height	s32	supported	game/collision_cache.h;GAME 0x8002aa40 sw/0x8002aa94 lw;collision_evaluate_shape_records 0(t4)	scaled selected-layer height returned to caller
+KfCollisionHeights	0x04	0x04	result	s32	supported	game/collision_cache.h;collision_evaluate_shape_records 4(t4);collision_probe_floor_height	lowest floor height found by the shape query
+KfCollisionHeights	0x08	0x04	height_limit	s32	supported	game/collision_cache.h;collision_evaluate_shape_records 8(t4)	ceiling or limit height found by the shape query
+KfCollisionHeights	0x0c	0x04	lower_bound	s32	supported	game/collision_cache.h;player_update_collision_bounds;GAME 0x8002338c lw	lower collision bound used for player clearance
+KfCollisionHeights	0x10	0x04	upper_bound	s32	supported	game/collision_cache.h;player_update_collision_bounds;GAME 0x800233d8 lw	upper collision bound used for player clearance
 KfCollisionKinds	0x0	0x3	types	u8[3]	supported	game/graphics.h;asm;collision query	three collision-kind bytes and pad
 KfCollisionKinds	0x3	0x1	pad	u8	opaque	game/graphics.h;asm;collision query	three collision-kind bytes and pad
 KfCollisionMaskPoint	0x00	0x04	x	s32	supported	game/render_mask.h;GAME 0x8002bfd4 lw;build_camera_map_cell_layer_masks	First 32-bit map-mask coordinate passed to rasterizer
@@ -952,6 +955,24 @@ KfScreenVertex	0x00	0x02	x	s16	supported	game headers;asm;xrefs	member used by r
 KfScreenVertex	0x02	0x02	y	s16	supported	game headers;asm;xrefs	member used by reconstructed code
 KfScreenVertex	0x04	0x02	sz	s16	supported	game headers;asm;xrefs	member used by reconstructed code
 KfScreenVertex	0x06	0x02	depth_cue	s16	supported	game/tmd_pipeline.c;GTE projection;DpqColor	projection depth value used for polygon color depth cue
+KfShapeCeilingRecord	0x00	0x02	limit	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape record 0x11 operand
+KfShapeCeilingRecord	0x02	0x02	floor	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape record 0x11 operand
+KfShapeHeightRecord	0x00	0x02	height	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x10, 0x18 and 0x19 operand
+KfShapeLedgeRecord	0x00	0x02	start	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape record 0x31 operand
+KfShapeLedgeRecord	0x02	0x02	end	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape record 0x31 operand
+KfShapeLedgeRecord	0x04	0x02	floor	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape record 0x31 operand
+KfShapeLedgeRecord	0x06	0x02	limit	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape record 0x31 operand
+KfShapeLedgeRecord	0x08	0x02	quarter_turns	u16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape record 0x31 operand
+KfShapeSlopeRecord	0x00	0x02	floor	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x30 and 0x32 operand
+KfShapeSlopeRecord	0x02	0x02	start	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x30 and 0x32 operand
+KfShapeSlopeRecord	0x04	0x02	end	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x30 and 0x32 operand
+KfShapeSlopeRecord	0x06	0x02	quarter_turns	u16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x30 and 0x32 operand
+KfShapeSlopeRecord	0x08	0x02	rise	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x30 and 0x32 operand
+KfShapeSlopeRecord	0x0a	0x02	run	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x30 and 0x32 operand
+KfShapeWallRecord	0x00	0x02	offset	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
+KfShapeWallRecord	0x02	0x02	limit	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
+KfShapeWallRecord	0x04	0x02	floor	s16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
+KfShapeWallRecord	0x06	0x02	quarter_turns	u16	supported	game/collision_cache.h;collision_evaluate_shape_records record operands	shape records 0x20-0x23 operand
 KfState8017d118	0x00	0x02	transition_active	s16	supported	asm;resource_run_initial_transition;resource_advance_transition	set to 1 before dispatch and checked by the resource transition loop
 KfState8017d118	0x02	0x02	transition_phase	s16	supported	asm;five phase setters;resource_advance_transition	dispatch index for the resource transition jump table
 KfState8017d118	0x04	0x05	active_resource_ids	u8[5]	supported	resource_request_transition;resource_advance_transition;card_payload_capture_game_state	five active resource IDs saved and updated when a transition completes

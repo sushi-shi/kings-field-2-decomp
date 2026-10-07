@@ -2,6 +2,7 @@
 #include <kf/lib/null.h>
 #include <kf/game/graphics.h>
 #include <kf/game/memory.h>
+#include <stdarg.h>
 
 enum { FLOOR_ITEM_VRAM_PIXEL_BYTES = sizeof(u16) };
 
@@ -21,21 +22,28 @@ KfFloorItem *floor_item_find_free(void)
     return NULL;
 }
 
+/* A scrolling image passes its byte width and height after KIND. */
 ADDRESS(0x8002ce68, 0xd8)
 void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
-                   s32 kind, s32 width_bytes, u16 height)
+                   s32 kind, ...)
 {
     KfFloorItem *item = floor_item_find_free();
+    va_list args;
+    s32 width_bytes;
+    u16 height;
 
     if (item != NULL) {
+        item->kind = kind;
         item->row_offset = 0;
         item->update_interval = update_interval;
         item->row_step = row_step;
         item->frames_until_update = 0;
         item->rect.x = x;
         item->rect.y = y;
-        item->kind = kind;
         if (kind == KF_FLOOR_ITEM_SCROLLING_IMAGE) {
+            va_start(args, kind);
+            width_bytes = va_arg(args, s32);
+            height = va_arg(args, u16);
             item->rect.w = width_bytes >> 2;
             item->rect.h = height;
             item->pixels = (u_long *)memory_allocate(

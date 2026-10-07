@@ -1696,8 +1696,8 @@ regular_weapon:
         phase_step = weapon->attack_phase_step;
         phase_end = weapon->normal_attack_end_phase;
         sound_end = weapon->normal_attack_sound_phase;
-        sound_step = 0;
         hit_step = 0;
+        sound_step = 0;
     } else {
         phase_step = weapon->alternate_attack_phase_step;
         phase_end = weapon->alternate_attack_end_phase;
@@ -1990,13 +1990,15 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 angle;
     s32 radius;
     s32 slide_distance;
-    s32 slide_attempted = 0;
-    s32 diagonal_retry = 0;
-    s32 result = 0;
-    s32 collision_retry = 0;
+    s32 slide_attempted;
+    s32 collision_retry;
+    s32 result;
+    s32 diagonal_retry;
     s32 high_collision;
     SVECTOR delta;
     s32 diagonal_kind;
+
+    diagonal_retry = slide_attempted = collision_retry = result = 0;
 
 retry: {
         next.vx = player_state.camera_position.vx + dx;
@@ -2014,16 +2016,18 @@ retry: {
         }
 
         high_collision = 0;
-        if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == 0) {
-            s32 collision_height = KF_COLLISION_CACHE_RESULT;
-            high_collision = 1;
-            if (collision_height + PLAYER_MOVE_STEP_UP_TOLERANCE >= player_state.camera_position.vy
-                && player_state.death_state == 0
-                && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
-                       < -KF_PLAYER_HEIGHT) {
-                goto accept_position;
+        do {
+            if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == 0) {
+                s32 collision_height = KF_COLLISION_CACHE_RESULT;
+                high_collision = 1;
+                if (collision_height + PLAYER_MOVE_STEP_UP_TOLERANCE >= player_state.camera_position.vy
+                    && player_state.death_state == 0
+                    && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
+                           < -KF_PLAYER_HEIGHT) {
+                    goto accept_position;
+                }
             }
-        }
+        } while (0);
 
         if (flags & (KF_COLLISION_HIT_ACTOR | KF_COLLISION_HIT_MAP_OBJECT)) {
             collision_retry++;
@@ -2085,21 +2089,22 @@ retry: {
             }
         }
         if (flags & KF_COLLISION_HIT_DIAGONAL) {
-            if (diagonal_retry) {
-                goto axis_retry;
-            } else {
-                diagonal_retry = 1;
-                diagonal_kind =
-                    ((KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE)->quarter_turns & 3;
-                if (diagonal_kind == 0 || diagonal_kind == 2) {
-                    dx = (initial_dx + initial_dz) >> 1;
-                    dz = dx;
-                } else {
-                    dx = (initial_dx - initial_dz) >> 1;
-                    dz = -dx;
+            do {
+                if (diagonal_retry) {
+                    goto axis_retry;
                 }
-                goto retry;
+                diagonal_retry = 1;
+            } while (0);
+            diagonal_kind =
+                ((KfMapOccupancyLayer *)KF_COLLISION_CACHE_SHAPE)->quarter_turns & 3;
+            if (diagonal_kind == 0 || diagonal_kind == 2) {
+                dx = (initial_dx + initial_dz) >> 1;
+                dz = dx;
+            } else {
+                dx = (initial_dx - initial_dz) >> 1;
+                dz = -dx;
             }
+            goto retry;
         }
         result = 0;
     }
@@ -2156,8 +2161,6 @@ void player_update_vertical_motion(void)
     s32 bob;
     s32 movement_speed;
     const s32 *floor_result;
-    /* Retail reserves an unreferenced 8-byte frame slot. */
-    s16 frame_reserve[4];
 
     collision_probe_floor_height(player_state.camera_position.vx,
                   player_state.camera_position.vy,
@@ -2222,9 +2225,10 @@ void player_update_vertical_motion(void)
             collision_cache_load_hit_bounds();
             next_y = KF_COLLISION_CACHE_POSITION.vy
                    - KF_COLLISION_CACHE_INTERACTION_HEIGHT - 1;
-            if (collision_query_world(player_state.camera_position.vx, next_y,
+            collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
                                player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
-                               KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK) == 0) {
+                               KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK);
+            if (collision_flags == 0) {
                 player_state.camera_position.vy = next_y;
             }
         }
@@ -2238,13 +2242,12 @@ landing:
         if (player_state.landing_vertical_offset > 0) {
             player_state.landing_vertical_offset += player_state.vertical_velocity >> 2;
         }
-        bob = player_state.vertical_motion_pitch_offset;
         player_state.vertical_velocity -= 100;
-        if (bob > 0) {
+        if (player_state.vertical_motion_pitch_offset > 0) {
             if (player_state.vertical_velocity > 0) {
-                player_state.vertical_motion_pitch_offset = bob + 10;
+                player_state.vertical_motion_pitch_offset += 10;
             } else {
-                player_state.vertical_motion_pitch_offset = bob - 30;
+                player_state.vertical_motion_pitch_offset -= 30;
             }
         }
         if (player_state.landing_vertical_offset <= 0
@@ -2282,10 +2285,11 @@ landing:
         if (height_difference <= 0) {
             goto finish;
         }
-        if (collision_query_world(player_state.camera_position.vx,
+        collision_flags = collision_query_world(player_state.camera_position.vx,
                            player_state.camera_position.vy + 1,
                            player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
-                           KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK) != 0) {
+                           KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK);
+        if (collision_flags != 0) {
             goto finish;
         }
         if (height_difference <= 256) {
@@ -3020,10 +3024,8 @@ void player_update_frame(void)
 {
     s16 value;
     s32 index;
-    s32 fraction;
     u8 object_index;
     u8 step;
-    KfMapObject *object;
 
     actor_state.actor_overlap_exclusion_flags = 4;
     map_cell_add_layer_occupancy(player_state.camera_position.vx,
@@ -3044,11 +3046,17 @@ void player_update_frame(void)
         if (player_state.damage_red_overlay_scale < 0) {
             player_state.damage_red_overlay_scale = 0;
         }
-        value = player_state.damage_red_overlay_scale;
-        if (value > 4095) {
-            value = 4096;
+        {
+            s16 scale;
+
+            value = player_state.damage_red_overlay_scale;
+            if (value > 4095) {
+                scale = value = 4096;
+            } else {
+                scale = value;
+            }
+            accumulate_color_overlay(60, 0, 0, scale);
         }
-        accumulate_color_overlay(60, 0, 0, value);
     }
 
     player_state.flags_140.low = PadRead(1);
@@ -3112,7 +3120,9 @@ void player_update_frame(void)
         player_update_camera_rotation();
         player_update_horizontal_motion();
         goto update_reaction_pose;
-    case KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW:
+    case KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW: {
+        KfMapObject *object;
+
         object_index = player_state.reaction.view.map_object_index;
         object = &map_object_state.objects[object_index];
         player_update_actions_and_charge();
@@ -3125,10 +3135,14 @@ void player_update_frame(void)
                                 - (s16)player_state.camera_position.vz;
         player_state.camera_position = object->position;
         player_state.view_rotation_offset.vector = object->rotation;
+    }
 update_reaction_view:
         player_handle_interaction_and_menu();
         goto after_reaction;
-    case KF_PLAYER_REACTION_MAP_OBJECT_APPROACH:
+    case KF_PLAYER_REACTION_MAP_OBJECT_APPROACH: {
+        KfMapObject *object;
+        s32 fraction;
+
         object_index = player_state.reaction.view.map_object_index;
         object = &map_object_state.objects[object_index];
         player_update_actions_and_charge();
@@ -3153,7 +3167,10 @@ update_reaction_view:
             player_begin_map_object_view_follow(player_state.reaction.view.map_object_index);
         }
         goto after_reaction;
-    case KF_PLAYER_REACTION_POSITION_RECOVERY:
+    }
+    case KF_PLAYER_REACTION_POSITION_RECOVERY: {
+        s32 fraction;
+
         ++player_state.reaction.position.recovery_step;
         fraction = player_state.reaction.position.recovery_step << 8;
         player_state.camera_position.vx = fixed_lerp_q12(
@@ -3169,6 +3186,7 @@ update_reaction_view:
             player_reset_reaction_state();
         }
         goto after_reaction;
+    }
     case KF_PLAYER_REACTION_ROTATION:
         if (player_move_reaction_with_collision() != 0) {
             player_reset_reaction_state();
@@ -3222,8 +3240,10 @@ update_reaction_pose:
                                     player_state.reaction.damage.motion.vx, 8, 4);
         player_state.reaction.damage.motion.vx = value;
         player_state.reaction_rotation_offset[0] += (value * 3) >> 1;
-        value = player_state.camera_vertical_offset;
-        player_state.camera_vertical_offset = value < 1500 ? value + 500 : 1500;
+        {
+            s16 offset = player_state.camera_vertical_offset;
+            player_state.camera_vertical_offset = offset < 1500 ? offset + 500 : 1500;
+        }
         player_move_reaction_with_collision();
         player_state.death_transition_frame++;
         if (player_state.death_transition_frame == 31
@@ -3245,7 +3265,9 @@ update_reaction_pose:
                 render_set_color_overlay(0x82, shade, shade, shade);
             } else {
                 KfEffectRecord *effect = effect_state.records;
-                for (index = KF_EFFECT_CAPACITY; index != 0; index--) {
+                s32 count;
+
+                for (count = KF_EFFECT_CAPACITY; count != 0; count--) {
                     effect->type = 0xff;
                     effect++;
                 }

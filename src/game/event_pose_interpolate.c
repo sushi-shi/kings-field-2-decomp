@@ -98,12 +98,17 @@ void scene_pose_interpolate(
     }
 }
 
+#define ACTOR_ANIMATION_ADVANCE(actor, delta) do { \
+    (actor)->animation_phase = \
+        ((delta) + (actor)->animation_phase) & KF_ACTOR_ANIMATION_PHASE_MAX; \
+} while (0)
+
 ADDRESS(0x800460a0, 0xa4)
 void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_phase, s32 phase_step)
 {
     s32 step;
-    u32 half_step;
     s32 final_phase;
+    u32 half_step;
 
     if ((u16)phase_step == 0) {
         return;
@@ -116,7 +121,7 @@ void actor_animation_seek_phase(KfActor *actor, u8 state, u16 phase, s32 target_
     actor->animation_phase = phase;
 
     while (!angle_within_tolerance(actor->animation_phase, (u16)final_phase, half_step)) {
-        actor->animation_phase = (step + actor->animation_phase) & KF_ACTOR_ANIMATION_PHASE_MAX;
+        ACTOR_ANIMATION_ADVANCE(actor, step);
         render_game_frame(NULL, NULL);
     }
 
@@ -826,8 +831,7 @@ void event_map_object_interact(KfMapObject *object, ...)
     s16 target_render_depth_offset;
     s32 fraction;
     u32 previous_buttons;
-    u32 buttons;
-    s32 remove_object;
+    u32 buttons; /* reused as the remove-object flag after the button wait */
 
     if (object == NULL) {
         va_start(arguments, object);
@@ -952,7 +956,7 @@ button_pressed:
             }
             break;
         }
-        remove_object = 1;
+        buttons = 1;
         scene_position_from_camera_offset(-500, 500, 0, target_yaw,
                       player_state.camera_rotation.angles[1], 0, 0,
                       &first_position);
@@ -966,7 +970,7 @@ button_pressed:
     }
 
 return_pose:
-    remove_object = 0;
+    buttons = 0;
     while (!angle_within_tolerance(object->rotation.vy,
                                    first_angles.vy, 0x80)) {
         object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
@@ -988,7 +992,7 @@ interpolate_back:
             target_render_depth_offset, (s16)initial_render_depth_offset, fraction);
         render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
     }
-    if (remove_object) {
+    if (buttons) {
         object->object_id = 0xff;
     } else if (object->object_id == 0xd) {
         object->object_id = 0x12;
@@ -1097,20 +1101,16 @@ void event_world_dispatch_interaction(const VECTOR *position,
         case 3:
         case 4:
             if (object->action_timer == 0) {
-                if (object->tail.marker.marker_id >= 0xfc) {
-                    if ((object->tail.marker.marker_id & 1) &&
-                        angle_within_tolerance(rotation->angles[1],
-                                               object->rotation.vy, 900)) {
-                        object->action_timer = 1;
-                        break;
-                    }
-                    if ((object->tail.marker.marker_id & 2) &&
-                        angle_within_tolerance(rotation->angles[1],
-                                               object->rotation.vy + 0x800,
-                                               900)) {
-                        object->action_timer = 1;
-                        break;
-                    }
+                if (object->tail.marker.marker_id >= 0xfc &&
+                    (((object->tail.marker.marker_id & 1) &&
+                      angle_within_tolerance(rotation->angles[1],
+                                             object->rotation.vy, 900)) ||
+                     ((object->tail.marker.marker_id & 2) &&
+                      angle_within_tolerance(rotation->angles[1],
+                                             object->rotation.vy + 0x800,
+                                             900)))) {
+                    object->action_timer = 1;
+                    break;
                 }
                 if (object->tail.marker.marker_id == 0x0f && game_counter_bytes[0x0f] != 0) {
                     object->action_timer = 1;

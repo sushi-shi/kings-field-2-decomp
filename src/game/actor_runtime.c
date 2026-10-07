@@ -3328,23 +3328,6 @@ void actor_fixup_group_targets(void)
     }
 }
 
-/* The archive loader at 0x80016820 advances across 16-byte records. */
-typedef struct KfActorLoadRecord {
-    u8 slot_state;
-    u8 group_index;
-    u8 placement_flags;
-    u8 cell_z;
-    u8 cell_x;
-    u8 spawn_chance;
-    u8 death_drop_object_id;
-    u8 home_map_layer;
-    u16 initial_actor_word_20;
-    u16 initial_actor_word_22;
-    u16 initial_actor_word_24;
-    u16 vertical_anchor_offset;
-} KfActorLoadRecord;
-typedef char kf_actor_load_record_size[sizeof(KfActorLoadRecord) == 16 ? 1 : -1];
-
 ADDRESS(0x8003f860, 0x1cc)
 void actor_load_records(const KfActorLoadRecord *records)
 {

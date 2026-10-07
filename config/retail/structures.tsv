@@ -3,6 +3,7 @@
 name	size	layout_confidence	evidence	note
 KfActor	0x7c	supported	game/actor.h;retail GAME actor chain	layout from reconstructed header
 KfActorBallisticPhaseView	0x8	supported	actor_update_vertical_motion state 0x30	Vector extent with Y halfword interpreted as ballistic phase
+KfActorLoadRecord	0x10	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	map archive actor placement record
 KfActorModelScaleY	0x2	supported	game/actor.h;actor_group_position;actor_spatial_sound	Q12 Y model scale and signed high-byte sound-note view
 KfActorModelScaleYBytes	0x2	supported	game/actor.h;actor_spatial_sound	low and signed high bytes of Y model scale
 KfActorMotion	0x8	supported	actor_motion.c;actor_behavior_dispatch.c;effect_runtime.c	SVECTOR movement view with ballistic phase overlay
@@ -192,6 +193,7 @@ KfTmdF3	0x0c	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;K
 KfTmdF4	0x10	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	flat quadrilateral primitive body
 KfTmdFt3	0x14	supported	game/tmd_packets.h;render_enqueue_map;TMD primitive mode 0x24	textured triangle primitive source layout
 KfTmdFt4	0x1c	supported	game/tmd_packets.h;render_enqueue_map;TMD primitive mode 0x2c	textured quadrilateral primitive source layout
+KfTmdFt4TextureWords	0x10	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	four texture words copied from an FT4 packet body, or the first three of an FT3
 KfTmdG3	0x10	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	shaded triangle primitive body
 KfTmdG4	0x14	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	shaded quadrilateral primitive body
 KfTmdGt3	0x18	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	textured shaded triangle primitive body
@@ -201,6 +203,9 @@ KfTmdObject	0x1c	supported	game headers;asm;xrefs	layout from the reconstructed 
 KfTmdPreparedAsset	0x1000	supported	game/tmd_packets.h;render_map_cell_object;func_8002ff5c	4096-byte temporary header, object, and payload
 KfTmdPrimitive	0x20	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	mode-discriminated primitive body
 KfTmdState	0x14	supported	game headers;asm;xrefs	layout from the reconstructed header
+KfTmdUvBytes	0x2	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	u,v texture coordinate byte pair
+KfTmdUvParts	0x4	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	u,v pair followed by its CLUT, tpage or pad halfword
+KfTmdUvWord	0x4	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	whole-word and component views of one texture word
 KfVecXZi	0x08	supported	lib/math.h;asm;angle_to_forward_xz;vector3i_add_xz	two signed horizontal word coordinates
 KfWeaponAssetBuffer	0xc000	candidate	asm;player_initialize_session;KF1 48KiB capacity	extent remains candidate
 KfWeaponRecordGame	0x44	supported	asm;player_recalculate_combat_stats	68-byte weapon record with eight attack halfwords at +6

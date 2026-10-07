@@ -1474,28 +1474,6 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
 #undef FT4_FACE
 #undef FT3_FACE
 
-typedef struct KfTmdUvBytes {
-    u8 u, v;
-} KfTmdUvBytes;
-typedef char kf_tmd_uv_bytes_size[sizeof(KfTmdUvBytes) == 2 ? 1 : -1];
-
-typedef union KfTmdUvWord {
-    struct { KfTmdUvBytes uv; u16 texture_aux; } parts;
-    u32 word;
-} KfTmdUvWord;
-typedef char kf_tmd_uv_word_size[sizeof(KfTmdUvWord) == 4 ? 1 : -1];
-typedef struct KfTmdFt4TextureWords {
-    KfTmdUvWord uv0, uv1, uv2, uv3;
-} KfTmdFt4TextureWords;
-typedef char kf_tmd_ft4_texture_words_size[
-    sizeof(KfTmdFt4TextureWords) == 16 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv1_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv1 == 4 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv2_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv2 == 8 ? 1 : -1];
-typedef char kf_tmd_ft4_texture_uv3_offset[
-    (u32)&((KfTmdFt4TextureWords *)0)->uv3 == 12 ? 1 : -1];
-
 /* The packet word is read bytewise and as signed halves through its address. */
 #define WORD_BYTE(n) (((u8 *)&word)[n])
 #define WORD_HALF(n) (((s16 *)&word)[n])

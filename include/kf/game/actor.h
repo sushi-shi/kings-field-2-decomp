@@ -681,7 +681,26 @@ typedef char kf_actor_state_update_frame_count_offset[
 
 extern KfActorStateGame actor_state;
 
-struct KfActorLoadRecord;
+/* One 16-byte actor placement record from a map archive; the loader copies
+ * KF_ACTOR_CAPACITY consecutive records into the actor pool. */
+typedef struct KfActorLoadRecord {
+    u8 slot_state;
+    u8 group_index;
+    u8 placement_flags;
+    u8 cell_z;
+    u8 cell_x;
+    u8 spawn_chance;
+    u8 death_drop_object_id;
+    u8 home_map_layer;
+    u16 initial_actor_word_20;
+    u16 initial_actor_word_22;
+    u16 initial_actor_word_24;
+    u16 vertical_anchor_offset;
+} KfActorLoadRecord;
+
+typedef char kf_actor_load_record_size[sizeof(KfActorLoadRecord) == 16 ? 1 : -1];
+typedef char kf_actor_load_record_word_20_offset[
+    (u32)&((KfActorLoadRecord *)0)->initial_actor_word_20 == 8 ? 1 : -1];
 
 KfActor *actor_pool_find_free(void);
 void actor_set_home_position(KfActor *actor);
@@ -694,7 +713,7 @@ void actor_initialize_from_group(KfActor *actor);
 void actor_prepare_and_initialize(KfActor *actor);
 void actor_bind_current(KfActor *actor);
 void actor_fixup_group_targets(void);
-void actor_load_records(const struct KfActorLoadRecord *records);
+void actor_load_records(const KfActorLoadRecord *records);
 void actor_update_lifecycle_for_player_range(void);
 void actor_update_behavior(void);
 KfTargetCandidate *actor_find_target_of_type(const KfTargetGroup *group, u8 type);

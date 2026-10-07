@@ -57,6 +57,18 @@ KfActorBallisticPhaseView	0x0	0x2	motion_x	s16	supported	actor_motion.c	Shares v
 KfActorBallisticPhaseView	0x2	0x2	phase	s16	supported	actor_update_vertical_motion state 0x30	Ballistic phase increments for the quadratic Y expression
 KfActorBallisticPhaseView	0x4	0x2	motion_z	s16	supported	actor_motion.c	Shares vector Z halfword in ballistic state
 KfActorBallisticPhaseView	0x6	0x2	pad	s16	supported	SVECTOR layout	Padding halfword of the shared vector extent
+KfActorLoadRecord	0x0	0x1	slot_state	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.slot_state; zero leaves the slot free
+KfActorLoadRecord	0x1	0x1	group_index	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.group_index
+KfActorLoadRecord	0x2	0x1	placement_flags	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.placement_flags
+KfActorLoadRecord	0x3	0x1	cell_z	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.home_cell_z
+KfActorLoadRecord	0x4	0x1	cell_x	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.home_cell_x
+KfActorLoadRecord	0x5	0x1	spawn_chance	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.spawn_chance
+KfActorLoadRecord	0x6	0x1	death_drop_object_id	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.death_drop_object_id
+KfActorLoadRecord	0x7	0x1	home_map_layer	u8	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.home_map_layer
+KfActorLoadRecord	0x8	0x2	initial_actor_word_20	u16	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.word_20
+KfActorLoadRecord	0xa	0x2	initial_actor_word_22	u16	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.word_22
+KfActorLoadRecord	0xc	0x2	initial_actor_word_24	u16	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.word_24; -1 selects the group home-x fallback
+KfActorLoadRecord	0xe	0x2	vertical_anchor_offset	u16	supported	game/actor.h;actor_load_records 16-byte stride;resource transition archive caller	copied to KfActor.vertical_anchor_offset; -1 selects the group default
 KfActorMotion	0x0	0x8	vector	SVECTOR	supported	actor_move_with_collision;effect_runtime;actor_group_effects	Complete signed X/Y/Z vector view
 KfActorMotion	0x0	0x8	ballistic	KfActorBallisticPhaseView	supported	actor_update_vertical_motion state 0x30	Ballistic view with phase at +0x2
 KfActorModelScaleY	0x0	0x2	value	u16	supported	game/actor.h;actor_group_position	Q12 Y model scale halfword
@@ -1108,6 +1120,10 @@ KfTmdFt4	0x14	0x02	vertex1	u16	supported	game/tmd_packets.h;SDK GPU/TMD layout;r
 KfTmdFt4	0x16	0x02	vertex2	u16	supported	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	member used by reconstructed graphics or event code
 KfTmdFt4	0x18	0x02	vertex3	u16	supported	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	member used by reconstructed graphics or event code
 KfTmdFt4	0x1a	0x02	pad2	u16	opaque	game/tmd_packets.h;SDK GPU/TMD layout;render_enqueue_map	layout byte range; meaning unresolved
+KfTmdFt4TextureWords	0x0	0x4	uv0	KfTmdUvWord	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	first texture word with CLUT
+KfTmdFt4TextureWords	0x4	0x4	uv1	KfTmdUvWord	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	second texture word with tpage
+KfTmdFt4TextureWords	0x8	0x4	uv2	KfTmdUvWord	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	third texture word
+KfTmdFt4TextureWords	0xc	0x4	uv3	KfTmdUvWord	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	fourth texture word; FT4 only
 KfTmdG3	0x0	0x4	color	CVECTOR	supported	game/tmd_packets.h;GAME 0x8002ebe0 NormalColorCol3 argument	four-byte packet color input
 KfTmdG3	0x4	0x2	normal0	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
 KfTmdG3	0x6	0x2	vertex0	u16	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	on-disk halfword index shifted by three in retail
@@ -1175,6 +1191,12 @@ KfTmdPrimitive	0x0	0x1c	ft4	KfTmdFt4	supported	game/tmd_packets.h;retail tmd_pre
 KfTmdPrimitive	0x0	0x20	gt4	KfTmdGt4	supported	game/tmd_packets.h;retail tmd_prepare_primitive_indices;KF1 exact counterpart	mode-discriminated primitive body
 KfTmdState	0x00	0x10	slots	KfTmdHeader *[4]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfTmdState	0x10	0x04	current_asset	KfTmdHeader *	supported	game headers;asm;xrefs	member used by reconstructed code
+KfTmdUvBytes	0x0	0x1	u	u8	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	horizontal texture coordinate
+KfTmdUvBytes	0x1	0x1	v	u8	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	vertical texture coordinate
+KfTmdUvParts	0x0	0x2	uv	KfTmdUvBytes	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	averaged texture coordinate pair
+KfTmdUvParts	0x2	0x2	texture_aux	u16	opaque	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	CLUT, tpage or pad halfword; not read by subdivision
+KfTmdUvWord	0x0	0x4	parts	KfTmdUvParts	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	component view
+KfTmdUvWord	0x0	0x4	word	u32	supported	game/tmd_packets.h;tmd_prepare_subdivided_object FT3/FT4 texture-word copy and uv averaging	whole-word view
 KfVecXZi	0x00	0x04	x	s32	supported	lib/math.h;asm;angle_to_forward_xz	x coordinate
 KfVecXZi	0x04	0x04	z	s32	supported	lib/math.h;asm;angle_to_forward_xz	z coordinate
 KfWeaponAssetBuffer	0x0000	0xc000	bytes	u8[49152]	opaque	asm;game_initialize_session;KF1 48KiB capacity	buffer extent remains candidate

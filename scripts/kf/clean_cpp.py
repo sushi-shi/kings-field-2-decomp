@@ -153,7 +153,7 @@ KfMenuResult menu_list_interact(
     return menu_list_interact_impl(list, confirmation, preview, static_cast<s32>(id), bank, trade);
 }}
 '''
-    if name in ('src/psx/main.c', 'src/game/main.c', 'src/open/main.c'):
+    if name in ('src/psx/main.c', 'src/game/main.c', 'src/open/main.c', 'src/end/main.c'):
         text = re.sub(r'\b(void|int) main\(', r'extern "C" \1 main(', text)
     return text
 
@@ -163,12 +163,8 @@ def modernize(files, output):
     for name in list(output):
         if name.endswith(('.c', '.h', '.inc')):
             text = clean_cpp(prepare(name, files[name].decode()), rules)
-            if name == 'vendor/include/psyq/sdk.h':
-                text = text.replace('#include <LIBGPU.H>',
-                    '\n'.join(f'#define {n} {n}_unprototyped' for n in
-                              ('AddPrim', 'DrawOTag', 'SetSemiTrans')) +
-                    '\n#include <LIBGPU.H>\n' +
-                    '\n'.join(f'#undef {n}' for n in ('AddPrim', 'DrawOTag', 'SetSemiTrans')))
+            # Psy-Q 3.0's LIBGPU.H prototypes AddPrim, DrawOTag and SetSemiTrans;
+            # only MEMORY.H and MALLOC.H still carry K&R declarations.
             if name == 'vendor/include/psyq/libc.h':
                 names = ('memcpy', 'memset', 'malloc', 'free')
                 text = text.replace('#include <MEMORY.H>',
@@ -176,12 +172,19 @@ def modernize(files, output):
                     '\n#include <MEMORY.H>')
                 text = text.replace('#include <MALLOC.H>', '#include <MALLOC.H>\n' +
                     '\n'.join(f'#undef {n}' for n in names))
+            if name == 'vendor/include/psyq/convert.h':
+                text = replace(text, '#include <CONVERT.H>',
+                               '#define atoi atoi_unprototyped\n#include <CONVERT.H>\n#undef atoi')
             if name == 'vendor/include/psyq/pad.h':
                 text = replace(text, 'extern u32 PadRead();\n', '')
                 text = replace(text, 'PadRead(s32 ignored_identifier)',
                                'PadRead(s32 ignored_identifier = 0)')
             if name.startswith('vendor/include/psyq/'):
                 text = 'extern "C" {\n' + text + '\n}\n'
+            else:
+                # An SDK header included directly still declares C library symbols.
+                text = re.sub(r'(?m)^[ \t]*#[ \t]*include[ \t]*<[A-Z0-9_]+\.H>[ \t]*$',
+                              lambda m: 'extern "C" {\n' + m[0].strip() + '\n}', text)
             output[name] = text.encode()
             if name.endswith('.c'):
                 output[name[:-2] + '.cpp'] = output.pop(name)

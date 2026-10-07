@@ -506,6 +506,32 @@
         touch "$out"
       '';
 
+      executableDeterminismTests = pkgs.runCommand "kings-field-executable-determinism" {
+        nativeBuildInputs = [ analysisPython pkgs.dosbox-x cc1psx257 cpppsx257 ];
+        PSYQ_SDK = "${psyqSdk}/psyq-3.0";
+        PSYQ_LIB = "${psyqSdk}/psyq-3.0/LIB";
+        PSYQ_BIN = "${psyqSdk}/psyq-3.0/BIN";
+        PSYQ_INCLUDE = "${psyqSdk}/include-lf";
+        PSYQ_C_INCLUDE = "${gcc257Headers}/include";
+        PSYQ_MALLOC_OBJ = "${psyqMallocObj}/MALLOC.OBJ";
+        PSYQ_CPE2X = "${psyqRuntime30Cpe2x}/CPE2X.EXE";
+        PSYQ_ASPSX = "${aspsxNative}/1.07/ASPSX.EXE";
+        PSYQ_ASMPSX = "${asmpsxNative}";
+      } ''
+        export HOME="$TMPDIR/home"
+        mkdir -p "$HOME" project
+        cp -r ${./scripts} project/scripts
+        cp -r ${./tests} project/tests
+        cp -r ${./config} project/config
+        cp -r ${./include} project/include
+        cp -r ${./src} project/src
+        cp -r ${./vendor} project/vendor
+        chmod -R u+w project
+        cd project
+        python3 tests/executable_determinism_smoke.py
+        touch "$out"
+      '';
+
       gcc257TraceTests = pkgs.runCommand "kings-field-gcc257-trace-tests" {
         nativeBuildInputs = [ pkgs.dosbox-x
           analysisPython cc1psx257 cpppsx257 mipsBinutilsAliases
@@ -617,6 +643,7 @@
       checks.${system} = {
         sdk = psyqSdk;
         sdk-builder-tests = sdkBuilderTests;
+        executable-determinism = executableDeterminismTests;
         gcc257-trace = gcc257TraceTests;
         ghidra-psx-loader = ghidraPsxLoader;
         ghidra-psx-loader-discovery = ghidraPluginTests;

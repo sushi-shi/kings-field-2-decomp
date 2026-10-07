@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build all three PlayStation executables using the pinned SDK."""
+"""Build all four PlayStation executables using the pinned SDK."""
 
 import json
 import os

@@ -24,6 +24,7 @@ from scripts.kf.paths import (
     BUILD,
     LOCAL_CONFIG,
     NINJA,
+    NINJA_DEPFILE,
     REPO,
     RETAIL_CONFIG,
     TOOLCHAIN_ID,
@@ -125,6 +126,15 @@ def _ninja_path(path: str | Path) -> str:
     return str(path).replace("$", "$$").replace(" ", "$ ").replace(":", "$:")
 
 
+def _depfile_path(path: str) -> str:
+    return path.replace("$", "$$").replace(" ", "\\ ").replace("#", "\\#")
+
+
+def _write_depfile(path: Path, output: str, inputs: list[str]) -> None:
+    body = "".join(f" \\\n  {_depfile_path(item)}" for item in inputs)
+    _write_if_changed(path, f"{_depfile_path(output)}:{body}\n")
+
+
 def _build_line(
     outputs: str | list[str],
     rule: str,
@@ -195,6 +205,7 @@ def emit(out: Path = NINJA, retail_dir: Path | None = None) -> tuple[int, int]:
         "  command = $py -m scripts.kf.cli configure",
         "  description = configure build/build.ninja",
         "  generator = 1",
+        f"  depfile = {_ninja_path(NINJA_DEPFILE.relative_to(REPO))}",
         "",
         "rule delink",
         "  command = $py -m scripts.kf.graph edge-delink --image $image --retail-dir $retail --stamp $out",
@@ -239,9 +250,11 @@ def emit(out: Path = NINJA, retail_dir: Path | None = None) -> tuple[int, int]:
     ]
     if LOCAL_CONFIG.is_file():
         generator_inputs.append(str(LOCAL_CONFIG.relative_to(REPO)))
-    lines += _build_line(
-        str(out.relative_to(REPO)), "configure", implicit=sorted(set(generator_inputs))
-    )
+    # Scanned sources, headers and scripts can be deleted. As depfile entries a
+    # missing one only makes the graph dirty, so Ninja regenerates it instead of
+    # stopping with "missing and no known rule to make it".
+    _write_depfile(NINJA_DEPFILE, str(out.relative_to(REPO)), sorted(set(generator_inputs)))
+    lines += _build_line(str(out.relative_to(REPO)), "configure")
     lines.append("")
 
     config_inputs = [
@@ -343,11 +356,30 @@ def emit(out: Path = NINJA, retail_dir: Path | None = None) -> tuple[int, int]:
     return len(manifest.units), pruned
 
 
+def _depfile_inputs(path: Path) -> list[str]:
+    text = path.read_text(encoding="utf-8").replace("\\\n", " ")
+    _output, _separator, body = text.partition(": ")
+    words = re.findall(r"(?:\\.|[^\s\\])+", body)
+    return [re.sub(r"\\(.)", r"\1", word).replace("$$", "$") for word in words]
+
+
+def _generator_input_missing() -> bool:
+    """True when the graph's inputs no longer exist, or it predates its depfile.
+
+    Ninja tolerates a deleted depfile entry only if no build edge also names
+    it; a removed header, script or unit source is named by compile/delink
+    edges too, and Ninja then stops before it can regenerate the graph.
+    """
+    if not NINJA_DEPFILE.is_file():
+        return True
+    return any(not (REPO / name).exists() for name in _depfile_inputs(NINJA_DEPFILE))
+
+
 def configure_if_needed(force: bool = False, retail_dir: Path | None = None) -> None:
     repinned = NINJA.is_file() and (
         not TOOLCHAIN_ID.is_file() or TOOLCHAIN_ID.read_text() != toolchain_identity()
     )
-    if force or repinned or not NINJA.is_file():
+    if force or repinned or not NINJA.is_file() or _generator_input_missing():
         units, pruned = emit(NINJA, retail_dir)
         suffix = f", pruned {pruned} orphan(s)" if pruned else ""
         print(f"[configure] wrote {NINJA.relative_to(REPO)} ({units} units{suffix})")
@@ -393,7 +425,11 @@ def edge_compile(unit_name: str, output: Path) -> int:
     unit = manifest.by_name().get(unit_name)
     if unit is None:
         raise ValueError(f"unknown unit {unit_name!r}")
+    from scripts.kf.progress import input_hash
+
     profile = manifest.profiles[unit.profile]
+    # Hash before compiling, so an edit made meanwhile still reads as stale.
+    inputs = input_hash(unit, manifest)
     includes = [REPO / "include", REPO / "vendor/include"]
     if os.environ.get("PSYQ_INCLUDE"):
         includes.append(Path(os.environ["PSYQ_INCLUDE"]))
@@ -410,7 +446,13 @@ def edge_compile(unit_name: str, output: Path) -> int:
         profile.compiler,
         defines=unit.defines,
     )
+    _write_if_changed(input_stamp(output), inputs + "\n")
     return 0
+
+
+def input_stamp(output: Path) -> Path:
+    """The source/header/profile/toolchain digest an object was compiled from."""
+    return output.with_name(output.name + ".inputs")
 
 
 def edge_sdkdata(unit_name: str, output: Path) -> int:

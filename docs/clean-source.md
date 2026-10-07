@@ -84,15 +84,18 @@ by the driver. The matching build on master retains its existing varargs header.
 
 For classic, verification independently builds the unstripped master sources
 with the same original compiler headers, under `build/clean-reference/`,
-and requires byte-identical native CPE linker outputs. It compares every EXE
-byte, accepting and explicitly reporting differences only in the reserved
-header words at offsets `0x08..0x0f`, which the pinned CPE2X writer leaves
-uninitialized. All other header bytes and the full executable payload must
-agree. Full-file equality is reported separately; no bytes are patched and
-this check does not bank or declare a retail match. The original-writer control
-is `tests/test_cpe2x_header.py`. The original varargs implementation can change
+and requires byte-identical native CPE linker outputs and byte-identical
+executables, header included. The pinned CPE2X writer leaves its reserved
+header words (`0x08..0x0f`) uninitialized (control: `tests/test_cpe2x_header.py`),
+so they hold stack bytes that real-mode timer interrupts wrote; the shared DOS
+runner pins the emulated CPU rate, which makes them repeat across builds and
+machines (`tests/executable_determinism_smoke.py`, flake check
+`executable-determinism`). No bytes are patched and this check does not bank or
+declare a retail match. The original varargs implementation can change
 generated instructions relative to master's matching header; that comparison
-is not a cleanup identity check. `tests/test_classic_varargs.py` executes the
+is not a cleanup identity check. GAME's four `va_arg` units are the only such
+difference today: built with master's `vendor/include/stdarg.h`, the exported
+classic sources reproduce all four `kf build` executables byte for byte. `tests/test_classic_varargs.py` executes the
 original headers across O32 register, stack, promotion and alignment boundaries.
 C++ output is not expected to match the classic
 compiler's bytes. When verifying committed HEAD, commit relevant

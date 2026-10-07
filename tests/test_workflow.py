@@ -307,6 +307,76 @@ class GraphTests(unittest.TestCase):
             for edge in edges:
                 self.assertIn("build/gen/toolchain.id", edge.split(" | ")[1].split())
 
+    def test_generator_inputs_come_from_its_depfile(self) -> None:
+        with (
+            mock.patch.object(graph, "configured_retail_dir", return_value=Path("/retail")),
+            mock.patch.object(graph, "_prune_orphans", return_value=0),
+            mock.patch.object(graph, "_write_if_changed") as write_if_changed,
+            mock.patch.object(graph, "generate_clangd"),
+            mock.patch.object(graph, "_write_generator") as write,
+        ):
+            graph.emit()
+        lines = write.call_args.args[1].splitlines()
+        self.assertIn("build build/build.ninja: configure", lines)
+        rule = lines.index("rule configure")
+        self.assertIn("  depfile = build/build.ninja.d", lines[rule:rule + 6])
+        depfiles = [call.args[1] for call in write_if_changed.call_args_list
+                    if call.args[0] == graph.NINJA_DEPFILE]
+        self.assertEqual(len(depfiles), 1)
+        self.assertTrue(depfiles[0].startswith("build/build.ninja: \\\n"))
+        self.assertIn("  include/kf/lib/types.h \\", depfiles[0].splitlines())
+
+    def test_deleted_generator_input_forces_regeneration(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            depfile = root / "build/build.ninja.d"
+            (root / "include/a b").mkdir(parents=True)
+            for name in ("include/a b/x.h", "include/y$.h"):
+                (root / name).write_text("\n")
+            with (
+                mock.patch.object(graph, "REPO", root),
+                mock.patch.object(graph, "NINJA_DEPFILE", depfile),
+            ):
+                self.assertTrue(graph._generator_input_missing())
+                graph._write_depfile(depfile, "build/build.ninja",
+                                     ["include/a b/x.h", "include/y$.h"])
+                self.assertEqual(graph._depfile_inputs(depfile),
+                                 ["include/a b/x.h", "include/y$.h"])
+                self.assertFalse(graph._generator_input_missing())
+                (root / "include/a b/x.h").unlink()
+                self.assertTrue(graph._generator_input_missing())
+
+    def test_status_labels_stale_scores(self) -> None:
+        import contextlib
+        import io
+
+        summary = {"eligible_functions": 1, "manifested_functions": 1,
+                   "compiled_functions": 1, "scored_functions": 1, "exact_functions": 1,
+                   "coverage_percent": 100.0, "fuzzy_started_percent": 100.0}
+        document = {"exact_threshold": 100.0, "images": {"psx": summary}, "total": summary,
+                    "changes": {}, "stale": ["psx"],
+                    "vendored_verification": {"functions": 0}}
+        failure = "PSX.EXE: report is stale: 1 unit(s) changed since they were compiled"
+        stdout, stderr = io.StringIO(), io.StringIO()
+        with (
+            mock.patch.object(progress, "snapshot", return_value=(document, [failure])),
+            contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr),
+        ):
+            progress.print_status(("PSX.EXE",))
+        lines = stdout.getvalue().splitlines()
+        self.assertTrue(lines[0].startswith("STALE: the psx scores"))
+        self.assertTrue(next(line for line in lines if line.startswith("psx")).endswith("STALE"))
+        self.assertIn(failure, stderr.getvalue())
+
+    def test_compiled_inputs_are_read_from_the_object_stamp(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory) / "unit.o"
+            unit = sample_current(100).unit
+            with mock.patch.object(progress, "_base_path", return_value=base):
+                self.assertIsNone(progress._compiled_inputs(unit))
+                graph.input_stamp(base).write_text("b" * 64 + "\n")
+                self.assertEqual(progress._compiled_inputs(unit), "b" * 64)
+
     def test_nested_semantic_evidence_is_a_build_dependency(self) -> None:
         self.assertIn("scripts/kf/sema/evidence.py", _script_inputs())
         self.assertIn("scripts/kf/data_reachability.py", _script_inputs())

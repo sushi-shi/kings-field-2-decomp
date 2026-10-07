@@ -127,11 +127,11 @@ and swing release).
 
 | Op | Objects | Collision | Model | Placements | Behaviour (GAME, then map callbacks) | Name |
 | --- | --- | --- | --- | --- | --- | --- |
-| 0 | none | - | - | no template | save state byte; init falls to callback 8, which no map handles | WIP `OP_0` |
+| 0 | none | - | - | no template | save state byte (same save arm as 80); init falls to callback 8, which no map handles | WIP `OP_0` |
 | 11 | none | - | - | no template | init hides it (layer 0) like hidden screen image 20, no interaction | WIP `OP_11` |
 | 15 | 189 | radius 400 | 443 FT3 | 19, regions 0-6 | items 114..116 used on it are spawned in the event pool and lowered onto it; items 111..113 (10 MP) warp back in front of it; empty socket notifies 16; markers refused; pending item saved | `RECALL_SOCKET` |
 | 17 | 184 | none | 88 FT3 + 16 GT3, unbiased depth | 28, pairs in regions 1/4/5/6 | item 103 used on it is spawned and slid in, then ORs bit 1 or 2 into linked signal door 139's `0xfc` marker (open from front/back); markers refused | `DOOR_SOCKET` |
-| 33 | 239 | radius 600 | 20 FT3 | none | no init, update, interaction or save case | WIP `OP_33` |
+| 33 | 239 | radius 600 | 20 FT3 | none | loader arm shared with 255 (no init, skips callback 8); no update or save case, and unlike 255 no interaction notification | WIP `OP_33` |
 | 48 | 246 | none | 2 GT3 (one quad) | 1, region 1 layer 1 | additive blend, raised by byte `0x3c` * 256 (`0x14`); no update case in any map | `RAISED_ADDITIVE` |
 | 80 | none | - | - | no template | marker-signal receiver, saved; no update in any map | WIP `OP_80` |
 | 81 | 200, 201, 202, 213 | none | 27 / 222 / 118 / 118 textured | 8 / 16 / 13 / 5 | plays its clips when the camera region (200/201: always) or an interaction (202/213: region never) starts it, probes actors and player at a model vertex and applies hazard damage | `ANIMATED_HAZARD` |
@@ -144,7 +144,29 @@ and swing release).
 | 165 | 276 | radius 1500 | 312 textured, 192 semi | 8, region 6 | interacts like `NONE`; region 6: lighting row `0x3f`, and while drawn and slot 192 (item 94) remains it spawns effect kind 101 around itself with random sound `0xf5` | `EFFECT_EMITTER` |
 
 Region 10's callback table points outside the `0x8019e138` workspace and none
-of its placements use these operations. `KF_ACTOR_FLAG_DIE_WITH_LINKED`
+of its placements use these operations.
+
+**Operations 0, 11, 33 and 80 have no producer.** An exhaustive one-off check
+of the JP, US and EU discs found no template with operation 0, 11 or 80, and
+the single operation-33 template (object 239, an identical row on all three
+discs) is never placed in regions 0-7 or 10, never a death drop (actor byte 6
+or target-candidate byte `0x0c`) and never spawned by item use, events or map
+callbacks. No code writes any of the four into the action byte: GAME stores
+only named immediates (`event_world_state_restore_slot` writes 96/97/98/112,
+`map_object_start_action_if_idle`'s five callers pass 0x60-0x62, and the
+startup clear's 0 is overwritten with 0xff by `map_object_pool_reset`); the
+whole of every region's FDAT `3r + 2` code (all 32 slots; region 10 at its own
+link base `0x80193b38`) initializes only 0x20, 0x5f and 0xa0-0xa5 and never
+calls the setter; OPEN and END have no map-object code. With every writer an
+immediate, no script, event or talk byte can select one of them. GAME keeps
+only dispatch hooks: 0 and 80 share a save arm (`0x800488c4`), 80 joins the
+marker-signal receivers (`0x80036744`), 11 shares the loader arm that hides
+operation 20, and 33 the inert arm of 255; US and EU GAME have the same arms.
+KF1 numbers 0 hinged door, 11 restore point and 80 projectile emitter (its link
+trigger also clears the link byte of 80) and has no 33. KF3 retail has no
+template for any of the four; the KF3 pilot build has a hinge-door row with
+operation 0 (object 178) that its loader initializes like KF2's `HINGE`.
+That lineage does not show KF2 behaviour, so all four keep their WIP names. `KF_ACTOR_FLAG_DIE_WITH_LINKED`
 (`0x200`) is tested once (`0x8003f4d4`, `actor_update_behavior`): when a
 linked companion's partner leaves the active lifecycle the companion detaches,
 blocks player targeting and, with the flag, selects target type 3 (the type

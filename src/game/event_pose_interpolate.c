@@ -1061,7 +1061,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
         event_state.interaction_handled = KF_TRUE;
         kind = templates[KF_ENUM_ENCODE(u16, object_id)].collision_kind;
         switch (kind) {
-        case KF_MAP_OBJECT_OP_165:
+        case KF_MAP_OBJECT_OP_EFFECT_EMITTER:
         case KF_MAP_OBJECT_OP_NONE:
             if (object->tail.notification.default_notification != KF_NOTIFICATION_NONE) {
                 notify_enqueue(object->tail.notification.default_notification);
@@ -1133,7 +1133,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 notify_enqueue(object->tail.notification.default_notification);
             }
             break;
-        case KF_MAP_OBJECT_OP_81:
+        case KF_MAP_OBJECT_OP_ANIMATED_HAZARD:
             if (object->action_timer == 0 &&
                 object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_RUNNING) {
                 object->action_timer = 1;
@@ -1170,7 +1170,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                 break;
             }
             break;
-        case KF_MAP_OBJECT_OP_15:
+        case KF_MAP_OBJECT_OP_RECALL_SOCKET:
             if (object->tail.event_effect.pending_event_command == KF_OBJECT_NONE) {
                 notify_enqueue(KF_NOTIFICATION_16);
             }
@@ -1445,19 +1445,19 @@ void event_world_state_save_slot(s32 save_slot)
         case KF_MAP_OBJECT_OP_HINGED_CONTAINER:
         case KF_MAP_OBJECT_OP_SLIDING_CONTAINER:
         case KF_MAP_OBJECT_OP_80:
-        case KF_MAP_OBJECT_OP_81:
+        case KF_MAP_OBJECT_OP_ANIMATED_HAZARD:
         case KF_MAP_OBJECT_OP_PATTERN_GATE:
         case KF_MAP_OBJECT_OP_CELL_COPY_TOGGLE:
-        case KF_MAP_OBJECT_OP_95:
-        case KF_MAP_OBJECT_OP_160:
-        case KF_MAP_OBJECT_OP_161:
-        case KF_MAP_OBJECT_OP_163:
-        case KF_MAP_OBJECT_OP_164:
+        case KF_MAP_OBJECT_OP_SIGNAL_CELL_COPY:
+        case KF_MAP_OBJECT_OP_REGION0_ITEM_SOCKET:
+        case KF_MAP_OBJECT_OP_REGION1_ITEM_SOCKET:
+        case KF_MAP_OBJECT_OP_EVENT_BIT_ACTIVATED:
+        case KF_MAP_OBJECT_OP_ITEM_DIAL:
             *write++ = KF_EVENT_WORLD_SAVE_STATE_BYTE;
             *write++ = object->tail.fields.unknown_38;
             break;
-        case KF_MAP_OBJECT_OP_15:
-        case KF_MAP_OBJECT_OP_17:
+        case KF_MAP_OBJECT_OP_RECALL_SOCKET:
+        case KF_MAP_OBJECT_OP_DOOR_SOCKET:
             *write++ = KF_EVENT_WORLD_SAVE_EFFECT;
             *write++ = KF_ENUM_ENCODE(u8, object->tail.event_effect.pending_event_command);
             *write++ = object->tail.event_effect.effect_object_index;

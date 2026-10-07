@@ -3285,7 +3285,7 @@ case3_motion:
                 if ((collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                     actor->flags |= KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR;
                 }
-                if ((actor->flags & KF_ACTOR_FLAG_200) != KF_ACTOR_FLAGS_NONE) {
+                if ((actor->flags & KF_ACTOR_FLAG_DIE_WITH_LINKED) != KF_ACTOR_FLAGS_NONE) {
                     actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
                 }
                 actor->motion.vector.vx = other->motion.vector.vx;

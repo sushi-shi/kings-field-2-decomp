@@ -134,7 +134,7 @@ void map_object_refresh_cell_markers(KfMapCellMarkerMode mode)
     object = map_object_state.objects;
     for (index = KF_MAP_OBJECT_CAPACITY; index != 0; object++, index--) {
         if (object->action != KF_MAP_OBJECT_OP_ANIMATED_CONTAINER) {
-            if (object->action != KF_MAP_OBJECT_OP_81) {
+            if (object->action != KF_MAP_OBJECT_OP_ANIMATED_HAZARD) {
                 continue;
             }
             if (object->tail.fields.unknown_3a.bytes.high == 0xff) {
@@ -362,9 +362,9 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->scale.vy = 0;
             object->scale.vx = 0;
             break;
-        case KF_MAP_OBJECT_OP_81:
+        case KF_MAP_OBJECT_OP_ANIMATED_HAZARD:
             object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
-            object->action = KF_MAP_OBJECT_OP_81;
+            object->action = KF_MAP_OBJECT_OP_ANIMATED_HAZARD;
             object->extra_40.bytes[0] = KF_MAP_OBJECT_LATCH_CLEAR;
             if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
                 map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_PLACE,
@@ -404,8 +404,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         case KF_MAP_OBJECT_OP_GROW_ITEM:
             object->action = KF_MAP_OBJECT_OP_GROW_ITEM;
             break;
-        case KF_MAP_OBJECT_OP_48:
-            object->action = KF_MAP_OBJECT_OP_48;
+        case KF_MAP_OBJECT_OP_RAISED_ADDITIVE:
+            object->action = KF_MAP_OBJECT_OP_RAISED_ADDITIVE;
             object->render_queue_mode = KF_RENDER_QUEUE_BLEND_ADD;
             object->position.vy -=
                 (u8)object->tail.fields.spawn_sequence * 0x100;
@@ -414,11 +414,11 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->action = KF_MAP_OBJECT_OP_RESTORE_POINT;
             object->extra_40.next_sound_frame = frame_count + 30;
             break;
-        case KF_MAP_OBJECT_OP_15:
-            object->action = KF_MAP_OBJECT_OP_15;
+        case KF_MAP_OBJECT_OP_RECALL_SOCKET:
+            object->action = KF_MAP_OBJECT_OP_RECALL_SOCKET;
             break;
-        case KF_MAP_OBJECT_OP_17:
-            object->action = KF_MAP_OBJECT_OP_17;
+        case KF_MAP_OBJECT_OP_DOOR_SOCKET:
+            object->action = KF_MAP_OBJECT_OP_DOOR_SOCKET;
             break;
         case KF_MAP_OBJECT_OP_ITEM_CONTAINER:
             object->action = KF_MAP_OBJECT_OP_ITEM_CONTAINER;
@@ -674,9 +674,9 @@ void map_object_apply_marker_signal(u8 identifier)
         switch (object->action) {
         case KF_MAP_OBJECT_OP_80:
         case KF_MAP_OBJECT_OP_PATTERN_GATE:
-        case KF_MAP_OBJECT_OP_95:
-        case KF_MAP_OBJECT_OP_162:
-        case KF_MAP_OBJECT_OP_163:
+        case KF_MAP_OBJECT_OP_SIGNAL_CELL_COPY:
+        case KF_MAP_OBJECT_OP_SIGNAL_EVENT_BIT:
+        case KF_MAP_OBJECT_OP_EVENT_BIT_ACTIVATED:
             if (object->tail.marker.marker_id == identifier) {
                 object->tail.marker.marker_id = KF_MAP_OBJECT_MARKER_CLEARED;
             }
@@ -688,7 +688,7 @@ void map_object_apply_marker_signal(u8 identifier)
                     object->tail.action_88_cell_copy.transition_mode == KF_MAP_OBJECT_CELL_COPY_REVERT);
             }
             break;
-        case KF_MAP_OBJECT_OP_81:
+        case KF_MAP_OBJECT_OP_ANIMATED_HAZARD:
             if (object->tail.action_51_marker.marker_id == identifier) {
                 object->tail.collision_probe.marker_trigger_state =
                     object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_STOPPED
@@ -749,8 +749,8 @@ KfMapObjectMarkerCheck map_object_check_and_consume_marker(KfMapObject *object, 
             return KF_MAP_OBJECT_MARKER_CONSUMED;
         }
         return KF_MAP_OBJECT_MARKER_MISMATCH;
-    case KF_MAP_OBJECT_OP_15:
-    case KF_MAP_OBJECT_OP_17:
+    case KF_MAP_OBJECT_OP_RECALL_SOCKET:
+    case KF_MAP_OBJECT_OP_DOOR_SOCKET:
         return KF_MAP_OBJECT_MARKER_REFUSED;
     default:
         return KF_MAP_OBJECT_MARKER_NOT_APPLICABLE;

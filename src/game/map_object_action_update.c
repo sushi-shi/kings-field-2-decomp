@@ -19,13 +19,13 @@
 #include <psyq/libc.h>
 
 DATA(0x8006d6e4, 0x8, ".sdata")
-SVECTOR map_object_motion_action15_start_offset = {0, -1424, 0, 0};
+SVECTOR map_object_motion_recall_socket_start_offset = {0, -1424, 0, 0};
 DATA(0x8006d6ec, 0x8, ".sdata")
-SVECTOR map_object_motion_action15_end_offset = {0, -912, 0, 0};
+SVECTOR map_object_motion_recall_socket_end_offset = {0, -912, 0, 0};
 DATA(0x8006d6f4, 0x8, ".sdata")
-SVECTOR map_object_motion_action17_start_offset = {0, -100, 300, 0};
+SVECTOR map_object_motion_door_socket_start_offset = {0, -100, 300, 0};
 DATA(0x8006d6fc, 0x8, ".sdata")
-SVECTOR map_object_motion_action17_end_offset = {0, 0, 64, 0};
+SVECTOR map_object_motion_door_socket_end_offset = {0, 0, 64, 0};
 
 /* The three adjacent retail tables dispatch actions and subactions. */
 RODATA(0x8001191c, 0x3bc)
@@ -705,7 +705,7 @@ void map_object_update_actions(void)
             break;
         }
 
-        case KF_MAP_OBJECT_OP_81: {
+        case KF_MAP_OBJECT_OP_ANIMATED_HAZARD: {
             s32 increment = object->tail.collision_probe.phase_step_code * 4;
 
             switch (object->action_timer) {
@@ -810,7 +810,7 @@ void map_object_update_actions(void)
             break;
         }
 
-        case KF_MAP_OBJECT_OP_15: {
+        case KF_MAP_OBJECT_OP_RECALL_SOCKET: {
             KfMapObject *target = &map_object_state.objects[380 + object->tail.event_effect.effect_object_index];
             if (object->action_timer != 0 && target->object_id == KF_OBJECT_NONE) {
                 u32 sentinel_offset;
@@ -832,11 +832,13 @@ void map_object_update_actions(void)
                 object->tail.event_effect.pending_event_command = KF_OBJECT_NONE;
                 object->action_timer = 0;
             }
-            map_object_step_offset_motion(object, target, &map_object_motion_action15_start_offset, &map_object_motion_action15_end_offset, KF_TRUE, 32);
+            map_object_step_offset_motion(object, target,
+                                          &map_object_motion_recall_socket_start_offset,
+                                          &map_object_motion_recall_socket_end_offset, KF_TRUE, 32);
             break;
         }
 
-        case KF_MAP_OBJECT_OP_17: {
+        case KF_MAP_OBJECT_OP_DOOR_SOCKET: {
             KfMapObject *target = &map_object_state.objects[380 + object->tail.event_effect.effect_object_index];
             if (object->action_timer != 0 && target->object_id == KF_OBJECT_NONE) {
                 KfMapObject *linked = &map_object_state.objects[object->tail.event_effect.linked_object_index];
@@ -844,8 +846,9 @@ void map_object_update_actions(void)
                 object->action_timer = 0;
                 linked->tail.fields.unknown_38 &= ~object->tail.event_effect.linked_object_flag_mask;
             }
-            if (map_object_step_offset_motion(object, target, &map_object_motion_action17_start_offset,
-                              &map_object_motion_action17_end_offset, KF_FALSE, 20)) {
+            if (map_object_step_offset_motion(object, target,
+                              &map_object_motion_door_socket_start_offset,
+                              &map_object_motion_door_socket_end_offset, KF_FALSE, 20)) {
                 KfMapObject *linked = &map_object_state.objects[object->tail.event_effect.linked_object_index];
                 linked->tail.fields.unknown_38 |= object->tail.event_effect.linked_object_flag_mask;
             }

@@ -325,9 +325,9 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         (s32)record->direction.vz * record->direction.vz;
     record->lighting_blend_q12 = 0;
     if (length_squared >= 810001) {
-        record->midpoint_collision_enabled = 1;
+        record->midpoint_collision_enabled = KF_TRUE;
     } else {
-        record->midpoint_collision_enabled = 0;
+        record->midpoint_collision_enabled = KF_FALSE;
     }
 
     switch (record->kind) {
@@ -335,7 +335,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     case 49:
         effect_pool_initialize_scaled(record, 0x2d, 0x1800);
         record->updates_remaining = 50;
-        record->midpoint_collision_enabled = 1;
+        record->midpoint_collision_enabled = KF_TRUE;
         effect_play_spatial_sound(record, 0x23);
         break;
     case 32:
@@ -355,7 +355,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->scale_z = 0x32c8;
         record->scale_y = 0x32c8;
         record->scale_x = 0x32c8;
-        record->midpoint_collision_enabled = 1;
+        record->midpoint_collision_enabled = KF_TRUE;
         effect_play_spatial_sound(record, 0x20);
         break;
     case 28:
@@ -1328,7 +1328,7 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
 
     addVector(&record->position, &record->direction);
     result = effect_probe_collision_by_type(&record->position, radius, angle);
-    if (record->midpoint_collision_enabled != 0) {
+    if (record->midpoint_collision_enabled) {
         effect_collision_motion_step.vx = record->direction.vx >> 1;
         effect_collision_motion_step.vy = record->direction.vy >> 1;
         effect_collision_motion_step.vz = record->direction.vz >> 1;
@@ -1356,7 +1356,7 @@ void effect_collision_backtrack(void)
 {
     KfEffectRecord *record = effect_state.current_record;
 
-    if (record->midpoint_collision_enabled != 0) {
+    if (record->midpoint_collision_enabled) {
         record->position.vx -= effect_collision_motion_step.vx;
         record->position.vy -= effect_collision_motion_step.vy;
         record->position.vz -= effect_collision_motion_step.vz;

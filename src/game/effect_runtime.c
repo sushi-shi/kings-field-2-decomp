@@ -637,7 +637,6 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
         record->base_render_id = 0x25;
         record->render_id = 0x25;
         record->cache_tail.payload.raw[0] = 0;
-    zero_scale_27_51_52:
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -2360,21 +2359,21 @@ void effect_update_dispatch(void)
         u8 actor_index = target->actor_index;
 
         if (actor_index == KF_EFFECT_KIND9_TARGET_PLAYER) {
-            VECTOR target;
+            VECTOR target_position;
 
-            target.vx = player_state.camera_position.vx;
-            target.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
-            target.vz = player_state.camera_position.vz;
-            collision = effect_target_motion(&target, 400, 60,
+            target_position.vx = player_state.camera_position.vx;
+            target_position.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
+            target_position.vz = player_state.camera_position.vz;
+            collision = effect_target_motion(&target_position, 400, 60,
                                        3000, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
         } else if (actor_index != KF_EFFECT_KIND9_TARGET_NONE) {
-            VECTOR target;
+            VECTOR target_position;
             const KfActor *actor = &actor_state.actors[actor_index];
 
-            target.vx = actor->position.vx;
-            target.vy = actor->position.vy - (actor->collision_height >> 1);
-            target.vz = actor->position.vz;
-            collision = effect_target_motion(&target, 600, 50,
+            target_position.vx = actor->position.vx;
+            target_position.vy = actor->position.vy - (actor->collision_height >> 1);
+            target_position.vz = actor->position.vz;
+            collision = effect_target_motion(&target_position, 600, 50,
                                        0, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
         } else {
             goto kind9_unbound;

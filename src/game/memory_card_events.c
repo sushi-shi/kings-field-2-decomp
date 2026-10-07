@@ -269,7 +269,7 @@ s32 memory_card_read_slot(s32 slot)
 retry:
     strcat(path, memory_card_file_prefix);
     path[CARD_PATH_SLOT_DIGIT_OFFSET] = slot + '0';
-    path[CARD_PATH_SLOT_DIGIT_OFFSET + 1] = 0;
+    path[CARD_PATH_SLOT_DIGIT_OFFSET + 1] = '\0';
     handle = open(path, FREAD);
     if (handle == -1 || read(handle, (void *)memory_card_buffer, KF_CARD_BLOCK_BYTES)
             != KF_CARD_BLOCK_BYTES) {
@@ -336,7 +336,7 @@ s32 memory_card_write_slot(s32 slot)
 
     strcat(path, memory_card_file_prefix);
     path[CARD_PATH_SLOT_DIGIT_OFFSET] = slot + '0';
-    path[CARD_PATH_SLOT_DIGIT_OFFSET + 1] = 0;
+    path[CARD_PATH_SLOT_DIGIT_OFFSET + 1] = '\0';
     header.magic[0] = 'S';
     header.magic[1] = 'C';
     header.icon_type = KF_CARD_ICON_TYPE_THREE_FRAMES;

@@ -3308,12 +3308,12 @@ void actor_fixup_group_targets(void)
     KfTargetReference *slot;
 
     group_index = 0;
-    while (group_index < 40) {
+    while (group_index < KF_COUNTOF(actor_state.target_groups)) {
         if (group->definition_id == 0xff) {
             break;
         }
         slot = group->targets;
-        for (slot_index = 0; slot_index < 16; slot_index++, slot++) {
+        for (slot_index = 0; slot_index < KF_COUNTOF(group->targets); slot_index++, slot++) {
             if (slot->relative_offset == -1) {
                 slot->pointer = NULL;
             } else {

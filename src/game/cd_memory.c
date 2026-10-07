@@ -295,37 +295,37 @@ void memory_arena_wait_pending(KfMemoryBlock *arena)
 ADDRESS(0x80017504, 0xe4)
 void memory_arena_compact(KfMemoryBlock *arena)
 {
-    KfMemoryBlock *read = arena;
-    KfMemoryBlock *write = arena;
+    KfMemoryBlock *read_block = arena;
+    KfMemoryBlock *write_block = arena;
 
     memory_arena_wait_pending(arena);
-    if (read->kind != KF_MEMORY_BLOCK_END) {
+    if (read_block->kind != KF_MEMORY_BLOCK_END) {
         do {
-            KfMemoryBlock *next = (KfMemoryBlock *)((u8 *)read + read->size + sizeof(KfMemoryBlock));
+            KfMemoryBlock *next = (KfMemoryBlock *)((u8 *)read_block + read_block->size + sizeof(KfMemoryBlock));
 
-            if (read->kind == KF_MEMORY_BLOCK_RECLAIMABLE) {
-                memory_arena_free(read);
+            if (read_block->kind == KF_MEMORY_BLOCK_RECLAIMABLE) {
+                memory_arena_free(read_block);
             }
-            if (read->kind == KF_MEMORY_BLOCK_OWNED) {
-                if (read != write) {
-                    u32 *source = (u32 *)read;
-                    u32 *destination = (u32 *)write;
-                    u32 word_count = (read->size + sizeof(KfMemoryBlock)) >> 2;
+            if (read_block->kind == KF_MEMORY_BLOCK_OWNED) {
+                if (read_block != write_block) {
+                    u32 *source = (u32 *)read_block;
+                    u32 *destination = (u32 *)write_block;
+                    u32 word_count = (read_block->size + sizeof(KfMemoryBlock)) >> 2;
 
                     do {
                         *destination++ = *source++;
                     } while (--word_count != 0);
-                    *write->owner = (u8 *)(write + 1);
-                    write = (KfMemoryBlock *)destination;
+                    *write_block->owner = (u8 *)(write_block + 1);
+                    write_block = (KfMemoryBlock *)destination;
                 } else {
-                    write = next;
+                    write_block = next;
                 }
             }
-            read = next;
-        } while (read->kind != KF_MEMORY_BLOCK_END);
+            read_block = next;
+        } while (read_block->kind != KF_MEMORY_BLOCK_END);
     }
-    write->kind = KF_MEMORY_BLOCK_FREE;
-    write->size = (u8 *)read - (u8 *)write - sizeof(KfMemoryBlock);
+    write_block->kind = KF_MEMORY_BLOCK_FREE;
+    write_block->size = (u8 *)read_block - (u8 *)write_block - sizeof(KfMemoryBlock);
 }
 
 ADDRESS(0x800175e8, 0x20)

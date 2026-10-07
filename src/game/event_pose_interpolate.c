@@ -1605,10 +1605,12 @@ void card_payload_capture_game_state(u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy((void *)buffer, (const void *)resource_state.active_resource_ids, 5);
-    memcpy((void *)&payload->camera_position, (const void *)&player_state.camera_position, 16);
+    memcpy((void *)buffer, (const void *)resource_state.active_resource_ids,
+        sizeof resource_state.active_resource_ids);
+    memcpy((void *)&payload->camera_position, (const void *)&player_state.camera_position,
+        sizeof payload->camera_position);
     memcpy((void *)(buffer + KF_CARD_SAVE_ROTATION_OFFSET),
-        (const void *)&player_state.camera_rotation_target, 8);
+        (const void *)&player_state.camera_rotation_target, sizeof player_state.camera_rotation_target);
 
     saved->experience = player_state.experience;
     saved->next_level_experience = player_state.next_level_experience;
@@ -1679,14 +1681,16 @@ void card_payload_restore_game_state(const u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy((void *)resource_state.active_resource_ids, (const void *)buffer, 5);
+    memcpy((void *)resource_state.active_resource_ids, (const void *)buffer,
+        sizeof resource_state.active_resource_ids);
     resource_state.active_resource_ids[1] = resource_state.active_resource_ids[0];
     resource_state.active_resource_ids[2] = resource_state.active_resource_ids[0];
     resource_state.active_resource_ids[3] = resource_state.active_resource_ids[0];
     resource_state.active_resource_ids[4] = resource_state.active_resource_ids[0];
-    memcpy((void *)&player_state.camera_position, (const void *)&payload->camera_position, 16);
+    memcpy((void *)&player_state.camera_position, (const void *)&payload->camera_position,
+        sizeof player_state.camera_position);
     memcpy((void *)&player_state.camera_rotation_target,
-        (const void *)(buffer + KF_CARD_SAVE_ROTATION_OFFSET), 8);
+        (const void *)(buffer + KF_CARD_SAVE_ROTATION_OFFSET), sizeof player_state.camera_rotation_target);
 
     player_state.experience = saved->experience;
     player_state.next_level_experience = saved->next_level_experience;

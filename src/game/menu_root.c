@@ -884,7 +884,7 @@ void menu_item_magic_controller(void)
     u8 saved_count_60;
     u8 saved_count_61;
 
-    for (index = 0; index < 74; index++) {
+    for (index = 0; index < KF_COUNTOF(counts); index++) {
         counts[index] = 0xff;
         numbers[index] = -1;
         item_ids[index] = 0xff;

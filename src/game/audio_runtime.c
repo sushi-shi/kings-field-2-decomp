@@ -396,6 +396,8 @@ void audio_vab_stream_callback(KfCdRequest *request)
     case KF_CD_VAB_PHASE_BODY_READ:
         request->payload.vab.phase = KF_CD_VAB_PHASE_BODY_READY;
         break;
+    default:
+        break;
     }
 }
 

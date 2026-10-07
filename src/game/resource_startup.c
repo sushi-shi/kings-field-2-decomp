@@ -589,5 +589,7 @@ begin_phase_five:
             audio_start_sequence();
         }
         goto complete;
+    default:
+        break;
     }
 }

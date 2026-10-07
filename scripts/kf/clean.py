@@ -28,6 +28,7 @@ CLAIMS = {'ADDRESS': 2, 'ADDRESS_AT': 3, 'DATA': 3, 'DATA_AT': 4, 'RODATA': 2, '
 TYPE_MACROS = {
     'KF_ENUM_BEGIN', 'KF_ENUM_END', 'KF_ENUM_PROMOTED', 'KF_ENUM_STORAGE',
     'KF_ENUM_PARAM', 'KF_ENUM_COUNTER', 'KF_ENUM_FLAGS', 'KF_ENUM_DECODE', 'KF_ENUM_ENCODE',
+    'KF_ENUM_VALUE',
 }
 IMPLEMENTATION = {'KF_MENU_MODE_IMPLEMENTATION', 'KF_MENU_LIST_IMPLEMENTATION',
                   'KF_EFFECT_POOL_IMPLEMENTATION'}
@@ -95,6 +96,7 @@ def clean_c(text: str, promoted: dict[str, str]) -> str:
         'KF_ENUM_FLAGS': (2, lambda a: ''),
         'KF_ENUM_DECODE': (2, lambda a: f'(({a[0]})({a[1]}))'),
         'KF_ENUM_ENCODE': (2, lambda a: f'(({a[0]})({a[1]}))'),
+        'KF_ENUM_VALUE': (1, lambda a: f'({a[0]})'),
     })
     text = rewrite_calls(text, rules)
     residue = [word for kind, word in tokens(text) if kind == 'word' and (
@@ -220,15 +222,21 @@ def write_output(repo: Path, requested: Path, files: dict[str, bytes], commit: s
     return output
 
 
-def compare_program(original: bytes, cleaned: bytes, original_cpe: bytes, cleaned_cpe: bytes) -> list[int]:
-    """Require identical native links and EXEs apart from two reserved header words."""
+def compare_program(original: bytes, cleaned: bytes, original_cpe: bytes, cleaned_cpe: bytes) -> None:
+    """Require identical native links and byte-identical executables.
+
+    CPE2X copies uninitialized stack bytes into its reserved header words; the
+    shared DOS runner pins the emulated CPU rate, so those bytes repeat too.
+    """
     if not original_cpe.startswith(b'CPE\x01') or original_cpe != cleaned_cpe:
         raise ValueError('native linker output differs')
     if len(original) < 2048 or original[:8] != b'PS-X EXE':
         raise ValueError('invalid reference executable')
-    if original[:8] + original[16:] != cleaned[:8] + cleaned[16:]:
-        raise ValueError('executable differs outside reserved header words')
-    return [offset for offset in range(8, 16) if original[offset] != cleaned[offset]]
+    if original != cleaned:
+        differing = [offset for offset in range(max(len(original), len(cleaned)))
+                     if original[offset:offset + 1] != cleaned[offset:offset + 1]]
+        raise ValueError(f'executable differs at {len(differing)} byte(s), first at '
+                         f'{differing[0]:#x}')
 
 
 def classic_reference(repo: Path) -> Path:
@@ -264,18 +272,13 @@ def verify(output: Path, repo: Path, *, compare: bool = True) -> None:
         for name in ORIGINS:
             original = reference / name[:-4].lower() / name
             try:
-                reserved = compare_program(
+                compare_program(
                     original.read_bytes(), (output / 'result' / name).read_bytes(),
                     original.with_suffix('.CPE').read_bytes(),
                     (output / 'result/link' / name.replace('.EXE', '.CPE')).read_bytes())
             except ValueError as error:
                 raise ValueError(f'{name}: {error}') from error
-            if reserved:
-                print(f'{name}: native link and executable contents agree; whole-file equality: false; '
-                      f'CPE2X reserved header differences: {[hex(offset) for offset in reserved]}',
-                      flush=True)
-            else:
-                print(f'{name}: native link and complete executable are byte-identical', flush=True)
+            print(f'{name}: native link and complete executable are byte-identical', flush=True)
     if (output / 'codecs/Cargo.toml').exists():
         subprocess.run(['nix', 'develop', f'path:{output}#codecs', '-c', 'cargo', 'build', '--offline',
                         '--manifest-path', str(output / 'codecs/Cargo.toml')], check=True)

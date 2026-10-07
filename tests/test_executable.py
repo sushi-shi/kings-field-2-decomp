@@ -20,6 +20,7 @@ from scripts.kf import executable
 from scripts.kf.executable import build_image, compare, cpe_loads
 from scripts.kf.manifest import Manifest, Profile, Unit
 from scripts.kf.sema.image import RetailImage
+from scripts.psxbuild.link import LIBRARIES
 
 
 class ComparisonTests(unittest.TestCase):
@@ -109,7 +110,7 @@ class ComparisonTests(unittest.TestCase):
 
 @unittest.skipUnless(all(shutil.which(tool) for tool in ('cpppsx-257', 'cc1psx-257', 'dosbox-x'))
                      and all(os.environ.get(key) for key in ('PSYQ_ASPSX', 'PSYQ_BIN', 'PSYQ_LIB',
-                                                             'PSYQ_INCLUDE', 'PSYQ_H2000_LIB')),
+                                                             'PSYQ_INCLUDE', 'PSYQ_MALLOC_OBJ')),
                      'requires pinned compiler, original DOS tools and SDK libraries')
 class NativeBuildControls(unittest.TestCase):
     def manifest(self, root: Path, sources: tuple[str, ...], image: str = 'PSX.EXE') -> Manifest:
@@ -161,6 +162,13 @@ class NativeBuildControls(unittest.TestCase):
             entry, loads = cpe_loads((output / 'PSX.CPE').read_bytes())
             actual = (output / 'PSX.EXE').read_bytes()
             self.assertEqual(actual[:8], b'PS-X EXE')
+            # The converter session: zeroed reserved and save-area words, the
+            # 801ffff0 stack base, and the title-tail residue of the frame
+            # pointer, the far return 3b30:158e and the call's arguments.
+            self.assertEqual(actual[8:16] + actual[0x14:0x18], bytes(12))
+            self.assertEqual(struct.unpack_from('<I', actual, 0x30)[0], 0x801ffff0)
+            self.assertEqual(actual[0x34:0x4c], bytes(0x18))
+            self.assertEqual(actual[0x7c:0x88].hex(), '0500c20f8e15303b05000405')
             self.assertEqual(struct.unpack_from('<I', actual, 0x10)[0], entry)
             base = struct.unpack_from('<I', actual, 0x18)[0]
             for address, payload in loads:
@@ -189,6 +197,13 @@ class NativeBuildControls(unittest.TestCase):
                     Path(report['startup']['path']).read_bytes(),
                 )
                 self.assertEqual(report['retail_payload_inputs'], [])
+                commands = (output / 'LINK.LNK').read_text().splitlines()
+                explicit = [line.split('"')[1] for line in commands if 'include' in line]
+                expected = ['MALLOC.OBJ', 'CARD.OBJ'] if image == 'GAME.EXE' else ['MALLOC.OBJ']
+                self.assertEqual(explicit[explicit.index('BOUNDS.OBJ') + 1:], expected)
+                self.assertEqual([line.split('"')[1] for line in commands if 'inclib' in line],
+                                 [library + '.LIB' for library in LIBRARIES[image]])
+                self.assertEqual('card' in report, image == 'GAME.EXE')
                 actual = (output / image).read_bytes()
                 base = struct.unpack_from('<I', actual, 0x18)[0]
                 entry, loads = cpe_loads((output / (image[:-4] + '.CPE')).read_bytes())

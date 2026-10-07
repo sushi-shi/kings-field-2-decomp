@@ -19,6 +19,7 @@
         PSYQ_H2000_LIB = "${sdk.psyqSdk}/release-2.5/H2000/LIB2000";
         PSYQ_ASPSX = "${sdk.aspsxNative}/1.07/ASPSX.EXE";
         PSYQ_ASMPSX = "${sdk.asmpsxNative}";
+        PSYQ_CPE2X = "${sdk.psyqRuntime30Cpe2x}/CPE2X.EXE";
       };
       buildTools = [ pkgs.python3 pkgs.dosbox-x sdk.cpppsx257 sdk.cc1psx257 ];
       game = pkgs.stdenvNoCC.mkDerivation (environment // {

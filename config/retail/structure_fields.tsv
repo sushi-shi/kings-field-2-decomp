@@ -352,13 +352,13 @@ KfEffectKindPayload	0x0	0x4	kind105	KfEffectKind105Attachment	supported	GAME 0x8
 KfEffectKindPayload	0x0	0x8	kind12	KfEffectKind12Aim	supported	GAME 0x80040d90-0x80040db4;GAME 0x80043d44-0x80043d70	Payload view at +0x40 for kind-12 aiming parameters
 KfEffectRecord	0x0	0x1	type	KfEffectType	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x1	0x1	kind	KfEffectKind	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x2	0x1	base_render_id	u8	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x3	0x1	render_id	u8	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectRecord	0x2	0x1	base_render_id	KfEffectRenderId	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectRecord	0x3	0x1	render_id	KfEffectRenderId	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x4	0x1	animation_clip	KfAnimationClip	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x5	0x1	unknown_05	u8	opaque	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x6	0x1	damage_multiplier_tenths	u8	candidate	game/effect.h;GAME 0x800403c8;player_apply_damage consumer	constructor callers normally supply 10; actor script supplies target word +0x18; damage callee scales total by this value divided by 10
 KfEffectRecord	0x7	0x1	phase	u8	supported	game/effect.h;GAME 0x80042650 kind/phase dispatch;0x80041d7c spawn	Checked effect phase byte; dispatcher selects five phase handlers at 0x80044f60.
-KfEffectRecord	0x8	0x1	render_flags	u8	candidate	game/effect.h;GAME 0x80032c6c/0x80032ca4;effect constructor/update	low two bits govern draw eligibility/visibility test; bits 2-3 select render path
+KfEffectRecord	0x8	0x1	render_flags	KfEffectRenderFlags	candidate	game/effect.h;GAME 0x80032c6c/0x80032ca4;effect constructor/update	low two bits govern draw eligibility/visibility test; bits 2-3 select render path
 KfEffectRecord	0x9	0x1	render_queue_mode	u8	candidate	game/effect.h;asm 0x8003259c/0x80040468;render_world_model consumer	0xff constructor default selects textured queue; constructor/update value 1 selects blended queue; renderer also handles 0xfe clipped mode
 KfEffectRecord	0xa	0x1	map_layer_mask	u8	candidate	game/effect.h;asm 0x8004037c/0x800423ec;render_scene_and_update_resources	constructor default 3 selects both layers; collision step selects 1 or 2; renderer masks map-cell visibility and passes layer to render_world_model
 KfEffectRecord	0xb	0x1	cooldown	u8	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional

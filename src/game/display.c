@@ -2585,16 +2585,18 @@ map_object_next:
     remaining = KF_EFFECT_CAPACITY - 1;
     while (remaining != -1) {
         if (effect->type == KF_EFFECT_SLOT_FREE ||
-            (effect->render_flags & 3) == 0) goto effect_next;
-        if ((effect->render_flags & 3) != 2 &&
+            (effect->render_flags & KF_EFFECT_RENDER_VISIBILITY_MASK) == KF_EFFECT_RENDER_HIDDEN) goto effect_next;
+        if ((effect->render_flags & KF_EFFECT_RENDER_VISIBILITY_MASK) != KF_EFFECT_RENDER_ALWAYS_VISIBLE &&
             (map_cell_layer_mask(&effect->position) & effect->map_layer_mask) == 0)
             goto effect_next;
-        switch (effect->render_flags & 12) {
-        case 0:
+        /* Retail has no default arm; switching on the encoding keeps the
+         * modern view from requiring one. */
+        switch (KF_ENUM_ENCODE(s32, effect->render_flags & KF_EFFECT_RENDER_TRANSFORM_MASK)) {
+        case KF_ENUM_ENCODE(s32, KF_EFFECT_RENDER_WORLD_TRANSFORM):
             rotation.x = effect->rotation.vx;
             rotation.y = effect->rotation.vy + 0x800;
             rotation.z = effect->rotation.vz;
-            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+            render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, &rotation, (SVECTOR *)&effect->scale_x,
                            &effect->cache_tail.animation_cache,
                            &game_graphics_runtime.render_state.view_matrix,
@@ -2602,8 +2604,8 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case 4:
-            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+        case KF_ENUM_ENCODE(s32, KF_EFFECT_RENDER_IDENTITY_TRANSFORM):
+            render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, (const struct KfEulerAngles *)&effect->rotation,
                            (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
                            &render_world_identity_matrix,
@@ -2611,8 +2613,8 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case 8:
-            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+        case KF_ENUM_ENCODE(s32, KF_EFFECT_RENDER_PITCH_TRANSFORM):
+            render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, (const struct KfEulerAngles *)&effect->rotation,
                            (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
                            &game_graphics_runtime.render_state.pitch_matrix,
@@ -2620,8 +2622,8 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case 12:
-            render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
+        case KF_ENUM_ENCODE(s32, KF_EFFECT_RENDER_SCREEN_SPACE):
+            render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position,
                            (const struct KfEulerAngles *)&effect->rotation,
                            (SVECTOR *)&effect->scale_x,

@@ -2418,7 +2418,6 @@ void render_scene_and_update_resources(void)
     KfMapObject *object;
     KfEffectRecord *effect;
     KfMapPlacedEntry *placed;
-    const VECTOR *camera_position;
     s32 frame;
     s16 remaining;
 
@@ -2487,7 +2486,6 @@ actor_next:
     repeat_store_word((u32 *)vab_flags, 0, 16);
     object = map_object_state.objects;
     remaining = KF_MAP_OBJECT_CAPACITY - 1;
-    camera_position = &player_state.camera_position;
     while (remaining != -1) {
         u32 visibility;
 
@@ -2536,11 +2534,11 @@ map_sound_action: {
                 /* One local carries each half extent, the audible radius and
                  * finally the volume. */
                 volume = object->tail.ambient_sound.region_width * 0x400;
-                nearest = camera_position->vx - (volume + object->position.vx);
+                nearest = player_state.camera_position.vx - (volume + object->position.vx);
                 if (nearest < 0) nearest = -nearest;
                 nearest = volume - nearest;
                 volume = object->tail.ambient_sound.region_depth * 0x400;
-                distance = camera_position->vz - (volume + object->position.vz);
+                distance = player_state.camera_position.vz - (volume + object->position.vz);
                 if (distance < 0) distance = -distance;
                 distance = volume - distance;
                 if (distance < nearest) nearest = distance;

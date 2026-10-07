@@ -11,6 +11,9 @@
 /* GAME.EXE double-buffered display and the graphics runtime region cleared
  * by game_main_loop (0x5f3c words at 0x8017d140). Members are named where a
  * reconstructed function establishes them; the rest stay opaque. */
+/* ResetGraph mode 3 reinitializes the GPU but keeps the display environment. */
+enum { KF_GPU_RESET_KEEP_DISPLAY = 3 };
+
 enum {
     KF_DISPLAY_BUFFER_COUNT = 2,
     KF_GAME_ORDERING_TABLE_LENGTH = 0x2000,

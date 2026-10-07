@@ -1166,11 +1166,11 @@ void event_world_dispatch_interaction(const VECTOR *position,
             break;
         case KF_MAP_OBJECT_ACTION_PLAYER_REACTION:
             if (player_state.death_state == 0) {
-                u8 *linked_state;
+                KfMapObjectRecord40 *record;
                 player_begin_view_reaction(object_index);
-                linked_state = (u8 *)object->extra_40.record;
-                if (linked_state[1] == 1) {
-                    linked_state[1] = 5;
+                record = object->extra_40.record;
+                if (record->reaction_mode == 1) {
+                    record->reaction_mode = 5;
                 }
             }
             break;

@@ -26,8 +26,7 @@ u32 game_main_exit_flag;
 enum {
     GAME_MAIN_RUNNING = 0,
     GAME_MAIN_EXIT_REQUESTED = 1,
-    GAME_INITIAL_MASTER_VOLUME = 0x7f,
-    KF_GPU_RESET_KEEP_DISPLAY = 3
+    GAME_INITIAL_MASTER_VOLUME = 0x7f
 };
 
 /*

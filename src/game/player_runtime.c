@@ -1990,9 +1990,9 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 radius;
     s32 slide_distance;
     s32 slide_attempted = 0;
-    s32 collision_retry = 0;
-    s32 result = 0;
     s32 diagonal_retry = 0;
+    s32 result = 0;
+    s32 collision_retry = 0;
     s32 high_collision;
     SVECTOR delta;
     s32 diagonal_kind;
@@ -2332,7 +2332,6 @@ s32 player_move_reaction_with_collision(void)
     s32 length;
     s32 remaining;
     s32 minimum_length;
-    SVECTOR *motion;
 
     next.vx = player_state.camera_position.vx + player_state.reaction.damage.rotation.vx;
     next.vy = player_state.camera_position.vy + player_state.reaction.damage.rotation.vy;
@@ -2368,16 +2367,18 @@ s32 player_move_reaction_with_collision(void)
         if (flags == 0) {
             minimum_length = 32;
         scale_motion:
-            motion = &player_state.reaction.damage.rotation;
-            length = fixed_vector2_length(motion->vx, motion->vz);
-            remaining = length - minimum_length;
+            length = fixed_vector2_length(player_state.reaction.damage.rotation.vx,
+                                          player_state.reaction.damage.rotation.vz);
             if (length <= minimum_length) {
-                motion->vz = 0;
-                motion->vx = 0;
+                player_state.reaction.damage.rotation.vz = 0;
+                player_state.reaction.damage.rotation.vx = 0;
                 goto exhausted;
             }
-            motion->vx = (motion->vx * remaining) / length;
-            motion->vz = (motion->vz * remaining) / length;
+            remaining = length - minimum_length;
+            player_state.reaction.damage.rotation.vx =
+                (player_state.reaction.damage.rotation.vx * remaining) / length;
+            player_state.reaction.damage.rotation.vz =
+                (player_state.reaction.damage.rotation.vz * remaining) / length;
             goto accept;
         }
     }

@@ -98,9 +98,9 @@ static inline void menu_copy_prefix12(s16 *destination, const s16 *source)
 {
     memcpy(destination, source, 12);
 }
-/* Unreferenced return stub; original role and TU owner remain unresolved. */
+/* Unreferenced empty function; its original role and TU owner are unresolved. */
 ADDRESS(0x80018764, 0x8)
-void func_80018764(void)
+void menu_unused_stub(void)
 {
 }
 
@@ -242,7 +242,7 @@ s32 menu_item_selection_controller(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 0, 1, selected_item);
+            result = menu_preview_choice(&menu.list, 0, 1, selected_item);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             else
@@ -271,7 +271,7 @@ s32 menu_item_selection_controller(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 1);
+            menu_render_list(&menu.list, 1);
             menu_present_frame();
         }
     }
@@ -458,7 +458,7 @@ void menu_show_map_preview(s32 menu_code)
 
         primitive_buffer_begin_poly_ft4();
         setRGB0(current_poly_ft4, 0x7f, 0x7f, 0x7f);
-        SetSemiTrans((void *)current_poly_ft4, 1);
+        SetSemiTrans(current_poly_ft4, 1);
         current_poly_ft4->tpage = 0x1f;
         current_poly_ft4->clut = 0x7fe4;
         setXYWH(current_poly_ft4, 0x3c, 0x14, 200, 200);
@@ -467,7 +467,7 @@ void menu_show_map_preview(s32 menu_code)
 
         primitive_buffer_begin_poly_ft4();
         setRGB0(current_poly_ft4, 0x7f, 0x7f, 0x7f);
-        SetSemiTrans((void *)current_poly_ft4, 1);
+        SetSemiTrans(current_poly_ft4, 1);
         current_poly_ft4->tpage = 0x1c;
         current_poly_ft4->clut = 0x7d25;
         setXYWH(current_poly_ft4,
@@ -521,7 +521,7 @@ s32 menu_choose_magic_action(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 0, 2, 0xff);
+            result = menu_preview_choice(&menu.list, 0, 2, 0xff);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             else
@@ -536,7 +536,7 @@ s32 menu_choose_magic_action(void)
             menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            menu_render_list(&menu, 2);
+            menu_render_list(&menu.list, 2);
             menu_present_frame();
         }
     }
@@ -633,7 +633,7 @@ void menu_equipment_list_controller(void)
             menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            menu_render_list(&menu, 3);
+            menu_render_list(&menu.list, 3);
             menu_present_frame();
         }
     }
@@ -760,7 +760,7 @@ void menu_equipment_category_controller(s32 category)
             input_wait_release();
 
         if (selection == 1) {
-            result = menu_preview_choice(&menu, 5, 5, selected_item);
+            result = menu_preview_choice(&menu.list, 5, 5, selected_item);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             else
@@ -778,7 +778,7 @@ void menu_equipment_category_controller(s32 category)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 5);
+            menu_render_list(&menu.list, 5);
             menu_present_frame();
         }
     }
@@ -850,7 +850,7 @@ void menu_choose_primary_magic_shortcut(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 5, 4, 0xff);
+            result = menu_preview_choice(&menu.list, 5, 4, 0xff);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             else
@@ -865,7 +865,7 @@ void menu_choose_primary_magic_shortcut(void)
             menu_play_sound_cue(17);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            menu_render_list(&menu, 4);
+            menu_render_list(&menu.list, 4);
             menu_present_frame();
         }
     }
@@ -928,7 +928,7 @@ void menu_item_magic_controller(void)
             input_wait_release();
 
         if (selection == 1) {
-            result = menu_preview_choice(&menu, 5, 16, selected_item);
+            result = menu_preview_choice(&menu.list, 5, 16, selected_item);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             else
@@ -947,7 +947,7 @@ void menu_item_magic_controller(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 16);
+            menu_render_list(&menu.list, 16);
             menu_present_frame();
         }
     }
@@ -1012,7 +1012,7 @@ void menu_item_use_controller(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 1, 7,
+            result = menu_preview_choice(&menu.list, 1, 7,
                 indices[menu.list.selected_index]);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
@@ -1031,7 +1031,7 @@ void menu_item_use_controller(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 7);
+            menu_render_list(&menu.list, 7);
             menu_present_frame();
         }
     }
@@ -1136,7 +1136,7 @@ s32 menu_card_load_browser(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 6, 8, CARD_MENU_NO_PREVIEW_ITEM);
+            result = menu_preview_choice(&menu.list, 6, 8, CARD_MENU_NO_PREVIEW_ITEM);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             else
@@ -1150,7 +1150,7 @@ s32 menu_card_load_browser(void)
             menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            menu_render_list(&menu, 8);
+            menu_render_list(&menu.list, 8);
             menu_present_frame();
         }
     }
@@ -1501,7 +1501,7 @@ s32 menu_card_load_slot_browser(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 6, 8, CARD_MENU_NO_PREVIEW_ITEM);
+            result = menu_preview_choice(&menu.list, 6, 8, CARD_MENU_NO_PREVIEW_ITEM);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             else
@@ -1515,7 +1515,7 @@ s32 menu_card_load_slot_browser(void)
             menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            menu_render_list(&menu, 8);
+            menu_render_list(&menu.list, 8);
             menu_present_frame();
         }
     }
@@ -1648,7 +1648,7 @@ void menu_card_save_browser(void)
         if (mode != 0 || result != KF_MENU_RESULT_PENDING)
             input_wait_release();
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 7, 9, CARD_MENU_NO_PREVIEW_ITEM);
+            result = menu_preview_choice(&menu.list, 7, 9, CARD_MENU_NO_PREVIEW_ITEM);
             if (result == KF_MENU_RESULT_CANCELLED)
                 result = KF_MENU_RESULT_PENDING;
             else
@@ -1662,7 +1662,7 @@ void menu_card_save_browser(void)
             menu_play_sound_cue(16);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            menu_render_list(&menu, 9);
+            menu_render_list(&menu.list, 9);
             menu_present_frame();
         }
     }
@@ -2551,7 +2551,7 @@ void menu_item_buy_controller(s32 kind)
             input_wait_release();
 
         if (selection == 1) {
-            result = menu_preview_choice(&menu, 3, 10, selected_item);
+            result = menu_preview_choice(&menu.list, 3, 10, selected_item);
             if (result == -1)
                 result = -99;
             else
@@ -2577,7 +2577,7 @@ void menu_item_buy_controller(s32 kind)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 10);
+            menu_render_list(&menu.list, 10);
             menu_present_frame();
         }
     }
@@ -2640,7 +2640,7 @@ void menu_item_sell_controller(s32 kind)
             input_wait_release();
 
         if (selection == 1) {
-            result = menu_preview_choice(&menu, 4, 11, selected_item);
+            result = menu_preview_choice(&menu.list, 4, 11, selected_item);
             if (result == -1)
                 result = -99;
             else
@@ -2664,7 +2664,7 @@ void menu_item_sell_controller(s32 kind)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 11);
+            menu_render_list(&menu.list, 11);
             menu_present_frame();
         }
     }
@@ -2720,7 +2720,7 @@ s32 menu_choose_inventory_item(void)
         menu_frame_begin();
         if (menu.list.entry_count != 0)
             menu_update_item_preview((u8)selected_item);
-        menu_render_list(&menu, 12);
+        menu_render_list(&menu.list, 12);
         menu_present_frame();
     }
     menu_play_sound_cue(16);
@@ -2731,7 +2731,7 @@ s32 menu_choose_inventory_item(void)
             input_wait_release();
 
         if (mode == 1) {
-            result = menu_preview_choice(&menu, 8, 12, (u8)selected_item);
+            result = menu_preview_choice(&menu.list, 8, 12, (u8)selected_item);
             if (result == -1)
                 result = -99;
             else
@@ -2748,7 +2748,7 @@ s32 menu_choose_inventory_item(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview((u8)selected_item);
-            menu_render_list(&menu, 12);
+            menu_render_list(&menu.list, 12);
             menu_present_frame();
         }
     }
@@ -2792,7 +2792,7 @@ void menu_item_trade_controller(void)
         menu_frame_begin();
         if (menu.list.entry_count != 0)
             menu_update_item_preview(selected_item);
-        menu_render_list(&menu, 15);
+        menu_render_list(&menu.list, 15);
         menu_present_frame();
     }
     menu_play_sound_cue(16);
@@ -2803,7 +2803,7 @@ void menu_item_trade_controller(void)
             input_wait_release();
 
         if (selection == 1) {
-            result = menu_preview_choice(&menu, 9, 15, selected_item);
+            result = menu_preview_choice(&menu.list, 9, 15, selected_item);
             if (result == -1)
                 result = -99;
             else
@@ -2831,7 +2831,7 @@ void menu_item_trade_controller(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 15);
+            menu_render_list(&menu.list, 15);
             menu_present_frame();
         }
     }
@@ -2923,7 +2923,7 @@ void menu_buy_masked_stock_items(void)
             input_wait_release();
 
         if (selection == 1) {
-            result = menu_preview_choice(&menu, 3, 13, selected_item);
+            result = menu_preview_choice(&menu.list, 3, 13, selected_item);
             if (result == -1)
                 result = -99;
             else
@@ -2949,7 +2949,7 @@ void menu_buy_masked_stock_items(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 13);
+            menu_render_list(&menu.list, 13);
             menu_present_frame();
         }
     }
@@ -2995,7 +2995,7 @@ void menu_buy_owned_items(void)
             input_wait_release();
 
         if (selection == 1) {
-            result = menu_preview_choice(&menu, 10, 14, selected_item);
+            result = menu_preview_choice(&menu.list, 10, 14, selected_item);
             if (result == -1)
                 result = -99;
             else
@@ -3021,7 +3021,7 @@ void menu_buy_owned_items(void)
             menu_frame_begin();
             if (menu.list.entry_count != 0)
                 menu_update_item_preview(selected_item);
-            menu_render_list(&menu, 14);
+            menu_render_list(&menu.list, 14);
             menu_present_frame();
         }
     }
@@ -3506,7 +3506,7 @@ void menu_draw_options_rows(KfMenuGlyphString *left, KfMenuGlyphString *right,
 }
 
 ADDRESS(0x8001f8b8, 0x2d4)
-s32 menu_preview_choice(void *list_state, s32 label_kind,
+s32 menu_preview_choice(const KfMenuList *list, s32 label_kind,
     s32 render_mode, u8 item_id)
 {
     KfMenuGlyphString labels[2];
@@ -3612,7 +3612,7 @@ labels_ready:
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_update_item_preview((u8)item_id);
-            menu_render_list(list_state, render_mode);
+            menu_render_list(list, render_mode);
             menu_draw_two_option(&labels[0], &labels[1], choice, confirmed);
             menu_present_frame();
         }
@@ -3648,9 +3648,9 @@ void menu_draw_window(s32 window_kind, s32 count, s32 highlight, s32 confirmatio
     }
 }
 ADDRESS(0x8001fc94, 0xab4)
-void menu_render_list(const void *list_state, s32 render_mode)
+void menu_render_list(const KfMenuList *menu, s32 render_mode)
 {
-    const KfMenuRenderList *view = list_state;
+    const KfMenuRenderList *view = (const KfMenuRenderList *)menu;
     const KfMenuList *list = &view->list;
     const KfMenuSpriteDef *sprite;
     const s16 *row_glyphs = view->row_glyphs;
@@ -3761,7 +3761,7 @@ void menu_render_list(const void *list_state, s32 render_mode)
         sprite->width, sprite->height);
     setUVWH(current_poly_ft4, sprite->u, sprite->v,
         sprite->width, sprite->height);
-    SetSemiTrans((void *)current_poly_ft4, 1);
+    SetSemiTrans(current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
     for (row = 0; row < list->visible_rows; row++) {
@@ -3776,7 +3776,7 @@ void menu_render_list(const void *list_state, s32 render_mode)
             sprite->width, sprite->height);
         setUVWH(current_poly_ft4, sprite->u, sprite->v,
             sprite->width, sprite->height);
-        SetSemiTrans((void *)current_poly_ft4, 1);
+        SetSemiTrans(current_poly_ft4, 1);
         primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
     }
 
@@ -3790,7 +3790,7 @@ void menu_render_list(const void *list_state, s32 render_mode)
         sprite->width, sprite->height);
     setUVWH(current_poly_ft4, sprite->u, sprite->v,
         sprite->width, sprite->height);
-    SetSemiTrans((void *)current_poly_ft4, 1);
+    SetSemiTrans(current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
     if (((u32)render_mode - 10u) < 2u || ((u32)render_mode - 13u) < 2u)
@@ -3945,7 +3945,7 @@ void menu_blit_sprite_translucent(
         position->y - KF_MENU_TRANSLUCENT_SPRITE_OFFSET,
         sprite->width, sprite->height);
     setUVWH(current_poly_ft4, sprite->u, sprite->v, sprite->width, sprite->height);
-    SetSemiTrans((void *)current_poly_ft4, 1);
+    SetSemiTrans(current_poly_ft4, 1);
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 }
 
@@ -4120,7 +4120,7 @@ void menu_draw_nine_slice_panel(s32 x, s32 y, s32 width, s32 height,
             }
             primitive_buffer_begin_poly_ft4();
             setRGB0(current_poly_ft4, 0xff, 0xff, 0xff);
-            SetSemiTrans((void *)current_poly_ft4, 1);
+            SetSemiTrans(current_poly_ft4, 1);
             current_poly_ft4->tpage = tile->tpage;
             clut = tile->clut;
             setXYWH(current_poly_ft4, draw_x, draw_y, draw_width, draw_height);

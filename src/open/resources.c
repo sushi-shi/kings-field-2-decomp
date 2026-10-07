@@ -24,6 +24,9 @@ ADDRESS(0x80013450, 0x88)
 void audio_play_voice(
     s16 vab_id, s16 program, s16 tone, s16 note, s16 left_volume, s16 right_volume)
 {
+    /* Retail reserves an unreferenced 24-byte frame slot. */
+    s16 frame_reserve[12];
+
     if (program == 0 && tone == 0 && note == 0) {
         return;
     }

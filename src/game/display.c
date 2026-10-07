@@ -2199,7 +2199,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
 }
 
 ADDRESS(0x80031d8c, 0x214)
-void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotation,
+void render_animated_object(u16 asset_index, const struct KfEulerAngles *rotation,
                    KfPoolRecord **cache, u16 clip, u16 phase,
                    s32 blend_mode, s32 lighting_flags, s16 depth)
 {
@@ -2207,7 +2207,6 @@ void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotatio
     KfCollisionRotation reversed_light;
     KfCollisionRow *lighting;
     KfTmdObject *object;
-    s32 object_index;
 
     model.t[2] = 0;
     model.t[1] = 0;
@@ -2237,10 +2236,9 @@ void render_animated_object(s32 asset_index, const struct KfEulerAngles *rotatio
         SetLightMatrix((MATRIX *)&lighting->rotations[0]);
     }
 
-    object_index = asset_index & 0xffff;
-    asset_registry_select(object_index);
+    asset_registry_select(asset_index);
     object = tmd_get_object(0);
-    if (animation_prepare_asset_vertices(cache, object_index, clip, phase,
+    if (animation_prepare_asset_vertices(cache, asset_index, clip, phase,
                       object->vertex_count) == 0) {
         tmd_select_object_vertices(0);
         object = tmd_get_object(0);

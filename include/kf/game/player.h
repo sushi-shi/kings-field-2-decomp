@@ -4,6 +4,7 @@
 #include <kf/lib/bool.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/collision_flags.h>
 #include <kf/game/item.h>
 #include <kf/game/magic.h>
 #include <kf/game/pool.h>
@@ -340,7 +341,7 @@ typedef struct KfCollisionCache {
     u8 unknown_08[2];
     u16 layer;
     KfCollisionHeights heights;
-    u32 flags;
+    KfCollisionHitFlags flags;
     s32 actor_index;
     s32 object_index;
     u8 unknown_2c[4];

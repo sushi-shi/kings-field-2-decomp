@@ -1111,7 +1111,7 @@ s32 actor_move_horizontal_with_collision(SVECTOR *motion, s32 flags)
     s32 original_x;
     s32 original_z;
     VECTOR proposed;
-    s32 collision;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
     b32 axis_attempted;
     b32 diagonal_attempted;
     s32 retry_count;
@@ -1133,7 +1133,7 @@ retry_move:
         actor->collision_radius,
         actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
         actor_state.actor_collision_query_flags);
-    if (collision == 0) {
+    if (collision == KF_COLLISION_HIT_NONE) {
     check_floor:
         if (actor->vertical_motion_state == KF_ACTOR_VERTICAL_MOTION_NONE && (flags & 0x24)) {
             s32 floor_height = KF_COLLISION_CACHE_RESULT;
@@ -1178,11 +1178,11 @@ retry_move:
         goto finish;
     }
 
-    result |= collision;
+    result |= KF_ENUM_ENCODE(s32, collision);
     if (!(flags & 3)) {
         goto finish;
     }
-    if (collision & 0xb0) {
+    if ((collision & (KF_COLLISION_HIT_ACTOR | KF_COLLISION_HIT_MAP_OBJECT | KF_COLLISION_HIT_PLAYER)) != KF_COLLISION_HIT_NONE) {
         s32 obstacle_angle;
         s32 movement_angle;
         s32 length;
@@ -1210,14 +1210,14 @@ retry_move:
         if (actor->flags & 0x4000) {
             goto try_axis;
         }
-        if (!(collision & ~5)) {
+        if ((collision & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == KF_COLLISION_HIT_NONE) {
             if (actor->position.vy <= KF_COLLISION_CACHE_RESULT + 800) {
                 goto check_floor;
             }
             goto try_axis;
         }
     }
-    if (!(collision & KF_COLLISION_HIT_AXIS)) {
+    if ((collision & KF_COLLISION_HIT_AXIS) == KF_COLLISION_HIT_NONE) {
         goto check_diagonal;
     }
 
@@ -1257,7 +1257,7 @@ try_axis:
         goto retry_move;
     }
 check_diagonal:
-    if (!(collision & KF_COLLISION_HIT_DIAGONAL)) {
+    if ((collision & KF_COLLISION_HIT_DIAGONAL) == KF_COLLISION_HIT_NONE) {
         goto finish;
     }
     if (diagonal_attempted) {
@@ -1286,11 +1286,11 @@ finish:
 }
 
 ADDRESS(0x8003b33c, 0x1e4)
-s32 actor_move_with_collision(SVECTOR *motion)
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_move_with_collision(SVECTOR *motion)
 {
     KfActor *actor = actor_state.current;
     VECTOR proposed;
-    s32 result;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) result;
 
     proposed.vx = actor->position.vx + motion->vx;
     proposed.vy = actor->position.vy + motion->vy;
@@ -1299,22 +1299,22 @@ s32 actor_move_with_collision(SVECTOR *motion)
         actor->collision_radius,
         actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
         actor_state.actor_collision_query_flags);
-    if (result == 0) {
+    if (result == KF_COLLISION_HIT_NONE) {
         copyVector(&actor->position, &proposed);
     } else if (collision_query_world(proposed.vx, actor->position.vy,
                              actor->position.vz, actor->collision_radius,
                              actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
-                             actor_state.actor_collision_query_flags) != 0) {
+                             actor_state.actor_collision_query_flags) != KF_COLLISION_HIT_NONE) {
         motion->vx = -motion->vx;
     } else if (collision_query_world(actor->position.vx, proposed.vy,
                              actor->position.vz, actor->collision_radius,
                              actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
-                             actor_state.actor_collision_query_flags) != 0) {
+                             actor_state.actor_collision_query_flags) != KF_COLLISION_HIT_NONE) {
         motion->vy = -motion->vy;
     } else if (collision_query_world(actor->position.vx, actor->position.vy,
                              proposed.vz, actor->collision_radius,
                              actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
-                             actor_state.actor_collision_query_flags) != 0) {
+                             actor_state.actor_collision_query_flags) != KF_COLLISION_HIT_NONE) {
         motion->vz = -motion->vz;
     }
     return result;
@@ -1388,24 +1388,24 @@ state_0: {
 
 state_10: {
         s32 next_y;
-        s32 collision;
+        KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
         next_y = actor->position.vy + actor->motion.vector.vy;
         collision = collision_query_world(actor->position.vx, next_y,
                                   actor->position.vz, actor->collision_radius,
                                   actor->collision_height |
                                       ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                                   actor_state.actor_collision_query_flags);
-        if (collision == 0) {
+        if (collision == KF_COLLISION_HIT_NONE) {
         advance_rise:
             actor->position.vy = next_y;
             actor->motion.vector.vy += group->vertical_acceleration;
             return;
         }
-        if (collision == 0x80 && actor->motion.vector.vy > 40) {
+        if (collision == KF_COLLISION_HIT_PLAYER && actor->motion.vector.vy > 40) {
             player_apply_damage(0, group->contact_damage_component1, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
-        if (collision & 4) {
+        if ((collision & KF_COLLISION_HIT_FLOOR) != KF_COLLISION_HIT_NONE) {
             if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
                 s32 floor_y = KF_COLLISION_CACHE_HEIGHT;
                 if (actor->position.vy < floor_y) goto advance_rise;
@@ -1436,7 +1436,7 @@ state_30: {
         s32 phase;
         s32 launch_speed;
         s32 next_y;
-        s32 collision;
+        KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
         launch_speed = actor->ballistic_launch_speed_y;
         phase = actor->motion.ballistic.phase;
         next_y = actor->ballistic_origin_y - launch_speed * phase +
@@ -1446,13 +1446,13 @@ state_30: {
                                   actor->collision_height |
                                       ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
                                   actor_state.actor_collision_query_flags);
-        if (collision == 0) {
+        if (collision == KF_COLLISION_HIT_NONE) {
             actor->position.vy = next_y;
             actor->motion.ballistic.phase++;
             actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
             return;
         }
-        if (collision == 0x80) {
+        if (collision == KF_COLLISION_HIT_PLAYER) {
             player_apply_damage(0, group->contact_damage_component1, 0, 0, 0, 0, 0, 0, 0,
                           0x1000, 10, &actor->position);
         }
@@ -1593,7 +1593,7 @@ s32 actor_move_along_euler_angles(const struct KfEulerAngles *angles, s32 speed,
     height_and_flags = actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16);
     if (collision_query_world(actor->position.vx, proposed_y, actor->position.vz,
                       radius, height_and_flags,
-                      actor_state.actor_collision_query_flags) == 0) {
+                      actor_state.actor_collision_query_flags) == KF_COLLISION_HIT_NONE) {
         actor->position.vy = proposed_y;
     } else {
         moved |= 2;
@@ -2668,7 +2668,7 @@ case3_motion:
         case 1: {
             SVECTOR forward;
             SVECTOR outer;
-            s32 collision;
+            KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
 
             outer = actor->tail_72.direction;
             forward = outer;
@@ -2681,8 +2681,8 @@ case3_motion:
             actor->motion.vector.vz = value_approach(actor->motion.vector.vz,
                                                 forward.vz, outer.vz);
             collision = actor_move_with_collision(&actor->motion.vector);
-            if (collision != 0) {
-                if (collision & KF_COLLISION_HIT_PLAYER) {
+            if (collision != KF_COLLISION_HIT_NONE) {
+                if ((collision & KF_COLLISION_HIT_PLAYER) != KF_COLLISION_HIT_NONE) {
                     player_apply_damage(target->word_0e.value,
                                    target->word_10.value,
                                    target->word_12.value,
@@ -2889,7 +2889,7 @@ case3_motion:
                 actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_18.bytes.low));
             }
             if (actor->animation_phase >= target->word_12.value) {
-                s32 saved_flags = actor_state.actor_collision_query_flags;
+                KfCollisionQuery saved_flags = actor_state.actor_collision_query_flags;
                 actor_state.actor_collision_query_flags &= ~KF_COLLISION_QUERY_MAP_OBJECTS;
                 actor_turn_and_move_along_heading(actor->movement_yaw,
                                target->word_0e.value, 0, 0xff, 0, 5);
@@ -2897,7 +2897,7 @@ case3_motion:
             }
             break;
         case 2: {
-            s32 saved_flags = actor_state.actor_collision_query_flags;
+            KfCollisionQuery saved_flags = actor_state.actor_collision_query_flags;
             s32 next_timer;
             actor_state.actor_collision_query_flags &= ~KF_COLLISION_QUERY_MAP_OBJECTS;
             actor_turn_and_move_along_heading(actor->movement_yaw,
@@ -3105,7 +3105,7 @@ case3_motion:
         break;
     }
     case KF_ACTOR_TARGET_28: {
-        s32 collision;
+        KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
 
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
@@ -3116,8 +3116,8 @@ case3_motion:
         actor->rotation.x += 128;
         actor->rotation.y += 64;
         collision = actor_move_with_collision(&actor->motion.vector);
-        if (collision != 0) {
-            if (collision & KF_COLLISION_HIT_PLAYER) {
+        if (collision != KF_COLLISION_HIT_NONE) {
+            if ((collision & KF_COLLISION_HIT_PLAYER) != KF_COLLISION_HIT_NONE) {
                 player_apply_damage(target->word_0e.value, target->word_10.value,
                                target->word_12.value, target->word_0c.value,
                                target->word_14.value, target->word_16.value,
@@ -3134,7 +3134,7 @@ case3_motion:
     }
     case KF_ACTOR_TARGET_COLLISION_MOVE: {
         VECTOR next;
-        s32 collision;
+        KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
 
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
@@ -3148,13 +3148,13 @@ case3_motion:
             next.vx, next.vy, next.vz, actor->collision_radius,
             actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16),
             actor_state.actor_collision_query_flags);
-        if (collision == 0) {
+        if (collision == KF_COLLISION_HIT_NONE) {
         case30_position:
             actor->position.vx = next.vx;
             actor->position.vy = next.vy;
             actor->position.vz = next.vz;
             goto case30_advance;
-        } else if (collision & KF_COLLISION_HIT_PLAYER) {
+        } else if ((collision & KF_COLLISION_HIT_PLAYER) != KF_COLLISION_HIT_NONE) {
             player_apply_damage(target->word_0e.value, target->word_10.value,
                            target->word_12.value, target->word_0c.value,
                            target->word_14.value, target->word_16.value,
@@ -3202,7 +3202,7 @@ case3_motion:
                 goto behavior_done;
             }
         } else {
-            s32 collision;
+            KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
 
             actor->current_map_layer = other->current_map_layer;
             if (other->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
@@ -3212,10 +3212,10 @@ case3_motion:
                     actor->position.vx, actor->position.vy,
                     actor->position.vz, actor->collision_radius,
                     actor->collision_height, KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_PLAYER);
-                if (collision & KF_COLLISION_HIT_PLAYER) {
+                if ((collision & KF_COLLISION_HIT_PLAYER) != KF_COLLISION_HIT_NONE) {
                     actor->position.vx += 800 + actor->collision_radius;
                 }
-                if (collision & 0xf) {
+                if ((collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                     actor->flags |= KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR;
                 }
                 if (actor->flags & 0x200) {

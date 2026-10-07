@@ -1222,7 +1222,8 @@ emit_simple_effect:
         position.vx = ((s32)actor->motion.vector.vx << 14) / 600 + actor->position.vx;
         position.vy = ((s32)actor->motion.vector.vy << 14) / 600 + actor->position.vy;
         position.vz = ((s32)actor->motion.vector.vz << 14) / 600 + actor->position.vz;
-        if (collision_query_shapes_with_layer_sample(position.vx, position.vy, position.vz, 10, 10)) {
+        if (collision_query_shapes_with_layer_sample(position.vx, position.vy, position.vz, 10, 10) !=
+            KF_COLLISION_HIT_NONE) {
             position.vx = actor->position.vx;
             position.vy = actor->position.vy;
             case3_z = actor->position.vz;
@@ -1961,10 +1962,10 @@ charge_gate:
     player_state.selected_magic_record = record;
 }
 
+#define PLAYER_MOVE_COLLISION_MODE \
+    (KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS)
+
 enum {
-    PLAYER_MOVE_COLLISION_MODE = KF_COLLISION_QUERY_SHAPES |
-                                 KF_COLLISION_QUERY_ACTORS |
-                                 KF_COLLISION_QUERY_MAP_OBJECTS,
     PLAYER_MOVE_SLIDE_RADIUS = 880,
     PLAYER_MOVE_DEFLECTION_ANGLE = 32,
     PLAYER_MOVE_STEP = 22,
@@ -1980,7 +1981,7 @@ b32 player_move_horizontal(s32 heading, s32 distance)
     s32 initial_dx = dx;
     s32 initial_dz = dz;
     VECTOR next;
-    s32 flags;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) flags;
     s32 angle;
     s32 radius;
     s32 slide_distance;
@@ -2003,7 +2004,7 @@ retry: {
         flags = collision_query_world(next.vx, player_state.camera_position.vy, next.vz,
                               KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT,
                               PLAYER_MOVE_COLLISION_MODE);
-        if (flags == 0) {
+        if (flags == KF_COLLISION_HIT_NONE) {
         accept_position:
             player_state.camera_position.vx = next.vx;
             player_state.camera_position.vz = next.vz;
@@ -2014,7 +2015,7 @@ retry: {
 
         high_collision = KF_FALSE;
         do {
-            if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == 0) {
+            if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == KF_COLLISION_HIT_NONE) {
                 s32 collision_height = KF_COLLISION_CACHE_RESULT;
                 high_collision = KF_TRUE;
                 if (collision_height + PLAYER_MOVE_STEP_UP_TOLERANCE >= player_state.camera_position.vy
@@ -2026,7 +2027,7 @@ retry: {
             }
         } while (0);
 
-        if (flags & (KF_COLLISION_HIT_ACTOR | KF_COLLISION_HIT_MAP_OBJECT)) {
+        if ((flags & (KF_COLLISION_HIT_ACTOR | KF_COLLISION_HIT_MAP_OBJECT)) != KF_COLLISION_HIT_NONE) {
             collision_retry++;
             if (collision_retry == PLAYER_MOVE_COLLISION_RETRY_LIMIT) {
                 goto done;
@@ -2062,7 +2063,7 @@ retry: {
                            + ((rcos(heading) * slide_distance) >> 12);
                     if (collision_query_world(next.vx, camera->vy,
                                        next.vz, KF_PLAYER_COLLISION_RADIUS,
-                                       KF_PLAYER_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == 0) {
+                                       KF_PLAYER_HEIGHT, PLAYER_MOVE_COLLISION_MODE) == KF_COLLISION_HIT_NONE) {
                         camera->vx = next.vx;
                         camera->vz = next.vz;
                         break;
@@ -2073,7 +2074,7 @@ retry: {
             slide_attempted = KF_TRUE;
         }
 
-        if (high_collision || (flags & KF_COLLISION_HIT_AXIS)) {
+        if (high_collision || (flags & KF_COLLISION_HIT_AXIS) != KF_COLLISION_HIT_NONE) {
         axis_retry:
             if (dx != 0) {
                 dx = 0;
@@ -2085,7 +2086,7 @@ retry: {
                 goto retry;
             }
         }
-        if (flags & KF_COLLISION_HIT_DIAGONAL) {
+        if ((flags & KF_COLLISION_HIT_DIAGONAL) != KF_COLLISION_HIT_NONE) {
             do {
                 if (diagonal_retry) {
                     goto axis_retry;
@@ -2111,11 +2112,12 @@ done:
     return result;
 }
 
+#define PLAYER_MOTION_COLLISION_MASK \
+    (KF_COLLISION_QUERY_SHAPES | KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS)
+
 enum {
     COLLISION_DEPTH_ARM_HEIGHT = 200,
     COLLISION_DEPTH_DEATH_LIMIT = 32000,
-    PLAYER_MOTION_COLLISION_MASK = KF_COLLISION_QUERY_SHAPES |
-        KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS,
     PLAYER_LANDING_SOUND_ID = 12,
     PLAYER_LANDING_SOUND_MIN_MAGNITUDE = 320,
     PLAYER_LANDING_SOUND_MAX_EXCESS = 896,
@@ -2153,7 +2155,7 @@ void player_update_vertical_motion(void)
 {
     s32 next_y;
     s32 height_difference;
-    s32 collision_flags;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_flags;
     s32 impact;
     s32 bob;
     s32 movement_speed;
@@ -2200,7 +2202,7 @@ void player_update_vertical_motion(void)
         collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
                                          player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
                                          KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK);
-        if (collision_flags == 0) {
+        if (collision_flags == KF_COLLISION_HIT_NONE) {
             player_state.frame_displacement.vy = player_state.vertical_velocity;
             player_state.vertical_velocity += 40;
             player_state.vertical_motion_pitch_offset = player_state.vertical_velocity >> 1;
@@ -2216,7 +2218,7 @@ void player_update_vertical_motion(void)
             impact = (player_state.vertical_velocity * player_state.vertical_velocity) >> 12;
             player_apply_damage_reaction(NULL, (impact * impact * impact) / 0x1ccf0, 0);
         }
-        if ((collision_flags & KF_COLLISION_HIT_FLOOR) != 0) {
+        if ((collision_flags & KF_COLLISION_HIT_FLOOR) != KF_COLLISION_HIT_NONE) {
             player_state.camera_position.vy = KF_COLLISION_CACHE_RESULT;
         } else {
             collision_cache_load_hit_bounds();
@@ -2225,7 +2227,7 @@ void player_update_vertical_motion(void)
             collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
                                player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
                                KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK);
-            if (collision_flags == 0) {
+            if (collision_flags == KF_COLLISION_HIT_NONE) {
                 player_state.camera_position.vy = next_y;
             }
         }
@@ -2286,7 +2288,7 @@ landing:
                            player_state.camera_position.vy + 1,
                            player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
                            KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK);
-        if (collision_flags != 0) {
+        if (collision_flags != KF_COLLISION_HIT_NONE) {
             goto finish;
         }
         if (height_difference <= 256) {
@@ -2330,7 +2332,7 @@ ADDRESS(0x80027f78, 0x2ac)
 b32 player_move_reaction_with_collision(void)
 {
     VECTOR next;
-    s32 flags;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) flags;
     s32 length;
     s32 remaining;
     s32 minimum_length;
@@ -2342,7 +2344,7 @@ b32 player_move_reaction_with_collision(void)
     flags = collision_query_world(next.vx, next.vy, next.vz,
                                   KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT,
                                   PLAYER_MOTION_COLLISION_MASK);
-    if (flags == 0) {
+    if (flags == KF_COLLISION_HIT_NONE) {
     accept:
         if (player_state.reaction.damage.rotation.vy >= 160
             && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy
@@ -2361,12 +2363,12 @@ b32 player_move_reaction_with_collision(void)
     flags = collision_query_world(next.vx, next.vy, next.vz,
                                   KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT,
                                   PLAYER_MOTION_COLLISION_MASK);
-    if (flags == 0) {
+    if (flags == KF_COLLISION_HIT_NONE) {
         player_state.reaction.damage.rotation.vy = 1;
         flags = collision_query_world(next.vx, next.vy, next.vz,
                                       KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT,
                                       PLAYER_MOTION_COLLISION_MASK);
-        if (flags == 0) {
+        if (flags == KF_COLLISION_HIT_NONE) {
             minimum_length = 32;
         scale_motion:
             length = fixed_vector2_length(player_state.reaction.damage.rotation.vx,
@@ -2385,7 +2387,7 @@ b32 player_move_reaction_with_collision(void)
         }
     }
 
-    if (flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) {
+    if ((flags & ~(KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) != KF_COLLISION_HIT_NONE) {
         return KF_TRUE;
     }
     if (KF_COLLISION_CACHE_RESULT + 256 < player_state.camera_position.vy) {

@@ -36,8 +36,6 @@ enum {
     EFFECT_SPATIAL_MAX_DISTANCE = 0x6d60,
     EFFECT_SPATIAL_ATTENUATION_DISTANCE = 0x7148,
     EFFECT_COLLISION_HEIGHT_MASK = 0xfff,
-    EFFECT_IMPACT_HOLD_ACTOR_ANIMATION = 0x10000,
-    EFFECT_IMPACT_COUNTS_AS_PHYSICAL = 0x20000,
     EFFECT_ANIMATION_PHASE_MASK = KF_FIXED12_ONE - 1
 };
 
@@ -51,7 +49,7 @@ KfAudioPlaybackResult effect_play_spatial_sound(
 }
 
 ADDRESS(0x8003fa68, 0x12c)
-s32 effect_probe_collision_by_type(const VECTOR *position, s32 radius,
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) effect_probe_collision_by_type(const VECTOR *position, s32 radius,
     s32 height_flags)
 {
     KfEffectRecord *record = effect_state.current_record;
@@ -79,21 +77,21 @@ s32 effect_probe_collision_by_type(const VECTOR *position, s32 radius,
         }
     } else {
         record->cooldown--;
-        return 0;
+        return KF_COLLISION_HIT_NONE;
     }
 }
 
 enum { EFFECT_FIXED_MAGIC_POWER = 5 };
 
 ADDRESS(0x8003fb94, 0x218)
-void effect_dispatch_magic_impact(s32 kind, KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
+void effect_dispatch_magic_impact(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
                    s32 radius, u16 power,
                    u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                    u16 magic_12, u16 magic_14, const VECTOR *position)
 {
-    s32 options = kind & 0xf0000;
-    kind &= ~0xf0000;
+    KfCollisionHitFlags options = kind & KF_COLLISION_IMPACT_OPTION_MASK;
+    kind &= ~KF_COLLISION_IMPACT_OPTION_MASK;
 
     if (kind == KF_COLLISION_HIT_PLAYER) {
         player_apply_damage(magic_06, magic_08, magic_0a, magic_04,
@@ -115,7 +113,7 @@ void effect_dispatch_magic_impact(s32 kind, KF_ENUM_PARAM(KfActorDamageFlags, s3
         }
 
         source_flags &= KF_ACTOR_DAMAGE_SOURCE_MASK;
-        if (options & EFFECT_IMPACT_COUNTS_AS_PHYSICAL) {
+        if ((options & KF_COLLISION_IMPACT_COUNTS_AS_PHYSICAL) != KF_COLLISION_HIT_NONE) {
             source_flags |= KF_ACTOR_DAMAGE_PHYSICAL;
         } else {
             source_flags |= KF_ACTOR_DAMAGE_MAGIC;
@@ -123,7 +121,7 @@ void effect_dispatch_magic_impact(s32 kind, KF_ENUM_PARAM(KfActorDamageFlags, s3
         actor_apply_magic_to_actor(bss_801c7540.collision_cache.actor_index, power, magic_06,
                       magic_08, magic_0a, magic_0c, magic_0e, magic_10,
                       magic_12, magic_14, radius, source_flags, position);
-        if (options & EFFECT_IMPACT_HOLD_ACTOR_ANIMATION) {
+        if ((options & KF_COLLISION_IMPACT_HOLD_ACTOR_ANIMATION) != KF_COLLISION_HIT_NONE) {
             actor->flags |= KF_ACTOR_FLAG_EFFECT_ANIMATION_HOLD;
         }
     }
@@ -140,7 +138,7 @@ int effect_magic_power(KfEffectRecord *effect)
 
 
 ADDRESS(0x8003fdd0, 0xe0)
-void effect_apply_current_magic(s32 kind, s32 radius, const VECTOR *position)
+void effect_apply_current_magic(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, s32 radius, const VECTOR *position)
 {
     KfEffectRecord *record = effect_state.current_record;
     const KfMagicRecord *magic = effect_state.current_magic;
@@ -157,7 +155,7 @@ void effect_apply_current_magic(s32 kind, s32 radius, const VECTOR *position)
 }
 
 ADDRESS(0x8003feb0, 0x68)
-void effect_apply_current_magic_backstep(s32 kind)
+void effect_apply_current_magic_backstep(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind)
 {
     const KfEffectRecord *record = effect_state.current_record;
     VECTOR position;
@@ -964,7 +962,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
         candidate_position.vx = record->position.vx + (rand() >> 5) - 512;
         candidate_position.vz = record->position.vz + (rand() >> 5) - 512;
         if (collision_query_shapes_with_layer_sample(candidate_position.vx, record->position.vy,
-                          candidate_position.vz, 10, 10) != 0) {
+                          candidate_position.vz, 10, 10) != KF_COLLISION_HIT_NONE) {
             candidate_position.vx = record->position.vx;
             candidate_position.vz = record->position.vz;
         }
@@ -1068,7 +1066,7 @@ void effect_rotate_scale_offset_y(const SVECTOR *offset, VECTOR *output, s16 ang
 }
 
 ADDRESS(0x8004177c, 0x1e0)
-s32 effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
+KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
                       s32 probe_height_flags, SVECTOR *motion)
 {
     KfEffectRecord *record = effect_state.current_record;
@@ -1085,13 +1083,16 @@ s32 effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
     }
     addVector(&record->position, &record->direction);
     if (probe_height_flags == -1) {
-        return 0;
+        return KF_EFFECT_MOTION_CLEAR;
     }
-    return -!!effect_probe_collision_by_type(&record->position, probe_radius, probe_height_flags);
+    /* Any hit maps to BLOCKED (-1). */
+    return KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectMotionResult),
+                          -!!KF_ENUM_ENCODE(s32, effect_probe_collision_by_type(&record->position, probe_radius,
+                                                                               probe_height_flags)));
 }
 
 ADDRESS(0x8004195c, 0x1b8)
-s32 effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
+KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
                         s32 probe_radius, s32 probe_height_flags, s32 proximity,
                         s32 close_scale, s32 target_filter)
 {
@@ -1146,7 +1147,7 @@ move:
 }
 
 ADDRESS(0x80041b14, 0x1bc)
-s32 effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
+KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
                          s32 settle_distance, s32 min_distance, s32 probe_radius,
                          s32 probe_height_flags)
 {
@@ -1160,7 +1161,7 @@ s32 effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
     delta.vz = target->vz - record->position.vz;
     length = fixed_vector3_length(delta.vx, delta.vy, delta.vz);
     if (length <= min_distance) {
-        return -2;
+        return KF_EFFECT_MOTION_ARRIVED;
     }
     if (length <= settle_distance) {
         record->direction.vx = fixed_lerp_q12(0, record->direction.vx, 0xc00);
@@ -1322,11 +1323,11 @@ b32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
 }
 
 ADDRESS(0x80042298, 0x18c)
-s32 effect_collision_step(s32 radius, s32 angle, s32 step)
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) effect_collision_step(s32 radius, s32 angle, s32 step)
 {
     KfEffectRecord *record = effect_state.current_record;
     VECTOR previous;
-    s32 result;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) result;
     u8 next_kind;
 
     addVector(&record->position, &record->direction);
@@ -1335,12 +1336,12 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
         effect_collision_motion_step.vx = record->direction.vx >> 1;
         effect_collision_motion_step.vy = record->direction.vy >> 1;
         effect_collision_motion_step.vz = record->direction.vz >> 1;
-        if (result == 0) {
+        if (result == KF_COLLISION_HIT_NONE) {
             previous.vx = record->position.vx - effect_collision_motion_step.vx;
             previous.vy = record->position.vy - effect_collision_motion_step.vy;
             previous.vz = record->position.vz - effect_collision_motion_step.vz;
             result = effect_probe_collision_by_type(&previous, radius, angle);
-            if (result != 0) {
+            if (result != KF_COLLISION_HIT_NONE) {
                 copyVector(&effect_collision_motion_step, &record->direction);
             }
         }
@@ -1404,7 +1405,8 @@ void effect_update_dispatch(void)
     KfMagicRecord *magic = effect_state.current_magic;
     KF_ENUM_STORAGE(KfEffectKind, u32) initial_kind = record->kind;
     s32 initial_phase = record->phase;
-    s32 collision;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
+    KF_ENUM_PROMOTED(KfEffectMotionResult) motion;
     VECTOR work_position;
     VECTOR work_target;
 
@@ -1440,7 +1442,7 @@ void effect_update_dispatch(void)
         work_position.vx = record->position.vx + record->direction.vx;
         work_position.vz = record->position.vz + record->direction.vz;
         collision = effect_probe_collision_by_type(&work_position, 20, 20);
-        if (collision == 0) {
+        if (collision == KF_COLLISION_HIT_NONE) {
             midpoint.vx = (work_position.vx + record->position.vx) >> 1;
             midpoint.vy = (work_position.vy + record->position.vy) >> 1;
             midpoint.vz = (work_position.vz + record->position.vz) >> 1;
@@ -1450,8 +1452,8 @@ void effect_update_dispatch(void)
         record->position.vy = work_position.vy;
         record->position.vz = work_position.vz;
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
-        if (collision != 0) {
-            effect_apply_current_magic_backstep(collision | EFFECT_IMPACT_COUNTS_AS_PHYSICAL);
+        if (collision != KF_COLLISION_HIT_NONE) {
+            effect_apply_current_magic_backstep(collision | KF_COLLISION_IMPACT_COUNTS_AS_PHYSICAL);
             record->type = KF_EFFECT_SLOT_FREE;
         } else {
             u8 layer = 2;
@@ -1470,7 +1472,7 @@ void effect_update_dispatch(void)
     shared_growth_entry:
         if (initial_phase == 0) {
             collision = effect_collision_step(180, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
-            if (collision == 0) {
+            if (collision == KF_COLLISION_HIT_NONE) {
                 break;
             }
             effect_scatter_lower_bound(&record->position, 3, 400, 0x2000, 0x2000, 0x400);
@@ -1488,7 +1490,7 @@ void effect_update_dispatch(void)
             goto kind13_nonzero_phase;
         }
         collision = effect_collision_step(180, 0, -300);
-        if (collision == 0) {
+        if (collision == KF_COLLISION_HIT_NONE) {
             goto kind13_no_collision;
         }
     shared_growth_collision:
@@ -1555,10 +1557,10 @@ void effect_update_dispatch(void)
     }
     case KF_EFFECT_KIND_4:
         collision = effect_collision_step(180, 0, 0);
-        if (collision == 0) {
+        if (collision == KF_COLLISION_HIT_NONE) {
             goto kind4_zero_collision;
         }
-        if (collision & 0xf) {
+        if ((collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         if (record->cache_tail.payload.collision_latch.impact_handled == 0) {
@@ -1582,8 +1584,8 @@ void effect_update_dispatch(void)
         vertical_step = -30;
     collision_kind25_update:
         collision = effect_collision_step(250, 100, vertical_step);
-        if (collision != 0) {
-            if (collision & 0xf) {
+        if (collision != KF_COLLISION_HIT_NONE) {
+            if ((collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
             if (record->cache_tail.payload.collision_latch.impact_handled == 0) {
@@ -1604,9 +1606,9 @@ void effect_update_dispatch(void)
         }
         break;
     case KF_EFFECT_KIND_115:
-        collision = effect_aim_and_move(0x258, 0x28, 0x24, 0xb4,
+        motion = effect_aim_and_move(0x258, 0x28, 0x24, 0xb4,
                                   0x168, 0x1000, 0x104, 0x800);
-        if (collision == -1 || record->updates_remaining < 2) {
+        if (motion == KF_EFFECT_MOTION_BLOCKED || record->updates_remaining < 2) {
             effect_collision_backtrack();
             effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_42,
                            &record->position, NULL, 0);
@@ -1622,7 +1624,7 @@ void effect_update_dispatch(void)
         break;
     case KF_EFFECT_KIND_113:
         collision = effect_collision_step(180, 360, 0);
-        if (collision != 0 || record->updates_remaining < 2) {
+        if (collision != KF_COLLISION_HIT_NONE || record->updates_remaining < 2) {
             effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_42,
                            &record->position, NULL, 0);
             effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, KF_EFFECT_KIND_42,
@@ -1647,7 +1649,7 @@ void effect_update_dispatch(void)
         case KF_EFFECT_STAGE_TRACK: {
             collision = collision_query_world(record->position.vx, record->position.vy,
                                       record->position.vz, 10,
-                                      record->scale_y, 0x30);
+                                      record->scale_y, KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS);
             effect_apply_current_magic_backstep(collision);
             collision_probe_floor_height(record->position.vx, selected->position.vy,
                           record->position.vz, 0, 0);
@@ -1695,9 +1697,9 @@ void effect_update_dispatch(void)
         record->position.vx += record->direction.vx;
         record->position.vy += record->direction.vy;
         record->position.vz += record->direction.vz;
-        if (collision_query_shapes_with_layer_sample(midpoint.vx, midpoint.vy, midpoint.vz, 5, 10) ||
+        if (collision_query_shapes_with_layer_sample(midpoint.vx, midpoint.vy, midpoint.vz, 5, 10) != KF_COLLISION_HIT_NONE ||
             collision_query_shapes_with_layer_sample(record->position.vx, record->position.vy,
-                           record->position.vz, 5, 10)) {
+                           record->position.vz, 5, 10) != KF_COLLISION_HIT_NONE) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         effect_construct_record(10, record->type, KF_EFFECT_KIND_45, &record->position, NULL, 0x1a4);
@@ -1724,7 +1726,7 @@ void effect_update_dispatch(void)
     }
     case KF_EFFECT_KIND_40:
         collision = effect_collision_step(100, 200, 0);
-        if (collision != 0) {
+        if (collision != KF_COLLISION_HIT_NONE) {
             effect_apply_current_magic_backstep(collision);
             record->type = KF_EFFECT_SLOT_FREE;
         } else {
@@ -1733,26 +1735,26 @@ void effect_update_dispatch(void)
         break;
     case KF_EFFECT_KIND_39: {
         s32 count;
-        u32 flags;
+        KfCollisionHitFlags flags;
 
         if (record->updates_remaining < 45) {
             goto kind39_spawn;
         }
         record->direction.vy += 10;
     case KF_EFFECT_KIND_38:
-        if (effect_collision_step(100, 0, 0) != 0) {
+        if (effect_collision_step(100, 0, 0) != KF_COLLISION_HIT_NONE) {
             goto kind38_response;
         }
         goto kind38_finish;
     kind39_spawn:
         if (effect_aim_and_move(0x258, 0x28, 0x24, 0x32,
-                          100, 0x1000, 0x104, 0x800) != -1) {
+                          100, 0x1000, 0x104, 0x800) != KF_EFFECT_MOTION_BLOCKED) {
             goto kind38_finish;
         }
     kind38_response:
         {
             flags = bss_801c7540.collision_cache.flags;
-            if (flags & 0x10) {
+            if ((flags & KF_COLLISION_HIT_ACTOR) != KF_COLLISION_HIT_NONE) {
                 if (record->cache_tail.payload.collision_latch.impact_handled == 0) {
                     effect_apply_current_magic_backstep(flags);
                 } else {
@@ -1765,7 +1767,7 @@ void effect_update_dispatch(void)
                 effect_spawn_motion(record, -1, -2, 0xc00, -90, 16, 14, 5,
                                0x200, -256, 0x200, -256, 0x200, -256);
             }
-            if (bss_801c7540.collision_cache.flags & 0xf) {
+            if ((bss_801c7540.collision_cache.flags & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
         }
@@ -1786,7 +1788,7 @@ void effect_update_dispatch(void)
             }
             break;
         case KF_EFFECT_STAGE_FLIGHT:
-            if (effect_collision_step(512, KF_COLLISION_HEIGHT_CHECK_FLOOR | 0x200, 0) != 0) {
+            if (effect_collision_step(512, KF_COLLISION_HEIGHT_CHECK_FLOOR | 0x200, 0) != KF_COLLISION_HIT_NONE) {
                 record->cache_tail.payload.kind50.stage = KF_EFFECT_STAGE_BURST;
                 effect_apply_radial_magic_damage(&record->position, 0, 0x400,
                                0x8000, 0x1000, 0x1000);
@@ -1823,7 +1825,7 @@ void effect_update_dispatch(void)
         }
         record->rotation.vx += 200;
         collision = effect_collision_step(radius, radius * 2, 250);
-        if (collision != 0) {
+        if (collision != KF_COLLISION_HIT_NONE) {
             effect_apply_current_magic_backstep(collision);
             if (record->cache_tail.payload.kind1.collision_stage == KF_EFFECT_STAGE_BOUNCED) {
                 record->cache_tail.payload.kind1.collision_stage = KF_EFFECT_STAGE_FADE;
@@ -1850,7 +1852,7 @@ void effect_update_dispatch(void)
         record->type = KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_SHAPES_ONLY;
         switch (record->cache_tail.payload.kind26.stage) {
         case KF_EFFECT_STAGE_TRAVEL:
-            if (effect_collision_step(100, 200, 0) != 0) {
+            if (effect_collision_step(100, 200, 0) != KF_COLLISION_HIT_NONE) {
                 record->direction.vz = 0;
                 record->direction.vy = 0;
                 record->direction.vx = 0;
@@ -1901,14 +1903,14 @@ void effect_update_dispatch(void)
             record->scale_x = record->scale_y = record->scale_z = record->scale_z + 0x100;
         }
         collision = effect_collision_step(180, 0, -300);
-        if (collision != 0) {
+        if (collision != KF_COLLISION_HIT_NONE) {
             if (record->cache_tail.payload.collision_latch.impact_handled == 0 && rand() < 3000) {
                 effect_apply_current_magic_backstep(collision);
             }
-            if (collision & 0x10) {
+            if ((collision & KF_COLLISION_HIT_ACTOR) != KF_COLLISION_HIT_NONE) {
                 record->cache_tail.payload.collision_latch.impact_handled = 1;
             }
-            if (collision & 5) {
+            if ((collision & (KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) != KF_COLLISION_HIT_NONE) {
                 if (initial_phase == 1) {
                     record->type = KF_EFFECT_SLOT_FREE;
                 } else {
@@ -1937,8 +1939,8 @@ void effect_update_dispatch(void)
             break;
         }
         collision = effect_collision_step(50, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
-        if (collision != 0) {
-            if (collision & 0xf) {
+        if (collision != KF_COLLISION_HIT_NONE) {
+            if ((collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                 if (initial_phase == 0) {
                     effect_collision_backtrack();
                     record->direction.vz = 0;
@@ -2067,7 +2069,7 @@ void effect_update_dispatch(void)
     case KF_EFFECT_KIND_119:
         child_kind = KF_EFFECT_KIND_52;
     child_impact_update:
-        if (effect_collision_step(140, 0, -200) != 0) {
+        if (effect_collision_step(140, 0, -200) != KF_COLLISION_HIT_NONE) {
             effect_construct_record(10, record->type | KF_EFFECT_TARGET_ACTORS_AND_PLAYER,
                            child_kind,
                            &record->position, NULL);
@@ -2127,13 +2129,13 @@ void effect_update_dispatch(void)
             effect_play_spatial_sound(record, 0x29);
         }
         record->phase++;
-        collision = effect_aim_and_move(
+        motion = effect_aim_and_move(
             record->cache_tail.payload.kind12.max_length,
             record->cache_tail.payload.kind12.scale,
             record->cache_tail.payload.kind12.turn_step,
             0xa0,
             0, 6000, record->cache_tail.payload.kind12.close_scale, 0x800);
-        if (collision != -1) {
+        if (motion != KF_EFFECT_MOTION_BLOCKED) {
             goto kind12_collision;
         }
         {
@@ -2169,14 +2171,14 @@ void effect_update_dispatch(void)
                 goto kind100_collision;
             }
             record->direction.vy += 10;
-            if (effect_collision_step(100, 0, 0) == 0) {
+            if (effect_collision_step(100, 0, 0) == KF_COLLISION_HIT_NONE) {
                 effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
                 goto shared_phase_increment;
             }
             goto kind100_miss;
         kind100_collision:
             if (effect_aim_and_move(600, 30, 64, 100,
-                              0, 0x1000, 360, 0x800) != -1) {
+                              0, 0x1000, 360, 0x800) != KF_EFFECT_MOTION_BLOCKED) {
                 goto kind100_success;
             }
         }
@@ -2312,7 +2314,7 @@ void effect_update_dispatch(void)
         record->direction.vy += 5;
     kind105_collision:
         collision = effect_collision_step(100, 0, 0);
-        if (collision != 0 && (collision & 0xf) != 0) {
+        if (collision != KF_COLLISION_HIT_NONE && (collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
             record->type = KF_EFFECT_SLOT_FREE;
         }
         break;
@@ -2325,9 +2327,9 @@ void effect_update_dispatch(void)
         }
         break;
     kind105_phase0:
-        collision = effect_target_motion(&next_position, 300, 50,
+        motion = effect_target_motion(&next_position, 300, 50,
                                    500, 150, 10, 0);
-        if (collision == -2) {
+        if (motion == KF_EFFECT_MOTION_ARRIVED) {
             KfEffectRecord *linked =
                 &effect_state.records[record->cache_tail.payload.kind105.parent_index];
             KfEffectKind5Fanout *linked_fanout = &linked->cache_tail.payload.kind5;
@@ -2336,8 +2338,8 @@ void effect_update_dispatch(void)
             }
             record->phase = 1;
         } else {
-            if (collision == -1 &&
-                (bss_801c7540.collision_cache.flags & 0xf) != 0) {
+            if (motion == KF_EFFECT_MOTION_BLOCKED &&
+                (bss_801c7540.collision_cache.flags & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                 KfEffectRecord *linked =
                     &effect_state.records[record->cache_tail.payload.kind105.parent_index];
                 KfEffectKind5Fanout *linked_fanout = &linked->cache_tail.payload.kind5;
@@ -2372,7 +2374,7 @@ void effect_update_dispatch(void)
             target_position.vx = player_state.camera_position.vx;
             target_position.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
             target_position.vz = player_state.camera_position.vz;
-            collision = effect_target_motion(&target_position, 400, 60,
+            motion = effect_target_motion(&target_position, 400, 60,
                                        3000, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
         } else if (actor_index != KF_EFFECT_KIND9_TARGET_NONE) {
             VECTOR target_position;
@@ -2381,12 +2383,12 @@ void effect_update_dispatch(void)
             target_position.vx = actor->position.vx;
             target_position.vy = actor->position.vy - (actor->collision_height >> 1);
             target_position.vz = actor->position.vz;
-            collision = effect_target_motion(&target_position, 600, 50,
+            motion = effect_target_motion(&target_position, 600, 50,
                                        0, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
         } else {
             goto kind9_unbound;
         }
-        if (collision != -1) {
+        if (motion != KF_EFFECT_MOTION_BLOCKED) {
             goto kind9_no_collision;
         }
     kind9_impact:
@@ -2406,7 +2408,7 @@ void effect_update_dispatch(void)
     kind9_unbound:
         record->direction.vy += 10;
         collision = effect_collision_step(10, KF_COLLISION_HEIGHT_CHECK_FLOOR, 0);
-        if (collision != 0) {
+        if (collision != KF_COLLISION_HIT_NONE) {
             goto kind9_impact;
         }
     kind9_no_collision:
@@ -2426,9 +2428,9 @@ void effect_update_dispatch(void)
         work_target.vx = player_state.camera_position.vx;
         work_target.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
         work_target.vz = player_state.camera_position.vz;
-        collision = effect_target_motion(&work_target, 400, 60, 3000, 0, 10, 0);
+        motion = effect_target_motion(&work_target, 400, 60, 3000, 0, 10, 0);
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
-        if (collision == -1) {
+        if (motion == KF_EFFECT_MOTION_BLOCKED) {
             effect_apply_current_magic_backstep(bss_801c7540.collision_cache.flags);
             for (count = 11; count != -1; count--) {
                 effect_spawn_motion(record, -1, -2, 0xc00, -90, 16, 33, 5,
@@ -2451,7 +2453,7 @@ void effect_update_dispatch(void)
     kind106_phase0:
         record->direction.vy += 20;
         collision = effect_collision_step(140, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
-        if (collision != 0) {
+        if (collision != KF_COLLISION_HIT_NONE) {
             record->position.vx -= record->direction.vx;
             record->position.vy -= record->direction.vy;
             record->position.vz -= record->direction.vz;
@@ -2492,10 +2494,10 @@ void effect_update_dispatch(void)
             next.vy = record->position.vy + record->direction.vy;
             next.vz = record->position.vz + record->direction.vz;
             collision = effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR);
-            if (collision != 0 && (collision & 0xf) != 0) {
+            if (collision != KF_COLLISION_HIT_NONE && (collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
                 next.vx = record->position.vx;
                 next.vz = record->position.vz;
-                if ((effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR) & 0xf) == 0) {
+                if ((effect_probe_collision_by_type(&next, 140, KF_COLLISION_HEIGHT_CHECK_FLOOR) & KF_COLLISION_HIT_SHAPE_MASK) == KF_COLLISION_HIT_NONE) {
                     goto kind8_reset_axes;
                 }
                 if (record->direction.vy < 0) {
@@ -2565,8 +2567,9 @@ void effect_update_dispatch(void)
                 record->scale_threshold.next_probe_phase += 2048;
                 collision = collision_query_world(
                     record->position.vx, record->position.vy,
-                    record->position.vz, 256, record->scale_y, 144);
-                if (collision != 0) {
+                    record->position.vz, 256, record->scale_y,
+                    KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_PLAYER);
+                if (collision != KF_COLLISION_HIT_NONE) {
                     effect_apply_current_magic(collision, 5000, NULL);
                 }
             }
@@ -2603,7 +2606,7 @@ void effect_update_dispatch(void)
         }
     kind10_phase0:
         collision = effect_collision_step(250, KF_COLLISION_HEIGHT_CHECK_FLOOR, 0);
-        if (collision != 0 || record->updates_remaining < 2) {
+        if (collision != KF_COLLISION_HIT_NONE || record->updates_remaining < 2) {
             KfEffectRecord *child;
 
             effect_scatter_lower_bound(&record->position, 8, 400,
@@ -2708,15 +2711,15 @@ void effect_update_dispatch(void)
                 break;
             }
             if (effect_aim_and_move(250, 25, 32, 200,
-                              0, 0x400, 100, 0x800) == -1) {
+                              0, 0x400, 100, 0x800) == KF_EFFECT_MOTION_BLOCKED) {
                 record->updates_remaining = -1;
-                if (bss_801c7540.collision_cache.flags != 0x10) {
+                if (bss_801c7540.collision_cache.flags != KF_COLLISION_HIT_ACTOR) {
                     goto kind6_phase3;
                 }
                 {
                     u8 actor_index;
 
-                    effect_apply_current_magic(EFFECT_IMPACT_HOLD_ACTOR_ANIMATION |
+                    effect_apply_current_magic(KF_COLLISION_IMPACT_HOLD_ACTOR_ANIMATION |
                                                KF_COLLISION_HIT_ACTOR, 5000, NULL);
                     actor_index = bss_801c7540.collision_cache.actor_index;
                     record->cache_tail.payload.trail.actor_index = actor_index;
@@ -2959,7 +2962,7 @@ void effect_update_dispatch(void)
     case KF_EFFECT_KIND_22:
         record->direction.vy += 10;
         collision = effect_collision_step(100, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
-        if (collision != 0) {
+        if (collision != KF_COLLISION_HIT_NONE) {
             effect_apply_current_magic_backstep(collision);
             record->type = KF_EFFECT_SLOT_FREE;
         }
@@ -2974,8 +2977,10 @@ void effect_update_dispatch(void)
         record->position.vy += record->direction.vy;
         record->position.vz += record->direction.vz;
         collision = collision_query_world(record->position.vx, record->position.vy,
-                                  record->position.vz, 10, 10, 176);
-        if (collision == 0) {
+                                  record->position.vz, 10, 10,
+                                  KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_MAP_OBJECTS |
+                                      KF_COLLISION_QUERY_PLAYER);
+        if (collision == KF_COLLISION_HIT_NONE) {
             collision_probe_floor_height(record->position.vx,
                           record->cache_tail.payload.kind114.origin_y,
                           record->position.vz, 0, 0);
@@ -2996,14 +3001,14 @@ void effect_update_dispatch(void)
     }
     case KF_EFFECT_KIND_24: {
         VECTOR target;
-        s32 result;
+        KF_ENUM_PROMOTED(KfEffectMotionResult) result;
         s32 count;
 
         target.vx = player_state.camera_position.vx;
         target.vy = player_state.camera_position.vy - KF_PLAYER_CAMERA_EYE_OFFSET;
         target.vz = player_state.camera_position.vz;
         result = effect_target_motion(&target, 300, 40, 2000, 0, 10, 0);
-        if (result == -1) {
+        if (result == KF_EFFECT_MOTION_BLOCKED) {
             effect_apply_current_magic_backstep(bss_801c7540.collision_cache.flags);
             for (count = 11; count != -1; count--) {
                 effect_spawn_motion(record, -1, -2, 0xc00, -90, 16, 14, 5,
@@ -3032,7 +3037,7 @@ void effect_update_dispatch(void)
         }
         if (rand() >= 400) {
             collision = effect_collision_step(180, 0, -300);
-            if (collision == 0 || (collision & 5) == 0) {
+            if (collision == KF_COLLISION_HIT_NONE || (collision & (KF_COLLISION_HIT_AXIS | KF_COLLISION_HIT_FLOOR)) == KF_COLLISION_HIT_NONE) {
                 goto kind120_rotate;
             }
             record->position.vy = bss_801c7540.collision_cache.heights.result;

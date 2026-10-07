@@ -5,6 +5,7 @@
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
 #include <kf/game/audio.h>
+#include <kf/game/collision_flags.h>
 #include <kf/game/magic.h>
 #include <kf/game/pool.h>
 #include <psyq/sdk.h>
@@ -118,6 +119,15 @@ KF_ENUM_BEGIN(KfEffectStage, u8)
     KF_EFFECT_STAGE_FLIGHT = 1,
     KF_EFFECT_STAGE_BURST = 2
 KF_ENUM_END(KfEffectStage)
+
+/* Result of the effect motion helpers: the step was clear, the moved
+ * position collided, or effect_target_motion was already within its minimum
+ * distance of the target. */
+KF_ENUM_BEGIN(KfEffectMotionResult, s32)
+    KF_EFFECT_MOTION_ARRIVED = -2,
+    KF_EFFECT_MOTION_BLOCKED = -1,
+    KF_EFFECT_MOTION_CLEAR = 0
+KF_ENUM_END(KfEffectMotionResult)
 
 typedef union KfEffectScaleThreshold {
     s16 interpolation_start_y;
@@ -468,23 +478,23 @@ typedef char kf_effect_current_index_offset[offsetof(KfEffectState, current_inde
 extern KfEffectState effect_state;
 
 int effect_magic_power(KfEffectRecord *effect);
-void effect_dispatch_magic_impact(s32 kind, KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
+void effect_dispatch_magic_impact(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, KF_ENUM_PARAM(KfActorDamageFlags, s32) source_flags,
                    s32 radius, u16 power,
                    u8 damage_multiplier_tenths, u16 magic_06, u16 magic_08, u16 magic_0a,
                    u16 magic_04, u16 magic_0c, u16 magic_0e, u16 magic_10,
                    u16 magic_12, u16 magic_14, const VECTOR *position);
-s32 effect_probe_collision_by_type(const VECTOR *position, s32 radius,
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) effect_probe_collision_by_type(const VECTOR *position, s32 radius,
     s32 height_flags);
-void effect_apply_current_magic(s32 kind, s32 radius, const VECTOR *position);
-void effect_apply_current_magic_backstep(s32 kind);
+void effect_apply_current_magic(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind, s32 radius, const VECTOR *position);
+void effect_apply_current_magic_backstep(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind);
 void effect_apply_radial_magic_damage(VECTOR *position, s32 start, s32 end,
                                       s32 arg3, s32 arg4, s32 arg5);
-s32 effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
+KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_move_probe(s32 scale, s32 max_length, s32 probe_radius,
                       s32 probe_height_flags, SVECTOR *motion);
-s32 effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
+KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_aim_and_move(s32 max_length, s32 scale, s32 turn_step,
                         s32 probe_radius, s32 probe_height_flags, s32 proximity,
                         s32 close_scale, s32 target_filter);
-s32 effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
+KF_ENUM_PARAM(KfEffectMotionResult, s32) effect_target_motion(const VECTOR *target, s32 max_length, s32 scale,
                          s32 settle_distance, s32 min_distance,
                          s32 probe_radius, s32 probe_height_flags);
 void effect_scale_step(s32 multiplier, s32 limit, s32 increment,
@@ -497,7 +507,7 @@ void effect_spawn_motion(KfEffectRecord *record, s32 position_mode,
                    s32 arg6, s32 arg7, ...);
 b32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
                   s32 scale_x, s32 scale_z, s32 variation);
-s32 effect_collision_step(s32 radius, s32 angle, s32 step);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) effect_collision_step(s32 radius, s32 angle, s32 step);
 void effect_collision_backtrack(void);
 void effect_spawn_radial_ring(s32 count, s32 radius, s32 vertical_angle, s32 arg3);
 KfAudioPlaybackResult effect_play_spatial_sound(KfEffectRecord *effect, s32 sound);

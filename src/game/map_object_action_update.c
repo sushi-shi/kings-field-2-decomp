@@ -103,7 +103,8 @@ void map_object_update_actions(void)
                 break;
             case 20:
                 if (collision_query_world(object->position.vx, object->position.vy,
-                                   object->position.vz, 0x700, 0xc80, 0xc0) == 0) {
+                                   object->position.vz, 0x700, 0xc80,
+                                   KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3 | KF_COLLISION_QUERY_PLAYER) == KF_COLLISION_HIT_NONE) {
                     map_cell_apply_rotated_pattern(object->layer_mask, object->position.vx,
                                   object->position.vz, object->rotation.vy,
                                   map_object_cell_patterns[8], 0, 0xff);
@@ -168,7 +169,8 @@ void map_object_update_actions(void)
                 u8 phase_byte = object->tail.marker.marker_id;
                 if (((u8)(phase_byte + 0x6a) > 0x30 || !(phase_byte & 1)) &&
                     collision_query_world(object->position.vx, object->position.vy,
-                                   object->position.vz, 0x1130, 0xc80, 0xc0) == 0) {
+                                   object->position.vz, 0x1130, 0xc80,
+                                   KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3 | KF_COLLISION_QUERY_PLAYER) == KF_COLLISION_HIT_NONE) {
                     object->action_timer = 21;
                     map_cell_copy_rotated_fields(object->layer_mask,
                                   object->tail.cell_copy.source_x +
@@ -272,7 +274,8 @@ void map_object_update_actions(void)
                             target.vx += object->position.vx;
                             target.vz += object->position.vz;
                             if (collision_query_world(target.vx, object->position.vy, target.vz,
-                                               3000, object->collision_height, 0xc0)) {
+                                               3000, object->collision_height,
+                                               KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3 | KF_COLLISION_QUERY_PLAYER) != KF_COLLISION_HIT_NONE) {
                                 object->extra_40.hinge.progress_ticks = 300;
                                 break;
                             }
@@ -770,13 +773,13 @@ void map_object_update_actions(void)
                     u16 vertex_index = object_template->params.collision.vertex_index;
                     u16 reach;
                     u16 height;
-                    s32 kind;
+                    KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind;
                     map_object_sample_world_vertex(object, vertex_index, &position);
                     reach = object_template->params.collision.reach;
                     height = object_template->params.collision.height;
                     kind = collision_query_world(position.vx, position.vy, position.vz,
-                                         reach, height, 0x90);
-                    if (kind == 0) {
+                                         reach, height, KF_COLLISION_QUERY_ACTORS | KF_COLLISION_QUERY_PLAYER);
+                    if (kind == KF_COLLISION_HIT_NONE) {
                         goto clear_action_trigger;
                     }
                     if (object->extra_40.bytes[0] == 0) {

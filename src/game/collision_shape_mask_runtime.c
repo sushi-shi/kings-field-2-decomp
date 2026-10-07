@@ -21,9 +21,10 @@
 RODATA(0x8001134c, 0xc4)
 
 ADDRESS(0x8002aaa4, 0xb60)
-s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height)
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_evaluate_shape_records(s32 x, s32 y, s32 z,
+                                                                   s32 radius, s32 height)
 {
-    u32 flags;
+    KfCollisionHitFlags flags;
     b32 base_floor_hit;
     s32 base_ceiling_hit;
     b32 other_layer_visited;
@@ -37,14 +38,14 @@ s32 collision_evaluate_shape_records(s32 x, s32 y, s32 z, s32 radius, s32 height
     s16 local_x;
     s16 local_z;
     u32 height_mode;
-    s32 wall_flags;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) wall_flags;
     s32 limit;
     s32 floor;
     s32 step;
     KfShapeWallRecord *wall;
     KfShapeSlopeRecord *slope;
 
-    flags = 0;
+    flags = KF_COLLISION_HIT_NONE;
     base_floor_hit = KF_FALSE;
     /* No record sets this; ceiling records are always evaluated. */
     base_ceiling_hit = 0;
@@ -307,7 +308,7 @@ next_layer:
             break;
         case 0x31:
             /* Only an axis hit is tested, and its record is skipped only then. */
-            if (flags & KF_COLLISION_HIT_AXIS) {
+            if ((flags & KF_COLLISION_HIT_AXIS) != KF_COLLISION_HIT_NONE) {
                 KfShapeLedgeRecord *ledge = (KfShapeLedgeRecord *)record;
                 s16 distance;
                 s16 x_distance;
@@ -456,7 +457,8 @@ void map_cell_add_layer_occupancy(s32 x, s32 z, s32 radius, s32 amount)
 }
 
 ADDRESS(0x8002b7f8, 0x7c)
-s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s32 height)
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z,
+                                                                           s32 radius, s32 height)
 {
     collision_sample_map_cell_layer(x, y - (((u32)height << 4) >> 5), z);
     return collision_evaluate_shape_records(x, y, z, radius, height);
@@ -465,7 +467,7 @@ s32 collision_query_shapes_with_layer_sample(s32 x, s32 y, s32 z, s32 radius, s3
 ADDRESS(0x8002b874, 0x160)
 void collision_cache_load_hit_bounds(void)
 {
-    if (KF_COLLISION_CACHE_FLAGS & KF_COLLISION_HIT_PLAYER) {
+    if ((KF_COLLISION_CACHE_FLAGS & KF_COLLISION_HIT_PLAYER) != KF_COLLISION_HIT_NONE) {
         KF_COLLISION_CACHE_POSITION = player_state.camera_position;
         KF_COLLISION_CACHE_RADIUS = 800;
         KF_COLLISION_CACHE_INTERACTION_HEIGHT = KF_PLAYER_HEIGHT;
@@ -490,13 +492,15 @@ void collision_cache_load_hit_bounds(void)
 }
 
 ADDRESS(0x8002b9d4, 0x244)
-s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_world(s32 x, s32 y, s32 z, s32 radius,
+                                                              s32 height,
+                                                              KF_ENUM_PARAM(KfCollisionQuery, u8) mode)
 {
-    s32 result = 0;
+    KF_ENUM_PARAM(KfCollisionHitFlags, s32) result = KF_COLLISION_HIT_NONE;
 
-    if (mode & KF_COLLISION_QUERY_SHAPES) {
+    if ((mode & KF_COLLISION_QUERY_SHAPES) != KF_COLLISION_QUERY_NONE) {
         result = collision_query_shapes_with_layer_sample(x, y, z, radius, height);
-        if ((mode & KF_COLLISION_QUERY_LAYER_FLAG_40) &&
+        if ((mode & KF_COLLISION_QUERY_LAYER_FLAG_40) != KF_COLLISION_QUERY_NONE &&
             (KF_COLLISION_CACHE_SHAPE->lighting_index & KF_MAP_CELL_LAYER_COLLISION_FLAG_40)) {
             KF_COLLISION_CACHE_RESULT = -100000;
             result |= KF_COLLISION_HIT_AXIS;
@@ -508,13 +512,13 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
 
     height &= 0x0fffffff;
     if (KF_COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
-        if (mode & KF_COLLISION_QUERY_ACTORS) {
+        if ((mode & KF_COLLISION_QUERY_ACTORS) != KF_COLLISION_QUERY_NONE) {
             KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
             if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
                 result |= KF_COLLISION_HIT_ACTOR;
             }
         } else {
-            if (mode & KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3) {
+            if ((mode & KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3) != KF_COLLISION_QUERY_NONE) {
                 KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap(x, y, z, radius, height);
                 if (KF_COLLISION_CACHE_ACTOR_INDEX != -1) {
                     result |= KF_COLLISION_HIT_ACTOR;
@@ -523,7 +527,7 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
             KF_COLLISION_CACHE_ACTOR_INDEX = -1;
         }
 
-        if (mode & KF_COLLISION_QUERY_MAP_OBJECTS) {
+        if ((mode & KF_COLLISION_QUERY_MAP_OBJECTS) != KF_COLLISION_QUERY_NONE) {
             KF_COLLISION_CACHE_OBJECT_INDEX = map_object_find_collision_at_point(x, y, z, radius, height);
             if (KF_COLLISION_CACHE_OBJECT_INDEX != -1) {
                 result |= KF_COLLISION_HIT_MAP_OBJECT;
@@ -532,7 +536,7 @@ s32 collision_query_world(s32 x, s32 y, s32 z, s32 radius, s32 height, u8 mode)
             KF_COLLISION_CACHE_OBJECT_INDEX = -1;
         }
 
-        if ((mode & KF_COLLISION_QUERY_PLAYER) &&
+        if ((mode & KF_COLLISION_QUERY_PLAYER) != KF_COLLISION_QUERY_NONE &&
             player_distance_to_point_with_margin(x, y, z, radius, height) != -1) {
             result |= KF_COLLISION_HIT_PLAYER;
         }

@@ -5,6 +5,7 @@
 #include <kf/lib/math.h>
 #include <kf/lib/offsetof.h>
 #include <kf/lib/types.h>
+#include <kf/game/collision_flags.h>
 #include <kf/game/item.h>
 #include <kf/game/magic.h>
 #include <kf/game/pool.h>
@@ -754,7 +755,7 @@ typedef struct KfActorStateGame {
      * 0x3f7ec fixes group target offsets after the copy. */
     u8 target_candidate_blob[0x2000];
     u8 actor_overlap_exclusion_flags;
-    s32 actor_collision_query_flags;
+    KfCollisionQuery actor_collision_query_flags;
     KfTargetGroup *active_group;
     KfActor *current;
     KfTargetGroup *other_group;
@@ -860,7 +861,7 @@ KfBool32 actor_animation_crossed_phase(const KfActor *actor, u16 phase);
 s32 actor_move_horizontal_with_collision(SVECTOR *motion, s32 flags);
 void actor_play_target_sound(KfActor *actor);
 s32 actor_damp_horizontal_motion(s32 decay, s32 target);
-s32 actor_move_with_collision(SVECTOR *motion);
+KF_ENUM_PARAM(KfCollisionHitFlags, s32) actor_move_with_collision(SVECTOR *motion);
 s32 actor_move_along_heading(s16 angle, s32 speed, s32 step, s32 target);
 s32 actor_start_ballistic_motion(KF_ENUM_PARAM(KfTrajectoryMode, s32) mode, s32 target_x, s32 target_y,
                   s32 target_z, s32 trajectory_parameter,

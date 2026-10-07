@@ -260,6 +260,24 @@ typedef char kf_player_magic_id_sequence_size[
 typedef char kf_player_magic_attack_masks_offset[
     (u32)&((KfPlayerMagicIdSequence *)0)->attack_masks == 0x0c ? 1 : -1];
 
+/* One magic spawn offset; its SVECTOR pad slot carries the effect kind. */
+typedef struct KfPlayerMagicSpawnFields {
+    s16 x;
+    s16 y;
+    s16 z;
+    s16 effect_kind;
+} KfPlayerMagicSpawnFields;
+
+typedef union KfPlayerMagicSpawnRecord {
+    SVECTOR offset;
+    KfPlayerMagicSpawnFields fields;
+} KfPlayerMagicSpawnRecord;
+
+typedef char kf_player_magic_spawn_record_size[
+    sizeof(KfPlayerMagicSpawnRecord) == 8 ? 1 : -1];
+typedef char kf_player_magic_spawn_effect_kind_offset[
+    (u32)&((KfPlayerMagicSpawnRecord *)0)->fields.effect_kind == 6 ? 1 : -1];
+
 typedef struct KfMapOccupancyLayer {
     u8 object_index;
     u8 elevation;

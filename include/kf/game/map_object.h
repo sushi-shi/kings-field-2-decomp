@@ -575,6 +575,13 @@ typedef char kf_map_object_tail_scattered_effect_size[
 typedef char kf_map_object_tail_scattered_effect_id_offset[
     (u32)&((KfMapObjectTailScatteredEffectView *)0)->effect_id == 6 ? 1 : -1];
 
+typedef struct KfMapObjectTailPlacement {
+    u32 unknown_34;
+    KfMapObjectTailCopyWords copy_words;
+} KfMapObjectTailPlacement;
+typedef char kf_map_object_tail_placement_size[
+    sizeof(KfMapObjectTailPlacement) == 12 ? 1 : -1];
+
 typedef union KfMapObjectTail {
     KfMapObjectTailFields fields;
     KfMapObjectTailMotionView motion;
@@ -602,16 +609,27 @@ typedef union KfMapObjectTail {
     KfMapObjectTailSpawnByteFields spawn_bytes;
     KfMapObjectTailScatteredEffectView scattered_effect;
     u32 reset_words[3];
-    struct {
-        u32 unknown_34;
-        KfMapObjectTailCopyWords copy_words;
-    } placement;
+    KfMapObjectTailPlacement placement;
 } KfMapObjectTail;
 typedef char kf_map_object_tail_size[sizeof(KfMapObjectTail) == 12 ? 1 : -1];
 
-/* The +0x40 word is a pointer in the player reaction path and byte state in
- * map-object motion. The pointed object's complete extent is unresolved. */
-typedef struct KfMapObjectRecord40 KfMapObjectRecord40;
+/* The +0x40 word points to this heap record while the object runs the player
+ * reaction action; other actions keep byte state there. Only this prefix is
+ * observed, and the record's complete extent is unresolved. */
+typedef struct KfMapObjectRecord40 {
+    u8 unknown_00;
+    u8 reaction_mode;
+    u8 unknown_02[0x0a];
+    SVECTOR reaction_rotation_vector;
+    u8 unknown_14[0x24];
+    s16 reaction_rotation_scale_q15;
+} KfMapObjectRecord40;
+typedef char kf_map_object_record40_reaction_mode_offset[
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_mode == 0x01 ? 1 : -1];
+typedef char kf_map_object_record40_rotation_vector_offset[
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_vector == 0x0c ? 1 : -1];
+typedef char kf_map_object_record40_rotation_scale_offset[
+    (u32)&((KfMapObjectRecord40 *)0)->reaction_rotation_scale_q15 == 0x38 ? 1 : -1];
 
 typedef struct KfMapObjectHingeMotion {
     u16 progress_ticks;

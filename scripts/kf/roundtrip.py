@@ -366,7 +366,9 @@ def verify_unit(unit: Unit, image: RetailImage, book: dict[str, set[int]],
             ) + "\n  /DISCARD/ : { *(*) }\n}\n")
             linked = root / "linked.elf"
             entry = unit.functions[0].va if unit.functions else min(placed.values())
-            command = [linker, "-EL", "--entry", hex(entry), "-T", str(script),
+            # GNU MIPS ld otherwise moves SHN_COMMON requests of up to 8 bytes
+            # into .scommon, which this script discards; only claimed BSS is placed.
+            command = [linker, "-EL", "-G", "0", "--entry", hex(entry), "-T", str(script),
                        "-o", str(linked), str(object_path.resolve())]
             command += [f"--defsym={name}={address:#x}" for name, address in sorted(symbols.items())]
             process = subprocess.run(command, capture_output=True, text=True, timeout=30)

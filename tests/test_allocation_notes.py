@@ -71,8 +71,10 @@ class CompiledAllocationTests(unittest.TestCase):
                 result = diff_unit(unit, root / 'delink', root / 'objdiff')
                 self.assertEqual(result.matches, not exported, result)
                 if exported:
-                    self.assertTrue(any('unsupported-common-allocation' in row.detail
-                                        for row in result.divergent), result)
+                    # The exact named claim places the request as reconstruction
+                    # BSS; a target without that fixed storage still diverges.
+                    self.assertEqual([(row.name, row.status) for row in result.divergent],
+                                     [('.bss', 'extra')], result)
 
 
 if __name__ == '__main__':

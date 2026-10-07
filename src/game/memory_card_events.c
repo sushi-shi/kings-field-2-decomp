@@ -38,12 +38,6 @@ enum {
     CARD_ICON_VRAM_HEIGHT = 16
 };
 
-typedef struct KfCardAssets {
-    char title[0x40];
-    u16 icon_palette[KF_CARD_SAVE_SLOT_COUNT][KF_CARD_ICON_PALETTE_COLORS];
-} KfCardAssets;
-typedef char kf_card_assets_size[sizeof(KfCardAssets) == 0x120 ? 1 : -1];
-
 DATA(0x80066680, 0x120, ".data")
 KfCardAssets memory_card_assets = {
     "\202j\202h\202m\202f\201f\202r\201@\202e"

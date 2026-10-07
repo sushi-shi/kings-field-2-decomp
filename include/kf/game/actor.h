@@ -61,15 +61,23 @@ typedef struct KfTargetCandidateWord0cBytes {
 typedef char kf_target_candidate_word0c_bytes_size[
     sizeof(KfTargetCandidateWord0cBytes) == 2 ? 1 : -1];
 
+typedef struct KfTargetCandidateSelectionScales {
+    u8 initial_score_scale;
+    u8 continuing_score_scale;
+} KfTargetCandidateSelectionScales;
+typedef char kf_target_candidate_selection_scales_size[
+    sizeof(KfTargetCandidateSelectionScales) == 2 ? 1 : -1];
+
+typedef struct KfTargetCandidateDamageReaction {
+    u8 reaction_chance;
+    u8 unused;
+} KfTargetCandidateDamageReaction;
+typedef char kf_target_candidate_damage_reaction_size[
+    sizeof(KfTargetCandidateDamageReaction) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord02 {
-    struct {
-        u8 initial_score_scale;
-        u8 continuing_score_scale;
-    } target_selection;
-    struct {
-        u8 reaction_chance;
-        u8 unused;
-    } damage_reaction;
+    KfTargetCandidateSelectionScales target_selection;
+    KfTargetCandidateDamageReaction damage_reaction;
 } KfTargetCandidateWord02;
 typedef char kf_target_candidate_word02_size[
     sizeof(KfTargetCandidateWord02) == 2 ? 1 : -1];
@@ -104,13 +112,17 @@ typedef struct KfTargetCandidateWord10Bytes {
 typedef char kf_target_candidate_word10_bytes_size[
     sizeof(KfTargetCandidateWord10Bytes) == 2 ? 1 : -1];
 
+typedef struct KfTargetCandidateWord10Attack {
+    u8 fallback_offset;
+    u8 damage_component3;
+} KfTargetCandidateWord10Attack;
+typedef char kf_target_candidate_word10_attack_size[
+    sizeof(KfTargetCandidateWord10Attack) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord10 {
     u16 value;
     KfTargetCandidateWord10Bytes bytes;
-    struct {
-        u8 fallback_offset;
-        u8 damage_component3;
-    } attack;
+    KfTargetCandidateWord10Attack attack;
 } KfTargetCandidateWord10;
 typedef char kf_target_candidate_word10_size[
     sizeof(KfTargetCandidateWord10) == 2 ? 1 : -1];
@@ -122,13 +134,17 @@ typedef struct KfTargetCandidateWord12Bytes {
 typedef char kf_target_candidate_word12_bytes_size[
     sizeof(KfTargetCandidateWord12Bytes) == 2 ? 1 : -1];
 
+typedef struct KfTargetCandidateWord12Flight {
+    u8 vertical_velocity_step;
+    u8 orientation_change_threshold;
+} KfTargetCandidateWord12Flight;
+typedef char kf_target_candidate_word12_flight_size[
+    sizeof(KfTargetCandidateWord12Flight) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord12 {
     u16 value;
     KfTargetCandidateWord12Bytes bytes;
-    struct {
-        u8 vertical_velocity_step;
-        u8 orientation_change_threshold;
-    } flight;
+    KfTargetCandidateWord12Flight flight;
 } KfTargetCandidateWord12;
 typedef char kf_target_candidate_word12_size[
     sizeof(KfTargetCandidateWord12) == 2 ? 1 : -1];
@@ -218,12 +234,16 @@ typedef char kf_target_candidate_word22_size[
     sizeof(KfTargetCandidateWord22) == 2 ? 1 : -1];
 
 /* Low 14 bits: sound interval; high 2 bits: trigger mode. */
+typedef struct KfTargetSoundTriggerFields {
+    u16 interval : 14;
+    u16 mode : 2;
+} KfTargetSoundTriggerFields;
+typedef char kf_target_sound_trigger_fields_size[
+    sizeof(KfTargetSoundTriggerFields) == 2 ? 1 : -1];
+
 typedef union KfTargetSoundTrigger {
     u16 value;
-    struct {
-        u16 interval : 14;
-        u16 mode : 2;
-    } fields;
+    KfTargetSoundTriggerFields fields;
 } KfTargetSoundTrigger;
 typedef char kf_target_sound_trigger_size[
     sizeof(KfTargetSoundTrigger) == 2 ? 1 : -1];

@@ -126,7 +126,7 @@ KfAudioVoiceState	0x28	0xa00	params	KfAudioVoiceParams[256]	supported	game/audio
 KfBss801c7540	0x00	0xfa00	map_cells	KfMapOccupancyCell[80][80]	supported	GAME 0x8001694c-0x8001695c copies 0x3e80 words;GAME 0x8002a988 clips X/Z to 80 cells;GAME 0x80016b2c scrub visits 0x1900 cells	80-by-80 cells, each 10 bytes, loaded from the map resource
 KfBss801c7540	0xfa00	0x600	unknown_fa00	u8[1536]	opaque	game/player.h;GAME 0x80016960 shape-bank copy begins at +0x10000	unclassified gap before shape bank; original allocation ownership WIP
 KfBss801c7540	0x10000	0x1800	shape_bank	u8[6144]	supported	game/player.h;GAME 0x80016960-0x8001697c copies 0x600 words;GAME 0x8002ab68 shape-record access	loaded variable-length shape bank; original allocation ownership WIP
-KfBss801c7540	0x11800	0x44	unknown_11800	u8[68]	opaque	game/player.h;game/collision_cache.h;GAME 0x8002aa8c and 0x8002ab24 cache xrefs	KfCollisionCache is an interior typed view; original allocation ownership WIP
+KfBss801c7540	0x11800	0x44	collision_cache	KfCollisionCache	candidate	game/player.h;game/collision_cache.h;GAME 0x8002aa8c and 0x8002ab24 cache xrefs;effect_update_dispatch field reads	Typed collision-query cache; collision_cache.h macros still reach it through a cast view; original allocation ownership WIP
 KfCardHeader	0x00	0x02	magic	u8[2]	supported	game/card.h;GAME 0x80022e28/0x80022e30	two-byte SC file signature
 KfCardHeader	0x02	0x01	icon_type	u8	supported	game/card.h;GAME 0x80022e38	three-frame icon-format byte
 KfCardHeader	0x03	0x01	block_count	u8	supported	game/card.h;GAME 0x80022e40	memory-card block count byte

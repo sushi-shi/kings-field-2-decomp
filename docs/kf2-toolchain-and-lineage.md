@@ -219,6 +219,22 @@ Lane B5 traced these further links:
   independent statement moved into a call's region becomes that filler. This
   changes which argument-setup instruction wins the tie
   (`event_target_stream_execute`).
+- **Reused locals and block-local combine.** Only a pseudo set once gets
+  sched1's birthing promotion. A variable reused for several values therefore
+  keeps its insns in source order. Combine works within one block, so a test
+  placed after a join keeps a call-result copy in each arm, and jump2 merges
+  the arms later (`effect_update_dispatch`).
+- **Field of a declared variable vs cast view.** A field read from a declared
+  aggregate global loads the whole constant address into a pseudo that later
+  reads share. A cast-pointer base plus a field offset folds back to a direct
+  `lui`/`lw`.
+- **Dead sign-extension slots.** When a narrow signed field is compared and
+  its loaded value is reused, a dead extension temporary is left behind, and
+  reload gives it its own 8-byte frame slot.
+- **CSE hash staleness.** A register that gets a new quantity leaves older
+  table entries in stale buckets. Whether a later lookup finds them depends on
+  the function's pseudo count modulo 31, so an unrelated edit can switch
+  sharing on or off elsewhere.
 
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 

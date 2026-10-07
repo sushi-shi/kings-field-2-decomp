@@ -2470,12 +2470,8 @@ void render_scene_and_update_resources(void)
     /* The second stack region spans 320 bytes; the VAB updater reads 64. */
     u8 vab_flags[320];
     KfActor *actor;
-    const VECTOR *actor_position_ptr;
     KfMapObject *object;
     KfEffectRecord *effect;
-    KfPoolRecord **effect_cache;
-    SVECTOR *effect_scale_ptr;
-    const struct KfEulerAngles *effect_rotation_ptr;
     KfMapPlacedEntry *placed;
     const VECTOR *camera_position;
     s32 frame;
@@ -2484,7 +2480,6 @@ void render_scene_and_update_resources(void)
     repeat_store_word((u32 *)tmd_flags, 0, 32);
     repeat_store_word((u32 *)vab_flags, 0, 16);
     actor = actor_state.actors;
-    actor_position_ptr = &actor->position;
     remaining = KF_ACTOR_CAPACITY - 1;
     while (remaining != -1) {
         u32 layer;
@@ -2500,7 +2495,7 @@ void render_scene_and_update_resources(void)
             layer = actor->current_map_layer;
         }
         if (actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) goto actor_radius_check;
-        if ((map_cell_layer_mask(actor_position_ptr) & layer) == 0) goto actor_next;
+        if ((map_cell_layer_mask(&actor->position) & layer) == 0) goto actor_next;
 actor_visible:
         if (resource_registry_get(actor->definition_id + 0x80) != NULL) {
             position = actor_resolve_group_position(actor, &actor_position);
@@ -2508,9 +2503,8 @@ actor_visible:
                 rotation.z = 0;
                 rotation.y = 0;
                 rotation.x = 0;
-                position = actor_position_ptr;
                 render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
-                               position, &rotation, (SVECTOR *)&actor->model_scale_x,
+                               &actor->position, &rotation, (SVECTOR *)&actor->model_scale_x,
                                &actor->animation_cache, &render_world_identity_matrix,
                                actor->animation_id, actor->animation_phase,
                                actor->lighting_override, actor->lighting_blend,
@@ -2534,11 +2528,9 @@ actor_visible:
         tmd_flags[actor->definition_id] = 1;
         goto actor_next;
 actor_radius_check:
-        if (map_cell_layer_mask_radius(actor_position_ptr, 3) &
+        if (map_cell_layer_mask_radius(&actor->position, 3) &
             actor->current_map_layer) goto actor_visible;
 actor_next:
-        actor_position_ptr = (const VECTOR *)((const u8 *)actor_position_ptr +
-                                               sizeof *actor);
         actor++;
         remaining--;
     }
@@ -2633,6 +2625,7 @@ map_sound_outside:
 map_ordinary_object: {
             u8 render_mode;
             KfMapObjectTemplate *object_template;
+            SVECTOR *scale;
             if (object->collision_flags & 2) goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
             if ((visibility & object->layer_mask) == 0) goto map_object_next;
@@ -2640,6 +2633,7 @@ map_ordinary_object: {
 map_ordinary_visible:
             tmd_flags[object->object_id] = 1;
             vab_flags[object_template->vab_resource_index] = 1;
+            scale = &object->scale;
             if (resource_registry_get(object->object_id + 0x100) != NULL) {
                 rotation.x = object->rotation.vx;
                 rotation.y = object->rotation.vy + 0x800;
@@ -2649,7 +2643,7 @@ map_ordinary_visible:
                     render_mode = (visibility & 0x80) ? 0xfe : 0xff;
                 }
                 render_world_model(object->layer_mask, object->object_id + 0x100,
-                               &object->position, &rotation, &object->scale,
+                               &object->position, &rotation, scale,
                                (KfPoolRecord **)&object->tail,
                                &game_graphics_runtime.render_state.view_matrix,
                                object->asset_clip_selector, object->phase_q12,
@@ -2673,9 +2667,6 @@ map_object_next:
     resource_vab_update_range(4, 0x60, 0x42, 0x40, vab_flags);
 
     effect = effect_state.records;
-    effect_cache = &effect->cache_tail.animation_cache;
-    effect_scale_ptr = (SVECTOR *)&effect->scale_x;
-    effect_rotation_ptr = (const struct KfEulerAngles *)&effect->rotation;
     remaining = KF_EFFECT_CAPACITY - 1;
     while (remaining != -1) {
         if (effect->type == KF_EFFECT_SLOT_FREE ||
@@ -2689,8 +2680,8 @@ map_object_next:
             rotation.y = effect->rotation.vy + 0x800;
             rotation.z = effect->rotation.vz;
             render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
-                           &effect->position, &rotation, effect_scale_ptr,
-                           effect_cache,
+                           &effect->position, &rotation, (SVECTOR *)&effect->scale_x,
+                           &effect->cache_tail.animation_cache,
                            &game_graphics_runtime.render_state.view_matrix,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
@@ -2698,8 +2689,8 @@ map_object_next:
             break;
         case 4:
             render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
-                           &effect->position, effect_rotation_ptr,
-                           effect_scale_ptr, effect_cache,
+                           &effect->position, (const struct KfEulerAngles *)&effect->rotation,
+                           (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
                            &render_world_identity_matrix,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
@@ -2707,8 +2698,8 @@ map_object_next:
             break;
         case 8:
             render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
-                           &effect->position, effect_rotation_ptr,
-                           effect_scale_ptr, effect_cache,
+                           &effect->position, (const struct KfEulerAngles *)&effect->rotation,
+                           (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
                            &game_graphics_runtime.render_state.pitch_matrix,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
@@ -2717,9 +2708,9 @@ map_object_next:
         case 12:
             render_world_model(effect->map_layer_mask, effect->render_id + 0x28,
                            &effect->position,
-                           effect_rotation_ptr,
-                           effect_scale_ptr,
-                           effect_cache, NULL,
+                           (const struct KfEulerAngles *)&effect->rotation,
+                           (SVECTOR *)&effect->scale_x,
+                           &effect->cache_tail.animation_cache, NULL,
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, 0x14);
@@ -2727,10 +2718,6 @@ map_object_next:
         }
 effect_next:
         effect++;
-        effect_cache = (KfPoolRecord **)((u8 *)effect_cache + sizeof *effect);
-        effect_scale_ptr = (SVECTOR *)((u8 *)effect_scale_ptr + sizeof *effect);
-        effect_rotation_ptr = (const struct KfEulerAngles *)(
-            (const u8 *)effect_rotation_ptr + sizeof *effect);
         remaining--;
     }
 

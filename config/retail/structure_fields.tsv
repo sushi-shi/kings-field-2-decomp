@@ -42,7 +42,7 @@ KfActor	0x4a	0x2	model_scale_y	KfActorModelScaleY	supported	actor_copy_group_def
 KfActor	0x4c	0x2	model_scale_z	u16	supported	actor_copy_group_defaults;actor_group_position;render_resource_dispatch	Q12 Z model scale copied from group default
 KfActor	0x4e	0x2	unknown_4e	u8[2]	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x50	0x8	motion	KfActorMotion	supported	actor_move_with_collision;actor_move_horizontal_with_collision;actor_update_vertical_motion	Eight-byte signed X/Y/Z motion vector; Y halfword is reused as ballistic phase in state 0x30
-KfActor	0x58	0x2	turn_rate	u16	supported	asm;actor_turn_toward_angle;actor_update_motion_animation;actor_behavior_dispatch	signed per-frame yaw step accelerated and clamped by turn helper; sign selects turning animation
+KfActor	0x58	0x2	turn_rate	s16	supported	asm;actor_turn_toward_angle;actor_update_motion_animation;actor_behavior_dispatch	signed per-frame yaw step accelerated and clamped by turn helper; sign selects turning animation
 KfActor	0x5c	0x4	animation_cache	KfPoolRecord *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x60	0x4	target	KfTargetCandidate *	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x64	0x2	movement_yaw	s16	supported	actor_behavior_dispatch;actor_turn_and_move_along_heading;KF1 master actor.h	Random or player-facing yaw stored for repeated actor turning and movement
@@ -311,9 +311,9 @@ KfEffectKind1Stage	0x0	0x1	collision_stage	u8	supported	game/effect.h;effect_con
 KfEffectKind23Attachment	0x00	0x02	actor_index	s16	supported	GAME 0x800415dc sh;GAME 0x80042940 lh	Signed actor index selecting actor_state.actors during kind-23 attachment
 KfEffectKind23Attachment	0x02	0x02	vertex_index	s16	supported	GAME 0x800415e8 sh;GAME 0x80042984 lh	Signed animation vertex index passed to actor_sample_rotated_animation_vertex
 KfEffectKind23Attachment	0x04	0x02	release_animation_phase	u16	supported	GAME 0x800415f8 sh;GAME 0x80042a88 lhu	Unsigned actor animation phase threshold releasing the attached effect
-KfEffectKind2Scale	0x00	0x02	max_scale	u16	supported	game/effect.h;GAME 0x80043c9c lh;effect_update_dispatch	Signed comparison after scaling ends the kind-2 effect
-KfEffectKind2Scale	0x02	0x02	scale_step	u16	supported	game/effect.h;GAME 0x80043c1c lhu/0x80043c6c lh	Unsigned growth step also used as signed damage-radius adjustment
-KfEffectKind2Scale	0x04	0x02	radial_damage_parameter	u16	supported	game/effect.h;GAME 0x80043c78 lh;effect_update_dispatch	Passed as signed halfword to radial magic damage
+KfEffectKind2Scale	0x00	0x02	max_scale	s16	supported	game/effect.h;GAME 0x80043c9c lh;effect_update_dispatch	Signed comparison after scaling ends the kind-2 effect
+KfEffectKind2Scale	0x02	0x02	scale_step	s16	supported	game/effect.h;GAME 0x80043c1c lhu/0x80043c6c lh	Unsigned growth step also used as signed damage-radius adjustment
+KfEffectKind2Scale	0x04	0x02	radial_damage_parameter	s16	supported	game/effect.h;GAME 0x80043c78 lh;effect_update_dispatch	Passed as signed halfword to radial magic damage
 KfEffectKind42Countdown	0x0	0x1	ticks_remaining	s8	supported	game/effect.h;effect_construct_record;effect_update_dispatch	ticks_remaining access in exact source
 KfEffectKind46State	0x00	0x01	phase	s8	supported	GAME 0x80042df0 lb;GAME 0x80042ebc sb	Kind-46 state switch from zero to one after linked effect expires
 KfEffectKind46State	0x01	0x01	linked_effect_index	s8	supported	GAME 0x80042dc8 lb;effect_construct_record kind 46	Signed index into effect_state.records
@@ -369,9 +369,9 @@ KfEffectRecord	0x10	0x2	lighting_blend_q12	s16	candidate	game/effect.h;GAME 0x80
 KfEffectRecord	0x12	0x2	animation_phase_q12	u16	candidate	game/effect.h;GAME 0x80032d40;animation_sample_vertex consumer	constructor starts at zero; runtime advances 128 modulo 4096; renderer passes unsigned halfword as animation phase
 KfEffectRecord	0x14	0x10	position	VECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x24	0x8	rotation	SVECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x2c	0x2	scale_x	u16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x2e	0x2	scale_y	u16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0x30	0x2	scale_z	u16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectRecord	0x2c	0x2	scale_x	s16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectRecord	0x2e	0x2	scale_y	s16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
+KfEffectRecord	0x30	0x2	scale_z	s16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x32	0x2	scale_threshold	KfEffectScaleThreshold	supported	GAME 0x80042ec8-0x80042ecc;GAME 0x800449f0-0x80044b8c	Kind 46 start scale Y or kind 8 next probe phase
 KfEffectRecord	0x34	0x8	direction	SVECTOR	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x3c	0xc	cache_tail	KfEffectCacheTail	supported	GAME 0x80032c4c +0x3c cursor;GAME 0x80032d24/0x80032d7c render stack arg	Typed cache pointer at +0x3c and variant payload at +0x40

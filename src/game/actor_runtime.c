@@ -1504,19 +1504,19 @@ void actor_turn_toward_angle(KfActor *actor, s32 target_angle, s32 max_speed,
 
         if (angle_mod_delta_le_half_turn(target_angle, actor->rotation.y)) {
             actor->turn_rate += acceleration;
-            if (max_speed < (s16)actor->turn_rate) {
+            if (max_speed < actor->turn_rate) {
                 actor->turn_rate = max_speed;
             }
         } else {
             actor->turn_rate -= acceleration;
-            if ((s16)actor->turn_rate < -max_speed) {
+            if (actor->turn_rate < -max_speed) {
                 actor->turn_rate = -max_speed;
             }
         }
 
         old_angle = actor->rotation.y;
         actor->rotation.y += actor->turn_rate;
-        if ((s16)actor->turn_rate > 0) {
+        if (actor->turn_rate > 0) {
             if (angle_mod_delta_le_half_turn(target_angle, old_angle) &&
                 !angle_mod_delta_le_half_turn(target_angle, actor->rotation.y)) {
                 actor->rotation.y = target_angle;
@@ -1660,7 +1660,7 @@ void actor_update_motion_animation(s32 first, s32 reverse, s32 forward, s32 fast
     KfActor *actor = actor_state.current;
     s32 selected = first;
     s32 magnitude = 0;
-    s16 motion = (s16)actor->turn_rate;
+    s16 motion = actor->turn_rate;
 
     if (motion > 0) {
         selected = forward;
@@ -2751,10 +2751,10 @@ case3_motion:
         }
         switch (actor->state_70.signed_state) {
         case 0:
-            if ((s16)other->turn_rate > 0) {
+            if (other->turn_rate > 0) {
                 actor_set_animation(target->word_0c.bytes.high);
                 actor->state_70.signed_state = 1;
-            } else if ((s16)other->turn_rate < 0) {
+            } else if (other->turn_rate < 0) {
                 actor_set_animation(target->word_0c.bytes.low);
                 actor->state_70.signed_state = 2;
             }
@@ -2762,14 +2762,14 @@ case3_motion:
         case 1:
             if (actor->animation_phase < 2048) {
                 actor->animation_phase += 128;
-            } else if ((s16)other->turn_rate <= 0) {
+            } else if (other->turn_rate <= 0) {
                 actor->state_70.signed_state = 3;
             }
             break;
         case 2:
             if (actor->animation_phase < 2048) {
                 actor->animation_phase += 128;
-            } else if ((s16)other->turn_rate >= 0) {
+            } else if (other->turn_rate >= 0) {
                 actor->state_70.signed_state = 3;
             }
             break;

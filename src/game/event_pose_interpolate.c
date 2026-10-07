@@ -412,13 +412,13 @@ void event_scene_command_dispatch(const VECTOR *position,
         }
         break;
     case KF_OBJECT_114:
-        object_control_offset = 0x28;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[0]);
         goto object_control_action;
     case KF_OBJECT_115:
-        object_control_offset = 0x2c;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[1]);
         goto object_control_action;
     case KF_OBJECT_116:
-        object_control_offset = 0x30;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[2]);
 object_control_action:
         index = map_object_find_interaction_target(0, position, 800, 1700,
                                rotation->angles[1], 512);
@@ -446,13 +446,13 @@ object_control_action:
         }
         break;
     case KF_OBJECT_111:
-        object_control_offset = 0x28;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[0]);
         goto transition_action;
     case KF_OBJECT_112:
-        object_control_offset = 0x2c;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[1]);
         goto transition_action;
     case KF_OBJECT_113:
-        object_control_offset = 0x30;
+        object_control_offset = offsetof(KfEventControlFields, object_slots[2]);
 transition_action: {
         u8 previous_value;
         KfMapObject *object;

@@ -820,7 +820,7 @@ void menu_choose_primary_magic_shortcut(void)
     memcpy((void *)rows[count].codes, (const void *)menu_none_option_glyphs.codes,
         MENU_NONE_OPTION_GLYPHS * sizeof(s16));
     values[count] = KF_MENU_LIST_NO_NUMBER;
-    indices[count] = 0xff;
+    indices[count] = KF_ENUM_ENCODE(u8, KF_MAGIC_NONE);
     count++;
 
     menu_list_init(&menu.list, KF_MENU_WINDOW_ROOT, KF_MENU_ROOT_EQUIPMENT);
@@ -2815,9 +2815,9 @@ void menu_item_trade_controller(void)
         selected_item = indices[menu.list.selected_index];
         if (confirmed == KF_TRUE) {
             cost = menu.prices[menu.list.selected_index] * menu_item_quantity;
-            if (counters[96] < cost
+            if (counters[KF_ENUM_ENCODE(u8, KF_OBJECT_96)] < cost
                     || (selected_item == 117
-                        ? counters[117] + menu_item_quantity * 10 >= 100
+                        ? counters[KF_ENUM_ENCODE(u8, KF_OBJECT_117)] + menu_item_quantity * 10 >= 100
                         : counters[selected_item] + menu_item_quantity >= 100)) {
                 menu_play_sound_cue(KF_MENU_SOUND_CANCEL);
                 confirmed = KF_FALSE;
@@ -2838,9 +2838,9 @@ void menu_item_trade_controller(void)
     menu_release_item_model();
     if (result != KF_MENU_RESULT_CANCELLED) {
         cost = menu.prices[menu.list.selected_index] * menu_item_quantity;
-        counters[96] -= cost;
-        if (result == 117)
-            counters[117] += menu_item_quantity * 10;
+        counters[KF_ENUM_ENCODE(u8, KF_OBJECT_96)] -= cost;
+        if (result == KF_ENUM_ENCODE(s32, KF_OBJECT_117))
+            counters[KF_ENUM_ENCODE(u8, KF_OBJECT_117)] += menu_item_quantity * 10;
         else
             counters[result] += (u8)menu_item_quantity;
     }

@@ -87,7 +87,7 @@ s32 random_triangular_scaled(s32 amplitude);
 s32 random_centered_triangular_scaled(s32 amplitude);
 s32 fixed_lerp_q12(s32 start, s32 end, s32 fraction);
 s32 angle_lerp_shortest_q12(s32 start, s32 end, s32 fraction);
-void fixed_lerp_nine_halfwords_q12(const s16 *start, const s16 *end, s16 *output, s16 fraction);
+void fixed_lerp_nine_halfwords_q12(const u16 *start, const u16 *end, u16 *output, s16 fraction);
 s32 trajectory_solve_time_angle(s32 mode, s32 horizontal_distance,
     s32 vertical_distance, s32 speed, s32 amplitude,
     s32 *travel_time, s32 *angle);

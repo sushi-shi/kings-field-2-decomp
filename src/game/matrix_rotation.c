@@ -560,17 +560,17 @@ s32 angle_lerp_shortest_q12(s32 start, s32 end, s32 fraction)
 }
 
 ADDRESS(0x800158b4, 0x64)
-void fixed_lerp_nine_halfwords_q12(const s16 *start, const s16 *end, s16 *output, s16 fraction)
+void fixed_lerp_nine_halfwords_q12(const u16 *start, const u16 *end, u16 *output, s16 fraction)
 {
-    const s16 *source = start;
-    const s16 *target = end;
-    s16 *destination = output;
+    const u16 *source = start;
+    const u16 *target = end;
+    u16 *destination = output;
     s32 index;
 
     for (index = LERP_HALFWORD_COUNT - 1; index != -1; index--) {
-        s16 value = *source++;
-        s16 next = *target++;
-        s32 delta = next - value;
+        u16 value = *source++;
+        u16 next = *target++;
+        s32 delta = (s16)next - (s16)value;
 
         *destination++ = value + ((delta * fraction) >> KF_FIXED12_BITS);
     }

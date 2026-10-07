@@ -596,12 +596,14 @@ void interpolate_collision_row_fields(s32 flags, const KfCollisionFilterPayload 
                    KfCollisionRow *row, s32 amount)
 {
     if (flags & 2) {
-        fixed_lerp_nine_halfwords_q12(row->motion.values, payload->motion.values,
-                      row->motion.values, amount);
+        fixed_lerp_nine_halfwords_q12((const u16 *)row->motion.values,
+                      (const u16 *)payload->motion.values,
+                      (u16 *)row->motion.values, amount);
     }
     if (flags & 1) {
-        fixed_lerp_nine_halfwords_q12(row->rotations[0].m[0], payload->rotation.m[0],
-                      row->rotations[0].m[0], amount);
+        fixed_lerp_nine_halfwords_q12((const u16 *)&row->rotations[0],
+                      (const u16 *)&payload->rotation,
+                      (u16 *)&row->rotations[0], amount);
     }
     if (flags & 4) {
         row->filter.kinds.types[0] = fixed_lerp_q12(

@@ -2152,7 +2152,7 @@ void player_update_vertical_motion(void)
     s32 height_difference;
     s32 collision_flags;
     s32 impact;
-    s16 bob;
+    s32 bob;
     s32 movement_speed;
     const s32 *floor_result;
     /* Retail reserves an unreferenced 8-byte frame slot. */

@@ -2464,8 +2464,8 @@ actor_next:
             goto map_object_next;
         }
         object->collision_flags &= 0x7f;
-        if (object->action == KF_MAP_OBJECT_ACTION_AMBIENT_SOUND) goto map_sound_action;
-        if (object->action != KF_MAP_OBJECT_ACTION_ANIMATED_MODEL) goto map_ordinary_object;
+        if (object->action == KF_MAP_OBJECT_OP_AMBIENT_SOUND) goto map_sound_action;
+        if (object->action != KF_MAP_OBJECT_OP_ANIMATED_MODEL) goto map_ordinary_object;
         if (map_cell_visible(&object->position,
                              object->tail.animated.radius_x,
                              object->tail.animated.radius_z) != 0 &&

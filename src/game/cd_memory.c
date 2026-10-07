@@ -420,7 +420,7 @@ u16 memory_block_tag(u8 *data)
 ADDRESS(0x8001771c, 0x38)
 u8 *memory_malloc_checked(u32 size)
 {
-    u8 *block = malloc(size);
+    u8 *block = (u8 *)malloc(size);
 
     if ((u32)block + MEMORY_RAM_BASE > KF_MAIN_RAM_BYTES - 1) {
         return NULL;

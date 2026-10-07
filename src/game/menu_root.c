@@ -1440,10 +1440,10 @@ no_file:
         if ((buttons & PADLup) || (buttons & PADLdown)) {
             menu_cursor_animation_direction = KF_MENU_CURSOR_ANIMATION_FORWARD;
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
-            if (cursor == 0)
-                cursor = 1;
+            if (cursor == KF_MENU_CARD_BROWSER_START_ROW)
+                cursor = KF_MENU_CARD_BROWSER_LOAD_ROW;
             else
-                cursor = 0;
+                cursor = KF_MENU_CARD_BROWSER_START_ROW;
         } else if (buttons & PADRright) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
             confirmed = KF_TRUE;
@@ -3539,7 +3539,7 @@ s32 menu_preview_choice(const KfMenuList *list, KfMenuConfirmKind label_kind,
     KfMenuListMode render_mode, u8 item_id)
 {
     KfMenuGlyphString labels[2];
-    s32 choice = 0;
+    s32 choice = KF_MENU_CHOICE_ACCEPT;
     s32 result = KF_MENU_RESULT_PENDING;
     b32 confirmed;
     s32 frame;
@@ -3625,10 +3625,10 @@ labels_ready:
         if ((buttons & PADLup) || (buttons & PADLdown)) {
             menu_cursor_animation_direction = KF_MENU_CURSOR_ANIMATION_FORWARD;
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
-            if (choice != 0)
-                choice = 0;
+            if (choice != KF_MENU_CHOICE_ACCEPT)
+                choice = KF_MENU_CHOICE_ACCEPT;
             else
-                choice = 1;
+                choice = KF_MENU_CHOICE_DECLINE;
         } else if (buttons & PADRright) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
             confirmed = KF_TRUE;
@@ -3838,9 +3838,9 @@ void menu_render_list(const KfMenuList *menu, KfMenuListMode render_mode)
 
     if (render_mode == KF_MENU_LIST_SHOP_BUY || render_mode == KF_MENU_LIST_SHOP_SELL
         || render_mode == KF_MENU_LIST_STOCK_BUY || render_mode == KF_MENU_LIST_STOCK_OWNED)
-        menu_draw_status_counters(1);
+        menu_draw_status_counters(KF_MENU_COUNTERS_GOLD);
     else if (render_mode == KF_MENU_LIST_TRADE)
-        menu_draw_status_counters(3);
+        menu_draw_status_counters(KF_MENU_COUNTERS_OBJECT_96);
     if (render_mode == KF_MENU_LIST_CARD_LOAD || render_mode == KF_MENU_LIST_CARD_SAVE)
         menu_render_list_mode_8_9_noop();
 }
@@ -3938,7 +3938,7 @@ void menu_draw_status_counters(s32 kind)
 
     heading.position.x = 183;
     heading.position.y = 33;
-    if (kind == 3) {
+    if (kind == KF_MENU_COUNTERS_OBJECT_96) {
         heading.glyphs.codes[0] = 7;
         heading.glyphs.codes[1] = 41;
         heading.glyphs.codes[2] = 12;
@@ -3956,7 +3956,7 @@ void menu_draw_status_counters(s32 kind)
 
     amount.position.x = heading.position.x + 56;
     amount.position.y = heading.position.y;
-    if (kind == 3)
+    if (kind == KF_MENU_COUNTERS_OBJECT_96)
         menu_format_number(game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)], 7, KF_FORMAT_PAD_SPACES,
             KF_MENU_FORMAT_STYLE_TRAILING_11, amount.glyphs.codes);
     else
@@ -3964,7 +3964,7 @@ void menu_draw_status_counters(s32 kind)
             KF_MENU_FORMAT_STYLE_TRAILING_13, amount.glyphs.codes);
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
-    if (kind != 2) {
+    if (kind != KF_MENU_COUNTERS_GOLD_ONLY) {
         heading.position.x = 183;
         heading.position.y = 61;
         heading.glyphs.codes[0] = 202;

@@ -146,6 +146,14 @@ enum {
     KF_MENU_STOCK_ROW_COUNT = KF_MENU_STOCK_RETURN_ROW + 1
 };
 
+/* menu_draw_status_counters: the gold counter with the second row, gold
+ * alone, or object 96's counter (trade) with the second row. */
+enum {
+    KF_MENU_COUNTERS_GOLD = 1,
+    KF_MENU_COUNTERS_GOLD_ONLY = 2,
+    KF_MENU_COUNTERS_OBJECT_96 = 3
+};
+
 /* menu_confirm_card_format kind: the save path asks with explanatory rows. */
 enum { KF_MENU_CARD_FORMAT_WITH_NOTICE = 1 };
 

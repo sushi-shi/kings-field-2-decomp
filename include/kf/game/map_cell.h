@@ -9,7 +9,9 @@ enum {
     KF_MAP_CELL_QUARTER_TURN_MASK = 3,
     KF_MAP_CELL_POSITION_SHIFT = 11,
     KF_MAP_CELL_ELEVATION_SHIFT = 7,
-    KF_MAP_CELL_NO_OBJECT_INDEX = 0xff
+    KF_MAP_CELL_NO_OBJECT_INDEX = 0xff,
+    /* An object index of 0xf0 or more draws nothing; 0xfe is a cleared marker. */
+    KF_MAP_CELL_MARKER_CLEARED = 0xfe
 };
 
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,

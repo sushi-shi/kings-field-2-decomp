@@ -59,7 +59,7 @@ void map_object_reset(KfMapObject *object)
 }
 
 ADDRESS(0x800355d8, 0xd4)
-void map_object_set_property(s32 index, s32 property, ...)
+void map_object_set_property(s32 index, KfMapObjectProperty property, ...)
 {
     KfMapObject *object;
     KfMapObjectTemplate *object_template;
@@ -94,12 +94,12 @@ void map_object_set_property(s32 index, s32 property, ...)
 }
 
 ADDRESS(0x800356ac, 0xf4)
-void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker)
+void map_object_set_cell_marker(KfMapObject *object, KfMapCellMarkerMode mode, u8 marker)
 {
     KfMapOccupancyCell *cell;
     u8 *cell_marker;
 
-    if (mode == 0 && player_state.map_marker_visual_effect_timer == 0) {
+    if (mode == KF_MAP_CELL_MARKER_PLACE && player_state.map_marker_visual_effect_timer == 0) {
         s32 cell_z = object->position.vz >> 11;
         s32 cell_x = object->position.vx >> 11;
         KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
@@ -119,13 +119,13 @@ void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker)
         if (object->layer_mask != KF_MAP_LAYER_FIRST) {
             cell_marker = &cell->layer[1].object_index;
         }
-        *cell_marker = 0xfe;
+        *cell_marker = KF_MAP_CELL_MARKER_CLEARED;
         object->scale.vx = object->scale.vy = object->scale.vz = KF_FIXED12_ONE;
     }
 }
 
 ADDRESS(0x800357a0, 0xf4)
-void map_object_refresh_cell_markers(s32 mode)
+void map_object_refresh_cell_markers(KfMapCellMarkerMode mode)
 {
     KfMapObject *object;
     KfMapObjectTemplate *object_template;
@@ -147,7 +147,9 @@ void map_object_refresh_cell_markers(s32 mode)
             if (object->tail.marker.marker_id == 0xfe) {
                 continue;
             }
-            map_object_set_property(object->tail.linked_property.linked_object_index, mode,
+            /* The marker mode doubles as hide (0) / restore-layer (1). */
+            map_object_set_property(object->tail.linked_property.linked_object_index,
+                                    KF_ENUM_DECODE(KfMapObjectProperty, KF_ENUM_VALUE(mode)),
                                     object->layer_mask);
             object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
             map_object_set_cell_marker(object, mode,
@@ -289,7 +291,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         case KF_MAP_OBJECT_OP_5:
             object->action = KF_MAP_OBJECT_OP_5;
             object->asset_clip_selector = 0;
-            map_object_set_cell_marker(object, 0, object_template->params.marker.marker_action_05);
+            map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_PLACE, object_template->params.marker.marker_action_05);
             break;
         case KF_MAP_OBJECT_OP_RESOURCE_TRIGGER:
             object->layer_mask = KF_MAP_LAYER_NONE;
@@ -365,7 +367,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->action = KF_MAP_OBJECT_OP_81;
             object->extra_40.bytes[0] = 0;
             if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
-                map_object_set_cell_marker(object, 0,
+                map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_PLACE,
                                            object_template->params.marker.marker_action_51);
             }
             break;

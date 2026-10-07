@@ -84,12 +84,24 @@ enum {
     KF_MAP_OBJECT_CAPACITY = 0x18c
 };
 
-enum {
+/* map_object_set_property selector; SET_LAYER_MASK and SET_RENDER_DEPTH
+ * read one variadic value. */
+KF_ENUM_BEGIN(KfMapObjectProperty, s32)
     KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE = 0,
     KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK = 1,
     KF_MAP_OBJECT_PROPERTY_ARM_EVENT = 2,
     KF_MAP_OBJECT_PROPERTY_SET_RENDER_DEPTH = 3
-};
+KF_ENUM_END(KfMapObjectProperty)
+
+/* map_object_set_cell_marker: PLACE hides the object and writes its marker
+ * into the map cell (unless the map-marker effect is running); CLEAR shows
+ * the object and clears the cell. map_object_refresh_cell_markers passes the
+ * same value to map_object_set_property, where 0 hides the linked object and
+ * 1 restores its layer mask. */
+KF_ENUM_BEGIN(KfMapCellMarkerMode, s32)
+    KF_MAP_CELL_MARKER_PLACE = 0,
+    KF_MAP_CELL_MARKER_CLEAR = 1
+KF_ENUM_END(KfMapCellMarkerMode)
 
 /* The last twelve template bytes are interpreted by the object's action:
  * marker and map-cell actions, the scene pose path, the collision probe and
@@ -791,8 +803,8 @@ KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequ
 KfAudioPlaybackResult map_object_play_spatial_sound(KfMapObject *object, s32 sound);
 void map_object_reset(KfMapObject *object);
 void map_object_pool_reset(void);
-void map_object_set_property(s32 index, s32 property, ...);
-void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker);
+void map_object_set_property(s32 index, KfMapObjectProperty property, ...);
+void map_object_set_cell_marker(KfMapObject *object, KfMapCellMarkerMode mode, u8 marker);
 void map_object_apply_marker_signal(u8 identifier);
 s32 map_object_check_and_consume_marker(KfMapObject *object, s32 marker);
 b32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height);
@@ -805,7 +817,7 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
 void map_object_spawn_effect(u8 source, KF_ENUM_PARAM(KfObjectId, u8) object_id, const VECTOR *position,
                              s32 height_offset);
 void map_object_update_actions(void);
-void map_object_refresh_cell_markers(s32 mode);
+void map_object_refresh_cell_markers(KfMapCellMarkerMode mode);
 s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, s32 radius,
     s32 point_height, s32 angle, s32 tolerance);
 

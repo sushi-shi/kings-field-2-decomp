@@ -309,8 +309,8 @@ void map_object_update_actions(void)
                     object->rotation.vx = 0xa00;
                     object->action_timer = 3;
                 } else {
-                    map_object_set_property(object->tail.linked_property.linked_object_index, 0);
-                    map_object_set_property(object->tail.linked_property.linked_object_index, 3, 0);
+                    map_object_set_property(object->tail.linked_property.linked_object_index, KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE);
+                    map_object_set_property(object->tail.linked_property.linked_object_index, KF_MAP_OBJECT_PROPERTY_SET_RENDER_DEPTH, 0);
                     object->action_timer = 1;
                 }
                 break;
@@ -319,7 +319,7 @@ void map_object_update_actions(void)
                     object->extra_40.angular_velocity_x = -16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
-                                            1, object->layer_mask);
+                                            KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK, object->layer_mask);
                     map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 break;
@@ -330,7 +330,7 @@ void map_object_update_actions(void)
                 object->extra_40.angular_velocity_x = velocity;
                 object->rotation.vx = angle;
                 if (angle < 0xc00) {
-                    map_object_set_property(object->tail.linked_property.linked_object_index, 2);
+                    map_object_set_property(object->tail.linked_property.linked_object_index, KF_MAP_OBJECT_PROPERTY_ARM_EVENT);
                 }
                 if (object->extra_40.angular_velocity_x == 0 && object->rotation.vx == 0xa00) {
                     object->action_timer = 3;
@@ -352,8 +352,8 @@ void map_object_update_actions(void)
                     object->position.vz += displacement.z;
                     object->action_timer = 3;
                 } else {
-                    map_object_set_property(object->tail.linked_property.linked_object_index, 0);
-                    map_object_set_property(object->tail.linked_property.linked_object_index, 3, 0);
+                    map_object_set_property(object->tail.linked_property.linked_object_index, KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE);
+                    map_object_set_property(object->tail.linked_property.linked_object_index, KF_MAP_OBJECT_PROPERTY_SET_RENDER_DEPTH, 0);
                     object->action_timer = 1;
                 }
                 break;
@@ -362,7 +362,7 @@ void map_object_update_actions(void)
                     object->extra_40.movement_frames_left = 16;
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
-                                            1, object->layer_mask);
+                                            KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK, object->layer_mask);
                     map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 break;
@@ -373,7 +373,7 @@ void map_object_update_actions(void)
                 object->position.vx += displacement.x;
                 object->position.vz += displacement.z;
                 if (--object->extra_40.movement_frames_left == 0) {
-                    map_object_set_property(object->tail.linked_property.linked_object_index, 2);
+                    map_object_set_property(object->tail.linked_property.linked_object_index, KF_MAP_OBJECT_PROPERTY_ARM_EVENT);
                     object->action_timer = 3;
                 }
                 break;
@@ -396,13 +396,13 @@ void map_object_update_actions(void)
                     linked->render_depth_offset += 200;
                 }
                 if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
-                    map_object_set_cell_marker(object, 1,
+                    map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_CLEAR,
                                                object_template->params.marker.marker_action_05);
                     object->phase_q12 = 0xfff;
                     object->action_timer = 3;
                 } else {
                     map_object_set_property(object->tail.linked_property.linked_object_index,
-                                            0);
+                                            KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE);
                     object->action_timer = 1;
                 }
                 break;
@@ -411,9 +411,9 @@ void map_object_update_actions(void)
                 if (object->tail.marker.marker_id == MAP_OBJECT_EVENT_TRIGGERED) {
                     object->action_timer = 2;
                     map_object_set_property(object->tail.linked_property.linked_object_index,
-                                            1, object->layer_mask);
+                                            KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK, object->layer_mask);
                     map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
-                    map_object_set_cell_marker(object, 1,
+                    map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_CLEAR,
                                                object_template->params.marker.marker_action_05);
                 }
                 break;
@@ -421,7 +421,7 @@ void map_object_update_actions(void)
                 object->phase_q12 += 128;
                 if (object->phase_q12 >= 0xfff) {
                     object->phase_q12 = 0xfff;
-                    map_object_set_property(object->tail.linked_property.linked_object_index, 2);
+                    map_object_set_property(object->tail.linked_property.linked_object_index, KF_MAP_OBJECT_PROPERTY_ARM_EVENT);
                     object->action_timer = 3;
                 }
                 break;
@@ -736,7 +736,7 @@ void map_object_update_actions(void)
             case 1:
                 if (object->tail.collision_probe.camera_region_width != 0xff) {
                     if (object->phase_q12 == 0) {
-                        map_object_set_cell_marker(object, 1,
+                        map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_CLEAR,
                             object_template->params.collision.marker_action_51);
                         map_object_play_spatial_sound(object,
                                                       object_template->params.collision.sound_id);
@@ -757,7 +757,7 @@ void map_object_update_actions(void)
                     if (object->tail.collision_probe.camera_region_width != 0xff) {
                         object->phase_q12 = 0;
                         object->action_timer = 0;
-                        map_object_set_cell_marker(object, 0,
+                        map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_PLACE,
                             object_template->params.collision.marker_action_51);
                         break;
                     }

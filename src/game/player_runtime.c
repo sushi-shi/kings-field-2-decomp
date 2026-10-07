@@ -3312,7 +3312,7 @@ after_reaction:
             MoveImage(&player_status_texture_row_2, 0x240, 0x106);
             notify_enqueue(KF_NOTIFICATION_EFFECT_EXPIRED);
             player_state.map_marker_visual_effect_timer = 0;
-            map_object_refresh_cell_markers(0);
+            map_object_refresh_cell_markers(KF_MAP_CELL_MARKER_PLACE);
         } else {
             if ((player_state.map_marker_visual_effect_timer & 7) == 0) {
                 MoveImage(&player_status_texture_row_1, 0x240, 0x103);
@@ -3321,7 +3321,7 @@ after_reaction:
                 MoveImage(&player_status_texture_row_3, 0x240, 0x106);
             }
             if ((player_state.map_marker_visual_effect_timer & 7) == 1) {
-                map_object_refresh_cell_markers(1);
+                map_object_refresh_cell_markers(KF_MAP_CELL_MARKER_CLEAR);
             }
             player_state.map_marker_visual_effect_timer--;
         }

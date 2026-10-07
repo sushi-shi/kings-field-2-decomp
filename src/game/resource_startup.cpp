@@ -426,7 +426,11 @@ void resource_advance_transition(void)
         cd_archive_queue_read(KF_RESOURCE_ARCHIVE_FDAT, resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] * 3 + 1,
             (u_long *)cd_stream_work_buffer,
             resource_transition_set_phase_3);
-        resource_state.active_table = (KfCallback *)resource_callback_table_workspace;
+        // Port: FDAT region modules are MIPS code linked for the retail address
+        // space (loaded at 0x8019e138). Until they are reconstructed as
+        // source, regions run with the no-op callback table.
+        resource_state.active_table = callback_default_table;
+        kf_psx_note_unported("FDAT region callback module");
         return;
 
     case KF_RESOURCE_TRANSITION_LOAD_MAP_ACTORS:

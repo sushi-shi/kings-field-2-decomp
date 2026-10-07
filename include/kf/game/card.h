@@ -80,7 +80,7 @@ extern s32 menu_cursor_animation_frame;
 extern char memory_card_file_prefix[16];
 extern u8 memory_card_loaded_slot;
 
-struct DIRENTRY;
+#include <psyq/kernel.h>
 b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count);
 b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *level,
     s32 *slot_id);

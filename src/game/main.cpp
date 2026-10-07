@@ -30,7 +30,7 @@ enum { GAME_INITIAL_MASTER_VOLUME = 0x7f };
 
 extern "C" void main(void)
 {
-    InitHeap((void *)BSS_END, OVERLAY_STACK_BOTTOM - (u32)BSS_END);
+    InitHeap(NULL, KF_GAME_HEAP_BYTES);
     CdInit();
     PadInit(0);
     InitCARD(1);
@@ -113,7 +113,7 @@ void game_main_loop(void)
 
     game_shutdown();
 
-    *(u8 *)0x800102f0 = KF_OVERLAY_END;
+    kf_psx_overlay_request = KF_OVERLAY_END;
 }
 
 void game_shutdown(void)

@@ -1,8 +1,6 @@
 /build/
 /result
 /result-*
-/codecs/target/
-__pycache__/
-*.pyc
 *.bin
 *.cue
+*.iso

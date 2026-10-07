@@ -17,6 +17,10 @@ enum {
     OVERLAY_STACK_BYTES = 0x8000
 };
 
+/* GAME's retail heap ran from BSS_END (0x801da018) to the stack bottom. The
+ * runtime owns the host allocation; only its size is retained. */
+#define KF_GAME_HEAP_BYTES (0x801f8000u - 0x801da018u)
+
 #define OVERLAY_RAM_END (0x80000000u + KF_MAIN_RAM_BYTES)
 #define OVERLAY_STACK_BOTTOM (OVERLAY_RAM_END - OVERLAY_STACK_BYTES)
 

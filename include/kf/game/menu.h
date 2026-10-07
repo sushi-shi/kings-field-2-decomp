@@ -9,7 +9,7 @@
 #include <kf/game/player.h>
 #include <psyq/sdk.h>
 
-struct DIRENTRY;
+#include <psyq/kernel.h>
 
 enum {
     KF_MENU_GLYPHS_PER_ROW = 12,

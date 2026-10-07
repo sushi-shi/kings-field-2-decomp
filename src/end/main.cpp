@@ -8,7 +8,7 @@
 #include <psyq/libc.h>
 #include <psyq/pad.h>
 
-#define ENDING_HEAP_BASE ((u_long *)0x80100000)
+#define ENDING_HEAP_BASE 0
 #define ENDING_HEAP_BYTES 0xf8000
 
 enum {
@@ -16,7 +16,7 @@ enum {
     ENDING_LOAD_ATTEMPTS = 10
 };
 
-u8 *overlay_next_request = (u8 *)0x800102f0;
+u8 *overlay_next_request = &kf_psx_overlay_request;
 
 char ending_data_file[5] = "ED.D";
 

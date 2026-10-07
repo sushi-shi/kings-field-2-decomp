@@ -385,7 +385,7 @@ u8 *memory_malloc_checked(u32 size)
 {
     u8 *block = (u8 *)malloc(size);
 
-    if ((u32)block + MEMORY_RAM_BASE > KF_MAIN_RAM_BYTES - 1) {
+    if (block == NULL) {
         return NULL;
     }
     return block;

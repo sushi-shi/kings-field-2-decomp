@@ -39,7 +39,7 @@ void floor_item_capture_image(s32 x, s32 y, u8 update_interval, u8 row_step,
         if (kind == KF_FLOOR_ITEM_SCROLLING_IMAGE) {
             va_start(args, kind);
             width_bytes = va_arg(args, s32);
-            height = va_arg(args, u16);
+            height = (u16)va_arg(args, int);
             item->rect.w = width_bytes >> 2;
             item->rect.h = height;
             item->pixels = (u_long *)memory_allocate(

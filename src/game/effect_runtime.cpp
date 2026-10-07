@@ -63,6 +63,8 @@ KfCollisionHitFlags effect_probe_collision_by_type(const VECTOR *position, s32 r
         default:
             break;
         }
+        // Port: retail returns an undefined register for unknown targets.
+        return KF_COLLISION_HIT_NONE;
     } else {
         record->cooldown--;
         return KF_COLLISION_HIT_NONE;

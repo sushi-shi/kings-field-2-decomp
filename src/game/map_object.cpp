@@ -75,13 +75,13 @@ void map_object_set_property(s32 index, KfMapObjectProperty property, ...)
         }
         break;
     case KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK:
-        object->layer_mask = kf_enum_decode<KfMapLayerMask>(va_arg(arguments, u8));
+        object->layer_mask = kf_enum_decode<KfMapLayerMask>((u8)va_arg(arguments, int));
         break;
     case KF_MAP_OBJECT_PROPERTY_ARM_EVENT:
         object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
         break;
     case KF_MAP_OBJECT_PROPERTY_SET_RENDER_DEPTH:
-        object->render_depth_offset = va_arg(arguments, u16);
+        object->render_depth_offset = (u16)va_arg(arguments, int);
         break;
     }
     va_end(arguments);

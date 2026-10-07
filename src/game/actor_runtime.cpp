@@ -1606,7 +1606,8 @@ VECTOR *actor_resolve_group_position(KfActor *actor, VECTOR *output)
     default:
         break;
     }
-
+    // Port: retail returns an undefined register for unknown position modes.
+    return &actor->position;
 }
 
 void actor_update_motion_animation(KfAnimationClip first,

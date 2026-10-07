@@ -1,74 +1,61 @@
 {
-  description = "King's Field II C++ source and PlayStation build";
+  description = "King's Field II portable Linux and WebAssembly application";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/64c08a7ca051951c8eae34e3e3cb1e202fe36786";
   outputs = { self, nixpkgs }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
-      sdk = import ./nix/psx-toolchain.nix { inherit pkgs; sdkBuilder = ./scripts/create-toolchain.py; };
-      emulator = import ./nix/pcsx-redux.nix { inherit pkgs; };
-      python = pkgs.python3.withPackages (p: [ p.pyelftools ]);
-      binutils = pkgs.pkgsCross.mipsel-linux-gnu.buildPackages.binutils;
-      environment = {
-        PSYQ_SDK = "${sdk.psyqSdk}/psyq-3.0";
-        PSYQ_INCLUDE = "${sdk.psyqSdk}/include-lf";
-        PSYQ_BIN = "${sdk.psyqSdk}/psyq-3.0/BIN";
-        PSYQ_LIB = "${sdk.psyqSdk}/psyq-3.0/LIB";
-        PSYQ_MALLOC_OBJ = "${sdk.psyqMallocObj}/MALLOC.OBJ";
-        PSYQ_ASPSX = "${sdk.aspsxNative}/1.07/ASPSX.EXE";
-        PSYQ_ASMPSX = "${sdk.asmpsxNative}";
-        PSYQ_CPE2X = "${sdk.psyqRuntime30Cpe2x}/CPE2X.EXE";
-        MIPS_LD = "${binutils}/bin/mipsel-unknown-linux-gnu-ld";
+      pkgs = import nixpkgs { inherit system; };
+      # The original sources assume 32-bit pointers; build an i686 executable,
+      # which runs on x86_64 Linux with 32-bit graphics drivers.
+      pkgs32 = pkgs.pkgsi686Linux;
+      nativeTools = with pkgs; [ cmake ninja pkg-config python3 ];
+      libraries32 = with pkgs32; [ sdl3 libGL libglvnd ];
+      sources = pkgs.lib.cleanSourceWith {
+        src = ./.;
+        filter = path: type:
+          let
+            relative = pkgs.lib.removePrefix "${toString ./.}/" (toString path);
+            sourceDirectories = [ "src" "include" "cmake" "web" ];
+          in pkgs.lib.cleanSourceFilter path type
+            && !(builtins.elem (baseNameOf path) [ "build" "result" ])
+            && (builtins.elem relative [ "CMakeLists.txt" "build.json" ]
+              || builtins.any (directory:
+                relative == directory || pkgs.lib.hasPrefix "${directory}/" relative
+              ) sourceDirectories);
       };
-      buildTools = [ python pkgs.llvmPackages.clang-unwrapped binutils pkgs.dosbox-x ];
-      game = pkgs.stdenvNoCC.mkDerivation (environment // {
-        pname = "kings-field-cpp";
-        version = "1.0";
-        src = pkgs.lib.cleanSourceWith {
-          src = ./.;
-          filter = path: type: !(builtins.elem (baseNameOf path)
-            [ ".git" "build" "result" "__pycache__" "codecs" ]);
+      unwrapped = pkgs32.clangStdenv.mkDerivation {
+        pname = "kings-field-2";
+        version = "0.1.0";
+        src = sources;
+        nativeBuildInputs = nativeTools;
+        buildInputs = libraries32;
+        meta = {
+          description = "King's Field II source port (requires the original Japanese disc)";
+          mainProgram = "kings-field-2";
+          platforms = [ "i686-linux" ];
         };
-        nativeBuildInputs = buildTools;
-        dontConfigure = true;
-        buildPhase = ''
-          runHook preBuild
-          python3 build.py
-          runHook postBuild
-        '';
-        installPhase = ''
-          mkdir -p "$out/link"
-          cp build/psx/PSX.EXE build/game/GAME.EXE build/open/OPEN.EXE build/end/END.EXE "$out/"
-          cp build/psx/PSX.CPE build/game/GAME.CPE build/open/OPEN.CPE build/end/END.CPE "$out/link/"
-        '';
-      });
-      runner = pkgs.writeShellApplication {
-        name = "kings-field";
-        runtimeInputs = [ pkgs.python3 emulator ];
-        text = ''
-          export PCSX_REDUX_BIN="${emulator}/bin/pcsx-redux"
-          export PCSX_REDUX_BIOS="${emulator.openbios}"
-          exec python3 ${./scripts/psxbuild/disc.py} --executables ${game} "$@"
-        '';
       };
-      retailRunner = pkgs.writeShellApplication {
-        name = "kf-run-retail";
-        runtimeInputs = [ pkgs.python3 emulator ];
+      launcher = pkgs.writeShellApplication {
+        name = "kings-field-2";
         text = ''
-          export PCSX_REDUX_BIN="${emulator}/bin/pcsx-redux"
-          export PCSX_REDUX_BIOS="${emulator.openbios}"
-          exec python3 ${./scripts/psxbuild/disc.py} --retail "$@"
+          if [ -z "''${KF_DISC:-}" ] && [ "$#" -eq 0 ]; then
+            echo "Set KF_DISC to your King's Field II (Japan) .cue, .bin or .iso image." >&2
+            exit 1
+          fi
+          exec ${unwrapped}/bin/kings-field-2 "$@"
         '';
       };
     in {
-      packages.${system} = { inherit game; default = game; };
-      apps.${system} = {
-        default = { type = "app"; program = "${runner}/bin/kings-field"; };
-        retail = { type = "app"; program = "${retailRunner}/bin/kf-run-retail"; };
+      packages.${system} = { default = launcher; unwrapped = unwrapped; };
+      apps.${system}.default = {
+        type = "app";
+        program = "${launcher}/bin/kings-field-2";
+        meta.description = "King's Field II source port";
       };
-      devShells.${system} = {
-        default = pkgs.mkShell (environment // { packages = buildTools ++ [ retailRunner ]; });
-        codecs = pkgs.mkShell { packages = [ pkgs.cargo pkgs.rustc ]; };
+      checks.${system}.native = unwrapped;
+      devShells.${system}.default = (pkgs32.mkShell.override { stdenv = pkgs32.clangStdenv; }) {
+        packages = nativeTools ++ libraries32 ++ (with pkgs; [ emscripten nodejs ]);
+        KF_SDL_SOURCE = "${pkgs.sdl3.src}";
       };
     };
 }

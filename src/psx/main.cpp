@@ -11,7 +11,7 @@ const char *overlay_path_table[3] = {
 
 long overlay_index = KF_OVERLAY_OPEN;
 
-u8 *overlay_next_request = (u8 *)0x800102f0;
+u8 *overlay_next_request = &kf_psx_overlay_request;
 
 struct EXEC overlay_header;
 

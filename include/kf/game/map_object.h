@@ -27,8 +27,10 @@
  * Operations 95 and 160..165 have no GAME update case; the map callback
  * table (FDAT 3r + 2) initializes (slot 8), updates (slot 9) and arms them
  * (slots 0 and 2), so REGION0/REGION1 name the overlay that implements an
- * otherwise identical item socket. No retail template uses 0, 11 or 80, and
- * the only operation-33 template is never placed. */
+ * otherwise identical item socket. No JP/US/EU template uses 0, 11 or 80,
+ * the only operation-33 template (object 239) is never placed, dropped or
+ * spawned, and no code or map callback stores any of the four in the action
+ * byte; only their GAME dispatch hooks remain. */
 KF_ENUM_BEGIN(KfMapObjectOperation, u8)
     KF_MAP_OBJECT_OP_0 = 0,
     KF_MAP_OBJECT_OP_LIFT_DOOR = 2,

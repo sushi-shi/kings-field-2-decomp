@@ -58,7 +58,7 @@ typedef char kf_audio_vab_stream_slot_size[
 typedef char kf_audio_vab_stream_slot_buffer_offset[
     (u32)&((KfAudioVabStreamSlot *)0)->buffer == 4 ? 1 : -1];
 
-typedef struct {
+typedef struct KfAudioVabSlot {
     s16 vab_id;
     KfAudioVabStreamSlot *stream_slot;
 } KfAudioVabSlot;
@@ -67,12 +67,12 @@ typedef char kf_audio_vab_slot_size[sizeof(KfAudioVabSlot) == 8 ? 1 : -1];
 typedef char kf_audio_vab_slot_stream_slot_offset[
     (u32)&((KfAudioVabSlot *)0)->stream_slot == 4 ? 1 : -1];
 
-typedef struct {
+typedef struct KfAudioVoiceHandle {
     s16 voice_id;
     s16 sound_id;
 } KfAudioVoiceHandle;
 
-typedef struct {
+typedef struct KfAudioVoiceParams {
     s16 vab_slot_index;
     s16 program;
     s16 tone;
@@ -84,7 +84,7 @@ typedef char kf_audio_voice_params_size[sizeof(KfAudioVoiceParams) == 10 ? 1 : -
 typedef char kf_audio_voice_priority_offset[
     (u32)&((KfAudioVoiceParams *)0)->priority == 8 ? 1 : -1];
 
-typedef struct {
+typedef struct KfAudioVoiceState {
     KfAudioVoiceHandle handles[KF_AUDIO_VOICE_HANDLE_COUNT];
     /* Sound IDs are byte-indexed; the loaded parameter rows fill this span. */
     KfAudioVoiceParams params[KF_AUDIO_SOUND_PARAM_COUNT];
@@ -92,7 +92,7 @@ typedef struct {
 
 /* The startup clear bounds this GAME audio state at 0xe9c bytes. Sequence
  * fields and the 130-entry VAB slot stride have direct retail witnesses. */
-typedef struct {
+typedef struct KfGameAudioState {
     u_long *sequence_buffer;
     s16 sequence_id;
     s32 sequence_active;

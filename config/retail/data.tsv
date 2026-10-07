@@ -65,14 +65,9 @@ GAME.EXE	0x80011300	0xb00	0x4c	pointer	manual:player-update-switch		pointer[19]	
 GAME.EXE	0x8001134c	0xb4c	0xc4	pointer	reviewed-asm		pointer[49]	collision_evaluate_shape_records jump-table dispatch;retail words	49 opcode rows, all targets within collision_evaluate_shape_records
 GAME.EXE	0x80011410	0xc10	0x74	pointer	manual:switch-table		pointer[29]	retail switch-table words	29 mode-index rows in tmd_prepare_primitive_indices
 GAME.EXE	0x80011484	0xc84	0x3f8	pointer	reviewed-asm		pointer[254]	map_object_initialize_from_placements jump-table dispatch;retail words	254 opcode rows, all targets within map_object_initialize_from_placements
-GAME.EXE	0x8001187c	0x107c	0x44	pointer	manual:switch-table		pointer[17]	retail jump-table words	map_object_spawn_effect 17-case template-kind jump table
-GAME.EXE	0x800118c0	0x10c0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x800118c4	0x10c4	0x54	pointer	manual:switch-table		pointer[21]	retail jump-table words	map_object_check_and_consume_marker 21-action dispatch table
+GAME.EXE	0x8001187c	0x107c	0x9c	defined	manual:map-object-switch-rodata		u32[39]	retail words;map_object_spawn_effect 17-case and map_object_check_and_consume_marker 21-action bounded jr tables;alignment word at 0x800118c0;source RODATA claim	one unit RODATA span: 17 template-kind pointers, one alignment word, then 21 action pointers
 GAME.EXE	0x80011918	0x1118	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x8001191c	0x111c	0x380	pointer	manual:switch-table		pointer[224]	retail words;func_80036ed4 bounded jr table	224 opcode-2 rows all target func_80036ed4; 201 use default 0x80038c5c
-GAME.EXE	0x80011c9c	0x149c	0x24	pointer	manual:switch-table		pointer[9]	retail words;func_80036ed4 bounded secondary jr table	nine subaction-1 rows target func_80036ed4; zero separator at 0x80011cc0
-GAME.EXE	0x80011cc0	0x14c0	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
-GAME.EXE	0x80011cc4	0x14c4	0x14	pointer	manual:switch-table		pointer[5]	retail words;func_80036ed4 bounded tertiary jr table	five subaction-1 rows target func_80036ed4; actor table begins at 0x80011cd8
+GAME.EXE	0x8001191c	0x111c	0x3bc	defined	manual:map-object-update-actions-rodata		u32[239]	retail words;map_object_update_actions three bounded jr tables;zero separator at 0x80011cc0;source RODATA claim	one unit RODATA span: 224 primary pointers, 9 secondary pointers, one zero word, then 5 tertiary pointers
 GAME.EXE	0x80011cd8	0x14d8	0x20c	pointer	manual:switch-table		pointer[131]	retail words;actor_score_target_candidate bounded type-minus-2 jr table	131 in-function case pointers; next word at 0x80011ee4 is zero
 GAME.EXE	0x80011ee4	0x16e4	0x4	unclassified	coverage-gap			payload-complement	may contain missed code, tables, constants, padding, or writable data
 GAME.EXE	0x80011ee8	0x16e8	0x1ec	pointer	manual:actor-group-effect-switch		pointer[123]	retail words;bounded indirect jr	123 words;all targets inside func_8003c614;next 0x120d4 is a gap

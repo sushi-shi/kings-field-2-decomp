@@ -575,6 +575,13 @@ typedef char kf_map_object_tail_scattered_effect_size[
 typedef char kf_map_object_tail_scattered_effect_id_offset[
     (u32)&((KfMapObjectTailScatteredEffectView *)0)->effect_id == 6 ? 1 : -1];
 
+typedef struct KfMapObjectTailPlacement {
+    u32 unknown_34;
+    KfMapObjectTailCopyWords copy_words;
+} KfMapObjectTailPlacement;
+typedef char kf_map_object_tail_placement_size[
+    sizeof(KfMapObjectTailPlacement) == 12 ? 1 : -1];
+
 typedef union KfMapObjectTail {
     KfMapObjectTailFields fields;
     KfMapObjectTailMotionView motion;
@@ -602,10 +609,7 @@ typedef union KfMapObjectTail {
     KfMapObjectTailSpawnByteFields spawn_bytes;
     KfMapObjectTailScatteredEffectView scattered_effect;
     u32 reset_words[3];
-    struct {
-        u32 unknown_34;
-        KfMapObjectTailCopyWords copy_words;
-    } placement;
+    KfMapObjectTailPlacement placement;
 } KfMapObjectTail;
 typedef char kf_map_object_tail_size[sizeof(KfMapObjectTail) == 12 ? 1 : -1];
 

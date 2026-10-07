@@ -129,6 +129,8 @@ LAYOUT_CONFIDENCE = {"candidate", "supported", "proven"}
 FIELD_CONFIDENCE = {"opaque", "candidate", "supported", "proven"}
 SCOPES = {"unknown", "global", "static", "function-static"}
 IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+# Vendored data is owned by a Psy-Q archive member such as "LIBCD BIOS.OBJ".
+SDK_OBJECT_OWNER = re.compile(r"^(?:[A-Z][A-Z0-9_]* )?[A-Z0-9_]+\.OBJ$")
 REGISTER_NAMES = (
     "zero", "at", "v0", "v1", "a0", "a1", "a2", "a3",
     "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
@@ -383,9 +385,12 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
     """Calculate target 32-bit layouts of flat named structs and unions.
 
     Inline anonymous aggregates remain outside this inventory; a containing
-    checked type must use a separately named member type.
+    checked type must use a separately named member type. Integer bitfields
+    follow the O32 GCC rule: a field never crosses a boundary of its declared
+    type, and its row spans that whole storage unit.
     """
     primitive_layouts = {
+        "char": (1, 1),
         "s8": (1, 1),
         "u8": (1, 1),
         "s16": (2, 2),
@@ -397,6 +402,9 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
         "KfBoolU32": (4, 4),
         "KfBool8": (1, 1),
         "KfBool16": (2, 2),
+        "b8": (1, 1),
+        "b16": (2, 2),
+        "b32": (4, 4),
         # Target O32/Psy-Q long, independent of the host Python ABI.
         "long": (4, 4),
         "u_long": (4, 4),
@@ -428,6 +436,7 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
         rf"(.+?)\s+(\**)([A-Za-z_]\w*)((?:\s*\[\s*{array_bound}\s*\])*)"
     )
     array_pattern = re.compile(rf"\[\s*({array_bound})\s*\]")
+    bitfield_pattern = re.compile(r"(.+?)\s+([A-Za-z_]\w*)\s*:\s*(\d+)")
     enum_pattern = re.compile(r"\benum(?:\s+[A-Za-z_]\w*)?\s*\{([^{}]*)\}", re.DOTALL)
     stored_enum_pattern = re.compile(
         r"\bKF_ENUM_BEGIN\(\s*([A-Za-z_]\w*)\s*,\s*([A-Za-z_]\w*)\s*\)"
@@ -526,11 +535,38 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
         if name not in layouts:
             path, kind, body = definitions[name]
             offset = 0
+            bit_offset = 0
             alignment = 1
             fields = []
             for declaration in body.split(";"):
                 declaration = " ".join(declaration.split())
                 if not declaration:
+                    continue
+                bitfield_match = bitfield_pattern.fullmatch(declaration)
+                if bitfield_match is not None:
+                    datatype, field_name, width_text = bitfield_match.groups()
+                    if datatype not in enum_storage_types:
+                        raise ValueError(
+                            f"{path}: unsupported bitfield type {datatype!r} "
+                            f"in {name}.{field_name}"
+                        )
+                    unit_size, unit_alignment = primitive_layouts[datatype]
+                    unit_bits = unit_size * 8
+                    width = int(width_text)
+                    if not 0 < width <= unit_bits:
+                        raise ValueError(
+                            f"{path}: invalid bitfield width {width} in {name}.{field_name}"
+                        )
+                    start = 0 if kind == "union" else bit_offset
+                    if start % unit_bits + width > unit_bits:
+                        start = _align(start, unit_bits)
+                    field_offset = start // unit_bits * unit_size
+                    fields.append(HeaderFieldLayout(
+                        field_offset, unit_size, field_name, f"{datatype} : {width}"
+                    ))
+                    bit_offset = max(bit_offset, start + width)
+                    offset = max(offset, _align(start + width, 8) // 8)
+                    alignment = max(alignment, unit_alignment)
                     continue
                 field_match = declaration_pattern.fullmatch(declaration)
                 if field_match is None:
@@ -538,6 +574,7 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
                         f"{path}: cannot parse {name} declaration {declaration!r}"
                     )
                 datatype, pointer, field_name, arrays = field_match.groups()
+                const = datatype.startswith("const ")
                 datatype = (
                     datatype.removeprefix("const ")
                     .removeprefix("struct ")
@@ -554,7 +591,8 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
                     display_type = f"KF_ENUM_STORAGE({domain}, {storage})"
                 elif pointer:
                     base_size, base_alignment = 4, 4
-                    display_type = f"{datatype} {'*' * len(pointer)}"
+                    # The pointee qualifier is part of the declared field type.
+                    display_type = f"{'const ' if const else ''}{datatype} {'*' * len(pointer)}"
                 elif datatype in primitive_layouts:
                     base_size, base_alignment = primitive_layouts[datatype]
                     display_type = datatype
@@ -591,6 +629,7 @@ def _header_structure_layouts() -> dict[str, HeaderStructureLayout]:
                     HeaderFieldLayout(field_offset, size, field_name, display_type)
                 )
                 offset = max(offset, field_offset + size)
+                bit_offset = offset * 8
                 alignment = max(alignment, base_alignment)
             layouts[name] = HeaderStructureLayout(
                 size=_align(offset, alignment),
@@ -806,10 +845,19 @@ def validate(config_dir: Path = RETAIL_CONFIG) -> dict[str, int]:
             < row.va + row.size
             <= 0x80200000
         )
+        # Vendored BSS is placed by its archive member's own relocation patches,
+        # which the evidence records; game-code relocs.tsv need not reach it.
+        sdk_bss = (
+            row.storage == "bss"
+            and SDK_OBJECT_OWNER.fullmatch(row.owner) is not None
+            and row.confidence in {"supported", "proven"}
+            and re.search(r"Psy-Q|native", row.evidence) is not None
+        )
         if (
             key not in data_starts
             and key not in bss_starts
             and not ghidra_bss
+            and not sdk_bss
             and not (row.storage == "bss" and bss_interior_evidence(row))
         ):
             raise ValueError(
@@ -838,8 +886,9 @@ def validate(config_dir: Path = RETAIL_CONFIG) -> dict[str, int]:
             raise ValueError(
                 f"{data_path}: address-only row has semantic-looking name at {key!r}"
             )
-        for field, value in (("name", row.name), ("owner", row.owner)):
-            _check_identifier(data_path, field, value, key)
+        _check_identifier(data_path, "name", row.name, key)
+        if SDK_OBJECT_OWNER.fullmatch(row.owner) is None:
+            _check_identifier(data_path, "owner", row.owner, key)
         name_key = row.image, row.name
         if name_key in data_names:
             raise ValueError(f"{data_path}: duplicate image-qualified name {name_key!r}")

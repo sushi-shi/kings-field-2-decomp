@@ -88,8 +88,6 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
     s32 inner_step;
     s32 row_step;
     s32 rows_remaining;
-    /* Retail reserves an unreferenced 8-byte frame slot. */
-    s16 frame_reserve[4];
 
     if (width == KF_MAP_CELL_COPY_DISABLED_WIDTH) {
         return;
@@ -120,19 +118,14 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
     }
     source_row = &bss_801c7540.map_cells[source_z][source_x];
     destination_row = &bss_801c7540.map_cells[destination_z][destination_x];
-    rows_remaining = height - 1;
-    if (height == 0) {
-        return;
-    }
-    do {
+    for (rows_remaining = height; --rows_remaining != -1;) {
         KfMapOccupancyCell *source = source_row;
-        KfMapOccupancyCell *destination = destination_row;
+        KfMapOccupancyCell *destination;
         s32 columns_remaining;
         source_row += KF_MAP_WORLD_GRID_SIDE;
+        destination = destination_row;
         destination_row += row_step;
-        columns_remaining = width - 1;
-        if (columns_remaining != -1) {
-            do {
+        for (columns_remaining = width; --columns_remaining != -1;) {
             if (layer_select & KF_PATTERN_SELECT_FIRST_LAYER) {
                 if (field_mask & KF_MAP_CELL_COPY_OBJECT_INDEX) {
                     destination->layer[0].object_index = source->layer[0].object_index;
@@ -199,11 +192,8 @@ void map_cell_copy_rotated_fields(u8 layer_select, s32 source_x, s32 source_z,
                         (destination->layer[1].lighting_index & 0x7f);
                 }
             }
-                source++;
-                destination += inner_step;
-                columns_remaining--;
-            } while (columns_remaining != -1);
+            source++;
+            destination += inner_step;
         }
-        rows_remaining--;
-    } while (rows_remaining != -1);
+    }
 }

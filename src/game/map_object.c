@@ -508,6 +508,9 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
             direction = vector_xz_to_angle(
                 object->position.vx - rotated.vx,
                 object->position.vz - rotated.vz);
+            if (!angle_within_tolerance(angle, direction, tolerance)) {
+                continue;
+            }
         } else {
             if (vector_distance_to_point(&object->position,
                                          position->vx, position->vy, position->vz,
@@ -515,16 +518,16 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
                                          template->interaction_height, point_height) == -1) {
                 continue;
             }
-            if (object->collision_flags & KF_MAP_OBJECT_INTERACTION_ANY_ANGLE) {
-                return index;
+            if (!(object->collision_flags & KF_MAP_OBJECT_INTERACTION_ANY_ANGLE)) {
+                direction = vector_xz_to_angle(
+                    object->position.vx - position->vx,
+                    object->position.vz - position->vz);
+                if (!angle_within_tolerance(angle, direction, tolerance)) {
+                    continue;
+                }
             }
-            direction = vector_xz_to_angle(
-                object->position.vx - position->vx,
-                object->position.vz - position->vz);
         }
-        if (angle_within_tolerance(angle, direction, tolerance)) {
-            return index;
-        }
+        return index;
     }
     return -1;
 }

@@ -87,6 +87,8 @@ endif()
 
 # Platform, renderer and the transitional PlayStation library runtime.
 add_library(kf_host STATIC
+  src/audio/codec.cpp
+  src/audio/sound.cpp
   src/platform/controls.cpp
   src/platform/host.cpp
   src/renderer/renderer.cpp

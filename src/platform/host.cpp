@@ -1,3 +1,4 @@
+#include <kf/audio/sound.h>
 #include <kf/platform/controls.h>
 #include <kf/platform/host.h>
 #include <kf/renderer/renderer.h>
@@ -170,6 +171,7 @@ void process_event(const SDL_Event &event) {
         if (host.focused) {
             host.pause_start = SDL_GetTicksNS();
             host.focused = false;
+            sound_set_paused(true);
             input_clear(&host.input);
             host.pressed_keys.fill(SDLK_UNKNOWN);
         }
@@ -178,6 +180,7 @@ void process_event(const SDL_Event &event) {
         if (!host.focused) {
             host.paused_ns += SDL_GetTicksNS() - host.pause_start;
             host.focused = true;
+            sound_set_paused(false);
         }
         break;
     case SDL_EVENT_WINDOW_EXPOSED:
@@ -229,10 +232,15 @@ bool host_start(const char *title) {
     open_available_gamepad();
     host.epoch = SDL_GetTicksNS();
     host.focused = true;
+    if (!sound_start()) {
+        host_shutdown();
+        return false;
+    }
     return true;
 }
 
 void host_shutdown() {
+    sound_shutdown();
     if (host.gamepad)
         SDL_CloseGamepad(host.gamepad);
     if (host.context) {
@@ -259,6 +267,7 @@ void host_poll() {
         SDL_Event event;
         while (SDL_PollEvent(&event))
             process_event(event);
+        sound_poll();
         if (host.focused)
             return;
         platform_yield(unfocused_poll_interval_ns);

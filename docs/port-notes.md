@@ -15,6 +15,7 @@ matching claims and do not belong in `source` or `master`.
 | `src/runtime/` | Transitional implementation of that interface |
 | `src/platform/` | Window, input, clock, entry point (from the King's Field port) |
 | `src/renderer/` | GLES3/WebGL2 renderer (from the King's Field port) |
+| `src/audio/` | Software SPU, sequencer and VAB/SEQ/ADPCM codecs (from the King's Field port) |
 
 ### One executable, four programs
 
@@ -66,8 +67,16 @@ this port follows it subsystem by subsystem.
 - **Heap**: `InitHeap` gives each program a heap of its retail size
   (GAME `0x801f8000 - 0x801da018`, OPEN/END `0xf8000`).
 - **Pads**: `PadRead` returns the documented digital-pad bits.
-- **Movies and sound**: handles and callbacks behave, but MDEC output is black
-  and nothing is audible.
+- **Sound**: `Ss*` calls drive the software SPU and sequencer from the King's
+  Field port (`src/audio`). Bank, score and voice numbers follow the library,
+  so `SsUtKeyOff` and `SpuGetAllKeysStatus` address the voice that
+  `SsUtKeyOn` returned. Streamed bodies (`SsVabTransBodyPartly`) are collected
+  until the bank is complete. Two format facts differ from King's Field data:
+  King's Field II banks record a file size smaller than their sample table, so
+  the table total sizes the body, and score tempo events (`FF 51`) carry three
+  tempo bytes with no length byte.
+- **Movies**: stream frames are assembled from the disc, but MDEC output is
+  black.
 
 ## Portability edits to original sources
 

@@ -6,8 +6,9 @@ the reconstructed sources. Supply your own disc image; game data is not bundled.
 This branch is at its first milestones: the original PSX, OPEN, GAME and END
 programs compile natively as C++ and run in one executable. The title screen,
 the first map and movement render through the GLES3 renderer adapted from the
-King's Field port. Sound, movies, near-plane clipping and the per-region map
-code modules are not implemented yet; see [port notes](docs/port-notes.md).
+King's Field port, and music and effects play through its software mixer.
+Movies and the per-region map code modules are not implemented yet; see
+[port notes](docs/port-notes.md).
 
 ## Branches
 

@@ -48,12 +48,12 @@ RODATA(0x80012890, 0x3a8)
 
 /* Unreferenced return stubs; original roles and TU owner remain unresolved. */
 ADDRESS(0x80045f10, 0x8)
-void func_80045f10(void)
+void event_unused_stub_0(void)
 {
 }
 
 ADDRESS(0x80045f18, 0x8)
-void func_80045f18(void)
+void event_unused_stub_1(void)
 {
 }
 

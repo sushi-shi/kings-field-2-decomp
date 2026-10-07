@@ -314,7 +314,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
     record->unknown_05 = 0;
     record->render_flags = KF_EFFECT_RENDER_VISIBLE;
     if ((record->type & KF_EFFECT_USE_PLAYER_MAGIC) != KF_EFFECT_TYPE_NONE &&
-        player_state.death_state == 1) {
+        player_state.death_state == KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW) {
         record->cooldown = 8;
     } else {
         record->cooldown = 1;

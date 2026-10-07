@@ -3327,7 +3327,7 @@ void actor_update_frame(void)
             if (((actor_state.actor_update_frame_count & 3) ==
                  (actor_state.current_actor_slot_index & 3)) ||
                 player_state.force_actor_lifecycle_refresh != 0 ||
-                player_state.death_state == 1) {
+                player_state.death_state == KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW) {
                 actor_update_lifecycle_for_player_range();
             }
 

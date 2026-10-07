@@ -490,7 +490,7 @@ transition_action: {
         object = &map_object_state.objects[object_index];
         angle_to_forward_xz(object->rotation.vy, &forward);
         vector2i_scale_shift11(1024, &forward);
-        player_state.death_state = 0;
+        player_state.death_state = KF_PLAYER_REACTION_NORMAL;
         player_state.view_rotation_offset.components[2] = 0;
         player_state.view_rotation_offset.components[1] = 0;
         player_state.view_rotation_offset.components[0] = 0;
@@ -1172,7 +1172,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
             }
             break;
         case KF_MAP_OBJECT_OP_PLAYER_REACTION:
-            if (player_state.death_state == 0) {
+            if (player_state.death_state == KF_PLAYER_REACTION_NORMAL) {
                 KfMapObjectRecord40 *record;
                 player_begin_view_reaction(object_index);
                 record = object->extra_40.record;

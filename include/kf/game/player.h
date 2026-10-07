@@ -45,17 +45,18 @@ enum {
     KF_WEAPON_ATTACK_INACTIVE = -1
 };
 
-enum {
+/* player_update_vertical_motion state (KF1 KfPlayerVerticalState). */
+KF_ENUM_BEGIN(KfPlayerVerticalState, u8)
     KF_PLAYER_VERTICAL_GROUNDED = 0,
     KF_PLAYER_VERTICAL_FALLING = 0x10,
     KF_PLAYER_VERTICAL_STEP_UP = 0x20,
     KF_PLAYER_VERTICAL_DEEP_FALL = 0x40,
     KF_PLAYER_VERTICAL_LANDING = 0x50
-};
+KF_ENUM_END(KfPlayerVerticalState)
 
 /* The byte at player +0xcd selects the camera, overlap, damage, and death
  * reaction paths in player_update_frame. */
-enum {
+KF_ENUM_BEGIN(KfPlayerReaction, u8)
     KF_PLAYER_REACTION_NORMAL = 0,
     KF_PLAYER_REACTION_MAP_OBJECT_FOLLOW = 1,
     KF_PLAYER_REACTION_MAP_OBJECT_APPROACH = 2,
@@ -65,7 +66,7 @@ enum {
     KF_PLAYER_REACTION_MOVING_DAMAGE = 0x10,
     KF_PLAYER_REACTION_DEATH = 0x11,
     KF_PLAYER_REACTION_ROTATION_DAMAGE = 0x12
-};
+KF_ENUM_END(KfPlayerReaction)
 
 /* Buttons that stay pressed when the player's motion is cleared; the
  * direction and shoulder buttons are dropped. */
@@ -472,9 +473,9 @@ typedef struct KfPlayerState {
     KfPlayerOption compass_enabled;
     KfPlayerOption item_preview_enabled;
     KfPlayerOption walking_bob_enabled;
-    u8 death_state;
+    KfPlayerReaction death_state;
     u8 unknown_ce[2];
-    u8 vertical_motion_state;
+    KfPlayerVerticalState vertical_motion_state;
     KfQueuedMagicAction queued_magic_action;
     b8 fatal_fall_latch;
     VECTOR camera_position;

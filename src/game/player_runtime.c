@@ -2043,7 +2043,7 @@ retry: {
                 s32 collision_height = KF_COLLISION_CACHE_RESULT;
                 high_collision = KF_TRUE;
                 if (collision_height + PLAYER_MOVE_STEP_UP_TOLERANCE >= player_state.camera_position.vy
-                    && player_state.death_state == 0
+                    && player_state.death_state == KF_PLAYER_REACTION_NORMAL
                     && (KF_COLLISION_CACHE_HEIGHT_LIMIT - collision_height)
                            < -KF_PLAYER_HEIGHT) {
                     goto accept_position;

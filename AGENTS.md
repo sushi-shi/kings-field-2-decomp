@@ -142,7 +142,8 @@
   function.
 - Fake locals (extra temporaries introduced to steer allocation or
   scheduling) and dead or repeated statements are accepted matching devices
-  once semantics agree. Never add volatile carriers, artificial padding,
+  once semantics agree; original code produced them through macros and
+  ordinary mistakes. Never add volatile carriers, artificial padding,
   forced calls, or inline assembly solely to steer code generation.
 
 ## Relocations, data, and generated inventories

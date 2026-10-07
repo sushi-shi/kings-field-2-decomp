@@ -632,7 +632,7 @@ magic_action: {
         game_counter_decrement(command);
         object->object_id = command;
         object->render_queue_mode = KF_RENDER_QUEUE_BLEND_ADD;
-        object->layer_mask = 3;
+        object->layer_mask = KF_MAP_LAYER_BOTH;
         object->action = KF_MAP_OBJECT_OP_NONE;
         object->lighting_override_index = KF_LIGHTING_PRESET_42;
         object->rotation.vz = 0;
@@ -706,7 +706,8 @@ decay_update:
         event_state.interaction_handled = 1;
         break;
     case 0x55: {
-        s32 side = player_state.map_layer_index == 0 ? 1 : 2;
+        KF_ENUM_STORAGE(KfMapLayerMask, s32) side =
+            player_state.map_layer_index == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
         s32 actor_distance;
         KfActor *actor = actor_find_best_in_cone(position, rotation->angles[1],
                                        rotation->angles[0], 8000, 500, 500,
@@ -727,7 +728,7 @@ decay_update:
                 KfMapObject *object = scan;
 
                 if (map_object_state.templates[object->object_id].collision_kind != KF_MAP_OBJECT_OP_226 ||
-                    object->extra_40.bytes[0] != side) {
+                    object->extra_40.saved_layer.layer_mask != side) {
                     continue;
                 }
                 if (player_camera_within_map_region(object->position.vx >> 11,
@@ -842,7 +843,7 @@ void event_map_object_interact(KfMapObject *object, ...)
             0x15e, 10, map_object_state.spawn_sequence_pool_15e);
         map_object_reset(object);
         object->object_id = spawn_object_id;
-        object->layer_mask = 3;
+        object->layer_mask = KF_MAP_LAYER_BOTH;
         object->action = KF_MAP_OBJECT_OP_NONE;
         object->rotation.vz = 0;
         object->rotation.vy = 0;
@@ -1073,13 +1074,13 @@ void event_world_dispatch_interaction(const VECTOR *position,
             }
             {
                 KfMapObject *linked = &objects[linked_index];
-                u8 linked_state = object->extra_40.bytes[0];
+                KfMapLayerMask linked_state = object->extra_40.saved_layer.layer_mask;
                 u16 result_id;
                 linked->tail.fields.unknown_38 = 0xff;
                 linked->layer_mask = linked_state;
                 event_map_object_interact(linked);
                 result_id = linked->object_id;
-                linked->layer_mask = 0;
+                linked->layer_mask = KF_MAP_LAYER_NONE;
                 linked->tail.fields.unknown_38 = 0;
                 if (result_id == 0xff) {
                     object->tail.linked_property.linked_object_index = 0xffff;
@@ -1551,7 +1552,7 @@ apply_position:
             object->action_timer = 0x63;
             collision_sample_map_cell_layer(object->position.vx, object->position.vy,
                            object->position.vz);
-            object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+            object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
             object->tail.fields.unknown_38 = 0xff;
             break;
         }

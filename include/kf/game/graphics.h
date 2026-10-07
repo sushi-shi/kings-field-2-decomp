@@ -6,6 +6,7 @@
 #include <kf/game/pool.h>
 #include <kf/game/tmd.h>
 #include <kf/game/map_placed.h>
+#include <kf/game/render_types.h>
 #include <psyq/sdk.h>
 
 /* GAME.EXE double-buffered display and the graphics runtime region cleared
@@ -101,7 +102,7 @@ typedef struct KfRenderGridState {
     s32 map_scan_start_x;
     s32 map_scan_start_z;
     s32 fog_near_distance;
-    u8 map_cell_layer_masks[KF_MAP_CELL_GRID_SIDE][KF_MAP_CELL_GRID_SIDE];
+    KfMapLayerMask map_cell_layer_masks[KF_MAP_CELL_GRID_SIDE][KF_MAP_CELL_GRID_SIDE];
 } KfRenderGridState;
 
 /* Each transform occupies 20 bytes: the rotation helper uses its first

@@ -47,7 +47,7 @@ void map_object_reset(KfMapObject *object)
     object->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
     object->phase_q12 = 0;
     object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED;
-    object->layer_mask = 0;
+    object->layer_mask = KF_MAP_LAYER_NONE;
     object->rotation.vz = 0;
     object->rotation.vx = 0;
     object->rotation.vy = 0;
@@ -74,14 +74,14 @@ void map_object_set_property(s32 index, s32 property, ...)
     va_start(arguments, property);
     switch (property) {
     case KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE:
-        object->layer_mask = 0;
+        object->layer_mask = KF_MAP_LAYER_NONE;
         object->tail.fields.unknown_38 = 0;
         if (object_template->kind == 0x10) {
             object->rotation.vz = 0x400;
         }
         break;
     case KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK:
-        object->layer_mask = va_arg(arguments, u8);
+        object->layer_mask = KF_ENUM_DECODE(KfMapLayerMask, va_arg(arguments, u8));
         break;
     case KF_MAP_OBJECT_PROPERTY_ARM_EVENT:
         object->tail.fields.unknown_38 = 0xff;
@@ -105,7 +105,7 @@ void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker)
         KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
         cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
-        if (object->layer_mask != 1) {
+        if (object->layer_mask != KF_MAP_LAYER_FIRST) {
             cell_marker = &cell->layer[1].object_index;
         }
         *cell_marker = marker;
@@ -116,7 +116,7 @@ void map_object_set_cell_marker(KfMapObject *object, s32 mode, u8 marker)
         KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
         cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
-        if (object->layer_mask != 1) {
+        if (object->layer_mask != KF_MAP_LAYER_FIRST) {
             cell_marker = &cell->layer[1].object_index;
         }
         *cell_marker = 0xfe;
@@ -204,7 +204,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         row = bss_801c7540.map_cells[placements->region_z];
         cell = &row[placements->region_x];
         layer = cell->layer;
-        if (object->layer_mask != 1) {
+        if (object->layer_mask != KF_MAP_LAYER_FIRST) {
             layer++;
         }
         object->position.vy = placements->height - ((s32)layer->elevation << 7);
@@ -292,7 +292,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             map_object_set_cell_marker(object, 0, object_template->params.marker.marker_action_05);
             break;
         case KF_MAP_OBJECT_OP_RESOURCE_TRIGGER:
-            object->layer_mask = 0;
+            object->layer_mask = KF_MAP_LAYER_NONE;
             object->action = KF_MAP_OBJECT_OP_RESOURCE_TRIGGER;
             object->position.vx -= placements->local_x;
             object->position.vz -= placements->local_z;
@@ -318,7 +318,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->extra_40.bytes[0] = 0;
             break;
         case KF_MAP_OBJECT_OP_REGION_TRIGGER:
-            object->layer_mask = 0;
+            object->layer_mask = KF_MAP_LAYER_NONE;
             object->action = KF_MAP_OBJECT_OP_REGION_TRIGGER;
             object->extra_40.bytes[0] = 0;
             break;
@@ -337,7 +337,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             }
             break;
         case KF_MAP_OBJECT_OP_AMBIENT_SOUND:
-            object->layer_mask = 0;
+            object->layer_mask = KF_MAP_LAYER_NONE;
             object->action = KF_MAP_OBJECT_OP_AMBIENT_SOUND;
             object->extra_40.next_sound_frame = frame_count +
                 object->tail.ambient_sound.repeat_delay_units * 6;
@@ -348,7 +348,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         case KF_MAP_OBJECT_OP_84:
             object->asset_clip_selector = 0;
             object->extra_40.saved_layer.layer_mask = object->layer_mask;
-            object->layer_mask = 3;
+            object->layer_mask = KF_MAP_LAYER_BOTH;
             object->action = KF_MAP_OBJECT_OP_84;
             map_cell_apply_rotated_pattern(object->extra_40.saved_layer.layer_mask, object->position.vx,
                           object->position.vz, object->rotation.vy,
@@ -387,17 +387,17 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             kind59_row = bss_801c7540.map_cells[object->position.vz >> 11];
             kind59_cell = &kind59_row[object->position.vx >> 11];
             kind59_layer = kind59_cell->layer;
-            if (object->layer_mask != 1) {
+            if (object->layer_mask != KF_MAP_LAYER_FIRST) {
                 kind59_layer++;
             }
             kind59_layer->collision_shape_id = 0x75;
             object->extra_40.layer_fade.original_layer_mask = object->layer_mask;
-            object->layer_mask = 0;
+            object->layer_mask = KF_MAP_LAYER_NONE;
             break;
         }
         case KF_MAP_OBJECT_OP_11:
         case KF_MAP_OBJECT_OP_20:
-            object->layer_mask = 0;
+            object->layer_mask = KF_MAP_LAYER_NONE;
             break;
         case KF_MAP_OBJECT_OP_19:
             object->action = KF_MAP_OBJECT_OP_19;
@@ -427,7 +427,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             /* Fall through: this kind saves the original layer. */
         case KF_MAP_OBJECT_OP_226:
             object->extra_40.saved_layer.layer_mask = object->layer_mask;
-            object->layer_mask = 0;
+            object->layer_mask = KF_MAP_LAYER_NONE;
             break;
         default:
             ((void (*)(KfMapObject *, const KfMapObjectTemplate *))
@@ -453,7 +453,7 @@ s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 poin
         if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
             continue;
         }
-        if (object->layer_mask == 0) {
+        if (object->layer_mask == KF_MAP_LAYER_NONE) {
             continue;
         }
         if (object == map_object_state.current_collision_object) {

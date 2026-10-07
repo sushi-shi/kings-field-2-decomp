@@ -33,8 +33,6 @@ enum { KF_MAP_CELL_SHIFT = 11 };
 enum {
     KF_MAP_CELL_ORIENTATION_MASK = 3,
     KF_MAP_CELL_LIGHTING_MASK = 63,
-    KF_MAP_CELL_OBJECT_SPECIAL = 0x80,
-    KF_MAP_CELL_OBJECT_PREPARE = 0x40,
     KF_MAP_CELL_PREPARED_LIMIT = 16
 };
 
@@ -1680,7 +1678,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
 
 ADDRESS(0x80030c18, 0x1cc)
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
-                            u8 flags)
+                            KfMapLayerMask flags)
 {
     MATRIX cell_matrix;
     long gte_flags;
@@ -1712,8 +1710,8 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
         return;
     }
     tmd_select_object_vertices(object_index);
-    if (flags & KF_MAP_CELL_OBJECT_SPECIAL) {
-        if (flags & KF_MAP_CELL_OBJECT_PREPARE) {
+    if ((flags & KF_MAP_LAYER_NEAR_CLIPPED) != KF_MAP_LAYER_NONE) {
+        if ((flags & KF_MAP_LAYER_NEAR_PREPARE) != KF_MAP_LAYER_NONE) {
             if (tmd_get_object(object_index)->primitive_count < KF_MAP_CELL_PREPARED_LIMIT) {
                 KfTmdPreparedAsset prepared_asset;
 
@@ -1739,13 +1737,14 @@ enum {
 };
 
 ADDRESS(0x80030de4, 0x178)
-void render_map_cell_layers(s32 x, s32 z, u8 flags)
+void render_map_cell_layers(s32 x, s32 z, KfMapLayerMask flags)
 {
     KfMapOccupancyCell *cell = &bss_801c7540.map_cells[z][x];
     s32 object_index = cell->layer[0].object_index;
     SVECTOR position;
 
-    if ((flags & 1) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
+    if ((flags & KF_MAP_LAYER_FIRST) != KF_MAP_LAYER_NONE &&
+        object_index < KF_MAP_GRID_EMPTY_OBJECT) {
         position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                       game_graphics_runtime.render_state.view_position.vx +
                       KF_MAP_GRID_CELL_MIDPOINT;
@@ -1757,14 +1756,16 @@ void render_map_cell_layers(s32 x, s32 z, u8 flags)
         render_map_cell_object(&cell->layer[0], &position, flags);
 
         object_index = cell->layer[1].object_index;
-        if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
+        if ((flags & KF_MAP_LAYER_SECOND) != KF_MAP_LAYER_NONE &&
+            object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
                           game_graphics_runtime.render_state.view_position.vy;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
     } else {
         object_index = cell->layer[1].object_index;
-        if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
+        if ((flags & KF_MAP_LAYER_SECOND) != KF_MAP_LAYER_NONE &&
+            object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vx = x * KF_MAP_GRID_CELL_LENGTH -
                           game_graphics_runtime.render_state.view_position.vx +
                           KF_MAP_GRID_CELL_MIDPOINT;
@@ -1783,7 +1784,7 @@ void render_map_cell_window(void)
 {
     s32 row;
     s32 remaining_rows;
-    u8 *mask;
+    KfMapLayerMask *mask;
     s32 start_x;
     KfRenderGridState *render = &game_graphics_runtime.render_grid;
 
@@ -1799,7 +1800,7 @@ void render_map_cell_window(void)
             do {
                 s32 column = x & 0xff;
                 x++;
-                if ((u32)column < KF_MAP_GRID_WIDTH && *mask != 0) {
+                if ((u32)column < KF_MAP_GRID_WIDTH && *mask != KF_MAP_LAYER_NONE) {
                     render_map_cell_layers(column, row, *mask);
                 }
                 mask++;
@@ -2024,7 +2025,7 @@ void render_player_weapon(void)
 }
 
 ADDRESS(0x80031850, 0x53c)
-void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
+void render_world_model(KfMapLayerMask map_layer, u16 asset_index, const VECTOR *position,
                    const struct KfEulerAngles *rotation, const SVECTOR *scale,
                    KfPoolRecord **cache, MATRIX *world_matrix, u16 clip,
                    u16 phase, KfLightingIndex lighting_override, s16 lighting_blend,
@@ -2058,7 +2059,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         RotTrans(&relative, (VECTOR *)&model.t, &gte_flags);
         row = bss_801c7540.map_cells[position->vz >> 11];
         cell = &row[position->vx >> 11];
-        if (map_layer != 1) {
+        if (map_layer != KF_MAP_LAYER_FIRST) {
             lighting_layer = &cell->layer[1];
         } else {
             lighting_layer = &cell->layer[0];
@@ -2247,25 +2248,26 @@ void resource_tmd_read_complete(u8 *data)
 }
 
 ADDRESS(0x80032040, 0x70)
-u32 map_cell_layer_mask(const VECTOR *position)
+KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask(const VECTOR *position)
 {
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z;
     s32 x;
 
     if ((u32)z >= KF_MAP_CELL_GRID_SIDE) {
-        return 0;
+        return KF_MAP_LAYER_NONE;
     }
     x = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x;
     if ((u32)x >= KF_MAP_CELL_GRID_SIDE) {
-        return 0;
+        return KF_MAP_LAYER_NONE;
     }
     return game_graphics_runtime.render_grid.map_cell_layer_masks[z][x];
 }
 
 ADDRESS(0x800320b0, 0xc4)
-u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius)
+KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask_radius(
+    const VECTOR *position, s32 radius)
 {
-    u8 mask = 0;
+    KfMapLayerMask mask = KF_MAP_LAYER_NONE;
     s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
     s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
     s32 x;
@@ -2399,7 +2401,7 @@ void render_scene_and_update_resources(void)
     actor = actor_state.actors;
     remaining = KF_ACTOR_CAPACITY - 1;
     while (remaining != -1) {
-        u32 layer;
+        KF_ENUM_STORAGE(KfMapLayerMask, u32) layer;
         KfTargetGroup *group;
         const VECTOR *position;
 
@@ -2407,12 +2409,12 @@ void render_scene_and_update_resources(void)
             goto actor_next;
         }
         if (actor->flags & KF_ACTOR_FLAG_RENDER_INCLUDE_LAYER_0X20) {
-            layer = actor->current_map_layer | 0x20;
+            layer = actor->current_map_layer | KF_MAP_LAYER_IN_VIEW;
         } else {
             layer = actor->current_map_layer;
         }
         if (actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) goto actor_radius_check;
-        if ((map_cell_layer_mask(&actor->position) & layer) == 0) goto actor_next;
+        if ((map_cell_layer_mask(&actor->position) & layer) == KF_MAP_LAYER_NONE) goto actor_next;
 actor_visible:
         if (resource_registry_get(actor->definition_id + 0x80) != NULL) {
             position = actor_resolve_group_position(actor, &actor_position);
@@ -2445,8 +2447,8 @@ actor_visible:
         tmd_flags[actor->definition_id] = 1;
         goto actor_next;
 actor_radius_check:
-        if (map_cell_layer_mask_radius(&actor->position, 3) &
-            actor->current_map_layer) goto actor_visible;
+        if ((map_cell_layer_mask_radius(&actor->position, 3) &
+             actor->current_map_layer) != KF_MAP_LAYER_NONE) goto actor_visible;
 actor_next:
         actor++;
         remaining--;
@@ -2460,7 +2462,7 @@ actor_next:
     object = map_object_state.objects;
     remaining = KF_MAP_OBJECT_CAPACITY - 1;
     while (remaining != -1) {
-        u32 visibility;
+        KF_ENUM_STORAGE(KfMapLayerMask, u32) visibility;
 
         if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
             goto map_object_next;
@@ -2471,7 +2473,7 @@ actor_next:
         if (map_cell_visible(&object->position,
                              object->tail.animated.radius_x,
                              object->tail.animated.radius_z) != 0 &&
-            (object->layer_mask & render_mask_scan_state.first_layer_mask)) {
+            (object->layer_mask & render_mask_scan_state.first_layer_mask) != KF_MAP_LAYER_NONE) {
             if (resource_registry_get(object->object_id + 0x100) != NULL) {
                 render_animated_object(object->object_id + 0x100,
                                (const struct KfEulerAngles *)&object->rotation,
@@ -2544,7 +2546,7 @@ map_ordinary_object: {
             SVECTOR *scale;
             if (object->collision_flags & 2) goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
-            if ((visibility & object->layer_mask) == 0) goto map_object_next;
+            if ((visibility & object->layer_mask) == KF_MAP_LAYER_NONE) goto map_object_next;
             object_template = &map_object_state.templates[object->object_id];
 map_ordinary_visible:
             tmd_flags[object->object_id] = 1;
@@ -2556,7 +2558,8 @@ map_ordinary_visible:
                 rotation.z = object->rotation.vz;
                 render_mode = object->render_queue_mode;
                 if (object->collision_flags & 1) {
-                    render_mode = (visibility & 0x80) ? KF_RENDER_QUEUE_CLIPPED : KF_RENDER_QUEUE_TEXTURED;
+                    render_mode = (visibility & KF_MAP_LAYER_NEAR_CLIPPED) != KF_MAP_LAYER_NONE
+                        ? KF_RENDER_QUEUE_CLIPPED : KF_RENDER_QUEUE_TEXTURED;
                 }
                 render_world_model(object->layer_mask, object->object_id + 0x100,
                                &object->position, &rotation, scale,
@@ -2573,7 +2576,7 @@ map_radius_check:
             object_template = &map_object_state.templates[object->object_id];
             visibility = map_cell_layer_mask_radius(&object->position,
                 object_template->params.marker.marker_action_05);
-            if (visibility & object->layer_mask) goto map_ordinary_visible;
+            if ((visibility & object->layer_mask) != KF_MAP_LAYER_NONE) goto map_ordinary_visible;
         }
 map_object_next:
         object++;
@@ -2588,7 +2591,7 @@ map_object_next:
         if (effect->type == KF_EFFECT_SLOT_FREE ||
             (effect->render_flags & 3) == 0) goto effect_next;
         if ((effect->render_flags & 3) != 2 &&
-            (map_cell_layer_mask(&effect->position) & effect->map_layer_mask) == 0)
+            (map_cell_layer_mask(&effect->position) & effect->map_layer_mask) == KF_MAP_LAYER_NONE)
             goto effect_next;
         switch (effect->render_flags & 12) {
         case 0:
@@ -2643,10 +2646,10 @@ effect_next:
     rotation.x = 0;
     remaining = KF_MAP_PLACED_ENTRY_COUNT - 1;
     while (remaining != -1) {
-        u32 visibility;
+        KF_ENUM_STORAGE(KfMapLayerMask, u32) visibility;
         if (placed->model_index != KF_MAP_PLACED_NONE) {
             visibility = map_cell_layer_mask(&placed->position);
-            if (visibility & placed->layer_mask) {
+            if ((visibility & placed->layer_mask) != KF_MAP_LAYER_NONE) {
                 render_world_model(placed->layer_mask,
                                placed->model_index + KF_MAP_PLACED_ASSET_BASE,
                                &placed->position, &rotation, NULL, NULL,

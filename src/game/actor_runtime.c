@@ -148,7 +148,7 @@ void actor_prepare_and_initialize(KfActor *actor)
     actor_set_home_position(actor);
     actor_initialize_from_group(actor);
     if (actor->slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
-        actor->current_map_layer = 0;
+        actor->current_map_layer = KF_MAP_LAYER_NONE;
     }
 }
 
@@ -1350,7 +1350,7 @@ void actor_update_vertical_motion(void)
     collision_probe_floor_height(actor->position.vx, actor->position.vy, actor->position.vz,
                    actor->collision_radius,
                    actor->collision_height | ((actor->flags & KF_ACTOR_FLAG_COLLISION_HEIGHT_MASK) << 16));
-    actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
+    actor->current_map_layer = *collision_layer == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
     if (actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) {
         KF_COLLISION_CACHE_RESULT = KF_COLLISION_CACHE_HEIGHT;
     }
@@ -1441,7 +1441,7 @@ state_30: {
         if (collision == 0) {
             actor->position.vy = next_y;
             actor->motion.ballistic.phase++;
-            actor->current_map_layer = *collision_layer == 0 ? 1 : 2;
+            actor->current_map_layer = *collision_layer == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
             return;
         }
         if (collision == 0x80) {
@@ -3174,7 +3174,7 @@ case3_motion:
         u8 slot_state = actor->slot_state;
 
         if (slot_state == KF_ACTOR_SLOT_HOMEBOUND) {
-            actor->current_map_layer = 0;
+            actor->current_map_layer = KF_MAP_LAYER_NONE;
             if (other->lifecycle != KF_ACTOR_LIFECYCLE_ACTIVE) {
                 actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
                 goto behavior_done;

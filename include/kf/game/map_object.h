@@ -182,7 +182,7 @@ typedef char kf_map_object_tail_copy_words_size[
 
 /* Map resource placements consumed in 24-byte rows by map_object_initialize_from_placements. */
 typedef struct KfMapObjectPlacement {
-    u8 layer_mask;
+    KfMapLayerMask layer_mask;
     u8 region_z;
     u8 region_x;
     u16 object_id;
@@ -668,7 +668,7 @@ typedef struct KfMapObjectResourceOffsets {
 
 typedef struct KfMapObjectLayerFadeState {
     u16 delay_frames_left;
-    u8 original_layer_mask;
+    KfMapLayerMask original_layer_mask;
 } KfMapObjectLayerFadeState;
 typedef char kf_map_object_layer_fade_state_size[
     sizeof(KfMapObjectLayerFadeState) == 4 ? 1 : -1];
@@ -676,7 +676,7 @@ typedef char kf_map_object_layer_fade_state_size[
 /* Placement kinds 9, 0x15, 0x54, and 0xe2 save the layer before changing
  * visibility; action 0x54 later passes it to map-cell pattern updates. */
 typedef struct KfMapObjectSavedLayerState {
-    u8 layer_mask;
+    KfMapLayerMask layer_mask;
 } KfMapObjectSavedLayerState;
 
 typedef union KfMapObjectExtra40 {
@@ -699,7 +699,7 @@ typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1
 
 /* The map-object pool is traversed in 0x44-byte records. */
 typedef struct KfMapObject {
-    u8 layer_mask;
+    KfMapLayerMask layer_mask;
     u8 asset_clip_selector;
     KfRenderQueueMode render_queue_mode;
     u8 collision_flags;

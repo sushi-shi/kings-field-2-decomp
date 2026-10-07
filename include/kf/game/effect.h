@@ -293,7 +293,7 @@ typedef struct KfEffectRecord {
     u8 phase;
     u8 render_flags;
     KfRenderQueueMode render_queue_mode;
-    u8 map_layer_mask;
+    KfMapLayerMask map_layer_mask;
     u8 cooldown;
     KfLightingIndex lighting_override_index;
     u8 midpoint_collision_enabled;

@@ -2,6 +2,7 @@
 #define KF_GAME_RESOURCES_H
 
 #include <kf/lib/types.h>
+#include <kf/game/render_types.h>
 #include <psyq/sdk.h>
 
 enum {
@@ -21,8 +22,9 @@ enum {
 
 extern u8 resource_tmd_workspace[0x37000];
 
-u32 map_cell_layer_mask(const VECTOR *position);
-u32 map_cell_layer_mask_radius(const VECTOR *position, s32 radius);
+KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask(const VECTOR *position);
+KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask_radius(
+    const VECTOR *position, s32 radius);
 s32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z);
 
 void translate_active_world_positions(s32 dx, s32 dy, s32 dz);

@@ -7,6 +7,25 @@
 /* Selectors shared by actor, effect, map-object and HUD model records and the
  * render_world_model queue. */
 
+/* Map layers of a two-layer occupancy cell: FIRST is layer[0], SECOND
+ * layer[1]. Object, actor, effect and placed records carry the layers they
+ * occupy (NONE hides them); the camera's 24x24 visibility grid uses the same
+ * bits for visible layers and adds the view-region and near-camera flags that
+ * render_map_cell_object reads. */
+KF_ENUM_BEGIN(KfMapLayerMask, u8)
+    KF_MAP_LAYER_NONE = 0,
+    KF_MAP_LAYER_FIRST = 1,
+    KF_MAP_LAYER_SECOND = 2,
+    KF_MAP_LAYER_BOTH = KF_MAP_LAYER_FIRST | KF_MAP_LAYER_SECOND,
+    /* Rasterized from the camera's pitch-dependent view polygon. */
+    KF_MAP_LAYER_IN_VIEW = 0x20,
+    /* The camera cell and its four edge neighbours: subdivide small objects. */
+    KF_MAP_LAYER_NEAR_PREPARE = 0x40,
+    /* The 3x3 cells around the camera: enqueue with clipping. */
+    KF_MAP_LAYER_NEAR_CLIPPED = 0x80
+KF_ENUM_END(KfMapLayerMask)
+KF_ENUM_FLAGS(KfMapLayerMask, u8)
+
 /* render_world_model's queue selector. 0xff and 0xfe pick the textured and
  * clipping enqueues; 0x80 is textured without the below-view depth bias.
  * Other values reach render_enqueue_blended_tmd, which shifts them into the

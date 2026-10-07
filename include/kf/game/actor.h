@@ -537,10 +537,10 @@ typedef struct KfActor {
     u8 slot_state;
     u8 definition_id;
     u8 group_index;
-    u8 current_map_layer;
+    KfMapLayerMask current_map_layer;
     u8 unknown_04;
     u8 placement_flags;
-    u8 home_map_layer;
+    KfMapLayerMask home_map_layer;
     u8 home_cell_z;
     u8 home_cell_x;
     u8 lifecycle;
@@ -712,7 +712,7 @@ typedef struct KfActorLoadRecord {
     u8 cell_x;
     u8 spawn_chance;
     u8 death_drop_object_id;
-    u8 home_map_layer;
+    KfMapLayerMask home_map_layer;
     u16 initial_actor_word_20;
     u16 initial_actor_word_22;
     u16 initial_actor_word_24;

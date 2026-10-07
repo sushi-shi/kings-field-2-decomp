@@ -927,12 +927,12 @@ void player_clear_motion(void)
 ADDRESS(0x80025234, 0xb0)
 void player_sync_position_to_map(void)
 {
-    s32 layer;
+    KF_ENUM_STORAGE(KfMapLayerMask, s32) layer;
 
     player_state.equipment_effect_ticks = 0;
-    layer = 2;
+    layer = KF_MAP_LAYER_SECOND;
     if (player_state.map_layer_index == 0) {
-        layer = 1;
+        layer = KF_MAP_LAYER_FIRST;
     }
     player_state.camera_position.vy =
         collision_sample_map_layer_height(layer, player_state.camera_position.vx,

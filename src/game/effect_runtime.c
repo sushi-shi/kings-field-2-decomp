@@ -292,7 +292,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, u8 type, u8
     if (position != NULL) {
         record->position = *position;
     }
-    record->map_layer_mask = 3;
+    record->map_layer_mask = KF_MAP_LAYER_BOTH;
     if (direction != NULL) {
         record->direction = *direction;
     } else {
@@ -1325,7 +1325,7 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
     KfEffectRecord *record = effect_state.current_record;
     VECTOR previous;
     s32 result;
-    u8 next_kind;
+    KfMapLayerMask next_layer;
 
     addVector(&record->position, &record->direction);
     result = effect_probe_collision_by_type(&record->position, radius, angle);
@@ -1343,11 +1343,11 @@ s32 effect_collision_step(s32 radius, s32 angle, s32 step)
             }
         }
     }
-    next_kind = 2;
+    next_layer = KF_MAP_LAYER_SECOND;
     if (bss_801c7540.collision_cache.layer == 0) {
-        next_kind = 1;
+        next_layer = KF_MAP_LAYER_FIRST;
     }
-    record->map_layer_mask = next_kind;
+    record->map_layer_mask = next_layer;
     record->rotation.vz = (record->rotation.vz - step) & KF_ANGLE_WRAP_MASK;
     return result;
 }
@@ -1452,9 +1452,9 @@ void effect_update_dispatch(void)
             effect_apply_current_magic_backstep(collision | EFFECT_IMPACT_COUNTS_AS_PHYSICAL);
             record->type = KF_EFFECT_SLOT_FREE;
         } else {
-            u8 layer = 2;
+            KfMapLayerMask layer = KF_MAP_LAYER_SECOND;
             if (bss_801c7540.collision_cache.layer == 0) {
-                layer = 1;
+                layer = KF_MAP_LAYER_FIRST;
             }
             record->map_layer_mask = layer;
             vector_displacement_to_pitch_yaw(record->direction.vx,
@@ -2534,7 +2534,7 @@ void effect_update_dispatch(void)
             record->position.vx = next.vx;
             record->position.vy = next.vy;
             record->position.vz = next.vz;
-            record->map_layer_mask = bss_801c7540.collision_cache.layer == 0 ? 1 : 2;
+            record->map_layer_mask = bss_801c7540.collision_cache.layer == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
             record->rotation.vz = (record->rotation.vz + 300) & KF_ANGLE_WRAP_MASK;
             effect_spawn_motion(record, -1, 0x400, 0x1000, -500, 2, 8, 0);
             break;
@@ -2912,7 +2912,7 @@ void effect_update_dispatch(void)
         spawn_direction.vy = 0;
         spawned = effect_construct_record(10, 0, 101, &spawn_position,
                                 &spawn_direction, 700, -30, 10, 14, -10);
-        spawned->map_layer_mask = 3;
+        spawned->map_layer_mask = KF_MAP_LAYER_BOTH;
         spawned->render_flags = 14;
         interpolate_collision_filter_rows(160, 180, 220, 18000,
                        rsin(record->updates_remaining << 7));
@@ -2942,7 +2942,7 @@ void effect_update_dispatch(void)
             spawn_position.vz = 0x400;
             spawned = effect_construct_record(10, 0, 101, &spawn_position,
                                     &spawn_direction, 700, -30, 10, 18, -10);
-            spawned->map_layer_mask = 3;
+            spawned->map_layer_mask = KF_MAP_LAYER_BOTH;
             spawned->render_flags = 14;
         }
         interpolate_collision_filter_rows(240, 240, 160, 18000,

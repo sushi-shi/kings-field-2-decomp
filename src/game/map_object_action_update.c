@@ -561,7 +561,7 @@ void map_object_update_actions(void)
                         &row[object->position.vx >> 11];
                     KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->action_timer = 3;
-                    if (object->layer_mask != 1) {
+                    if (object->layer_mask != KF_MAP_LAYER_FIRST) {
                         layer = &cell->layer[1];
                     }
                     layer->collision_shape_id = 0x74;
@@ -596,11 +596,11 @@ void map_object_update_actions(void)
                     KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->lighting_blend_q12 = 0x1000;
                     object->action_timer = 0;
-                    if (object->layer_mask != 1) {
+                    if (object->layer_mask != KF_MAP_LAYER_FIRST) {
                         layer = &cell->layer[1];
                     }
                     layer->collision_shape_id = 0x75;
-                    object->layer_mask = 0;
+                    object->layer_mask = KF_MAP_LAYER_NONE;
                 }
                 break;
             default:
@@ -699,7 +699,7 @@ void map_object_update_actions(void)
             if (linked_index != KF_MAP_OBJECT_INDEX_NONE) {
                 KfMapObject *linked = &map_object_state.objects[linked_index];
                 if (linked->object_id != 0xff) {
-                    linked->layer_mask = 0;
+                    linked->layer_mask = KF_MAP_LAYER_NONE;
                     linked->tail.fields.unknown_38 = 0;
                 }
             }
@@ -919,7 +919,7 @@ void map_object_update_actions(void)
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, object_template->collision_radius,
                                              object_template->interaction_height);
-                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
                 object->position.vy += object->tail.motion.motion_velocity.signed_value;
                 object->tail.motion.motion_velocity.value += 20;
                 if (object->position.vy >= floor_y) {
@@ -945,7 +945,7 @@ void map_object_update_actions(void)
                 s32 floor_y = collision_probe_floor_height(object->position.vx, object->position.vy,
                                              object->position.vz, object_template->collision_radius,
                                              object_template->interaction_height);
-                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
                 object->position.vy += 20;
                 object->rotation.vy = (object->rotation.vy + 0x100) & KF_ANGLE_WRAP_MASK;
                 if (object->position.vy >= floor_y) {
@@ -961,7 +961,7 @@ void map_object_update_actions(void)
                                              object->position.vz, object_template->collision_radius,
                                              object_template->interaction_height);
                 s16 velocity;
-                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? 1 : 2;
+                object->layer_mask = KF_COLLISION_CACHE_LAYER == 0 ? KF_MAP_LAYER_FIRST : KF_MAP_LAYER_SECOND;
                 object->position.vy += object->tail.motion.motion_velocity.signed_value;
                 effect_spawn_at_lower_bound(&object->position, KF_FIXED12_ONE, 6000, 300);
                 object->rotation.vx = (object->rotation.vx +

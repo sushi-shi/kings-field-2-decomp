@@ -34,7 +34,7 @@ extern s32 render_model_yaw_smoothing_accumulator;
 extern MATRIX render_world_identity_matrix;
 
 struct KfEulerAngles;
-void render_world_model(u8 layer, u16 asset_index, const VECTOR *position,
+void render_world_model(KfMapLayerMask layer, u16 asset_index, const VECTOR *position,
                    const struct KfEulerAngles *rotation, const SVECTOR *scale,
                    KfPoolRecord **cache, MATRIX *world_matrix, u16 clip,
                    u16 phase, KfLightingIndex lighting_override, s16 lighting_blend,

@@ -6,6 +6,7 @@
 #include <kf/lib/types.h>
 #include <kf/game/item.h>
 #include <kf/game/magic.h>
+#include <kf/game/pool.h>
 #include <psyq/sdk.h>
 
 struct KfMagicRecord;
@@ -444,7 +445,7 @@ typedef struct KfPlayerState {
     KfEffectKind primary_magic_shortcut_id;
     KfEffectKind secondary_magic_shortcut_id;
     KF_ENUM_STORAGE(KfObjectId, u8) secondary_item_shortcut_id;
-    u8 weapon_attack_mode;
+    KfAnimationClip weapon_attack_mode;
     KF_ENUM_STORAGE(KfObjectId, u8) equipped_weapon_id;
     u8 unknown_9c[2];
     u8 weapon_magic_shots_configured;
@@ -616,7 +617,7 @@ void player_begin_rotation_only_damage_reaction(const SVECTOR *rotation, const S
 void player_update_frame(void);
 void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
     s32 step);
-void player_begin_weapon_attack(s32 mode);
+void player_begin_weapon_attack(KF_ENUM_PARAM(KfAnimationClip, s32) mode);
 void player_reset_status(void);
 void player_get_camera_pose(VECTOR *position, SVECTOR *angles);
 void player_reset_view(void);

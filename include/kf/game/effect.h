@@ -6,6 +6,7 @@
 #include <kf/lib/types.h>
 #include <kf/game/audio.h>
 #include <kf/game/magic.h>
+#include <kf/game/pool.h>
 #include <psyq/sdk.h>
 
 struct KfPoolRecord;
@@ -15,7 +16,6 @@ enum {
     KF_MAGIC_RECORD_COUNT = 64,
     KF_EFFECT_SLOT_FREE = 0xff,
     KF_EFFECT_USE_PLAYER_MAGIC = 0x10,
-    KF_EFFECT_STATIC_OBJECT_ZERO = 0x80,
     KF_EFFECT_RENDER_TRANSFORM_MASK = 0x0c,
     KF_EFFECT_RENDER_SCREEN_SPACE = 0x0c
 };
@@ -287,7 +287,7 @@ typedef struct KfEffectRecord {
     KfEffectKind kind;
     u8 base_render_id;
     u8 render_id;
-    u8 animation_clip;
+    KfAnimationClip animation_clip;
     u8 unknown_05;
     u8 damage_multiplier_tenths;
     u8 phase;

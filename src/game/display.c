@@ -1847,7 +1847,7 @@ void render_active_model_rows(void)
             asset_registry_select(entry->asset_id);
             object = tmd_get_object(0);
             if (animation_prepare_asset_vertices(&entry->animation_state, entry->asset_id,
-                              entry->animation_clip, entry->animation_phase,
+                              KF_ENUM_DECODE(KfAnimationClip, entry->animation_clip), entry->animation_phase,
                               object->vertex_count)) {
                 tmd_select_object_vertices(0);
             }
@@ -2025,7 +2025,7 @@ void render_player_weapon(void)
 ADDRESS(0x80031850, 0x53c)
 void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
                    const struct KfEulerAngles *rotation, const SVECTOR *scale,
-                   KfPoolRecord **cache, MATRIX *world_matrix, u16 clip,
+                   KfPoolRecord **cache, MATRIX *world_matrix, KF_ENUM_PARAM(KfAnimationClip, u16) clip,
                    u16 phase, u8 lighting_override, s16 lighting_blend,
                    u8 render_mode, s32 depth)
 {
@@ -2143,7 +2143,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     SetTransMatrix(&model);
 
     asset_registry_select(asset_index);
-    if (clip < 0x80) {
+    if (clip < KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST) {
         object_index = 0;
         object = tmd_get_object(0);
         if (animation_prepare_asset_vertices(cache, asset_index, clip, phase,
@@ -2151,7 +2151,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
             tmd_select_object_vertices(0);
         }
     } else {
-        object_index = clip & 0x7f;
+        object_index = KF_ENUM_ENCODE(u16, clip) & KF_ASSET_OBJECT_INDEX_MASK;
         tmd_select_object_vertices(object_index);
         object = tmd_get_object(object_index);
     }
@@ -2171,7 +2171,7 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
 
 ADDRESS(0x80031d8c, 0x214)
 void render_animated_object(u16 asset_index, const struct KfEulerAngles *rotation,
-                   KfPoolRecord **cache, u16 clip, u16 phase,
+                   KfPoolRecord **cache, KF_ENUM_PARAM(KfAnimationClip, u16) clip, u16 phase,
                    s32 blend_mode, s32 lighting_flags, s16 depth)
 {
     MATRIX model;
@@ -2650,7 +2650,9 @@ effect_next:
                                placed->model_index + KF_MAP_PLACED_ASSET_BASE,
                                &placed->position, &rotation, NULL, NULL,
                                &game_graphics_runtime.render_state.pitch_matrix,
-                               placed->frame_index + KF_MAP_PLACED_CLIP_BASE, 0, 0x46,
+                               KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfAnimationClip),
+                                              placed->frame_index + KF_MAP_PLACED_CLIP_BASE),
+                               0, 0x46,
                                0x1000, 1, 0);
             }
             if (placed->frame_period != KF_MAP_PLACED_ANIMATION_DISABLED &&
@@ -2978,11 +2980,11 @@ void asset_registry_select(u16 index)
 enum { KF_ANIMATION_BLEND_ONE = 0x1000, KF_ANIMATION_BLEND_SHIFT = 12 };
 
 ADDRESS(0x80033b34, 0xc8)
-KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, s32 clip_index, s32 phase,
+KfAnimKeyframe *animation_select_keyframe(KfAssetHeader *asset, KF_ENUM_PARAM(KfAnimationClip, s32) clip_index, s32 phase,
                                           s32 *keyframe_index, u32 *blend_fraction)
 {
     u32 *clip_table = ASSET_CLIP_TABLE(asset);
-    KfAnimClip *clip = ASSET_CLIP(asset, clip_table[clip_index]);
+    KfAnimClip *clip = ASSET_CLIP(asset, clip_table[KF_ENUM_ENCODE(s32, clip_index)]);
     u32 *offsets = clip->keyframe_offsets;
     s32 remaining = clip->keyframe_count;
     s32 index = 0;
@@ -3171,10 +3173,10 @@ const s16 *animation_find_sparse_vertex(const s16 *encoded, s32 vertex_index)
     return NULL;
 }
 
-enum { KF_ASSET_OBJECT_SELECT_BIT = 0x80, KF_ASSET_OBJECT_INDEX_MASK = 0x7f };
 
 ADDRESS(0x80034070, 0x2d4)
-s32 animation_prepare_asset_vertices(KfPoolRecord **owner_slot, s32 asset_index, s32 clip,
+s32 animation_prepare_asset_vertices(KfPoolRecord **owner_slot, s32 asset_index,
+                  KF_ENUM_PARAM(KfAnimationClip, s32) clip,
                   s32 phase, s32 vertex_count)
 {
     KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[asset_index];
@@ -3267,7 +3269,7 @@ allocate_vertices:
 }
 
 ADDRESS(0x80034344, 0x2a0)
-b32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_index,
+b32 animation_sample_vertex(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip, s32 phase, s32 vertex_index,
                   SVECTOR *output)
 {
     KfAssetHeader *asset = resource_registry_get(asset_index);
@@ -3290,14 +3292,14 @@ b32 animation_sample_vertex(s32 asset_index, s32 clip, s32 phase, s32 vertex_ind
     }
 
     tmd = ASSET_TMD(asset);
-    if (clip >= KF_ASSET_OBJECT_SELECT_BIT) {
+    if (clip >= KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST) {
 copy_object_vertex:
-        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[clip & KF_ASSET_OBJECT_INDEX_MASK]);
+        vertices = TMD_OBJECT_VERTICES(tmd, &TMD_OBJECTS(tmd)[KF_ENUM_ENCODE(s32, clip) & KF_ASSET_OBJECT_INDEX_MASK]);
         *output = vertices[vertex_index];
         goto finished;
     }
     if (asset->animation_present == 0) {
-        clip = 0;
+        clip = KF_ANIMATION_CLIP_FIRST;
         goto copy_object_vertex;
     }
 
@@ -3332,7 +3334,7 @@ finished:
 }
 
 ADDRESS(0x800345e4, 0x60)
-u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index)
+u32 asset_vertex_count(s32 asset_index, KF_ENUM_PARAM(KfAnimationClip, s32) clip)
 {
     KfAssetHeader *asset = game_graphics_runtime.asset_registry_entries[asset_index];
     KfTmdHeader *tmd;
@@ -3341,8 +3343,8 @@ u32 asset_vertex_count(s32 asset_index, s32 encoded_object_index)
         return 0;
     }
     tmd = ASSET_TMD(asset);
-    if (encoded_object_index >= KF_ASSET_OBJECT_SELECT_BIT) {
-        return TMD_OBJECTS(tmd)[encoded_object_index & KF_ASSET_OBJECT_INDEX_MASK].vertex_count;
+    if (clip >= KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST) {
+        return TMD_OBJECTS(tmd)[KF_ENUM_ENCODE(s32, clip) & KF_ASSET_OBJECT_INDEX_MASK].vertex_count;
     }
     return TMD_OBJECTS(tmd)[0].vertex_count;
 }

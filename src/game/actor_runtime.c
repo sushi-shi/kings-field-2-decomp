@@ -90,7 +90,7 @@ void actor_initialize_from_group(KfActor *actor)
 {
     actor_copy_group_defaults(actor);
     actor->lifecycle = KF_ACTOR_LIFECYCLE_ACTIVE;
-    actor->animation_id = 0;
+    actor->animation_id = KF_ANIMATION_CLIP_FIRST;
     actor->animation_phase = 0;
     actor->unknown_11 = 0;
     actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
@@ -456,9 +456,9 @@ void actor_reset_target_and_reselect(void)
 }
 
 ADDRESS(0x800397d8, 0x2c)
-void actor_set_animation(u8 animation_id)
+void actor_set_animation(KfAnimationClip animation_id)
 {
-    if (animation_id != KF_ACTOR_ANIMATION_NO_CHANGE) {
+    if (animation_id != KF_ANIMATION_CLIP_NONE) {
         KfActor *actor = actor_state.current;
 
         actor->animation_id = animation_id;
@@ -467,11 +467,11 @@ void actor_set_animation(u8 animation_id)
 }
 
 ADDRESS(0x80039804, 0x38)
-void actor_set_animation_if_changed(u8 animation_id)
+void actor_set_animation_if_changed(KfAnimationClip animation_id)
 {
     KfActor *actor = actor_state.current;
 
-    if (animation_id != KF_ACTOR_ANIMATION_NO_CHANGE &&
+    if (animation_id != KF_ANIMATION_CLIP_NONE &&
         actor->animation_id != animation_id) {
         actor->animation_id = animation_id;
         actor->animation_phase = 0;
@@ -1655,11 +1655,12 @@ VECTOR *actor_resolve_group_position(KfActor *actor, VECTOR *output)
 }
 
 ADDRESS(0x8003c220, 0x1c0)
-void actor_update_motion_animation(s32 first, s32 reverse, s32 forward, s32 fast,
-                   s32 slow, s32 phase_step)
+void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first, KF_ENUM_PARAM(KfAnimationClip, s32) reverse,
+                   KF_ENUM_PARAM(KfAnimationClip, s32) forward, KF_ENUM_PARAM(KfAnimationClip, s32) fast,
+                   KF_ENUM_PARAM(KfAnimationClip, s32) slow, s32 phase_step)
 {
     KfActor *actor = actor_state.current;
-    s32 selected = first;
+    KF_ENUM_PROMOTED(KfAnimationClip) selected = first;
     s32 magnitude = 0;
     s16 motion = actor->turn_rate;
 
@@ -2304,9 +2305,11 @@ case3_motion:
             actor->tail_72.angles.x = (rand() >> 5) - 512;
         }
         if (actor->target_type == KF_ACTOR_TARGET_16) {
-            actor_update_motion_animation(target->animation_id, target->word_14.bytes[0],
-                           target->word_14.bytes[1], target->word_16.bytes.low,
-                           target->word_16.bytes.high, target->animation_step);
+            actor_update_motion_animation(target->animation_id,
+                           KF_ENUM_DECODE(KfAnimationClip, target->word_14.bytes[0]),
+                           KF_ENUM_DECODE(KfAnimationClip, target->word_14.bytes[1]),
+                           KF_ENUM_DECODE(KfAnimationClip, target->word_16.bytes.low),
+                           KF_ENUM_DECODE(KfAnimationClip, target->word_16.bytes.high), target->animation_step);
         } else {
             actor_advance_animation_wrapped(actor, target->animation_step);
         }
@@ -2422,9 +2425,11 @@ case3_motion:
                           group->turn_acceleration, 17);
         }
         if (actor->target_type == KF_ACTOR_TARGET_17) {
-            actor_update_motion_animation(target->animation_id, target->word_18.bytes.low,
-                           target->word_18.bytes.high, target->word_1a.bytes[0],
-                           target->word_1a.bytes[1], target->animation_step);
+            actor_update_motion_animation(target->animation_id,
+                           KF_ENUM_DECODE(KfAnimationClip, target->word_18.bytes.low),
+                           KF_ENUM_DECODE(KfAnimationClip, target->word_18.bytes.high),
+                           KF_ENUM_DECODE(KfAnimationClip, target->word_1a.bytes[0]),
+                           KF_ENUM_DECODE(KfAnimationClip, target->word_1a.bytes[1]), target->animation_step);
         } else {
             actor_advance_animation_wrapped(actor, target->animation_step);
         }
@@ -2434,7 +2439,7 @@ case3_motion:
         if (actor->target_action_state == 0) {
             actor->target_action_state = KF_ACTOR_TARGET_ACTION_RETARGET_BLOCKED;
             actor->state_70.signed_state = 0;
-            actor_set_animation(target->word_14.bytes[0]);
+            actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_14.bytes[0]));
         }
         switch (actor->state_70.signed_state) {
         case 0:
@@ -2462,7 +2467,7 @@ case3_motion:
                         target->word_16.bytes.high,
                         target->word_10.value) <= 0) {
                     actor->state_70.signed_state = 3;
-                    actor_set_animation(target->word_14.bytes[1]);
+                    actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_14.bytes[1]));
                     break;
                 }
                 actor->state_70.signed_state = 2;
@@ -2472,7 +2477,7 @@ case3_motion:
         case 2:
             if (actor->vertical_motion_state == KF_ACTOR_VERTICAL_MOTION_NONE) {
                 actor->state_70.signed_state = 3;
-                actor_set_animation(target->word_14.bytes[1]);
+                actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_14.bytes[1]));
             } else {
                 actor_turn_and_move_along_heading(actor->rotation.y,
                               actor->ballistic_horizontal_speed, 0,
@@ -2751,10 +2756,10 @@ case3_motion:
         switch (actor->state_70.signed_state) {
         case 0:
             if (other->turn_rate > 0) {
-                actor_set_animation(target->word_0c.bytes.high);
+                actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_0c.bytes.high));
                 actor->state_70.signed_state = 1;
             } else if (other->turn_rate < 0) {
-                actor_set_animation(target->word_0c.bytes.low);
+                actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_0c.bytes.low));
                 actor->state_70.signed_state = 2;
             }
             break;
@@ -2875,7 +2880,7 @@ case3_motion:
                 actor->collision_height = group->collision_height;
                 actor->state_70.signed_state = 2;
                 actor->tail_72.signed_state = target->word_10.value;
-                actor_set_animation(target->word_18.bytes.low);
+                actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_18.bytes.low));
             }
             if (actor->animation_phase >= target->word_12.value) {
                 s32 saved_flags = actor_state.actor_collision_query_flags;
@@ -3022,7 +3027,7 @@ case3_motion:
             actor->target_action_state = 0xf1;
             actor->state_70.signed_state = 0;
             actor->tail_72.signed_state = -1;
-            actor_set_animation(target->word_16.bytes.low);
+            actor_set_animation(KF_ENUM_DECODE(KfAnimationClip, target->word_16.bytes.low));
         }
         switch (actor->state_70.signed_state) {
         case 0:

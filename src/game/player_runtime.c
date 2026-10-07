@@ -1091,7 +1091,7 @@ void player_equip_weapon(KF_ENUM_PARAM(KfObjectId, u8) weapon_id)
 }
 
 ADDRESS(0x80025754, 0x124)
-void player_begin_weapon_attack(s32 mode)
+void player_begin_weapon_attack(KF_ENUM_PARAM(KfAnimationClip, s32) mode)
 {
     if (player_state.weapon_attack_phase != KF_WEAPON_ATTACK_INACTIVE
         || player_state.equipped_weapon_id == KF_OBJECT_NONE
@@ -1101,7 +1101,7 @@ void player_begin_weapon_attack(s32 mode)
 
     player_state.weapon_attack_mode = mode;
     player_state.weapon_attack_phase = 0;
-    if (mode == 0) {
+    if (mode == KF_ANIMATION_CLIP_FIRST) {
         player_state.weapon_attack_window = player_state.equipped_weapon_record->normal_attack_end_phase;
         player_state.weapon_next_sound_phase = player_state.equipped_weapon_record->normal_attack_sound_phase;
     } else {
@@ -1547,16 +1547,16 @@ void player_update_weapon_attack(void)
     goto regular_weapon;
 
 special_weapon: {
-        s32 mode;
+        KF_ENUM_PROMOTED(KfAnimationClip) mode;
         phase = player_state.weapon_attack_phase;
         if (phase == KF_WEAPON_ATTACK_INACTIVE) {
             goto special_idle;
         }
         mode = player_state.weapon_attack_mode;
-        if (mode == 0) {
+        if (mode == KF_ANIMATION_CLIP_FIRST) {
             goto special_mode_zero;
         }
-        if (mode == 1) {
+        if (mode == KF_ANIMATION_CLIP_SECOND) {
             goto special_mode_one;
         }
         return;
@@ -1657,7 +1657,7 @@ special_mode_zero: {
                 effect->updates_remaining = 50;
                 effect->cache_tail.payload.ballistic.origin_y = effect->position.vy;
             }
-            player_state.weapon_attack_mode = 1;
+            player_state.weapon_attack_mode = KF_ANIMATION_CLIP_SECOND;
             player_state.weapon_attack_phase = 0;
             return;
         }
@@ -1680,7 +1680,7 @@ regular_weapon:
         goto regular_idle;
     }
 
-    if (player_state.weapon_attack_mode == 0) {
+    if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_FIRST) {
         phase_step = weapon->attack_phase_step;
         phase_end = weapon->normal_attack_end_phase;
         sound_end = weapon->normal_attack_sound_phase;
@@ -1695,7 +1695,7 @@ regular_weapon:
     }
     player_state.weapon_attack_phase += phase_step;
 
-    if (player_state.weapon_attack_mode == 0
+    if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_FIRST
         && weapon->initial_effect_id != KF_MAGIC_NONE
         && player_state.weapon_attack_fully_charged != 0
         && player_meets_weapon_magic_power_requirement()
@@ -1728,7 +1728,7 @@ regular_weapon:
         && player_state.weapon_attack_phase
              < player_state.weapon_attack_window + phase_step) {
         player_state.weapon_guard_active = KF_FALSE;
-        if (player_state.weapon_attack_mode == 1) {
+        if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_SECOND) {
             if (player_state.equipped_weapon_id == KF_OBJECT_13
                 && (player_state.pad_buttons.current & PADRleft) != 0) {
                 player_state.weapon_attack_phase -= phase_step;
@@ -2708,7 +2708,7 @@ void player_update_actions_and_charge(void)
         }
         player_state.magic_attack_mask_cursor = attack_mask + 1;
         if (attack_mask[1] == 0xffff) {
-            player_begin_weapon_attack(1);
+            player_begin_weapon_attack(KF_ANIMATION_CLIP_SECOND);
             return;
         }
         player_state.weapon_magic_shots_remaining = 20;
@@ -2721,7 +2721,7 @@ after_weapon_attack:
     if (player_state.weapon_charge_delay == 0
         && player_state.weapon_magic_shots_remaining == 0
         && KF_PLAYER_PAD_PRESSED(player_state.pad_buttons, PADRup)) {
-        player_begin_weapon_attack(0);
+        player_begin_weapon_attack(KF_ANIMATION_CLIP_FIRST);
     }
 }
 

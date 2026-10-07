@@ -2096,9 +2096,8 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     if (lighting_override != 0xff) {
         override = &game_graphics_runtime.collision_rows[lighting_override];
         if (override->motion.values[0] != -1) {
-            fixed_lerp_nine_halfwords_q12((const u16 *)lighting->motion.values,
-                          (const u16 *)override->motion.values,
-                          (u16 *)&color_matrix, lighting_blend);
+            fixed_lerp_nine_halfwords_q12(lighting->motion.values, override->motion.values,
+                          color_matrix.m[0], lighting_blend);
             SetColorMatrix(&color_matrix);
         } else {
             SetColorMatrix((MATRIX *)&lighting->motion);

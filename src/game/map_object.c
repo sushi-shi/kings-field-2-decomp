@@ -574,20 +574,20 @@ void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
 {
     KfMapObject *object;
     KfMapObjectTemplate *template;
-    u16 *sequence;
-    s32 first_index;
 
     if (source == KF_MAP_OBJECT_DROP_FROM_PLACEMENT) {
-        sequence = &map_object_state.placement_drop_sequence;
-        first_index = KF_MAP_OBJECT_PLACEMENT_DROP_FIRST;
+        object = map_object_effect_pool_acquire(KF_MAP_OBJECT_PLACEMENT_DROP_FIRST,
+                                                KF_MAP_OBJECT_EFFECT_POOL_SIZE,
+                                                map_object_state.placement_drop_sequence);
+        object->tail.fields.spawn_sequence = map_object_state.placement_drop_sequence++;
+        object->object_id = object_id;
     } else {
-        first_index = KF_MAP_OBJECT_DEFINITION_DROP_FIRST;
-        sequence = &map_object_state.definition_drop_sequence;
+        object = map_object_effect_pool_acquire(KF_MAP_OBJECT_DEFINITION_DROP_FIRST,
+                                                KF_MAP_OBJECT_EFFECT_POOL_SIZE,
+                                                map_object_state.definition_drop_sequence);
+        object->tail.fields.spawn_sequence = map_object_state.definition_drop_sequence++;
+        object->object_id = object_id;
     }
-
-    object = map_object_effect_pool_acquire(first_index, KF_MAP_OBJECT_EFFECT_POOL_SIZE, *sequence);
-    object->tail.fields.spawn_sequence = (*sequence)++;
-    object->object_id = object_id;
     map_object_reset(object);
     template = &map_object_state.templates[object->object_id];
     object->position.vx = position->vx;

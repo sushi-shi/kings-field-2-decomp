@@ -151,11 +151,74 @@ source-to-codegen links in the 2.5.7 sources and RTL dumps (`-dr -dL -dl
 - **Delay slots (reorg.c).** A redundant insn at a branch target is skipped,
   so the slot is filled from the fall-through. A target insn is not copied
   when its destination is live on the fall-through.
+- **Hoisted copies and cross-jumping (loop.c, combine.c, jump.c).** Loop
+  invariants land after the copied exit test, so retail's preheader shows
+  which values the loop body computed. Identical single-set invariants
+  combine into one register; an `s16` local set from the same value is
+  instead a separate movable whose `sign_extend` combine reduces to
+  `move`, which is how one `andi` feeds two registers
+  (`collision_evaluate_shape_records`). Jump2 cross-jumping deletes the
+  earlier of two identical tails, so shared code that retail keeps in the
+  first switch arm was a `goto` target in the source.
+- **Stack arguments read in place (function.c `assign_parms`).** A
+  parameter whose address is taken gets no pseudo, so `va_start (ap, kind)`
+  keeps `kind` in its incoming slot and every use reloads it; the unnamed
+  arguments after it are read through the folded cursor
+  (`floor_item_capture_image`: `lbu`/`lw 56`, `lw 60`, `lhu 64`). An
+  old-style `__builtin_va_alist` definition anchors the cursor at the first
+  argument itself, as `player_dispatch_magic_effect` does, but its first
+  read is still forwarded by cse2 in that function.
 - **Other folds.** Combine's nonzero-bits tracking covers only pseudos set
   once, so `x = (x << 8) >> 12` on a reassigned variable stays `sll`/`sra`.
   Reading a bitfield of a word defeats CSE against a plain read of that word.
   `p + i * size` expanded as a value keeps the pointer first in `addu`. The
-  `EXPAND_SUM` address path puts the product first.
+  `EXPAND_SUM` address path puts the product first. `expand_binop` keeps a
+  register first operand, so `&objects[i]` on a register local is
+  pointer-first. A dead read through `objects[i]` just before it builds the
+  sum on the address path, and CSE then reuses that sum
+  (`event_world_dispatch_interaction`).
+
+Lane B5 traced these further links:
+
+- **Narrow parameters (function.c, local-alloc.c).** A promoted `u8`/`u16`
+  parameter is copied from its argument register into a word pseudo. That
+  copy is pinned at the top of block 0. The narrow variable itself starts at
+  the later subreg copy, which sched1 may move down, so its live range is
+  shorter than that of an `s32` parameter (`render_animated_object`). The
+  parameter REG_EQUIV note, and with it the live-length doubling, applies
+  only when the declared and passed modes match. A 32-bit stack parameter is
+  doubled and a promoted narrow one is not.
+- **Value reads of constant addresses.** `player_state.camera_position.vx`
+  used as a value goes through `memory_address`. That forces the address into
+  a CSE-shared pseudo, which loop.c hoists in insn order. A pointer local set
+  before the loop instead fixes the order by source position
+  (`render_scene_and_update_resources`).
+- **SDK macro arms.** `setSemiTrans(p, abe)` with a non-constant `abe` keeps
+  the `getcode(p) & ~2` store in its clear arm. CSE resolves that store to the
+  register that holds the packet code. The constant pseudo then lives into a
+  second block and goes to global allocation, which shifts every later
+  caller-saved choice (`render_textured_quad`).
+- **Scheduler memory dependences (sched.c).** Two references conflict unless
+  their constant offsets from the same base differ. There is one exception:
+  a non-`QImode` `MEM_IN_STRUCT_P` reference through a varying address does
+  not conflict with a non-struct reference at a fixed address. Component,
+  array and address-sum references are "in struct". `*(u32 *)&v.vx` and
+  `*ptr` are not. A struct's byte stores never get the exemption. Once more
+  than 32 memory references are pending, the next store flushes them, and
+  every later reference depends on that store. This includes a caller-save
+  restore, which `save_call_clobbered_regs` inserts just before the first
+  use. The memory form of a copy therefore decides how far restores and
+  stores can float (`tmd_prepare_subdivided_object`).
+- **Cross-jumping after sched2.** sched2 runs before jump2. Identical arm
+  tails are therefore scheduled separately, with the join label as a block
+  boundary, and merged afterwards. Duplicated calls or stores in both arms can
+  explain an argument move that sits in a delay slot ahead of stores
+  (`map_object_spawn_effect`).
+- **Load-delay fillers.** When a load's consumer must wait, the scheduler
+  fills the gap with the ready instruction that has the highest LUID. An
+  independent statement moved into a call's region becomes that filler. This
+  changes which argument-setup instruction wins the tie
+  (`event_target_stream_execute`).
 
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 

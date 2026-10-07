@@ -283,17 +283,25 @@ typedef char kf_map_occupancy_cell_size[sizeof(KfMapOccupancyCell) == 10 ? 1 : -
 
 enum { KF_MAP_WORLD_GRID_SIDE = 80 };
 
+/* Heights produced by one shape query. The shape evaluator addresses them
+ * through a single pointer to this block. */
+typedef struct KfCollisionHeights {
+    s32 height;
+    s32 result;
+    s32 height_limit;
+    s32 lower_bound;
+    s32 upper_bound;
+} KfCollisionHeights;
+
+typedef char kf_collision_heights_size[sizeof(KfCollisionHeights) == 0x14 ? 1 : -1];
+
 /* Interior collision-query state within the startup-cleared BSS owner. */
 typedef struct KfCollisionCache {
     KfMapOccupancyCell *cell;
     KfMapOccupancyLayer *shape;
     u8 unknown_08[2];
     u16 layer;
-    s32 height;
-    s32 result;
-    s32 height_limit;
-    s32 lower_bound;
-    s32 upper_bound;
+    KfCollisionHeights heights;
     u32 flags;
     s32 actor_index;
     s32 object_index;
@@ -305,7 +313,7 @@ typedef struct KfCollisionCache {
 
 typedef char kf_collision_cache_size[sizeof(KfCollisionCache) == 0x44 ? 1 : -1];
 typedef char kf_collision_cache_height_offset[
-    (u32)&((KfCollisionCache *)0)->height == 0x0c ? 1 : -1];
+    (u32)&((KfCollisionCache *)0)->heights == 0x0c ? 1 : -1];
 typedef char kf_collision_cache_position_offset[
     (u32)&((KfCollisionCache *)0)->position == 0x30 ? 1 : -1];
 typedef char kf_collision_cache_radius_offset[

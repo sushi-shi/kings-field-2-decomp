@@ -1213,7 +1213,7 @@ ADDRESS(0x80041e0c, 0x88)
 s32 effect_spawn_at_lower_bound(const VECTOR *position, s32 arg1, s32 arg2,
                                 s32 vertical_window)
 {
-    s32 lower_bound = EFFECT_COLLISION_CACHE.lower_bound;
+    s32 lower_bound = EFFECT_COLLISION_CACHE.heights.lower_bound;
     VECTOR spawn_position;
     SVECTOR direction;
 
@@ -1290,7 +1290,7 @@ ADDRESS(0x8004212c, 0x16c)
 s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
                   s32 scale_x, s32 scale_z, s32 variation)
 {
-    s32 lower_bound = EFFECT_COLLISION_CACHE.lower_bound;
+    s32 lower_bound = EFFECT_COLLISION_CACHE.heights.lower_bound;
     s32 offset_x = 0;
     s32 offset_z = 0;
 
@@ -1307,7 +1307,7 @@ s32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
 
             position.vx = origin->vx + offset_x;
             position.vz = origin->vz + offset_z;
-            position.vy = EFFECT_COLLISION_CACHE.lower_bound;
+            position.vy = EFFECT_COLLISION_CACHE.heights.lower_bound;
             magnitude = random_centered_triangular_scaled(variation) + 4096;
             effect_construct_record(10, 0, 0x66, &position, &direction,
                           scale_x * magnitude >> 12,
@@ -1653,8 +1653,8 @@ void effect_update_dispatch(void)
             effect_apply_current_magic_backstep(collision);
             collision_probe_floor_height(record->position.vx, selected->position.vy,
                           record->position.vz, 0, 0);
-            record->position.vy = EFFECT_COLLISION_CACHE.result;
-            height = EFFECT_COLLISION_CACHE.result - EFFECT_COLLISION_CACHE.height_limit;
+            record->position.vy = EFFECT_COLLISION_CACHE.heights.result;
+            height = EFFECT_COLLISION_CACHE.heights.result - EFFECT_COLLISION_CACHE.heights.height_limit;
             if (height <= 32767) {
                 record->scale_y = height;
             } else {
@@ -1909,7 +1909,7 @@ void effect_update_dispatch(void)
                 if (initial_phase == 1) {
                     record->type = KF_EFFECT_SLOT_FREE;
                 } else {
-                    s32 collision_height = EFFECT_COLLISION_CACHE.result;
+                    s32 collision_height = EFFECT_COLLISION_CACHE.heights.result;
                     record->phase = 1;
                     record->direction.vy = -200;
                     record->position.vy = collision_height;
@@ -1945,11 +1945,11 @@ void effect_update_dispatch(void)
                     collision_probe_floor_height(record->position.vx,
                                   record->position.vy,
                                   record->position.vz, 50, 0);
-                    if (EFFECT_COLLISION_CACHE.result <
-                        EFFECT_COLLISION_CACHE.lower_bound) {
-                        spawn_position.vy = EFFECT_COLLISION_CACHE.result;
+                    if (EFFECT_COLLISION_CACHE.heights.result <
+                        EFFECT_COLLISION_CACHE.heights.lower_bound) {
+                        spawn_position.vy = EFFECT_COLLISION_CACHE.heights.result;
                     } else {
-                        spawn_position.vy = EFFECT_COLLISION_CACHE.lower_bound;
+                        spawn_position.vy = EFFECT_COLLISION_CACHE.heights.lower_bound;
                     }
                     distance = spawn_position.vy - record->position.vy;
                     goto kind103_spawn;
@@ -1963,11 +1963,11 @@ void effect_update_dispatch(void)
                 0, (s16)record->direction.vx, 3000);
             record->direction.vz = fixed_lerp_q12(
                 0, (s16)record->direction.vz, 3000);
-            if (EFFECT_COLLISION_CACHE.result <
-                EFFECT_COLLISION_CACHE.lower_bound) {
-                spawn_position.vy = EFFECT_COLLISION_CACHE.result;
+            if (EFFECT_COLLISION_CACHE.heights.result <
+                EFFECT_COLLISION_CACHE.heights.lower_bound) {
+                spawn_position.vy = EFFECT_COLLISION_CACHE.heights.result;
             } else {
-                spawn_position.vy = EFFECT_COLLISION_CACHE.lower_bound;
+                spawn_position.vy = EFFECT_COLLISION_CACHE.heights.lower_bound;
             }
             distance = spawn_position.vy - record->position.vy;
             if (distance >= 7000) {
@@ -2975,10 +2975,10 @@ void effect_update_dispatch(void)
             collision_probe_floor_height(record->position.vx,
                           record->cache_tail.payload.kind114.origin_y,
                           record->position.vz, 0, 0);
-            if (record->position.vy < EFFECT_COLLISION_CACHE.result) {
+            if (record->position.vy < EFFECT_COLLISION_CACHE.heights.result) {
                 goto kind114_particles;
             }
-            record->position.vy = EFFECT_COLLISION_CACHE.result;
+            record->position.vy = EFFECT_COLLISION_CACHE.heights.result;
         }
         effect_construct_record(10, record->type | 3, 3, &record->position, NULL, 0);
         record->type = KF_EFFECT_SLOT_FREE;
@@ -3031,7 +3031,7 @@ void effect_update_dispatch(void)
             if (collision == 0 || (collision & 5) == 0) {
                 goto kind120_rotate;
             }
-            record->position.vy = EFFECT_COLLISION_CACHE.result;
+            record->position.vy = EFFECT_COLLISION_CACHE.heights.result;
         }
         if (rand() < 8192) {
             effect_construct_record(10, record->type | 3, 0x2a,

@@ -11,7 +11,6 @@ enum {
     KF_PATTERN_SKIP_OBJECT = 0xff,
     KF_PATTERN_LAYER_FLAG_MASK = 0x7f,
     KF_PATTERN_ORIENTATION_OTHER_BITS_MASK = 0xfc,
-    KF_PATTERN_LIGHTING_INDEX_MASK = 0x3f,
     KF_PATTERN_LIGHTING_FLAGS_MASK = 0xc0
 };
 
@@ -140,7 +139,7 @@ void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_INDEX) {
                     destination->layer[0].lighting_index =
-                        (source->layer[0].lighting_index & KF_PATTERN_LIGHTING_INDEX_MASK) |
+                        (source->layer[0].lighting_index & KF_MAP_CELL_LIGHTING_MASK) |
                         (destination->layer[0].lighting_index & KF_PATTERN_LIGHTING_FLAGS_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {
@@ -173,7 +172,7 @@ void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_INDEX) {
                     destination->layer[1].lighting_index =
-                        (source->layer[1].lighting_index & KF_PATTERN_LIGHTING_INDEX_MASK) |
+                        (source->layer[1].lighting_index & KF_MAP_CELL_LIGHTING_MASK) |
                         (destination->layer[1].lighting_index & KF_PATTERN_LIGHTING_FLAGS_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {

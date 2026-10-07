@@ -28,10 +28,8 @@
 #include <kf/game/notification_quad.h>
 #include <kf/game/notify.h>
 
-enum { KF_MAP_CELL_SHIFT = 11 };
 
 enum {
-    KF_MAP_CELL_LIGHTING_MASK = 63,
     KF_MAP_CELL_PREPARED_LIMIT = 16
 };
 
@@ -1724,12 +1722,10 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
 }
 
 enum {
-    KF_MAP_GRID_WIDTH = 80,
-    KF_MAP_GRID_SCAN_WIDTH = 24,
     KF_MAP_GRID_EMPTY_OBJECT = 240,
-    KF_MAP_GRID_CELL_LENGTH = 2048,
+    KF_MAP_GRID_CELL_LENGTH = 1 << KF_MAP_CELL_POSITION_SHIFT,
     KF_MAP_GRID_CELL_MIDPOINT = 1024,
-    KF_MAP_GRID_ELEVATION_LENGTH = 128
+    KF_MAP_GRID_ELEVATION_LENGTH = 1 << KF_MAP_CELL_ELEVATION_SHIFT
 };
 
 ADDRESS(0x80030de4, 0x178)
@@ -1786,24 +1782,24 @@ void render_map_cell_window(void)
 
     tmd_select(KF_TMD_SLOT_MAP);
     mask = &render->map_cell_layer_masks[0][0];
-    remaining_rows = KF_MAP_GRID_SCAN_WIDTH;
+    remaining_rows = KF_MAP_CELL_GRID_SIDE;
     start_x = render->map_scan_start_x;
     row = render->map_scan_start_z;
     while (remaining_rows != 0) {
-        if ((u32)row < KF_MAP_GRID_WIDTH) {
+        if ((u32)row < KF_MAP_WORLD_GRID_SIDE) {
             s32 x = start_x;
-            s32 remaining_columns = KF_MAP_GRID_SCAN_WIDTH;
+            s32 remaining_columns = KF_MAP_CELL_GRID_SIDE;
             do {
                 s32 column = x & 0xff;
                 x++;
-                if ((u32)column < KF_MAP_GRID_WIDTH && *mask != KF_MAP_LAYER_NONE) {
+                if ((u32)column < KF_MAP_WORLD_GRID_SIDE && *mask != KF_MAP_LAYER_NONE) {
                     render_map_cell_layers(column, row, *mask);
                 }
                 mask++;
                 remaining_columns--;
             } while (remaining_columns != 0);
         } else {
-            mask += KF_MAP_GRID_SCAN_WIDTH;
+            mask += KF_MAP_CELL_GRID_SIDE;
         }
         remaining_rows--;
         row++;
@@ -2248,13 +2244,13 @@ void resource_tmd_read_complete(u8 *data)
 ADDRESS(0x80032040, 0x70)
 KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask(const VECTOR *position)
 {
-    s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z;
+    s32 z = (position->vz >> KF_MAP_CELL_POSITION_SHIFT) + game_graphics_runtime.render_state.cell_origin_z;
     s32 x;
 
     if ((u32)z >= KF_MAP_CELL_GRID_SIDE) {
         return KF_MAP_LAYER_NONE;
     }
-    x = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x;
+    x = (position->vx >> KF_MAP_CELL_POSITION_SHIFT) + game_graphics_runtime.render_state.cell_origin_x;
     if ((u32)x >= KF_MAP_CELL_GRID_SIDE) {
         return KF_MAP_LAYER_NONE;
     }
@@ -2266,8 +2262,8 @@ KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask_radius(
     const VECTOR *position, s32 radius)
 {
     KfMapLayerMask mask = KF_MAP_LAYER_NONE;
-    s32 z = (position->vz >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
-    s32 x0 = (position->vx >> KF_MAP_CELL_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
+    s32 z = (position->vz >> KF_MAP_CELL_POSITION_SHIFT) + game_graphics_runtime.render_state.cell_origin_z - radius;
+    s32 x0 = (position->vx >> KF_MAP_CELL_POSITION_SHIFT) + game_graphics_runtime.render_state.cell_origin_x - radius;
     s32 x;
     s32 rows;
     s32 columns;
@@ -2295,12 +2291,12 @@ KF_ENUM_PARAM(KfMapLayerMask, u32) map_cell_layer_mask_radius(
 ADDRESS(0x80032174, 0x64)
 b32 map_cell_visible(const VECTOR *position, s32 radius_x, s32 radius_z)
 {
-    s32 z = position->vz >> KF_MAP_CELL_SHIFT;
+    s32 z = position->vz >> KF_MAP_CELL_POSITION_SHIFT;
     s32 x;
 
     if (z - radius_z <= game_graphics_runtime.render_state.view_cell_z &&
         game_graphics_runtime.render_state.view_cell_z <= z + radius_z) {
-        x = position->vx >> KF_MAP_CELL_SHIFT;
+        x = position->vx >> KF_MAP_CELL_POSITION_SHIFT;
         if (x - radius_x <= game_graphics_runtime.render_state.view_cell_x &&
             game_graphics_runtime.render_state.view_cell_x <= x + radius_x) {
             return KF_TRUE;
@@ -3443,7 +3439,7 @@ KfPoolRecord *pool_allocate(void)
     return NULL;
 }
 
-enum { KF_MAP_PLACED_REGION_SHIFT = 11, KF_MAP_PLACED_RANDOM_SHIFT = 15 };
+enum { KF_MAP_PLACED_RANDOM_SHIFT = 15 };
 
 ADDRESS(0x80034818, 0x134)
 void map_placed_expand_sources(const KfMapPlacedSource *sources)
@@ -3457,8 +3453,8 @@ void map_placed_expand_sources(const KfMapPlacedSource *sources)
             entry->layer_mask = sources->layer_mask;
             entry->frame_count = sources->frame_count;
             entry->frame_period = sources->frame_period;
-            entry->position.vx = (sources->region_x << KF_MAP_PLACED_REGION_SHIFT) + sources->local_x;
-            entry->position.vz = (sources->region_z << KF_MAP_PLACED_REGION_SHIFT) + sources->local_z;
+            entry->position.vx = (sources->region_x << KF_MAP_CELL_POSITION_SHIFT) + sources->local_x;
+            entry->position.vz = (sources->region_z << KF_MAP_CELL_POSITION_SHIFT) + sources->local_z;
             entry->position.vy = collision_sample_map_layer_height(entry->layer_mask, entry->position.vx, entry->position.vz, 0, 0)
                 + sources->height_offset;
             entry->frame_index = (rand() * entry->frame_count) >> KF_MAP_PLACED_RANDOM_SHIFT;

@@ -792,8 +792,8 @@ void update_current_map_cell_layer_mask(s32 cursor_offset)
     if (*mask == KF_MAP_LAYER_NONE) {
         return;
     }
-    if ((u32)render_mask_scan_state.map_x < 80 &&
-        (u32)render_mask_scan_state.map_z < 80) {
+    if ((u32)render_mask_scan_state.map_x < KF_MAP_WORLD_GRID_SIDE &&
+        (u32)render_mask_scan_state.map_z < KF_MAP_WORLD_GRID_SIDE) {
         value = mask[cursor_offset];
         cell = &bss_801c7540.map_cells[render_mask_scan_state.map_z]
                                             [render_mask_scan_state.map_x];
@@ -842,8 +842,9 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
     count--;
     if (count != -1) {
         do {
-            if ((u32)window_x < 24 && (u32)window_z < 24 && *cursor != KF_MAP_LAYER_NONE) {
-                if ((u32)map_x < 80 && (u32)map_z < 80) {
+            if ((u32)window_x < KF_MAP_CELL_GRID_SIDE && (u32)window_z < KF_MAP_CELL_GRID_SIDE &&
+                *cursor != KF_MAP_LAYER_NONE) {
+                if ((u32)map_x < KF_MAP_WORLD_GRID_SIDE && (u32)map_z < KF_MAP_WORLD_GRID_SIDE) {
                     KfMapLayerMask first = cursor[first_offset];
                     KfMapLayerMask second = cursor[second_offset];
                     KfMapOccupancyCell *cell;
@@ -909,7 +910,7 @@ void sweep_map_cell_layer_mask_line(s32 first_offset, s32 second_offset, s32 map
     render_mask_scan_state.map_z += (dz), \
     render_mask_scan_state.window_x += (dx), \
     render_mask_scan_state.window_z += (dz), \
-    render_mask_scan_state.mask_cursor += (dz) * 24 + (dx))
+    render_mask_scan_state.mask_cursor += (dz) * KF_MAP_CELL_GRID_SIDE + (dx))
 
 ADDRESS(0x8002c670, 0x7bc)
 void build_camera_map_cell_layer_masks(void)
@@ -1010,7 +1011,7 @@ void build_camera_map_cell_layer_masks(void)
     for (index = 0; index < 14; index++) {
         render_mask_scan_state.map_z++;
         render_mask_scan_state.window_z++;
-        render_mask_scan_state.mask_cursor += 24;
+        render_mask_scan_state.mask_cursor += KF_MAP_CELL_GRID_SIDE;
         update_current_map_cell_layer_mask(-24);
         MASK_SCAN_STEP(-1, 0);
         sweep_map_cell_layer_mask_line(-24, -23, -1, 0, -1, index);

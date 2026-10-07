@@ -7,6 +7,8 @@
 enum {
     /* Low bits of KfMapOccupancyLayer.quarter_turns: the cell's KfQuarterTurn. */
     KF_MAP_CELL_QUARTER_TURN_MASK = 3,
+    /* Low bits of KfMapOccupancyLayer.lighting_index: the lighting row. */
+    KF_MAP_CELL_LIGHTING_MASK = 0x3f,
     KF_MAP_CELL_POSITION_SHIFT = 11,
     KF_MAP_CELL_ELEVATION_SHIFT = 7,
     KF_MAP_CELL_NO_OBJECT_INDEX = 0xff,

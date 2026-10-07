@@ -47,6 +47,13 @@ KF_ENUM_BEGIN(KfColorOverlayControl, u8)
 KF_ENUM_END(KfColorOverlayControl)
 KF_ENUM_FLAGS(KfColorOverlayControl, u8)
 
+/* render_animated_object's lighting byte: a KfLightingIndex row in the low
+ * seven bits and a flag that negates the row's light matrix. */
+enum {
+    KF_LIGHTING_FLAGS_INDEX_MASK = 0x7f,
+    KF_LIGHTING_FLAG_REVERSED_LIGHT = 0x80
+};
+
 /* render_world_model's queue selector. 0xff and 0xfe pick the textured and
  * clipping enqueues; 0x80 is textured without the below-view depth bias.
  * Other values reach render_enqueue_blended_tmd, which shifts them into the

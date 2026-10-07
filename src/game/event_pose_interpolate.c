@@ -350,7 +350,8 @@ after_script:
 ADDRESS(0x80046700, 0x8c)
 void event_spawn_effect_object(KfMapObject *event, KF_ENUM_PARAM(KfObjectId, s32) object_id)
 {
-    KfMapObject *object = map_object_effect_pool_acquire(0x17c, 0x10, -1);
+    KfMapObject *object = map_object_effect_pool_acquire(KF_MAP_OBJECT_EVENT_POOL_FIRST,
+                                                         KF_MAP_OBJECT_EVENT_POOL_SIZE, -1);
 
     /* The byte store wraps pool slots 0x17c..0x18b to offsets 0..15. */
     event->tail.event_effect.effect_object_index = (object - map_object_state.objects) - 0x7c;
@@ -436,7 +437,7 @@ object_control_action:
                     resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
                 event_state.interaction_handled = KF_TRUE;
                 game_counter_decrement(command);
-                object->extra_40.bytes[0] = 0;
+                object->extra_40.bytes[0] = KF_MAP_OBJECT_LATCH_CLEAR;
                 event_spawn_effect_object(object, command);
             } else if (map_object_check_and_consume_marker(object, KF_ENUM_ENCODE(s32, command)) == KF_MAP_OBJECT_MARKER_MISMATCH) {
                 notify_enqueue(object->tail.notification.linked_notification);
@@ -628,7 +629,8 @@ magic_action: {
             }
         }
         object = map_object_effect_pool_acquire(
-            0x15e, 10, map_object_state.spawn_sequence_pool_15e);
+            KF_MAP_OBJECT_SCATTER_POOL_FIRST, KF_MAP_OBJECT_EFFECT_POOL_SIZE,
+            map_object_state.spawn_sequence_pool_15e);
         map_object_reset(object);
         game_counter_decrement(command);
         object->object_id = command;
@@ -843,7 +845,8 @@ void event_map_object_interact(KfMapObject *object, ...)
         va_end(arguments);
         spawned_id = spawn_object_id;
         object = map_object_effect_pool_acquire(
-            0x15e, 10, map_object_state.spawn_sequence_pool_15e);
+            KF_MAP_OBJECT_SCATTER_POOL_FIRST, KF_MAP_OBJECT_EFFECT_POOL_SIZE,
+            map_object_state.spawn_sequence_pool_15e);
         map_object_reset(object);
         object->object_id = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), spawn_object_id);
         object->layer_mask = KF_MAP_LAYER_BOTH;

@@ -1997,7 +1997,7 @@ void render_player_weapon(void)
     row = &game_graphics_runtime.collision_rows[
         layer[cell_x * sizeof(KfMapOccupancyCell) +
               cell_z * sizeof(bss_801c7540.map_cells[0]) +
-              player_state.map_layer_index] & 0x3f];
+              player_state.map_layer_index] & KF_MAP_CELL_LIGHTING_MASK];
     SetColorMatrix((MATRIX *)&row->motion);
     SetLightMatrix((MATRIX *)&row->rotations[0]);
     fog_set_near(row->filter.angle);
@@ -2063,7 +2063,7 @@ void render_world_model(KfMapLayerMask map_layer, u16 asset_index, const VECTOR 
             lighting_layer = &cell->layer[0];
         }
         lighting = &game_graphics_runtime.collision_rows[
-            lighting_layer->lighting_index & 0x3f];
+            lighting_layer->lighting_index & KF_MAP_CELL_LIGHTING_MASK];
     } else {
         model.t[0] = position->vx;
         model.t[1] = position->vy;
@@ -2075,7 +2075,7 @@ void render_world_model(KfMapLayerMask map_layer, u16 asset_index, const VECTOR 
                     game_graphics_runtime.render_state.view_position.vz >> 11][
                     game_graphics_runtime.render_state.view_position.vx >> 11]
                     .layer[0].lighting_index + layer_offset);
-            lighting = &game_graphics_runtime.collision_rows[lighting_index & 0x3f];
+            lighting = &game_graphics_runtime.collision_rows[lighting_index & KF_MAP_CELL_LIGHTING_MASK];
         }
     }
 
@@ -2187,12 +2187,12 @@ void render_animated_object(u16 asset_index, const struct KfEulerAngles *rotatio
     SetRotMatrix(&model);
     SetTransMatrix(&model);
 
-    lighting = &game_graphics_runtime.collision_rows[lighting_flags & 0x7f];
+    lighting = &game_graphics_runtime.collision_rows[lighting_flags & KF_LIGHTING_FLAGS_INDEX_MASK];
     SetColorMatrix((MATRIX *)&lighting->motion);
     SetBackColor(lighting->filter.kinds.types[0],
                  lighting->filter.kinds.types[1],
                  lighting->filter.kinds.types[2]);
-    if (lighting_flags & 0x80) {
+    if (lighting_flags & KF_LIGHTING_FLAG_REVERSED_LIGHT) {
         reversed_light.m[0][0] = -lighting->rotations[0].m[0][0];
         reversed_light.m[0][1] = -lighting->rotations[0].m[0][1];
         reversed_light.m[0][2] = -lighting->rotations[0].m[0][2];
@@ -2465,7 +2465,7 @@ actor_next:
         if (object->object_id == KF_OBJECT_NONE) {
             goto map_object_next;
         }
-        object->collision_flags &= 0x7f;
+        object->collision_flags &= ~KF_MAP_OBJECT_FLAG_RENDERED;
         if (object->action == KF_MAP_OBJECT_OP_AMBIENT_SOUND) goto map_sound_action;
         if (object->action != KF_MAP_OBJECT_OP_ANIMATED_MODEL) goto map_ordinary_object;
         if (map_cell_visible(&object->position,
@@ -2480,7 +2480,7 @@ actor_next:
                                object->tail.animated.blend_mode,
                                object->tail.animated.lighting_flags,
                                0x1fff - object->tail.animated.depth_code);
-                object->collision_flags |= 0x80;
+                object->collision_flags |= KF_MAP_OBJECT_FLAG_RENDERED;
             }
             tmd_flags[KF_ENUM_ENCODE(u16, object->object_id)] = KF_TRUE;
         }
@@ -2542,7 +2542,8 @@ map_ordinary_object: {
             KfRenderQueueMode render_mode;
             KfMapObjectTemplate *object_template;
             SVECTOR *scale;
-            if (object->collision_flags & 2) goto map_radius_check;
+            if ((object->collision_flags & KF_MAP_OBJECT_FLAG_RADIUS_VISIBLE) != KF_MAP_OBJECT_FLAGS_NONE)
+                goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
             if ((visibility & object->layer_mask) == KF_MAP_LAYER_NONE) goto map_object_next;
             object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
@@ -2555,7 +2556,7 @@ map_ordinary_visible:
                 rotation.y = object->rotation.vy + 0x800;
                 rotation.z = object->rotation.vz;
                 render_mode = object->render_queue_mode;
-                if (object->collision_flags & 1) {
+                if ((object->collision_flags & KF_MAP_OBJECT_FLAG_NEAR_CLIP) != KF_MAP_OBJECT_FLAGS_NONE) {
                     render_mode = (visibility & KF_MAP_LAYER_NEAR_CLIPPED) != KF_MAP_LAYER_NONE
                         ? KF_RENDER_QUEUE_CLIPPED : KF_RENDER_QUEUE_TEXTURED;
                 }
@@ -2567,7 +2568,7 @@ map_ordinary_visible:
                                object->lighting_override_index, object->lighting_blend_q12,
                                render_mode,
                                object->render_depth_offset);
-                object->collision_flags |= 0x80;
+                object->collision_flags |= KF_MAP_OBJECT_FLAG_RENDERED;
             }
             goto map_object_next;
 map_radius_check:

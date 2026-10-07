@@ -35,7 +35,22 @@ enum {
     KF_MAP_CELL_COPY_COLLISION_SHAPE = 0x08,
     KF_MAP_CELL_COPY_LIGHTING_INDEX = 0x10,
     KF_MAP_CELL_COPY_LIGHTING_BIT_40 = 0x20,
-    KF_MAP_CELL_COPY_LIGHTING_BIT_80 = 0x40
+    KF_MAP_CELL_COPY_LIGHTING_BIT_80 = 0x40,
+    /* Door, hinge and cell-copy objects move whole cell contents. */
+    KF_MAP_CELL_COPY_OBJECT_FIELDS = KF_MAP_CELL_COPY_OBJECT_INDEX |
+                                     KF_MAP_CELL_COPY_ROTATED_ORIENTATION |
+                                     KF_MAP_CELL_COPY_COLLISION_SHAPE |
+                                     KF_MAP_CELL_COPY_LIGHTING_BIT_40,
+    /* map_cell_copy_rotated_fields ignores a copy of this width. */
+    KF_MAP_CELL_COPY_DISABLED_WIDTH = 0xff
+};
+
+/* map_cell_apply_rotated_pattern layer_flag: keep the lighting byte's flag
+ * bits, or replace them (clear, or reveal the other layer). */
+enum {
+    KF_PATTERN_LIGHTING_UNCHANGED = 0xff,
+    KF_PATTERN_LIGHTING_CLEAR_FLAGS = 0,
+    KF_PATTERN_LIGHTING_REVEAL_OTHER_LAYER = 0x80
 };
 
 extern KfMapCellPattern map_object_cell_patterns

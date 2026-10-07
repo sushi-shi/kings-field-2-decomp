@@ -531,7 +531,7 @@ KfMapMaskShapePair	0x02	0x02	far	s16	supported	game/render_mask.h;GAME 0x8002c6b
 KfMapObject	0x00	0x01	layer_mask	KfMapLayerMask	supported	asm;placement layer copy;map-cell layer selection;render visibility bit tests	1/2/3 layer mask initialized from placement or collision layer and tested by renderer
 KfMapObject	0x01	0x01	asset_clip_selector	KfAnimationClip	supported	render_world_model;render_animated_object;animation_sample_vertex	render_world_model uses values >=0x80 as static object selectors; lower values feed animation, while render_animated_object passes the byte as clip
 KfMapObject	0x02	0x01	render_queue_mode	KfRenderQueueMode	supported	render_scene_and_update_resources;render_world_model;render_types.h	0xff/0xfe/other selects textured, clipped, or blended render queue
-KfMapObject	0x03	0x01	collision_flags	u8	candidate	asm;map_object_find_interaction_target	bit 2 accepts a distance hit without angle filtering
+KfMapObject	0x03	0x01	collision_flags	KfMapObjectFlags	candidate	asm;map_object_find_interaction_target	bit 2 accepts a distance hit without angle filtering
 KfMapObject	0x04	0x01	action	KfMapObjectOperation	supported	asm;map_object_start_action_if_idle;map_object_update_actions;enum-domain-plan.md	dispatched operation; 255 idle; the loader copies the template selector here
 KfMapObject	0x05	0x01	lighting_override_index	KfLightingIndex	supported	render_scene_and_update_resources;render_world_model;render_types.h	0xff sentinel or index of override collision row
 KfMapObject	0x06	0x02	object_id	KF_ENUM_STORAGE(KfObjectId, u16)	supported	asm;map_object_start_action_if_idle;map_object_effect_pool_acquire;map_object_play_spatial_sound	member used by reconstructed code
@@ -784,7 +784,7 @@ KfMapObjectTailTransitionView	0xb	0x1	destination_yaw_code	u8	supported	map_obje
 KfMapObjectTemplate	0x00	0x01	collision_kind	KfMapObjectOperation	supported	asm;GAME 0x80035a74 lbu+jump table;map_object_initialize_from_placements;event_world_dispatch_interaction;enum-domain-plan.md	operation selector; most cases are stored unchanged as the runtime action
 KfMapObjectTemplate	0x01	0x01	kind	KfMapObjectKind	supported	asm;map_object_set_property	0x10 selects a rotation reset value
 KfMapObjectTemplate	0x02	0x01	vab_resource_index	u8	supported	render_scene_and_update_resources;resource_vab_update_range	indexes frame VAB demand flags for visible map objects
-KfMapObjectTemplate	0x03	0x01	collision_flags	u8	supported	map_object_initialize_from_placements	copied into KfMapObject.collision_flags
+KfMapObjectTemplate	0x03	0x01	collision_flags	KfMapObjectFlags	supported	map_object_initialize_from_placements	copied into KfMapObject.collision_flags
 KfMapObjectTemplate	0x04	0x02	collision_radius	u16	supported	asm;map_object_find_collision_at_point;vector_distance_to_point	map-object collision radius added to query radius
 KfMapObjectTemplate	0x06	0x02	interaction_radius	u16	candidate	asm;map_object_find_interaction_target	added to caller radius before distance query
 KfMapObjectTemplate	0x08	0x02	interaction_height	u16	candidate	asm;map_object_find_interaction_target	ordinary-kind vertical extent

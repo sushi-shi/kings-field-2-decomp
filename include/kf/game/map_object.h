@@ -76,9 +76,52 @@ enum {
     KF_MAP_OBJECT_DEFINITION_DROP_FIRST = 0x168,
     KF_MAP_OBJECT_PLACEMENT_DROP_FIRST = 0x172,
     KF_MAP_OBJECT_EFFECT_POOL_SIZE = 10,
-    KF_MAP_OBJECT_INTERACTION_ANY_ANGLE = 0x04,
+    /* Scene events spawn into the last sixteen slots. */
+    KF_MAP_OBJECT_EVENT_POOL_FIRST = 0x17c,
+    KF_MAP_OBJECT_EVENT_POOL_SIZE = 0x10,
     KF_MAP_REGION_HEIGHT_ANY = 0x8000,
     KF_MAP_OBJECT_CAPACITY = 0x18c
+};
+
+/* Template collision byte, copied into the object: NEAR_CLIP picks the
+ * clipping enqueue near the camera, RADIUS_VISIBLE tests a cell radius
+ * instead of the object's own cell, ANY_ANGLE accepts interactions from
+ * any bearing and UNBIASED_DEPTH selects KF_RENDER_QUEUE_TEXTURED_UNBIASED.
+ * The renderer sets RENDERED for objects drawn this frame. */
+KF_ENUM_BEGIN(KfMapObjectFlags, u8)
+    KF_MAP_OBJECT_FLAGS_NONE = 0,
+    KF_MAP_OBJECT_FLAG_NEAR_CLIP = 0x01,
+    KF_MAP_OBJECT_FLAG_RADIUS_VISIBLE = 0x02,
+    KF_MAP_OBJECT_INTERACTION_ANY_ANGLE = 0x04,
+    KF_MAP_OBJECT_FLAG_UNBIASED_DEPTH = 0x20,
+    KF_MAP_OBJECT_FLAG_RENDERED = 0x80
+KF_ENUM_END(KfMapObjectFlags)
+KF_ENUM_FLAGS(KfMapObjectFlags, u8)
+
+/* extra_40.bytes[0] one-shot latch of camera-region and trigger actions. */
+enum {
+    KF_MAP_OBJECT_LATCH_CLEAR = 0,
+    KF_MAP_OBJECT_LATCH_SET = 1
+};
+
+/* Action 84 pattern_flags: VARIANT picks the pattern of the pair, ONCE keeps
+ * the pattern applied; the pattern is applied ON (variant 1) and removed OFF
+ * (variant 0) of map_object_cell_patterns rows. */
+enum {
+    KF_MAP_OBJECT_PATTERN_VARIANT = 1,
+    KF_MAP_OBJECT_PATTERN_ONCE = 2,
+    KF_MAP_OBJECT_PATTERN_OFF = 0,
+    KF_MAP_OBJECT_PATTERN_ON = 1
+};
+
+/* Region-action operation byte: low nibble selects the operation, REPEAT
+ * keeps the latch open. */
+enum {
+    KF_MAP_OBJECT_REGION_CALLBACK = 0,
+    KF_MAP_OBJECT_REGION_SIGNAL = 1,
+    KF_MAP_OBJECT_REGION_SET_CONTROL = 2,
+    KF_MAP_OBJECT_REGION_OPERATION_MASK = 0x0f,
+    KF_MAP_OBJECT_REGION_REPEAT = 0x80
 };
 
 /* map_object_spawn_effect pool: an actor's own placement drop or its target
@@ -224,7 +267,7 @@ typedef struct KfMapObjectTemplate {
     KfMapObjectOperation collision_kind;
     KfMapObjectKind kind;
     u8 vab_resource_index;
-    u8 collision_flags;
+    KfMapObjectFlags collision_flags;
     u16 collision_radius;
     u16 interaction_radius;
     u16 interaction_height;
@@ -792,7 +835,7 @@ typedef struct KfMapObject {
     KfMapLayerMask layer_mask;
     KfAnimationClip asset_clip_selector;
     KfRenderQueueMode render_queue_mode;
-    u8 collision_flags;
+    KfMapObjectFlags collision_flags;
     KfMapObjectOperation action;
     KfLightingIndex lighting_override_index;
     KF_ENUM_STORAGE(KfObjectId, u16) object_id;

@@ -9,7 +9,6 @@ enum {
     KF_PATTERN_END = 0xff,
     KF_PATTERN_SKIP_BYTE = 0xfe,
     KF_PATTERN_SKIP_OBJECT = 0xff,
-    KF_PATTERN_LIGHTING_UNCHANGED = 0xff,
     KF_PATTERN_LAYER_FLAG_MASK = 0x7f,
     KF_PATTERN_ORIENTATION_OTHER_BITS_MASK = 0xfc,
     KF_PATTERN_LIGHTING_INDEX_MASK = 0x3f,
@@ -73,7 +72,6 @@ void map_cell_apply_rotated_pattern(KfMapLayerMask mode, s32 world_x, s32 world_
     }
 }
 
-enum { KF_MAP_CELL_COPY_DISABLED_WIDTH = 0xff };
 
 ADDRESS(0x80035194, 0x370)
 void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32 source_z,

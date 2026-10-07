@@ -197,7 +197,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         object->render_depth_offset = object_template->initial_render_depth_offset;
         object->lighting_override_index = KF_LIGHTING_NONE;
         object->lighting_blend_q12 = 0;
-        if (object->collision_flags & 0x20) {
+        if ((object->collision_flags & KF_MAP_OBJECT_FLAG_UNBIASED_DEPTH) != KF_MAP_OBJECT_FLAGS_NONE) {
             object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED_UNBIASED;
         }
         object->collision_height = object_template->interaction_height;
@@ -247,7 +247,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             map_cell_apply_rotated_pattern(object->layer_mask, object->position.vx,
                           object->position.vz, object->rotation.vy,
-                          map_object_cell_patterns[8], 0, 0xff);
+                          map_object_cell_patterns[8], 0, KF_PATTERN_LIGHTING_UNCHANGED);
             break;
         case KF_MAP_OBJECT_OP_HINGE:
             map_cell_copy_rotated_fields(object->layer_mask,
@@ -255,7 +255,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                           object->tail.cell_copy.source_z,
                           object->tail.cell_copy.destination_x,
                           object->tail.cell_copy.destination_z,
-                          2, 2, 0, 0x2d);
+                          2, 2, 0, KF_MAP_CELL_COPY_OBJECT_FIELDS);
             object->action = KF_MAP_OBJECT_OP_HINGE;
             object->action_timer = 2;
             object->extra_40.hinge.progress_ticks = 999;
@@ -272,7 +272,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                           object->tail.cell_copy.destination_z,
                           object_template->params.marker.cell_width,
                           object_template->params.marker.cell_height,
-                          object->rotation.vy, 0x2d);
+                          object->rotation.vy, KF_MAP_CELL_COPY_OBJECT_FIELDS);
             object->action = KF_MAP_OBJECT_OP_3;
             map_cell_add_layer_occupancy(object->position.vx, object->position.vz, 0x1130, 1);
             break;
@@ -317,12 +317,12 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             object->phase_q12 = 0;
             object->action = KF_MAP_OBJECT_OP_34;
-            object->extra_40.bytes[0] = 0;
+            object->extra_40.bytes[0] = KF_MAP_OBJECT_LATCH_CLEAR;
             break;
         case KF_MAP_OBJECT_OP_REGION_TRIGGER:
             object->layer_mask = KF_MAP_LAYER_NONE;
             object->action = KF_MAP_OBJECT_OP_REGION_TRIGGER;
-            object->extra_40.bytes[0] = 0;
+            object->extra_40.bytes[0] = KF_MAP_OBJECT_LATCH_CLEAR;
             break;
         case KF_MAP_OBJECT_OP_13:
             if (object->tail.initial_rotation.rotation_x_code != 0xff) {
@@ -356,8 +356,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                           object->position.vz, object->rotation.vy,
                           map_object_cell_patterns[
                               object_template->params.pattern.pattern_pair_index * 2 +
-                              (object->tail.action_84_pattern.pattern_flags & 1)],
-                          0, 0);
+                              (object->tail.action_84_pattern.pattern_flags & KF_MAP_OBJECT_PATTERN_VARIANT)],
+                          KF_MAP_OBJECT_PATTERN_OFF, KF_PATTERN_LIGHTING_CLEAR_FLAGS);
             object->scale.vz = 0;
             object->scale.vy = 0;
             object->scale.vx = 0;
@@ -365,7 +365,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         case KF_MAP_OBJECT_OP_81:
             object->asset_clip_selector = KF_ANIMATION_CLIP_FIRST;
             object->action = KF_MAP_OBJECT_OP_81;
-            object->extra_40.bytes[0] = 0;
+            object->extra_40.bytes[0] = KF_MAP_OBJECT_LATCH_CLEAR;
             if (object->tail.fields.unknown_3a.bytes.high != 0xff) {
                 map_object_set_cell_marker(object, KF_MAP_CELL_MARKER_PLACE,
                                            object_template->params.marker.marker_action_51);
@@ -522,7 +522,7 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
                                          object_template->interaction_height, point_height) == -1) {
                 continue;
             }
-            if (!(object->collision_flags & KF_MAP_OBJECT_INTERACTION_ANY_ANGLE)) {
+            if ((object->collision_flags & KF_MAP_OBJECT_INTERACTION_ANY_ANGLE) == KF_MAP_OBJECT_FLAGS_NONE) {
                 direction = vector_xz_to_angle(
                     object->position.vx - position->vx,
                     object->position.vz - position->vz);

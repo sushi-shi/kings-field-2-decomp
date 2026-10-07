@@ -164,10 +164,13 @@ source-to-codegen links in the 2.5.7 sources and RTL dumps (`-dr -dL -dl
   parameter whose address is taken gets no pseudo, so `va_start (ap, kind)`
   keeps `kind` in its incoming slot and every use reloads it; the unnamed
   arguments after it are read through the folded cursor
-  (`floor_item_capture_image`: `lbu`/`lw 56`, `lw 60`, `lhu 64`). An
-  old-style `__builtin_va_alist` definition anchors the cursor at the first
-  argument itself, as `player_dispatch_magic_effect` does, but its first
-  read is still forwarded by cse2 in that function.
+  (`floor_item_capture_image`: `lbu`/`lw 56`, `lw 60`, `lhu 64`). A
+  cursor set to `&effect_id` and advanced before each read
+  (`*(T *)(ap += 4)`) anchors at the first argument itself
+  (`player_dispatch_magic_effect`: `addiu s0,sp,112`, `lw 4(s0)`). Whether
+  that function's first `effect_id` read is forwarded from `a0` follows the
+  CSE hash-staleness rule below: forwarded at 305 or 307 pseudos, reloaded
+  as in retail at 308.
 - **Other folds.** Combine's nonzero-bits tracking covers only pseudos set
   once, so `x = (x << 8) >> 12` on a reassigned variable stays `sll`/`sra`.
   Reading a bitfield of a word defeats CSE against a plain read of that word.
@@ -264,6 +267,43 @@ Lane B6 traced these further links:
   `effect_update_dispatch`'s fifth slot). Other sources are the copied entry
   test of `for (i = 0; i < n; i++)` and of `for (x = n - 1; x != -1; x--)`
   over a parameter.
+
+Lane A5 traced these further links:
+
+- **CSE folding to absolute addresses (cse.c `fold_rtx`).** When a CSE path
+  knows a pseudo's constant value, `(plus reg c)` addresses fold to absolute
+  constants, also on a path that follows a jump into an else arm. A local
+  copy of a stored offset let cse1 rewrite the else arm relative to that
+  pseudo, and cse2 then made those stores absolute; reading the field back
+  keeps both arms on one base register (`build_camera_map_cell_layer_masks`).
+- **Entry-block locals seed `t0`.** A value used only in the entry block and
+  copied into a loop counter is local; with `v0`-`a3` busy over its range it
+  gets `t0`, and the copy gives the counter a `t0` preference that overrides
+  the global priority order (`map_cell_add_layer_occupancy`).
+- **Set-once birthing.** Writing `limit = a; limit += b;` instead of one
+  assignment removes sched1's birthing boost and keeps the source load order
+  (`collision_evaluate_shape_records` wall limit).
+- **Constant reassociation (fold-const.c).** `a + (b - C)` and `C - a - b`
+  are reassociated around the constant, which also decides where a hoisted
+  invariant such as `0x800 - radius` is first met and so its preheader slot.
+  Holding `b - C` in a local keeps `a` first in `addu`.
+- **jump.c if/else rewrite.** `if (c) x = a; else x = b;` becomes
+  `x = b; if (c) x = a;` only when the then-arm is one set. A then-arm such as
+  `scale = value = 4096;` keeps the if/else, and reorg steals the else copy
+  into the delay slot (`player_update_frame` overlay clamp).
+- **Spill slots and chained clears.** Pseudos without a hard register get
+  stack slots in ascending pseudo number, so declaration order fixes spill
+  offsets; `a = b = c = 0` stores right to left (`player_move_horizontal`).
+- **Block-local case variables.** A pointer or fraction declared per switch
+  case stays single-block, so local-alloc ties its computing temporary into
+  the callee-saved destination; declared at function scope it is global and
+  cannot tie (`player_update_frame`).
+- **Reference counts from reuse.** Storing further call results in an
+  existing local, or wrapping a flag's test and set in `do { } while (0)`,
+  raises its weighted references enough to reorder callee-saved choices
+  (`player_update_vertical_motion`, `player_move_horizontal`). An in-place
+  field update (`field += 10`) leaves the combine-deleted pseudo that
+  explains an otherwise unreferenced 8-byte reload slot.
 
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 

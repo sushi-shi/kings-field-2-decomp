@@ -113,8 +113,57 @@ enum {
 };
 
 enum {
-    KF_MENU_CHOICE_ACCEPT = 0
+    KF_MENU_CHOICE_ACCEPT = 0,
+    KF_MENU_CHOICE_DECLINE = 1
 };
+
+/* SYSTEM window rows: its three choices, then the titles of the save, load
+ * and quit screens. menu_show_dialog_panel titles only panels below
+ * TITLED_ROWS; UNTITLED selects a zero-filled row. */
+enum {
+    KF_MENU_SYSTEM_LOAD_ROW = 0,
+    KF_MENU_SYSTEM_QUIT_ROW = 1,
+    KF_MENU_SYSTEM_RETURN_ROW = 2,
+    KF_MENU_SYSTEM_ROW_COUNT = KF_MENU_SYSTEM_RETURN_ROW + 1,
+    KF_MENU_SYSTEM_SAVE_TITLE = 3,
+    KF_MENU_SYSTEM_LOAD_TITLE = 4,
+    KF_MENU_SYSTEM_QUIT_TITLE = 5,
+    KF_MENU_SYSTEM_TITLED_ROWS = 6,
+    KF_MENU_SYSTEM_UNTITLED = 9
+};
+
+/* SHOP (buy/sell) and STOCK window rows; STOCK's second row is undecoded. */
+enum {
+    KF_MENU_SHOP_BUY_ROW = 0,
+    KF_MENU_SHOP_SELL_ROW = 1,
+    KF_MENU_SHOP_RETURN_ROW = 2,
+    KF_MENU_SHOP_ROW_COUNT = KF_MENU_SHOP_RETURN_ROW + 1,
+    KF_MENU_STOCK_BUY_ROW = 0,
+    KF_MENU_STOCK_ROW_1 = 1,
+    KF_MENU_STOCK_RETURN_ROW = 2,
+    KF_MENU_STOCK_ROW_COUNT = KF_MENU_STOCK_RETURN_ROW + 1
+};
+
+/* Startup card-browser prompt: start a new game or load a save. */
+enum {
+    KF_MENU_CARD_BROWSER_START_ROW = 0,
+    KF_MENU_CARD_BROWSER_LOAD_ROW = 1,
+    KF_MENU_CARD_BROWSER_ROW_COUNT = KF_MENU_CARD_BROWSER_LOAD_ROW + 1
+};
+
+/* menu_render_list skips a number or byte column holding these values. */
+enum {
+    KF_MENU_LIST_NO_NUMBER = -1,
+    KF_MENU_LIST_NO_BYTE = 0xff
+};
+
+/* menu_frame_begin advances the cursor animation forward, then backward,
+ * and holds it on frame zero; cursor moves restart it. */
+KF_ENUM_BEGIN(KfMenuCursorAnimation, s32)
+    KF_MENU_CURSOR_ANIMATION_HOLD = -1,
+    KF_MENU_CURSOR_ANIMATION_FORWARD = 0,
+    KF_MENU_CURSOR_ANIMATION_BACKWARD = 1
+KF_ENUM_END(KfMenuCursorAnimation)
 
 /* Root window rows, decoded from their glyph labels in KF1's order: use
  * item, use magic, equipment, attack/defence, discard, system, options,
@@ -136,7 +185,10 @@ enum {
 enum {
     KF_MENU_RESULT_PENDING = -99,
     KF_MENU_RESULT_GAME_LOADED = -3,
+    /* Quit game accepted: the card choice fades the music out forever. */
+    KF_MENU_RESULT_QUIT_GAME = -2,
     KF_MENU_RESULT_CANCELLED = -1,
+    KF_MENU_RESULT_ACCEPTED = 0,
     KF_MENU_SELECTION_NONE = -1,
     KF_MENU_MAGIC_ACTION_TAG = 0x1000,
     KF_MENU_MAGIC_ACTION_ID_MASK = 0x0fff
@@ -283,7 +335,7 @@ extern KfMenuLabelSuffix menu_header_labels[12];
 extern KfMenuLabelSuffix menu_label_suffixes[16];
 extern KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT];
 extern s32 menu_cursor_animation_frame;
-extern s32 menu_cursor_animation_direction;
+extern KfMenuCursorAnimation menu_cursor_animation_direction;
 extern b32 menu_item_model_allocation_pending;
 /* Shared item quantity; original containing data object is unresolved. */
 extern s32 menu_item_quantity;

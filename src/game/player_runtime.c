@@ -2782,7 +2782,7 @@ void player_handle_interaction_and_menu(void)
                                          &player_state.camera_rotation_target,
                                          value);
         }
-    } else if (value == -3) {
+    } else if (value == KF_MENU_RESULT_GAME_LOADED) {
         s32 resource;
         player_restore_equipment_effects();
         resource = resource_state.active_resource_ids[0];

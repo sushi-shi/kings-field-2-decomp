@@ -827,7 +827,7 @@ void event_map_object_interact(KfMapObject *object, ...)
     s32 first_yaw;
     s32 current_yaw;
     s32 target_yaw;
-    u16 initial_render_depth_offset;
+    s16 initial_render_depth_offset;
     s16 target_render_depth_offset;
     s32 fraction;
     u32 previous_buttons;
@@ -911,7 +911,7 @@ void event_map_object_interact(KfMapObject *object, ...)
                           &next_position, &first_angles, &next_angles,
                           fraction);
             object->render_depth_offset = value_approach(
-                (s16)initial_render_depth_offset, target_render_depth_offset, fraction);
+                initial_render_depth_offset, target_render_depth_offset, fraction);
             player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(
                 first_yaw, target_yaw, fraction);
             cd_request_service_vab();
@@ -989,7 +989,7 @@ interpolate_back:
         player_state.camera_rotation.angles[0] = angle_lerp_shortest_q12(
             current_yaw, first_yaw, fraction);
         object->render_depth_offset = value_approach(
-            target_render_depth_offset, (s16)initial_render_depth_offset, fraction);
+            target_render_depth_offset, initial_render_depth_offset, fraction);
         render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
     }
     if (buttons) {

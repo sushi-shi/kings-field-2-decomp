@@ -782,9 +782,9 @@ void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTO
     vertex.vy = (vertex.vy * object->scale.vy) >> 12;
     vertex.vz = (vertex.vz * object->scale.vz) >> 12;
 
-    angles.x = (u16)object->rotation.vx;
-    angles.y = (u16)object->rotation.vy + 0x800;
-    angles.z = (u16)object->rotation.vz;
+    angles.x = object->rotation.vx;
+    angles.y = object->rotation.vy + 0x800;
+    angles.z = object->rotation.vz;
     vector_rotate_yxz(&angles, &vertex, result);
 
     addVector(result, &object->position);

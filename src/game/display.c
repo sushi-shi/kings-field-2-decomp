@@ -247,9 +247,9 @@ void display_set_view_transform(const VECTOR *position, const SVECTOR *rotation)
     if (rotation != NULL)
         GRAPHICS.render_state.view_rotation = *rotation;
 
-    angles.x = (u16)GRAPHICS.render_state.view_rotation.vx;
-    angles.y = -(u16)GRAPHICS.render_state.view_rotation.vy;
-    angles.z = (u16)GRAPHICS.render_state.view_rotation.vz;
+    angles.x = GRAPHICS.render_state.view_rotation.vx;
+    angles.y = -GRAPHICS.render_state.view_rotation.vy;
+    angles.z = GRAPHICS.render_state.view_rotation.vz;
     matrix_set_rotation_xzy(&angles, &GRAPHICS.render_state.view_matrix);
     matrix_set_rotation_x(angles.x, &GRAPHICS.render_state.pitch_matrix);
 }
@@ -1748,31 +1748,31 @@ void render_map_cell_layers(s32 x, s32 z, u8 flags)
 
     if ((flags & 1) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
         position.vx = x * KF_MAP_GRID_CELL_LENGTH -
-                      (u16)game_graphics_runtime.render_state.view_position.vx +
+                      game_graphics_runtime.render_state.view_position.vx +
                       KF_MAP_GRID_CELL_MIDPOINT;
         position.vy = -cell->layer[0].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                      (u16)game_graphics_runtime.render_state.view_position.vy;
+                      game_graphics_runtime.render_state.view_position.vy;
         position.vz = z * KF_MAP_GRID_CELL_LENGTH -
-                      (u16)game_graphics_runtime.render_state.view_position.vz +
+                      game_graphics_runtime.render_state.view_position.vz +
                       KF_MAP_GRID_CELL_MIDPOINT;
         render_map_cell_object(&cell->layer[0], &position, flags);
 
         object_index = cell->layer[1].object_index;
         if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vy;
+                          game_graphics_runtime.render_state.view_position.vy;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
     } else {
         object_index = cell->layer[1].object_index;
         if ((flags & 2) && object_index < KF_MAP_GRID_EMPTY_OBJECT) {
             position.vx = x * KF_MAP_GRID_CELL_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vx +
+                          game_graphics_runtime.render_state.view_position.vx +
                           KF_MAP_GRID_CELL_MIDPOINT;
             position.vy = -cell->layer[1].elevation * KF_MAP_GRID_ELEVATION_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vy;
+                          game_graphics_runtime.render_state.view_position.vy;
             position.vz = z * KF_MAP_GRID_CELL_LENGTH -
-                          (u16)game_graphics_runtime.render_state.view_position.vz +
+                          game_graphics_runtime.render_state.view_position.vz +
                           KF_MAP_GRID_CELL_MIDPOINT;
             render_map_cell_object(&cell->layer[1], &position, flags);
         }
@@ -2053,12 +2053,9 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         KfMapOccupancyCell *row;
         KfMapOccupancyLayer *lighting_layer;
 
-        relative.vx = (s16)position->vx -
-                      (s16)game_graphics_runtime.render_state.view_position.vx;
-        relative.vy = (s16)position->vy -
-                      (s16)game_graphics_runtime.render_state.view_position.vy;
-        relative.vz = (s16)position->vz -
-                      (s16)game_graphics_runtime.render_state.view_position.vz;
+        relative.vx = position->vx - game_graphics_runtime.render_state.view_position.vx;
+        relative.vy = position->vy - game_graphics_runtime.render_state.view_position.vy;
+        relative.vz = position->vz - game_graphics_runtime.render_state.view_position.vz;
         RotTrans(&relative, (VECTOR *)&model.t, &gte_flags);
         row = bss_801c7540.map_cells[position->vz >> 11];
         cell = &row[position->vx >> 11];

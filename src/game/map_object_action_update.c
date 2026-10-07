@@ -879,7 +879,7 @@ void map_object_update_actions(void)
             case 1: {
                 s32 chance = game_counter_bytes[0x4c];
                 if (chance < 16 && rand() >= chance * 2048) {
-                    s16 scale = (u16)linked->scale.vz + 1;
+                    s16 scale = linked->scale.vz + 1;
                     linked->scale.vz = scale;
                     linked->scale.vy = scale;
                     linked->scale.vx = scale;

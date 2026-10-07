@@ -1402,15 +1402,6 @@ void effect_update_dispatch(void)
     u32 initial_kind = record->kind;
     s32 initial_phase = record->phase;
     s32 collision;
-    s32 shared_multiplier;
-    s32 shared_limit;
-    s32 shared_increment;
-    s32 shared_position_mode;
-    s32 shared_motion_mode;
-    s32 shared_motion_scale;
-    s32 shared_motion_acceleration;
-    s32 shared_motion_count;
-    s32 shared_motion_layer;
     VECTOR work_position;
     VECTOR work_target;
 
@@ -1925,12 +1916,11 @@ void effect_update_dispatch(void)
         break;
     case 103:
     case 121: {
-        s32 prior_phase = record->phase;
         s32 index;
         VECTOR spawn_position;
         s32 distance;
 
-        if (prior_phase == 2) {
+        if (record->phase == 2) {
             record->scale_x = (s16)record->scale_x - 128;
             record->scale_y = record->scale_x;
             if ((s16)record->scale_x <= 0) {
@@ -1941,7 +1931,7 @@ void effect_update_dispatch(void)
         collision = effect_collision_step(50, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
         if (collision != 0) {
             if (collision & 0xf) {
-                if (prior_phase == 0) {
+                if (initial_phase == 0) {
                     effect_collision_backtrack();
                     record->direction.vz = 0;
                     record->direction.vx = 0;
@@ -1962,7 +1952,7 @@ void effect_update_dispatch(void)
             }
             record->phase = 1;
         }
-        if (prior_phase == 1) {
+        if (initial_phase == 1) {
             record->direction.vy = (u16)record->direction.vy - 70;
             record->direction.vx = fixed_lerp_q12(
                 0, (s16)record->direction.vx, 3000);
@@ -1976,35 +1966,28 @@ void effect_update_dispatch(void)
             }
             distance = spawn_position.vy - record->position.vy;
             if (distance >= 7000) {
-                goto kind103_spawn;
-            }
-        }
-        goto kind103_after_spawn;
-    kind103_spawn: {
-        SVECTOR spawn_direction;
+                SVECTOR spawn_direction;
 
-        record->phase = 2;
-        spawn_position.vx = record->position.vx;
-        spawn_position.vz = record->position.vz;
-        /* Retail has no visible write to this stack direction. */
-        effect_construct_record(10, record->type | 3,
-                       initial_kind == 103 ? 104 : 122,
-                       &spawn_position, &spawn_direction, distance);
-        effect_construct_record(10, record->type, 2,
-                       &spawn_position, &spawn_direction,
-                       distance >> 1, distance >> 4, 0x800);
-        effect_play_spatial_sound(record, 0x17);
-        goto kind103_loop;
-    }
-    kind103_after_spawn:
-        if (prior_phase == 0) {
+            kind103_spawn:
+                record->phase = 2;
+                spawn_position.vx = record->position.vx;
+                spawn_position.vz = record->position.vz;
+                /* Retail has no visible write to this stack direction. */
+                effect_construct_record(10, record->type | 3,
+                               initial_kind == 103 ? 104 : 122,
+                               &spawn_position, &spawn_direction, distance);
+                effect_construct_record(10, record->type, 2,
+                               &spawn_position, &spawn_direction,
+                               distance >> 1, distance >> 4, 0x800);
+                effect_play_spatial_sound(record, 0x17);
+            }
+        } else if (initial_phase == 0) {
             u16 count = record->cache_tail.payload.kind103.remaining;
             record->cache_tail.payload.kind103.remaining = count - 1;
             if ((s16)count <= 0) {
                 record->phase = 1;
             }
         }
-    kind103_loop:
         for (index = 3; index != -1; index--) {
             SVECTOR random_direction;
 
@@ -2023,12 +2006,12 @@ void effect_update_dispatch(void)
             s32 scale = (s16)record->scale_y;
             s32 root = SquareRoot12(scale * ((scale * scale) >> 12));
 
-            root = SquareRoot12(root);
+            root = SquareRoot12(root) >> 3;
             /* Retail passes this stack vector without a visible write on
              * this kind entry. */
             effect_construct_record(10, record->type | 3,
                            initial_kind == 104 ? 11 : 54,
-                           &record->position, &local_direction, root >> 3);
+                           &record->position, &local_direction, root);
         }
         {
             s32 distance;
@@ -2104,10 +2087,9 @@ void effect_update_dispatch(void)
         }
         break;
     case 20:
-        shared_multiplier = 0x4000;
-        shared_limit = 0x100;
-        shared_increment = 0x20;
-        goto shared_scale_step;
+        effect_scale_step(0x4000, 0x100, 0x20, 0x400, 0x8000);
+        record->rotation.vy = (u16)record->rotation.vy + 64;
+        break;
     case 12: {
         s32 prior_phase = initial_phase;
 
@@ -2129,10 +2111,9 @@ void effect_update_dispatch(void)
         }
         goto kind12_default;
     kind12_scale:
-        shared_multiplier = 0x3800;
-        shared_limit = 0x31f;
-        shared_increment = 0x46;
-        goto shared_scale_step;
+        effect_scale_step(0x3800, 0x31f, 0x46, 0x400, 0x8000);
+        record->rotation.vy = (u16)record->rotation.vy + 64;
+        break;
     kind12_default:
         if (record->phase == 0) {
             effect_play_spatial_sound(record, 0x29);
@@ -2168,13 +2149,8 @@ void effect_update_dispatch(void)
     kind12_collision:
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
         record->rotation.vz = (u16)record->rotation.vz + 128;
-        shared_position_mode = 2;
-        shared_motion_mode = 0x400;
-        shared_motion_scale = 0xc00;
-        shared_motion_acceleration = -300;
-        shared_motion_count = 5;
-        shared_motion_layer = 33;
-        goto shared_spawn_motion;
+        effect_spawn_motion(record, 2, 0x400, 0xc00, -300, 5, 33, 0);
+        break;
     }
     case 100: {
         SVECTOR local_direction;
@@ -2567,19 +2543,9 @@ void effect_update_dispatch(void)
                 record->map_layer_mask = 2;
             }
             record->rotation.vz = ((u16)record->rotation.vz + 300) & KF_ANGLE_WRAP_MASK;
-            shared_position_mode = -1;
-            shared_motion_mode = 0x400;
-            shared_motion_scale = 0x1000;
-            shared_motion_acceleration = -500;
-            shared_motion_count = 2;
-            shared_motion_layer = 8;
-            goto shared_spawn_motion;
+            effect_spawn_motion(record, -1, 0x400, 0x1000, -500, 2, 8, 0);
+            break;
         }
-    shared_spawn_motion:
-        effect_spawn_motion(record, shared_position_mode, shared_motion_mode,
-                       shared_motion_scale, shared_motion_acceleration,
-                       shared_motion_count, shared_motion_layer, 0);
-        break;
     kind8_phase_one: {
             const KfEffectKind8State *kind8 =
                 &record->cache_tail.payload.kind8;
@@ -2700,12 +2666,7 @@ void effect_update_dispatch(void)
         }
         break;
     kind10_phase1:
-        shared_multiplier = 0x4000;
-        shared_limit = 0x800;
-        shared_increment = 75;
-    shared_scale_step:
-        effect_scale_step(shared_multiplier, shared_limit, shared_increment,
-                       0x400, 0x8000);
+        effect_scale_step(0x4000, 0x800, 75, 0x400, 0x8000);
         record->rotation.vy = (u16)record->rotation.vy + 64;
         break;
     }

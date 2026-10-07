@@ -1501,14 +1501,24 @@ typedef char kf_tmd_ft4_texture_uv3_offset[
 #define WORD_HALF(n) (((s16 *)&word)[n])
 
 #define SUBDIVIDE_CORNER(corner, half) do { \
-    u32 *vertex = (u32 *)(base + source->vertex_offset + WORD_HALF(half)); \
-    (corner).words[0] = vertex[0]; \
-    (corner).words[1] = vertex[1]; \
+    SVECTOR *vertex = (SVECTOR *)(base + source->vertex_offset + WORD_HALF(half)); \
+    *(u32 *)&(corner).vx = *(u32 *)&vertex->vx; \
+    *(u32 *)&(corner).vz = *(u32 *)&vertex->vz; \
 } while (0)
+/* The last corner forms its vertex address in its own contour and copies the
+ * vertex after it; the earlier corners copy inside theirs. */
+#define SUBDIVIDE_LAST_CORNER(corner, half) { \
+    SVECTOR *vertex; \
+    do { \
+        vertex = (SVECTOR *)(base + source->vertex_offset + WORD_HALF(half)); \
+    } while (0); \
+    *(u32 *)&(corner).vx = *(u32 *)&vertex->vx; \
+    *(u32 *)&(corner).vz = *(u32 *)&vertex->vz; \
+}
 #define SUBDIVIDE_MIDPOINT(lhs, rhs) { \
-    midpoint_end->vx = ((lhs).vector.vx + (rhs).vector.vx) >> 1; \
-    midpoint_end->vy = ((lhs).vector.vy + (rhs).vector.vy) >> 1; \
-    midpoint_end->vz = ((lhs).vector.vz + (rhs).vector.vz) >> 1; \
+    midpoint_end->vx = ((lhs).vx + (rhs).vx) >> 1; \
+    midpoint_end->vy = ((lhs).vy + (rhs).vy) >> 1; \
+    midpoint_end->vz = ((lhs).vz + (rhs).vz) >> 1; \
     midpoint_end++; \
 }
 #define SUBDIVIDE_UV(dst, lhs, rhs) { \
@@ -1525,6 +1535,14 @@ typedef char kf_tmd_ft4_texture_uv3_offset[
     out[offset] = WORD_BYTE((offset) & 3); \
     out[(offset) + 1] = WORD_BYTE(((offset) & 3) + 1); \
 }
+#define SUBDIVIDE_WRITE_INDEX_WORD(offset, lo, hi) { \
+    WORD_HALF(0) = (lo); \
+    WORD_HALF(1) = (hi); \
+    out[offset] = WORD_BYTE(0); \
+    out[(offset) + 1] = WORD_BYTE(1); \
+    out[(offset) + 2] = WORD_BYTE(2); \
+    out[(offset) + 3] = WORD_BYTE(3); \
+}
 #define SUBDIVIDE_NEXT_PACKET() do { \
     word = *(u32 *)packet; \
     packet += (WORD_BYTE(1) + 1) * KF_TMD_WORD_BYTES; \
@@ -1533,7 +1551,7 @@ typedef char kf_tmd_ft4_texture_uv3_offset[
 ADDRESS(0x8002ff5c, 0xcbc)
 void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out)
 {
-    union { SVECTOR vector; u32 words[2]; } corners[4];
+    SVECTOR corners[4];
     KfTmdFt4TextureWords tex;
     SVECTOR midpoints[128];
     u32 word;
@@ -1556,8 +1574,8 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
     target = (KfTmdObject *)out;
     base = (u8 *)asset + KF_TMD_HEADER_BYTES;
     source = (KfTmdObject *)base + object_index;
-    target->primitive_offset = sizeof(KfTmdObject);
     out += sizeof(KfTmdObject);
+    target->primitive_offset = sizeof(KfTmdObject);
     target->primitive_count = source->primitive_count;
     packet = base + source->primitive_offset;
     remaining = source->primitive_count;
@@ -1573,7 +1591,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
             SUBDIVIDE_CORNER(corners[1], 0);
             SUBDIVIDE_CORNER(corners[2], 1);
             word = *(u32 *)(packet + 28);
-            SUBDIVIDE_CORNER(corners[3], 0);
+            SUBDIVIDE_LAST_CORNER(corners[3], 0);
             SUBDIVIDE_MIDPOINT(corners[0], corners[1]);
             SUBDIVIDE_MIDPOINT(corners[0], corners[2]);
             SUBDIVIDE_MIDPOINT(corners[0], corners[3]);
@@ -1616,8 +1634,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
             SUBDIVIDE_WRITE_UV(8, uv4);
             SUBDIVIDE_WRITE_UV(12, uv3);
             SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(2));
-            SUBDIVIDE_WRITE_INDEX(24, SUBDIVIDE_INDEX(4));
-            SUBDIVIDE_WRITE_INDEX(26, SUBDIVIDE_INDEX(3));
+            SUBDIVIDE_WRITE_INDEX_WORD(24, SUBDIVIDE_INDEX(4), SUBDIVIDE_INDEX(3));
             out += 32;
             output_bytes += 128;
             midpoint_count += 5;
@@ -1628,7 +1645,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
             SUBDIVIDE_CORNER(corners[0], 1);
             word = *(u32 *)(packet + 20);
             SUBDIVIDE_CORNER(corners[1], 0);
-            SUBDIVIDE_CORNER(corners[2], 1);
+            SUBDIVIDE_LAST_CORNER(corners[2], 1);
             SUBDIVIDE_MIDPOINT(corners[0], corners[1]);
             SUBDIVIDE_MIDPOINT(corners[0], corners[2]);
             SUBDIVIDE_MIDPOINT(corners[1], corners[2]);
@@ -1639,12 +1656,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
             count = midpoint_count + source->vertex_count;
             SUBDIVIDE_WRITE_UV(8, uv0);
             SUBDIVIDE_WRITE_UV(12, uv1);
-            WORD_HALF(0) = SUBDIVIDE_INDEX(0);
-            WORD_HALF(1) = SUBDIVIDE_INDEX(1);
-            out[20] = WORD_BYTE(0);
-            out[21] = WORD_BYTE(1);
-            out[22] = WORD_BYTE(2);
-            out[23] = WORD_BYTE(3);
+            SUBDIVIDE_WRITE_INDEX_WORD(20, SUBDIVIDE_INDEX(0), SUBDIVIDE_INDEX(1));
             out += 24;
             resource_copy_words((u32 *)out, (u32 *)packet, 6);
             SUBDIVIDE_WRITE_UV(4, uv0);
@@ -1663,8 +1675,7 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
             SUBDIVIDE_WRITE_UV(8, uv2);
             SUBDIVIDE_WRITE_UV(12, uv1);
             SUBDIVIDE_WRITE_INDEX(18, SUBDIVIDE_INDEX(0));
-            SUBDIVIDE_WRITE_INDEX(20, SUBDIVIDE_INDEX(2));
-            SUBDIVIDE_WRITE_INDEX(22, SUBDIVIDE_INDEX(1));
+            SUBDIVIDE_WRITE_INDEX_WORD(20, SUBDIVIDE_INDEX(2), SUBDIVIDE_INDEX(1));
             out += 24;
             output_bytes += 96;
             midpoint_count += 3;
@@ -1695,11 +1706,13 @@ void tmd_prepare_subdivided_object(KfTmdHeader *asset, s32 object_index, u8 *out
 #undef WORD_BYTE
 #undef WORD_HALF
 #undef SUBDIVIDE_CORNER
+#undef SUBDIVIDE_LAST_CORNER
 #undef SUBDIVIDE_MIDPOINT
 #undef SUBDIVIDE_UV
 #undef SUBDIVIDE_INDEX
 #undef SUBDIVIDE_WRITE_UV
 #undef SUBDIVIDE_WRITE_INDEX
+#undef SUBDIVIDE_WRITE_INDEX_WORD
 #undef SUBDIVIDE_NEXT_PACKET
 
 ADDRESS(0x80030c18, 0x1cc)

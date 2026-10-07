@@ -785,6 +785,20 @@ typedef char kf_map_object_record40_rotation_vector_offset[
 typedef char kf_map_object_record40_rotation_scale_offset[
     offsetof(KfMapObjectRecord40, reaction_rotation_scale_q15) == 0x38 ? 1 : -1];
 
+/* Hinged-door progress ticks (KF1 KfMapObjectProgress): the door swings
+ * open for 32 ticks and copies its open cells at tick 24, jumps to the
+ * hold at 280, starts closing at 300 once unblocked and stops at 332. The
+ * placement value IDLE is past the close and parks the door. */
+enum {
+    KF_MAP_OBJECT_HINGE_PASSABLE = 24,
+    KF_MAP_OBJECT_HINGE_OPEN_LAST = 31,
+    KF_MAP_OBJECT_HINGE_OPEN_END = 32,
+    KF_MAP_OBJECT_HINGE_HOLD_FIRST = 280,
+    KF_MAP_OBJECT_HINGE_CLOSE_FIRST = 300,
+    KF_MAP_OBJECT_HINGE_CLOSE_END = 332,
+    KF_MAP_OBJECT_HINGE_IDLE = 999
+};
+
 typedef struct KfMapObjectHingeMotion {
     u16 progress_ticks;
     u16 base_yaw;

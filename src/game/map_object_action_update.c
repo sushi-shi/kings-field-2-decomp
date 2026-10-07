@@ -235,26 +235,26 @@ void map_object_update_actions(void)
                     map_object_play_spatial_sound(object, object_template->params.marker.sound_id);
                 }
                 previous = object->extra_40.hinge.progress_ticks++;
-                if (previous < 32) {
+                if (previous < KF_MAP_OBJECT_HINGE_OPEN_END) {
                     object->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_SECOND;
                     object->rotation.vy += 32;
                     if (linked != NULL) {
                         linked->asset_clip_selector = KF_ANIMATION_CLIP_STATIC_OBJECT_SECOND;
                         linked->rotation.vy -= 32;
                     }
-                    if (previous == 24) {
+                    if (previous == KF_MAP_OBJECT_HINGE_PASSABLE) {
                         map_cell_copy_rotated_fields(object->layer_mask,
                                       object->tail.cell_copy.source_x,
                                       object->tail.cell_copy.source_z,
                                       object->tail.cell_copy.destination_x,
                                       object->tail.cell_copy.destination_z,
                                       2, 2, 0, KF_MAP_CELL_COPY_OBJECT_FIELDS);
-                    } else if (previous == 31) {
-                        object->extra_40.hinge.progress_ticks = 0x118;
+                    } else if (previous == KF_MAP_OBJECT_HINGE_OPEN_LAST) {
+                        object->extra_40.hinge.progress_ticks = KF_MAP_OBJECT_HINGE_HOLD_FIRST;
                     }
-                } else if (previous >= 300) {
-                    if (previous < 332) {
-                        if (previous == 300) {
+                } else if (previous >= KF_MAP_OBJECT_HINGE_CLOSE_FIRST) {
+                    if (previous < KF_MAP_OBJECT_HINGE_CLOSE_END) {
+                        if (previous == KF_MAP_OBJECT_HINGE_CLOSE_FIRST) {
                             SVECTOR offset;
                             VECTOR target;
                             MATRIX rotation;
@@ -267,7 +267,7 @@ void map_object_update_actions(void)
                             target.vz += object->position.vz;
                             if (collision_query_world(target.vx, object->position.vy, target.vz,
                                                3000, object->collision_height, 0xc0)) {
-                                object->extra_40.hinge.progress_ticks = 300;
+                                object->extra_40.hinge.progress_ticks = KF_MAP_OBJECT_HINGE_CLOSE_FIRST;
                                 break;
                             }
                             map_cell_copy_rotated_fields(object->layer_mask,

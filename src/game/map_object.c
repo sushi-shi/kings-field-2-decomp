@@ -258,7 +258,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                           2, 2, 0, KF_MAP_CELL_COPY_OBJECT_FIELDS);
             object->action = KF_MAP_OBJECT_OP_HINGE;
             object->action_timer = 2;
-            object->extra_40.hinge.progress_ticks = 999;
+            object->extra_40.hinge.progress_ticks = KF_MAP_OBJECT_HINGE_IDLE;
             object->extra_40.hinge.base_yaw = object->rotation.vy;
             map_cell_add_layer_occupancy(object->position.vx, object->position.vz, 3000, 1);
             break;

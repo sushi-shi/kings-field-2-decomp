@@ -258,10 +258,9 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case 23:
     case 24:
     case 132:
-        score = 0;
         if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) ||
             target->word_1a.value < player_distance) {
-            break;
+            goto zero_score;
         }
         if (!directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
@@ -320,8 +319,9 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
     case 19:
     case 20:
+        score = 0;
         if (target->word_0e.value < player_distance) {
-            goto zero_score;
+            break;
         }
         if (player_state.weapon_attack_phase == -1) {
             break;
@@ -478,6 +478,12 @@ void actor_set_animation_if_changed(u8 animation_id)
     }
 }
 
+/* Puts an actor back to sleep at its home position. */
+#define ACTOR_RETURN_HOME(actor) do { \
+    (actor)->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT; \
+    actor_set_home_position(actor); \
+} while (0)
+
 ADDRESS(0x8003983c, 0x31c)
 void actor_update_lifecycle_for_player_range(void)
 {
@@ -562,8 +568,7 @@ void actor_update_lifecycle_for_player_range(void)
         }
         map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz,
                        actor->collision_radius, -1);
-        actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
-        actor_set_home_position(actor);
+        ACTOR_RETURN_HOME(actor);
         return;
 
     case KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT:
@@ -580,8 +585,7 @@ void actor_update_lifecycle_for_player_range(void)
                 return;
             }
         }
-        actor->lifecycle = KF_ACTOR_LIFECYCLE_DORMANT;
-        actor_set_home_position(actor);
+        ACTOR_RETURN_HOME(actor);
         return;
     }
 }

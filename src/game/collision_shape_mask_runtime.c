@@ -939,7 +939,6 @@ void build_camera_map_cell_layer_masks(void)
     s32 z;
     s32 shape_index;
     s32 index;
-    u16 layer;
     u8 *first_lighting;
     u8 *mask;
     s32 lighting_offset;
@@ -979,11 +978,10 @@ void build_camera_map_cell_layer_masks(void)
                      << 1);
     collision_sample_map_cell_layer(game_graphics_runtime.render_state.view_position.vx, game_graphics_runtime.render_state.view_position.vy,
                   game_graphics_runtime.render_state.view_position.vz);
-    layer = KF_COLLISION_CACHE_LAYER;
-    render_mask_scan_state.first_layer_byte_offset = layer;
+    render_mask_scan_state.first_layer_byte_offset = KF_COLLISION_CACHE_LAYER;
     render_mask_scan_state.second_layer_byte_offset =
-        sizeof(KfMapOccupancyLayer) - layer;
-    if (layer == 0) {
+        sizeof(KfMapOccupancyLayer) - render_mask_scan_state.first_layer_byte_offset;
+    if (render_mask_scan_state.first_layer_byte_offset == 0) {
         render_mask_scan_state.first_layer_mask = 1;
         render_mask_scan_state.second_layer_mask = 2;
     } else {

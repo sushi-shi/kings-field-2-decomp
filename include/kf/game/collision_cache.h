@@ -20,14 +20,9 @@ void interpolate_collision_filter_rows(u8 type0, u8 type1, u8 type2, s32 angle, 
  * (record kind 0x18); the low bits still carry the collision height. */
 #define KF_COLLISION_HEIGHT_CHECK_FLOOR ((s32)0x80000000u)
 #define KF_COLLISION_HEIGHT_CHECK_LIMIT ((s32)0x40000000u)
-
-/* With both shape-query bits set, layer flag 0x40 forces an axis hit and a
- * cache result of -100000. Flag 0x80 reveals the other layer to the camera
- * mask when this layer's map object is present. */
-enum {
-    KF_MAP_CELL_LAYER_COLLISION_FLAG_40 = 0x40,
-    KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER = 0x80
-};
+/* collision_evaluate_shape_records splits its height argument into these. */
+#define KF_COLLISION_HEIGHT_MODE_MASK ((s32)0xf0000000u)
+#define KF_COLLISION_HEIGHT_VALUE_MASK 0x0fffffff
 
 /* Phase-one resource loading copies 0x600 words into this bank: a table of
  * shape offsets followed by the shapes. */

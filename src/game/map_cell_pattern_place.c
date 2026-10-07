@@ -144,13 +144,15 @@ void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_40) {
                     destination->layer[0].lighting_index =
-                        (source->layer[0].lighting_index & 0x40) |
-                        (destination->layer[0].lighting_index & 0xbf);
+                        (source->layer[0].lighting_index & KF_MAP_CELL_LAYER_COLLISION_FLAG_40) |
+                        (destination->layer[0].lighting_index
+                         & (u8)~KF_MAP_CELL_LAYER_COLLISION_FLAG_40);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_LIGHTING_BIT_80) {
                     destination->layer[0].lighting_index =
-                        (source->layer[0].lighting_index & 0x80) |
-                        (destination->layer[0].lighting_index & 0x7f);
+                        (source->layer[0].lighting_index & KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER) |
+                        (destination->layer[0].lighting_index
+                         & (u8)~KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER);
                 }
             }
             if ((layer_select & KF_MAP_LAYER_SECOND) != KF_MAP_LAYER_NONE) {

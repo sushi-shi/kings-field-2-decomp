@@ -16,6 +16,15 @@ enum {
     KF_MAP_CELL_MARKER_CLEARED = 0xfe
 };
 
+/* High bits of KfMapOccupancyLayer.lighting_index. With both shape-query bits
+ * set, layer flag 0x40 forces an axis hit and a cache result of -100000.
+ * Flag 0x80 reveals the other layer to the camera mask when this layer's map
+ * object is present. Pattern copies move each bit separately. */
+enum {
+    KF_MAP_CELL_LAYER_COLLISION_FLAG_40 = 0x40,
+    KF_MAP_CELL_LAYER_REVEALS_OTHER_LAYER = 0x80
+};
+
 void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
                             KfMapLayerMask flags);
 s32 collision_sample_map_layer_height(KfMapLayerMask layer, s32 x, s32 z, s32 radius, s32 height);

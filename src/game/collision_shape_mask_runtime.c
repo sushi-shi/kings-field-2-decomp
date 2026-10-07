@@ -58,8 +58,8 @@ KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_evaluate_shape_records(s32 x, 
     layer = (KfMapOccupancyLayer *)
         ((u8 *)KF_COLLISION_CACHE_CELL + KF_COLLISION_CACHE_LAYER);
     KF_COLLISION_CACHE_SHAPE = layer;
-    height_mode = height & 0xf0000000;
-    height &= 0x0fffffff;
+    height_mode = height & KF_COLLISION_HEIGHT_MODE_MASK;
+    height &= KF_COLLISION_HEIGHT_VALUE_MASK;
 
 next_layer:
     record = (s16 *)(KF_COLLISION_SHAPE_BANK +
@@ -116,7 +116,7 @@ next_layer:
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
-            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & 3)) {
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
                 if (wall->offset + radius < cell_x) {
                     break;
@@ -152,7 +152,7 @@ next_layer:
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
-            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & 3)) {
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
                 if (cell_x <= wall->offset + radius
                     || 0x800 - wall->offset - radius <= cell_z) {
@@ -183,7 +183,7 @@ next_layer:
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_AXIS;
-            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & 3)) {
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
                 if (cell_x <= wall->offset + radius
                     && 0x800 - wall->offset - radius <= cell_z) {
@@ -216,7 +216,7 @@ next_layer:
             wall = (KfShapeWallRecord *)record;
             record = (s16 *)(wall + 1);
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_DIAGONAL;
-            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & 3)) {
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
                 reach = radius - 0x800;
                 if (local_x - local_z <= wall->offset + reach) {
@@ -246,7 +246,7 @@ next_layer:
         case KF_SHAPE_RECORD_STAIRS:
             slope = (KfShapeSlopeRecord *)record;
             record = (s16 *)(slope + 1);
-            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + slope->quarter_turns) & 3)) {
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + slope->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
                 if (local_x < slope->start - radius || slope->end + radius < local_x) {
                     break;
@@ -282,7 +282,7 @@ next_layer:
         case KF_SHAPE_RECORD_RAMP:
             slope = (KfShapeSlopeRecord *)record;
             record = (s16 *)(slope + 1);
-            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + slope->quarter_turns) & 3)) {
+            switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + slope->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
                 step = 0x800 - local_x + local_z;
             ramp_floor:
@@ -317,7 +317,7 @@ next_layer:
                 record = (s16 *)(ledge + 1);
                 distance = cell_z;
                 x_distance = cell_x;
-                switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + ledge->quarter_turns) & 3)) {
+                switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + ledge->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
                 case KF_QUARTER_TURN_0:
                 ledge_floor:
                     if (distance >= ledge->start + radius
@@ -511,7 +511,7 @@ KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_world(s32 x, s32 y, s32 
             [z >> KF_MAP_CELL_POSITION_SHIFT][x >> KF_MAP_CELL_POSITION_SHIFT];
     }
 
-    height &= 0x0fffffff;
+    height &= KF_COLLISION_HEIGHT_VALUE_MASK;
     if (KF_COLLISION_CACHE_CELL->layer[0].quarter_turns & 0xfc) {
         if ((mode & KF_COLLISION_QUERY_ACTORS) != KF_COLLISION_QUERY_NONE) {
             KF_COLLISION_CACHE_ACTOR_INDEX = actor_find_overlap_excluding_target_type3(x, y, z, radius, height);
@@ -597,18 +597,19 @@ void refresh_collision_row_rotations(void)
 }
 
 ADDRESS(0x8002bdbc, 0xe0)
-void interpolate_collision_row_fields(s32 flags, const KfCollisionFilterPayload *payload,
+void interpolate_collision_row_fields(KF_ENUM_PARAM(KfCollisionRowFields, s32) flags,
+    const KfCollisionFilterPayload *payload,
                    KfCollisionRow *row, s32 amount)
 {
-    if (flags & 2) {
+    if ((flags & KF_COLLISION_ROW_MOTION) != KF_COLLISION_ROW_NONE) {
         fixed_lerp_nine_halfwords_q12(row->motion.values, payload->motion.values,
                       row->motion.values, amount);
     }
-    if (flags & 1) {
+    if ((flags & KF_COLLISION_ROW_ROTATION) != KF_COLLISION_ROW_NONE) {
         fixed_lerp_nine_halfwords_q12(row->rotations[0].m[0], payload->rotation.m[0],
                       row->rotations[0].m[0], amount);
     }
-    if (flags & 4) {
+    if ((flags & KF_COLLISION_ROW_FILTER_TYPES) != KF_COLLISION_ROW_NONE) {
         row->filter.kinds.types[0] = fixed_lerp_q12(
             row->filter.kinds.types[0], payload->filter.kinds.types[0], amount);
         row->filter.kinds.types[1] = fixed_lerp_q12(
@@ -616,13 +617,14 @@ void interpolate_collision_row_fields(s32 flags, const KfCollisionFilterPayload 
         row->filter.kinds.types[2] = fixed_lerp_q12(
             row->filter.kinds.types[2], payload->filter.kinds.types[2], amount);
     }
-    if (flags & 8) {
+    if ((flags & KF_COLLISION_ROW_FILTER_ANGLE) != KF_COLLISION_ROW_NONE) {
         row->filter.angle = fixed_lerp_q12(row->filter.angle, payload->filter.angle, amount);
     }
 }
 
 ADDRESS(0x8002be9c, 0x9c)
-void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *payload, s32 amount)
+void interpolate_collision_rows(KF_ENUM_PARAM(KfCollisionRowFields, s32) flags,
+    const KfCollisionFilterPayload *payload, s32 amount)
 {
     KfCollisionRow *row = game_graphics_runtime.collision_rows;
     s32 index;
@@ -632,7 +634,7 @@ void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *paylo
             interpolate_collision_row_fields(flags, payload, row, amount);
         }
     }
-    if (flags & 1) {
+    if ((flags & KF_COLLISION_ROW_ROTATION) != KF_COLLISION_ROW_NONE) {
         game_graphics_runtime.collision_rotation_dirty = KF_TRUE;
     }
 }
@@ -641,17 +643,17 @@ ADDRESS(0x8002bf38, 0x74)
 void interpolate_collision_filter_rows(u8 type0, u8 type1, u8 type2, s32 angle, u16 amount)
 {
     KfCollisionFilterPayload payload;
-    s32 flags = 0;
+    KfCollisionRowFields flags = KF_COLLISION_ROW_NONE;
 
     if (type0 != 0xff || type1 != type0 || type2 != type1) {
         payload.filter.kinds.types[0] = type0;
         payload.filter.kinds.types[1] = type1;
         payload.filter.kinds.types[2] = type2;
-        flags |= 4;
+        flags |= KF_COLLISION_ROW_FILTER_TYPES;
     }
     if (angle != -1) {
         payload.filter.angle = angle;
-        flags |= 8;
+        flags |= KF_COLLISION_ROW_FILTER_ANGLE;
     }
     interpolate_collision_rows(flags, &payload, (s16)amount);
 }

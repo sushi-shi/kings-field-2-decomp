@@ -169,8 +169,20 @@ typedef struct KfCollisionDefaultRow {
     KfCollisionDefaultTail filter;
 } KfCollisionDefaultRow;
 
-void interpolate_collision_rows(s32 flags, const KfCollisionFilterPayload *payload,
-                    s32 value);
+/* Row fields interpolate_collision_rows blends toward the payload: the
+ * rotation matrix (which also marks the rotations dirty), the motion
+ * halfwords, the three filter types and the filter angle. */
+KF_ENUM_BEGIN(KfCollisionRowFields, s32)
+    KF_COLLISION_ROW_NONE = 0,
+    KF_COLLISION_ROW_ROTATION = 1,
+    KF_COLLISION_ROW_MOTION = 2,
+    KF_COLLISION_ROW_FILTER_TYPES = 4,
+    KF_COLLISION_ROW_FILTER_ANGLE = 8
+KF_ENUM_END(KfCollisionRowFields)
+KF_ENUM_FLAGS(KfCollisionRowFields, s32)
+
+void interpolate_collision_rows(KF_ENUM_PARAM(KfCollisionRowFields, s32) flags,
+    const KfCollisionFilterPayload *payload, s32 value);
 void reset_collision_rows_and_overlay(void);
 void build_camera_map_cell_layer_masks(void);
 void floor_item_update_textures(void);

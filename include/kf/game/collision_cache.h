@@ -55,34 +55,6 @@ typedef struct KfCollisionShapeOffsetTable {
 typedef char kf_collision_shape_offset_table_size[
     sizeof(KfCollisionShapeOffsetTable) == 0x200 ? 1 : -1];
 
-/* Interior collision-query state within the startup-cleared BSS owner. */
-typedef struct KfCollisionCache {
-    KfMapOccupancyCell *cell;
-    KfMapOccupancyLayer *shape;
-    u8 unknown_08[2];
-    u16 layer;
-    s32 height;
-    s32 result;
-    s32 height_limit;
-    s32 lower_bound;
-    s32 upper_bound;
-    u32 flags;
-    s32 actor_index;
-    s32 object_index;
-    u8 unknown_2c[4];
-    VECTOR position;
-    u16 radius;
-    u16 interaction_height;
-} KfCollisionCache;
-
-typedef char kf_collision_cache_size[sizeof(KfCollisionCache) == 0x44 ? 1 : -1];
-typedef char kf_collision_cache_height_offset[
-    (u32)&((KfCollisionCache *)0)->height == 0x0c ? 1 : -1];
-typedef char kf_collision_cache_position_offset[
-    (u32)&((KfCollisionCache *)0)->position == 0x30 ? 1 : -1];
-typedef char kf_collision_cache_radius_offset[
-    (u32)&((KfCollisionCache *)0)->radius == 0x40 ? 1 : -1];
-
 #define KF_COLLISION_CACHE \
     (*(KfCollisionCache *)((u8 *)&bss_801c7540 + 0x11800))
 #define KF_COLLISION_CACHE_CELL KF_COLLISION_CACHE.cell

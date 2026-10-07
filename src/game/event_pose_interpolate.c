@@ -1363,7 +1363,7 @@ void event_world_state_save_slot(s32 save_slot)
     for (index = 0; index < (s32)(sizeof(actor_state.target_groups) / sizeof(actor_state.target_groups[0]));
          group++, index++) {
         KfTargetCandidate *candidate;
-        if (group->definition_id == 0xff) {
+        if (group->definition_id == KF_TARGET_GROUP_DEFINITION_END) {
             break;
         }
         candidate = group->targets[0].pointer;

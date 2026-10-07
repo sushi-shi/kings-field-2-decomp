@@ -2588,10 +2588,8 @@ map_object_next:
         if ((effect->render_flags & KF_EFFECT_RENDER_VISIBILITY_MASK) != KF_EFFECT_RENDER_ALWAYS_VISIBLE &&
             (map_cell_layer_mask(&effect->position) & effect->map_layer_mask) == KF_MAP_LAYER_NONE)
             goto effect_next;
-        /* Retail has no default arm; switching on the encoding keeps the
-         * modern view from requiring one. */
-        switch (KF_ENUM_ENCODE(s32, effect->render_flags & KF_EFFECT_RENDER_TRANSFORM_MASK)) {
-        case KF_ENUM_ENCODE(s32, KF_EFFECT_RENDER_WORLD_TRANSFORM):
+        switch (effect->render_flags & KF_EFFECT_RENDER_TRANSFORM_MASK) {
+        case KF_EFFECT_RENDER_WORLD_TRANSFORM:
             rotation.x = effect->rotation.vx;
             rotation.y = effect->rotation.vy + 0x800;
             rotation.z = effect->rotation.vz;
@@ -2603,7 +2601,7 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case KF_ENUM_ENCODE(s32, KF_EFFECT_RENDER_IDENTITY_TRANSFORM):
+        case KF_EFFECT_RENDER_IDENTITY_TRANSFORM:
             render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, (const struct KfEulerAngles *)&effect->rotation,
                            (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
@@ -2612,7 +2610,7 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case KF_ENUM_ENCODE(s32, KF_EFFECT_RENDER_PITCH_TRANSFORM):
+        case KF_EFFECT_RENDER_PITCH_TRANSFORM:
             render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, (const struct KfEulerAngles *)&effect->rotation,
                            (SVECTOR *)&effect->scale_x, &effect->cache_tail.animation_cache,
@@ -2621,7 +2619,7 @@ map_object_next:
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, -60);
             break;
-        case KF_ENUM_ENCODE(s32, KF_EFFECT_RENDER_SCREEN_SPACE):
+        case KF_EFFECT_RENDER_SCREEN_SPACE:
             render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position,
                            (const struct KfEulerAngles *)&effect->rotation,
@@ -2630,6 +2628,8 @@ map_object_next:
                            effect->animation_clip, effect->animation_phase_q12,
                            effect->lighting_override_index, effect->lighting_blend_q12,
                            effect->render_queue_mode, 0x14);
+            break;
+        default:
             break;
         }
 effect_next:

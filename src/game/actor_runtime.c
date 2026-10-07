@@ -2108,6 +2108,7 @@ enum {
     KF_TARGET_SOUND_ALTERNATE_RANGE = 0x80,
     KF_TARGET_SOUND_INDEX_MASK = 0x7f,
     KF_TARGET_SOUND_TRIGGER_MODE_MASK = 0xc000,
+    KF_TARGET_SOUND_TRIGGER_ANIMATION_PHASE = 0,
     KF_TARGET_SOUND_TRIGGER_STAGGERED = 0x4000,
     KF_TARGET_SOUND_TRIGGER_RANDOM = 0x8000
 };
@@ -2162,7 +2163,7 @@ void actor_update_behavior(void)
     if (target->sound_code != KF_AUDIO_SOUND_NONE) {
         interval = target->sound_trigger.fields.interval;
         switch (target->sound_trigger.value & KF_TARGET_SOUND_TRIGGER_MODE_MASK) {
-        case 0:
+        case KF_TARGET_SOUND_TRIGGER_ANIMATION_PHASE:
             if (actor_animation_crossed_phase(actor, interval)) {
                 goto play_sound;
             }
@@ -3388,7 +3389,7 @@ void actor_fixup_group_targets(void)
 
     group_index = 0;
     while (group_index < KF_COUNTOF(actor_state.target_groups)) {
-        if (group->definition_id == 0xff) {
+        if (group->definition_id == KF_TARGET_GROUP_DEFINITION_END) {
             break;
         }
         slot = group->targets;

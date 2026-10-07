@@ -190,7 +190,7 @@ void translate_active_world_positions(s32 dx, s32 dy, s32 dz)
     object = map_object_state.objects;
     object_remaining = KF_MAP_OBJECT_CAPACITY - 1;
     do {
-        if (object->object_id != KF_MAP_OBJECT_ID_NONE) {
+        if (object->object_id != KF_OBJECT_NONE) {
             object->position.vx += dx;
             object->position.vz += dz;
             object->position.vy += dy;
@@ -493,7 +493,7 @@ phase_three:
                     memory_free((u8 *)object->extra_40.record);
                     object->action = KF_MAP_OBJECT_OP_NONE;
                 }
-                object->object_id = KF_MAP_OBJECT_ID_NONE;
+                object->object_id = KF_OBJECT_NONE;
                 index--;
                 object++;
             } while (index != -1);

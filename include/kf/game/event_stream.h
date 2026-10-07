@@ -2,6 +2,7 @@
 #define KF_GAME_EVENT_STREAM_H
 
 #include <kf/lib/types.h>
+#include <kf/game/item.h>
 #include <psyq/sdk.h>
 
 struct KfActor;
@@ -24,7 +25,7 @@ enum {
     KF_EVENT_POST_STREAM_INVENTORY_CHOICE = 0x30
 };
 
-void event_spawn_effect_object(struct KfMapObject *event, s32 object_id);
+void event_spawn_effect_object(struct KfMapObject *event, KF_ENUM_PARAM(KfObjectId, s32) object_id);
 void scene_position_from_camera_offset(s32 x, s32 y, s32 z, s32 pitch, s32 yaw,
                    s32 height_offset, s32 z_offset, VECTOR *output);
 void scene_pose_interpolate(struct KfMapObject *destination,

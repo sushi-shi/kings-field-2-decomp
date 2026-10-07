@@ -79,7 +79,7 @@ void map_object_update_actions(void)
         KfMapObjectTemplate *object_template;
         if (object->action != KF_MAP_OBJECT_OP_NONE) {
             map_object_state.current_collision_object = object;
-            object_template = &map_object_state.templates[object->object_id];
+            object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
             map_object_state.current_template = object_template;
 
             switch (object->action) {
@@ -698,7 +698,7 @@ void map_object_update_actions(void)
             u16 linked_index = object->tail.linked_property.linked_object_index;
             if (linked_index != KF_MAP_OBJECT_INDEX_NONE) {
                 KfMapObject *linked = &map_object_state.objects[linked_index];
-                if (linked->object_id != 0xff) {
+                if (linked->object_id != KF_OBJECT_NONE) {
                     linked->layer_mask = 0;
                     linked->tail.fields.unknown_38 = 0;
                 }
@@ -813,16 +813,16 @@ void map_object_update_actions(void)
 
         case KF_MAP_OBJECT_OP_15: {
             KfMapObject *target = &map_object_state.objects[380 + object->tail.event_effect.effect_object_index];
-            if (object->action_timer != 0 && target->object_id == 0xff) {
+            if (object->action_timer != 0 && target->object_id == KF_OBJECT_NONE) {
                 u32 sentinel_offset;
                 switch (object->tail.event_effect.pending_event_command) {
-                case 0x72:
+                case KF_OBJECT_114:
                     sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[0].object_index;
                     break;
-                case 0x73:
+                case KF_OBJECT_115:
                     sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[1].object_index;
                     break;
-                case 0x74:
+                case KF_OBJECT_116:
                     sentinel_offset = (u32)&((KfEventControlFields *)0)->object_slots[2].object_index;
                     break;
                 default:
@@ -830,7 +830,7 @@ void map_object_update_actions(void)
                 }
                 ((KfEventControlObjectSlot *)&event_state.control.bytes[sentinel_offset])->object_index = 0xffff;
             no_sentinel:
-                object->tail.event_effect.pending_event_command = 0xff;
+                object->tail.event_effect.pending_event_command = KF_OBJECT_NONE;
                 object->action_timer = 0;
             }
             map_object_step_offset_motion(object, target, &map_object_motion_action15_start_offset, &map_object_motion_action15_end_offset, 1, 32);
@@ -839,9 +839,9 @@ void map_object_update_actions(void)
 
         case KF_MAP_OBJECT_OP_17: {
             KfMapObject *target = &map_object_state.objects[380 + object->tail.event_effect.effect_object_index];
-            if (object->action_timer != 0 && target->object_id == 0xff) {
+            if (object->action_timer != 0 && target->object_id == KF_OBJECT_NONE) {
                 KfMapObject *linked = &map_object_state.objects[object->tail.event_effect.linked_object_index];
-                object->tail.event_effect.pending_event_command = 0xff;
+                object->tail.event_effect.pending_event_command = KF_OBJECT_NONE;
                 object->action_timer = 0;
                 linked->tail.fields.unknown_38 &= ~object->tail.event_effect.linked_object_flag_mask;
             }
@@ -871,7 +871,7 @@ void map_object_update_actions(void)
                     if (object->tail.scale_link.scale_step_code == 0xff) {
                         goto start_action_19;
                     }
-                    linked->object_id = 0x4c;
+                    linked->object_id = KF_ITEM_FULL_RESTORE;
                     linked->action = KF_MAP_OBJECT_OP_NONE;
                     linked->position.vy += 300;
                     linked->layer_mask = object->layer_mask;
@@ -884,7 +884,7 @@ void map_object_update_actions(void)
                 }
                 break;
             case 1: {
-                s32 chance = game_counter_bytes[0x4c];
+                s32 chance = game_counter_bytes[KF_ENUM_ENCODE(u8, KF_ITEM_FULL_RESTORE)];
                 if (chance < 16 && rand() >= chance * 2048) {
                     s16 scale = linked->scale.vz + 1;
                     linked->scale.vz = scale;
@@ -905,7 +905,7 @@ void map_object_update_actions(void)
             object->action_timer = 2;
             break;
             case 2:
-                if (linked->object_id == KF_MAP_OBJECT_ID_NONE) {
+                if (linked->object_id == KF_OBJECT_NONE) {
                     object->tail.scale_link.scale_step_code = 0;
                 }
                 break;

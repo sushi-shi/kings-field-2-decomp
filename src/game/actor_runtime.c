@@ -2175,14 +2175,14 @@ dispatch_action:
                                    -(actor->collision_height >> 1));
                 }
                 if (actor->slot_state == 0 || actor->slot_state == KF_ACTOR_SLOT_LINKED_COMPANION) {
-                    if (target->word_0c.bytes.low != 0xff &&
-                        (rand() >> 7) < target->word_0c.bytes.high) {
+                    if (target->word_0c.death_drop.object_id != KF_OBJECT_NONE &&
+                        (rand() >> 7) < target->word_0c.death_drop.chance) {
                         map_object_spawn_effect(
-                            1, target->word_0c.bytes.low, &actor->position,
+                            1, target->word_0c.death_drop.object_id, &actor->position,
                             -(actor->collision_height >> 1));
                     }
                 } else if (actor->slot_state == KF_ACTOR_SLOT_PERSISTENT &&
-                           actor->death_drop_object_id != 0xff) {
+                           actor->death_drop_object_id != KF_OBJECT_NONE) {
                     map_object_spawn_effect(
                         0, actor->death_drop_object_id, &actor->position,
                         -(actor->collision_height >> 1));

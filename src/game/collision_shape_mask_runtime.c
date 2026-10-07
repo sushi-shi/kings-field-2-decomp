@@ -482,7 +482,7 @@ void collision_cache_load_hit_bounds(void)
             return;
         }
         object = &map_object_state.objects[KF_COLLISION_CACHE_OBJECT_INDEX];
-        object_template = &map_object_state.templates[object->object_id];
+        object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
         KF_COLLISION_CACHE_POSITION = object->position;
         KF_COLLISION_CACHE_RADIUS = object_template->collision_radius;
         KF_COLLISION_CACHE_INTERACTION_HEIGHT = object_template->interaction_height;

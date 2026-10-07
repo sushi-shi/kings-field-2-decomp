@@ -129,8 +129,8 @@ The value appears in two domains and stays separate:
 - `event_scene_command_dispatch(..., command)` `case 0x58` is an object/item ID:
   the same switch decrements inventory counter `0x54` for command `0x54`, passes
   key-item commands `0x63..0x6d` to `map_object_check_and_consume_marker`, and
-  `0x58` signals the marker of nearby object `0x9d`. It belongs to the proposed
-  `KfObjectId` domain. No flow joins the two; equal value is not evidence.
+  `0x58` signals the marker of nearby object `0x9d`. It is `KF_OBJECT_88` in the
+  applied `KfObjectId` domain. No flow joins the two; equal value is not evidence.
 
 ## Proposed domains and lanes
 

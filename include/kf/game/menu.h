@@ -2,6 +2,7 @@
 #define KF_GAME_MENU_H
 
 #include <kf/lib/types.h>
+#include <kf/game/item.h>
 #include <psyq/sdk.h>
 
 struct DIRENTRY;
@@ -252,7 +253,7 @@ s32 menu_collect_masked_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);
 s32 menu_collect_available_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);
-void menu_apply_item_effect(s32 item_id);
+void menu_apply_item_effect(KF_ENUM_PARAM(KfObjectId, s32) item_id);
 s32 menu_item_selection_controller(void);
 s32 menu_choose_magic_action(void);
 void menu_equipment_list_controller(void);

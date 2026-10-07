@@ -28,7 +28,7 @@ void map_object_pool_reset(void)
     object = map_object_state.objects;
     remaining = KF_MAP_OBJECT_CAPACITY - 1;
     do {
-        object->object_id = KF_MAP_OBJECT_ID_NONE;
+        object->object_id = KF_OBJECT_NONE;
         object->action = KF_MAP_OBJECT_OP_NONE;
         object->tail.reset_words[2] = 0;
         object->tail.reset_words[1] = 0;
@@ -70,7 +70,7 @@ void map_object_set_property(s32 index, s32 property, ...)
     }
 
     object = &map_object_state.objects[index];
-    object_template = &map_object_state.templates[object->object_id];
+    object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
     va_start(arguments, property);
     switch (property) {
     case KF_MAP_OBJECT_PROPERTY_CLEAR_LAYER_AND_STATE:
@@ -140,7 +140,7 @@ void map_object_refresh_cell_markers(s32 mode)
             if (object->tail.fields.unknown_3a.bytes.high == 0xff) {
                 continue;
             }
-            object_template = &map_object_state.templates[object->object_id];
+            object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
             map_object_set_cell_marker(object, mode,
                                        object_template->params.marker.marker_action_51);
         } else {
@@ -149,7 +149,7 @@ void map_object_refresh_cell_markers(s32 mode)
             }
             map_object_set_property(object->tail.linked_property.linked_object_index, mode,
                                     object->layer_mask);
-            object_template = &map_object_state.templates[object->object_id];
+            object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
             map_object_set_cell_marker(object, mode,
                                        object_template->params.marker.marker_action_05);
         }
@@ -169,17 +169,17 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         KfMapOccupancyCell *row;
         KfMapOccupancyLayer *layer;
 
-        if (placements->object_id == KF_MAP_OBJECT_PLACEMENT_ID_NONE) {
-            object->object_id = KF_MAP_OBJECT_ID_NONE;
+        if (placements->object_id == KF_OBJECT_PLACEMENT_NONE) {
+            object->object_id = KF_OBJECT_NONE;
         } else {
             object->object_id = placements->object_id;
         }
         object->action = KF_MAP_OBJECT_OP_NONE;
-        if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
+        if (object->object_id == KF_OBJECT_NONE) {
             continue;
         }
 
-        object_template = &map_object_state.templates[object->object_id];
+        object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
         object->action_timer = 0;
         object->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
         object->phase_q12 = 0;
@@ -437,7 +437,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         case KF_MAP_OBJECT_OP_NONE:
             break;
         }
-        if (object->object_id == 0xa3) {
+        if (object->object_id == KF_OBJECT_163) {
             object->render_queue_mode = 3;
         }
     }
@@ -450,7 +450,7 @@ s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 poin
     s32 index;
 
     for (index = 0; index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
-        if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
+        if (object->object_id == KF_OBJECT_NONE) {
             continue;
         }
         if (object->layer_mask == 0) {
@@ -459,12 +459,12 @@ s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 poin
         if (object == map_object_state.current_collision_object) {
             continue;
         }
-        if (map_object_state.templates[object->object_id].collision_radius == 0) {
+        if (map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)].collision_radius == 0) {
             continue;
         }
         if (vector_distance_to_point(
                 &object->position, x, y, z,
-                map_object_state.templates[object->object_id].collision_radius + radius,
+                map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)].collision_radius + radius,
                 object->collision_height, point_height) != -1) {
             return index;
         }
@@ -489,10 +489,10 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
     object = &map_object_state.objects[first_index];
     index = first_index;
     for (; index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
-        if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
+        if (object->object_id == KF_OBJECT_NONE) {
             continue;
         }
-        object_template = &map_object_state.templates[object->object_id];
+        object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
         if (object_template->collision_kind == KF_MAP_OBJECT_OP_HINGE) {
             forward.vx = MAP_OBJECT_HINGE_INTERACTION_FORWARD;
             forward.vy = 0;
@@ -552,7 +552,7 @@ KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequ
     s32 age;
 
     do {
-        if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
+        if (object->object_id == KF_OBJECT_NONE) {
             return object;
         }
         if (sequence != -1) {
@@ -571,7 +571,7 @@ KfMapObject *map_object_effect_pool_acquire(s32 first_index, s32 count, s32 sequ
 }
 
 ADDRESS(0x80036464, 0x174)
-void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
+void map_object_spawn_effect(u8 source, KF_ENUM_PARAM(KfObjectId, u8) object_id, const VECTOR *position,
                              s32 height_offset)
 {
     KfMapObject *object;
@@ -591,7 +591,7 @@ void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
         object->object_id = object_id;
     }
     map_object_reset(object);
-    object_template = &map_object_state.templates[object->object_id];
+    object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
     object->position.vx = position->vx;
     object->position.vy = height_offset + position->vy;
     object->position.vz = position->vz;
@@ -614,7 +614,7 @@ void map_object_spawn_effect(u8 source, u8 object_id, const VECTOR *position,
     case 0x19:
     case 0x20:
         map_object_start_action_if_idle(object, KF_MAP_OBJECT_OP_BOUNCE);
-        if (object_id == 0x67) {
+        if (object_id == KF_OBJECT_103) {
             object->rotation.pad = 0x400;
         } else {
             object->rotation.pad = 0;
@@ -644,7 +644,7 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
     sequence = map_object_state.spawn_sequence_pool_15e;
     map_object_state.spawn_sequence_pool_15e = sequence + 1;
     object->tail.scattered_effect.spawn_sequence = sequence;
-    object->object_id = 0x46;
+    object->object_id = KF_OBJECT_70;
     object->tail.scattered_effect.effect_id = effect_id;
     angle = (u16)(rand() >> KF_RANDOM_ANGLE_SHIFT);
     object->position.vx = origin->vx +
@@ -777,7 +777,7 @@ void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTO
     SVECTOR vertex;
 
     animation_sample_vertex(
-        object->object_id + 0x100, object->asset_clip_selector, object->phase_q12,
+        KF_ENUM_ENCODE(u16, object->object_id) + 0x100, object->asset_clip_selector, object->phase_q12,
         vertex_index, &vertex);
 
     vertex.vx = (vertex.vx * object->scale.vx) >> 12;
@@ -831,7 +831,7 @@ s32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
 
     switch (source->action_timer) {
     case 0:
-        if (source->tail.event_effect.pending_event_command == 0xff) {
+        if (source->tail.event_effect.pending_event_command == KF_OBJECT_NONE) {
             return 0;
         }
         if (target->tail.fields.unknown_38 == 0) {

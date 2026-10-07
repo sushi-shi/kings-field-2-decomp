@@ -4,6 +4,7 @@
 #include <kf/lib/bool.h>
 #include <kf/lib/math.h>
 #include <kf/lib/types.h>
+#include <kf/game/item.h>
 #include <psyq/sdk.h>
 
 enum {
@@ -82,9 +83,18 @@ typedef union KfTargetCandidateWord02 {
 typedef char kf_target_candidate_word02_size[
     sizeof(KfTargetCandidateWord02) == 2 ? 1 : -1];
 
+/* A dying actor's candidate drops this object with chance high/256. */
+typedef struct KfTargetCandidateDeathDrop {
+    KF_ENUM_STORAGE(KfObjectId, u8) object_id;
+    u8 chance;
+} KfTargetCandidateDeathDrop;
+typedef char kf_target_candidate_death_drop_size[
+    sizeof(KfTargetCandidateDeathDrop) == 2 ? 1 : -1];
+
 typedef union KfTargetCandidateWord0c {
     u16 value;
     KfTargetCandidateWord0cBytes bytes;
+    KfTargetCandidateDeathDrop death_drop;
 } KfTargetCandidateWord0c;
 typedef char kf_target_candidate_word0c_size[
     sizeof(KfTargetCandidateWord0c) == 2 ? 1 : -1];
@@ -544,7 +554,7 @@ typedef struct KfActor {
     u8 home_cell_x;
     u8 lifecycle;
     u8 spawn_chance;
-    u8 death_drop_object_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) death_drop_object_id;
     u8 animation_id;
     u8 vertical_motion_state;
     u8 target_type;
@@ -710,7 +720,7 @@ typedef struct KfActorLoadRecord {
     u8 cell_z;
     u8 cell_x;
     u8 spawn_chance;
-    u8 death_drop_object_id;
+    KF_ENUM_STORAGE(KfObjectId, u8) death_drop_object_id;
     u8 home_map_layer;
     u16 initial_actor_word_20;
     u16 initial_actor_word_22;

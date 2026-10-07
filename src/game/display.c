@@ -2461,7 +2461,7 @@ actor_next:
     while (remaining != -1) {
         u32 visibility;
 
-        if (object->object_id == KF_MAP_OBJECT_ID_NONE) {
+        if (object->object_id == KF_OBJECT_NONE) {
             goto map_object_next;
         }
         object->collision_flags &= 0x7f;
@@ -2471,8 +2471,8 @@ actor_next:
                              object->tail.animated.radius_x,
                              object->tail.animated.radius_z) != 0 &&
             (object->layer_mask & render_mask_scan_state.first_layer_mask)) {
-            if (resource_registry_get(object->object_id + 0x100) != NULL) {
-                render_animated_object(object->object_id + 0x100,
+            if (resource_registry_get(KF_ENUM_ENCODE(u16, object->object_id) + 0x100) != NULL) {
+                render_animated_object(KF_ENUM_ENCODE(u16, object->object_id) + 0x100,
                                (const struct KfEulerAngles *)&object->rotation,
                                &object->tail.animated.animation_cache,
                                object->asset_clip_selector, object->phase_q12,
@@ -2481,7 +2481,7 @@ actor_next:
                                0x1fff - object->tail.animated.depth_code);
                 object->collision_flags |= 0x80;
             }
-            tmd_flags[object->object_id] = 1;
+            tmd_flags[KF_ENUM_ENCODE(u16, object->object_id)] = 1;
         }
         goto map_object_next;
 map_sound_action: {
@@ -2544,12 +2544,12 @@ map_ordinary_object: {
             if (object->collision_flags & 2) goto map_radius_check;
             visibility = map_cell_layer_mask(&object->position);
             if ((visibility & object->layer_mask) == 0) goto map_object_next;
-            object_template = &map_object_state.templates[object->object_id];
+            object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
 map_ordinary_visible:
-            tmd_flags[object->object_id] = 1;
+            tmd_flags[KF_ENUM_ENCODE(u16, object->object_id)] = 1;
             vab_flags[object_template->vab_resource_index] = 1;
             scale = &object->scale;
-            if (resource_registry_get(object->object_id + 0x100) != NULL) {
+            if (resource_registry_get(KF_ENUM_ENCODE(u16, object->object_id) + 0x100) != NULL) {
                 rotation.x = object->rotation.vx;
                 rotation.y = object->rotation.vy + 0x800;
                 rotation.z = object->rotation.vz;
@@ -2557,7 +2557,7 @@ map_ordinary_visible:
                 if (object->collision_flags & 1) {
                     render_mode = (visibility & 0x80) ? 0xfe : 0xff;
                 }
-                render_world_model(object->layer_mask, object->object_id + 0x100,
+                render_world_model(object->layer_mask, KF_ENUM_ENCODE(u16, object->object_id) + 0x100,
                                &object->position, &rotation, scale,
                                (KfPoolRecord **)&object->tail,
                                &game_graphics_runtime.render_state.view_matrix,
@@ -2569,7 +2569,7 @@ map_ordinary_visible:
             }
             goto map_object_next;
 map_radius_check:
-            object_template = &map_object_state.templates[object->object_id];
+            object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
             visibility = map_cell_layer_mask_radius(&object->position,
                 object_template->params.marker.marker_action_05);
             if (visibility & object->layer_mask) goto map_ordinary_visible;

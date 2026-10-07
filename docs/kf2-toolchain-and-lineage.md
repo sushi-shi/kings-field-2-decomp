@@ -310,6 +310,12 @@ Lane A5 traced these further links:
   that writes the register the store reads (a reused variable) keeps the
   store above it; variables set more than once also lose the birthing
   promotion (`player_dispatch_magic_effect` case 3).
+- **Reference counts precede combine.** flow counts a local's references
+  before combine folds sets and tests away, so a shared local used by an
+  unrelated path keeps a high global priority; reading the field directly
+  there lowers it. One block-local reused for copied x and z fields keeps
+  both loads in source order and in one register
+  (`player_update_weapon_attack`).
 
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 

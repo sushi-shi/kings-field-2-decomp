@@ -100,6 +100,25 @@ KF_ENUM_BEGIN(KfEffectRenderFlags, u8)
 KF_ENUM_END(KfEffectRenderFlags)
 KF_ENUM_FLAGS(KfEffectRenderFlags, u8)
 
+/*
+ * Stage byte at payload +0 for the kinds that run a small state machine
+ * there. Each kind uses its own members of this one byte domain: kinds 1 and
+ * 28 travel, fall after a first hit and fade; kinds 26 and 27 travel and
+ * shrink; kind 46 tracks its linked effect, then collapses; kind 50 charges
+ * at the weapon, flies and bursts.
+ */
+KF_ENUM_BEGIN(KfEffectStage, u8)
+    KF_EFFECT_STAGE_TRAVEL = 0,
+    KF_EFFECT_STAGE_BOUNCED = 1,
+    KF_EFFECT_STAGE_FADE = 2,
+    KF_EFFECT_STAGE_SHRINK = 1,
+    KF_EFFECT_STAGE_TRACK = 0,
+    KF_EFFECT_STAGE_COLLAPSE = 1,
+    KF_EFFECT_STAGE_CHARGE = 0,
+    KF_EFFECT_STAGE_FLIGHT = 1,
+    KF_EFFECT_STAGE_BURST = 2
+KF_ENUM_END(KfEffectStage)
+
 typedef union KfEffectScaleThreshold {
     s16 interpolation_start_y;
     s16 next_probe_phase;
@@ -156,7 +175,7 @@ typedef char kf_effect_kind23_phase_offset[offsetof(KfEffectKind23Attachment, re
 
 /* Kind 46 tracks a linked effect before fading its captured Y scale. */
 typedef struct KfEffectKind46State {
-    s8 phase;
+    KF_ENUM_STORAGE(KfEffectStage, s8) phase;
     s8 linked_effect_index;
     u16 age_q12;
 } KfEffectKind46State;
@@ -215,14 +234,21 @@ typedef char kf_effect_kind42_countdown_size[sizeof(KfEffectKind42Countdown) == 
 
 /* Kinds 1 and 28 advance through initial, collision, and fade stages. */
 typedef struct KfEffectKind1Stage {
-    u8 collision_stage;
+    KfEffectStage collision_stage;
 } KfEffectKind1Stage;
 
 typedef char kf_effect_kind1_stage_size[sizeof(KfEffectKind1Stage) == 1 ? 1 : -1];
 
+/* Kinds 26 and 27 travel until blocked, then shrink away. */
+typedef struct KfEffectKind26Stage {
+    KF_ENUM_STORAGE(KfEffectStage, s8) stage;
+} KfEffectKind26Stage;
+
+typedef char kf_effect_kind26_stage_size[sizeof(KfEffectKind26Stage) == 1 ? 1 : -1];
+
 /* Kind 50 advances from growth to collision response and cleanup. */
 typedef struct KfEffectKind50Stage {
-    s8 stage;
+    KF_ENUM_STORAGE(KfEffectStage, s8) stage;
 } KfEffectKind50Stage;
 
 typedef char kf_effect_kind50_stage_size[sizeof(KfEffectKind50Stage) == 1 ? 1 : -1];
@@ -336,6 +362,7 @@ typedef union KfEffectKindPayload {
     KfEffectCollisionLatch collision_latch;
     KfEffectKind42Countdown kind42;
     KfEffectKind1Stage kind1;
+    KfEffectKind26Stage kind26;
     KfEffectKind50Stage kind50;
     KfEffectKind106Children kind106;
     KfEffectScaleStepArgument scale_step_argument;

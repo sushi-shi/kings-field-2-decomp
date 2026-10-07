@@ -307,18 +307,19 @@ KfEffectKind12Aim	0x00	0x02	max_length	s16	supported	GAME 0x80040d90 sh;GAME 0x8
 KfEffectKind12Aim	0x02	0x02	scale	s16	supported	GAME 0x80040d9c sh;GAME 0x80043d48 lh	Motion scale passed to effect_aim_and_move
 KfEffectKind12Aim	0x04	0x02	turn_step	s16	supported	GAME 0x80040da8 sh;GAME 0x80043d4c lh	Angular step passed to effect_aim_and_move
 KfEffectKind12Aim	0x06	0x02	close_scale	s16	supported	GAME 0x80040db4 sh;GAME 0x80043d64 lh	Close-range scale passed to effect_aim_and_move
-KfEffectKind1Stage	0x0	0x1	collision_stage	u8	supported	game/effect.h;effect_construct_record;effect_update_dispatch	collision_stage access in exact source
+KfEffectKind1Stage	0x0	0x1	collision_stage	KfEffectStage	supported	game/effect.h;effect_construct_record;effect_update_dispatch	collision_stage access in exact source
 KfEffectKind23Attachment	0x00	0x02	actor_index	s16	supported	GAME 0x800415dc sh;GAME 0x80042940 lh	Signed actor index selecting actor_state.actors during kind-23 attachment
 KfEffectKind23Attachment	0x02	0x02	vertex_index	s16	supported	GAME 0x800415e8 sh;GAME 0x80042984 lh	Signed animation vertex index passed to actor_sample_rotated_animation_vertex
 KfEffectKind23Attachment	0x04	0x02	release_animation_phase	u16	supported	GAME 0x800415f8 sh;GAME 0x80042a88 lhu	Unsigned actor animation phase threshold releasing the attached effect
+KfEffectKind26Stage	0x0	0x1	stage	KF_ENUM_STORAGE(KfEffectStage, s8)	supported	effect_update_dispatch signed switch on payload byte 0	travel until blocked, then shrink
 KfEffectKind2Scale	0x00	0x02	max_scale	s16	supported	game/effect.h;GAME 0x80043c9c lh;effect_update_dispatch	Signed comparison after scaling ends the kind-2 effect
 KfEffectKind2Scale	0x02	0x02	scale_step	s16	supported	game/effect.h;GAME 0x80043c1c lhu/0x80043c6c lh	Unsigned growth step also used as signed damage-radius adjustment
 KfEffectKind2Scale	0x04	0x02	radial_damage_parameter	s16	supported	game/effect.h;GAME 0x80043c78 lh;effect_update_dispatch	Passed as signed halfword to radial magic damage
 KfEffectKind42Countdown	0x0	0x1	ticks_remaining	s8	supported	game/effect.h;effect_construct_record;effect_update_dispatch	ticks_remaining access in exact source
-KfEffectKind46State	0x00	0x01	phase	s8	supported	GAME 0x80042df0 lb;GAME 0x80042ebc sb	Kind-46 state switch from zero to one after linked effect expires
+KfEffectKind46State	0x00	0x01	phase	KF_ENUM_STORAGE(KfEffectStage, s8)	supported	GAME 0x80042df0 lb;GAME 0x80042ebc sb	Kind-46 state switch from zero to one after linked effect expires
 KfEffectKind46State	0x01	0x01	linked_effect_index	s8	supported	GAME 0x80042dc8 lb;effect_construct_record kind 46	Signed index into effect_state.records
 KfEffectKind46State	0x02	0x02	age_q12	u16	supported	GAME 0x80042ec0 sh;GAME 0x80042ed0 lh;GAME 0x80042edc lhu	Fade interpolation age advanced by 512 to 4096
-KfEffectKind50Stage	0x0	0x1	stage	s8	candidate	game/effect.h	KfEffectKind50Stage member from reconstructed header
+KfEffectKind50Stage	0x0	0x1	stage	KF_ENUM_STORAGE(KfEffectStage, s8)	candidate	game/effect.h	KfEffectKind50Stage member from reconstructed header
 KfEffectKind5Fanout	0x00	0x01	initial_child_count	u8	supported	GAME 0x80043fd8 sb;GAME 0x800440f4/0x8004416c lbu	Initial number of kind-105 children for hit fraction
 KfEffectKind5Fanout	0x01	0x01	actor_index	u8	supported	GAME 0x80044014/0x800440f0/0x80044120 lbu;effect_construct_record kind 5	Actor record index or 0xff sentinel
 KfEffectKind5Fanout	0x02	0x02	children_remaining	s16	supported	GAME 0x80043fd4 sh;GAME 0x80044054/0x80044320/0x80044384 lh	Signed count decremented by kind-105 children
@@ -338,6 +339,7 @@ KfEffectKindPayload	0x0	0x6	kind2	KfEffectKind2Scale	supported	game/effect.h;eff
 KfEffectKindPayload	0x0	0x1	collision_latch	KfEffectCollisionLatch	supported	game/effect.h;effect_construct_record;effect_update_dispatch	collision_latch access in exact source
 KfEffectKindPayload	0x0	0x1	kind42	KfEffectKind42Countdown	supported	game/effect.h;effect_construct_record;effect_update_dispatch	kind42 access in exact source
 KfEffectKindPayload	0x0	0x1	kind1	KfEffectKind1Stage	supported	game/effect.h;effect_construct_record;effect_update_dispatch	kind1 access in exact source
+KfEffectKindPayload	0x0	0x1	kind26	KfEffectKind26Stage	supported	effect_construct_record kinds 26/27;effect_update_dispatch kinds 26/27	kind26/27 travel/shrink stage view
 KfEffectKindPayload	0x0	0x1	kind50	KfEffectKind50Stage	supported	game/effect.h;effect_construct_record;effect_update_dispatch	kind50 access in exact source
 KfEffectKindPayload	0x0	0x1	kind106	KfEffectKind106Children	supported	game/effect.h;effect_update_dispatch	kind106 access in exact source
 KfEffectKindPayload	0x0	0x2	scale_step_argument	KfEffectScaleStepArgument	supported	game/effect.h;effect_construct_record;effect_update_dispatch	scale_step_argument access in exact source

@@ -370,7 +370,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
         record->animation_clip = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
         record->base_render_id = KF_EFFECT_MODEL_32;
         record->render_id = KF_EFFECT_MODEL_32;
-        record->cache_tail.payload.kind1.collision_stage = 0;
+        record->cache_tail.payload.kind1.collision_stage = KF_EFFECT_STAGE_TRAVEL;
         record->updates_remaining = 70;
         effect_play_spatial_sound(record, 0x1b);
         break;
@@ -379,19 +379,19 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
         record->animation_clip = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
         record->base_render_id = KF_EFFECT_MODEL_36;
         record->render_id = KF_EFFECT_MODEL_36;
-        record->cache_tail.payload.kind1.collision_stage = 0;
+        record->cache_tail.payload.kind1.collision_stage = KF_EFFECT_STAGE_TRAVEL;
         record->updates_remaining = 70;
         record->scale_z = 600;
         record->scale_y = 600;
         record->scale_x = 600;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.kind26.stage = KF_EFFECT_STAGE_TRAVEL;
         break;
     case KF_EFFECT_KIND_27:
         record->render_flags = KF_EFFECT_RENDER_VISIBLE;
         record->animation_clip = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
         record->base_render_id = KF_EFFECT_MODEL_37;
         record->render_id = KF_EFFECT_MODEL_37;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.kind26.stage = KF_EFFECT_STAGE_TRAVEL;
         record->updates_remaining = 70;
         record->scale_z = 0;
         record->scale_y = 0;
@@ -638,7 +638,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
         record->animation_clip = KF_ANIMATION_CLIP_STATIC_OBJECT_FIRST;
         record->base_render_id = KF_EFFECT_MODEL_37;
         record->render_id = KF_EFFECT_MODEL_37;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.collision_latch.impact_handled = 0;
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
@@ -752,7 +752,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
 
         effect_pool_initialize_scaled(record, KF_EFFECT_MODEL_16, 0x1000);
         record->scale_y = 0;
-        kind46->phase = 0;
+        kind46->phase = KF_EFFECT_STAGE_TRACK;
         parameter = va[1];
         record->direction.vy = 0;
         kind46->linked_effect_index = parameter;
@@ -818,7 +818,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
         record->rotation.vy += (rand() >> 6) - 256;
         random_x = rand();
         record->rotation.vz = 0;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.collision_latch.impact_handled = 0;
         record->scale_z = 0x2000;
         record->scale_y = 0x2000;
         record->scale_x = 0x2000;
@@ -846,7 +846,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
     initialize_angles_34_35_117:
         angles = (const SVECTOR *)va[1];
         record->rotation = *angles;
-        record->cache_tail.payload.raw[0] = 0;
+        record->cache_tail.payload.collision_latch.impact_handled = 0;
         effect_play_spatial_sound(record, 0x20);
         break;
     }
@@ -861,7 +861,7 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
         record->scale_z = 0;
         record->scale_y = 0;
         record->scale_x = 0;
-        record->cache_tail.payload.kind50.stage = 0;
+        record->cache_tail.payload.kind50.stage = KF_EFFECT_STAGE_CHARGE;
         effect_play_spatial_sound(record, 0x18);
         break;
     case KF_EFFECT_KIND_101: {
@@ -1644,7 +1644,7 @@ void effect_update_dispatch(void)
         record->position.vx += record->direction.vx;
         record->position.vz += record->direction.vz;
         switch (record->cache_tail.payload.kind46.phase) {
-        case 0: {
+        case KF_EFFECT_STAGE_TRACK: {
             collision = collision_query_world(record->position.vx, record->position.vy,
                                       record->position.vz, 10,
                                       record->scale_y, 0x30);
@@ -1660,13 +1660,13 @@ void effect_update_dispatch(void)
                 record->scale_y = 32767;
             }
             if (selected->type == KF_EFFECT_SLOT_FREE) {
-                record->cache_tail.payload.kind46.phase = 1;
+                record->cache_tail.payload.kind46.phase = KF_EFFECT_STAGE_COLLAPSE;
                 record->cache_tail.payload.kind46.age_q12 = 0;
                 record->scale_threshold.interpolation_start_y = record->scale_y;
             }
             break;
         }
-        case 1: {
+        case KF_EFFECT_STAGE_COLLAPSE: {
             record->scale_y = fixed_lerp_q12(
                 record->scale_threshold.interpolation_start_y, 0,
                 (s16)record->cache_tail.payload.kind46.age_q12);
@@ -1677,6 +1677,8 @@ void effect_update_dispatch(void)
             }
             break;
         }
+        default:
+            break;
         }
         break;
     }
@@ -1751,13 +1753,13 @@ void effect_update_dispatch(void)
         {
             flags = bss_801c7540.collision_cache.flags;
             if (flags & 0x10) {
-                if (record->cache_tail.payload.raw[0] == 0) {
+                if (record->cache_tail.payload.collision_latch.impact_handled == 0) {
                     effect_apply_current_magic_backstep(flags);
                 } else {
-                    record->cache_tail.payload.raw[0] = 1;
+                    record->cache_tail.payload.collision_latch.impact_handled = 1;
                 }
             } else {
-                record->cache_tail.payload.raw[0] = 0;
+                record->cache_tail.payload.collision_latch.impact_handled = 0;
             }
             for (count = 11; count != -1; count--) {
                 effect_spawn_motion(record, -1, -2, 0xc00, -90, 16, 14, 5,
@@ -1775,22 +1777,22 @@ void effect_update_dispatch(void)
         s32 distance;
 
         switch (record->cache_tail.payload.kind50.stage) {
-        case 0:
+        case KF_EFFECT_STAGE_CHARGE:
             record->scale_x = record->scale_y = record->scale_z = record->scale_z + 64;
             player_sample_weapon_world_vertex(0, &record->position);
             if (record->scale_x >= 256) {
-                record->cache_tail.payload.kind50.stage = 1;
+                record->cache_tail.payload.kind50.stage = KF_EFFECT_STAGE_FLIGHT;
                 player_probe_view_target_and_vectors(1000, NULL, &record->direction, &distance);
             }
             break;
-        case 1:
+        case KF_EFFECT_STAGE_FLIGHT:
             if (effect_collision_step(512, KF_COLLISION_HEIGHT_CHECK_FLOOR | 0x200, 0) != 0) {
-                record->cache_tail.payload.kind50.stage = 2;
+                record->cache_tail.payload.kind50.stage = KF_EFFECT_STAGE_BURST;
                 effect_apply_radial_magic_damage(&record->position, 0, 0x400,
                                0x8000, 0x1000, 0x1000);
             }
             break;
-        case 2:
+        case KF_EFFECT_STAGE_BURST:
             if (record->scale_x >= 512) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
@@ -1801,37 +1803,37 @@ void effect_update_dispatch(void)
     }
     case KF_EFFECT_KIND_28: {
         s32 radius;
-        u8 phase;
+        KfEffectStage stage;
 
         radius = 250;
         goto kind_one_update;
     case KF_EFFECT_KIND_1:
         radius = 500;
     kind_one_update:
-        phase = record->cache_tail.payload.kind1.collision_stage;
-        if (phase == 2) {
+        stage = record->cache_tail.payload.kind1.collision_stage;
+        if (stage == KF_EFFECT_STAGE_FADE) {
             record->lighting_blend_q12 += 256;
             if (record->lighting_blend_q12 >= 4096) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
             break;
         }
-        if (phase == 1) {
+        if (stage == KF_EFFECT_STAGE_BOUNCED) {
             record->direction.vy += 13;
         }
         record->rotation.vx += 200;
         collision = effect_collision_step(radius, radius * 2, 250);
         if (collision != 0) {
             effect_apply_current_magic_backstep(collision);
-            if (record->cache_tail.payload.kind1.collision_stage == 1) {
-                record->cache_tail.payload.kind1.collision_stage = 2;
+            if (record->cache_tail.payload.kind1.collision_stage == KF_EFFECT_STAGE_BOUNCED) {
+                record->cache_tail.payload.kind1.collision_stage = KF_EFFECT_STAGE_FADE;
                 record->render_queue_mode = 1;
                 record->lighting_override_index = 0x42;
                 record->lighting_blend_q12 = 0x400;
                 break;
             }
             effect_collision_backtrack();
-            record->cache_tail.payload.kind1.collision_stage = 1;
+            record->cache_tail.payload.kind1.collision_stage = KF_EFFECT_STAGE_BOUNCED;
             record->direction.vz = 0;
             record->direction.vx = 0;
             record->direction.vy = -100;
@@ -1846,19 +1848,21 @@ void effect_update_dispatch(void)
         effect_apply_radial_magic_damage(&record->position, 0, record->scale_x,
                        0x8000, 0x400, 0x1000);
         record->type = KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_SHAPES_ONLY;
-        switch ((s8)record->cache_tail.payload.raw[0]) {
-        case 0:
+        switch (record->cache_tail.payload.kind26.stage) {
+        case KF_EFFECT_STAGE_TRAVEL:
             if (effect_collision_step(100, 200, 0) != 0) {
                 record->direction.vz = 0;
                 record->direction.vy = 0;
                 record->direction.vx = 0;
             }
             break;
-        case 1:
+        case KF_EFFECT_STAGE_SHRINK:
             record->scale_z = record->scale_z - 512;
             if (record->scale_z <= 0) {
                 record->type = KF_EFFECT_SLOT_FREE;
             }
+            break;
+        default:
             break;
         }
         break;

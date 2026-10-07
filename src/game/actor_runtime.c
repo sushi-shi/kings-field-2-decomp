@@ -39,9 +39,6 @@ done:
 
 enum {
     ACTOR_HOME_CELL_SHIFT = 11,
-    ACTOR_RENDER_TEXTURED = 0xff,
-    ACTOR_RENDER_BLEND_MODE_1 = 1,
-    ACTOR_LIGHTING_DEFAULT = 0x47,
     ACTOR_LIGHTING_BLEND_HALF = KF_FIXED12_ONE / 2
 };
 
@@ -104,12 +101,12 @@ void actor_initialize_from_group(KfActor *actor)
     actor->motion.vector.vy = 0;
     actor->motion.vector.vx = 0;
     actor->turn_rate = 0;
-    actor->lighting_override = ACTOR_LIGHTING_DEFAULT;
+    actor->lighting_override = KF_LIGHTING_ACTOR_DEFAULT;
     actor->lighting_blend = ACTOR_LIGHTING_BLEND_HALF;
     if (actor->flags & KF_ACTOR_FLAG_BLENDED_MODEL) {
-        actor->render_mode = ACTOR_RENDER_BLEND_MODE_1;
+        actor->render_mode = KF_RENDER_QUEUE_BLEND_ADD;
     } else {
-        actor->render_mode = ACTOR_RENDER_TEXTURED;
+        actor->render_mode = KF_RENDER_QUEUE_TEXTURED;
     }
     map_cell_add_layer_occupancy(actor->position.vx, actor->position.vz, actor->collision_radius, 1);
 }
@@ -2203,9 +2200,9 @@ dispatch_action:
                 goto case3_motion;
             }
             if (old_state == 20) {
-                actor->lighting_override = 0x42;
+                actor->lighting_override = KF_LIGHTING_PRESET_42;
                 actor->lighting_blend = 0x400;
-                actor->render_mode = 1;
+                actor->render_mode = KF_RENDER_QUEUE_BLEND_ADD;
             } else if (old_state < 38) {
                 if (actor->lighting_blend < 0x1000) {
                     actor->lighting_blend += 192;

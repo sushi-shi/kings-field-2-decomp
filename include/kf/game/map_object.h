@@ -5,6 +5,7 @@
 #include <kf/lib/enum.h>
 #include <kf/game/audio.h>
 #include <kf/game/pool.h>
+#include <kf/game/render_types.h>
 
 /* Template byte 0 selects an object's operation. The loader copies most
  * selectors unchanged into the runtime action byte (GAME 0x80035a74 jump
@@ -79,11 +80,6 @@ enum {
     KF_MAP_OBJECT_INTERACTION_ANY_ANGLE = 0x04,
     KF_MAP_REGION_HEIGHT_ANY = 0x8000,
     KF_MAP_OBJECT_CAPACITY = 0x18c
-};
-
-enum {
-    KF_MAP_OBJECT_RENDER_TEXTURED = 0xff,
-    KF_MAP_OBJECT_LIGHTING_OVERRIDE_NONE = 0xff
 };
 
 enum {
@@ -705,10 +701,10 @@ typedef char kf_map_object_extra40_size[sizeof(KfMapObjectExtra40) == 4 ? 1 : -1
 typedef struct KfMapObject {
     u8 layer_mask;
     u8 asset_clip_selector;
-    u8 render_queue_mode;
+    KfRenderQueueMode render_queue_mode;
     u8 collision_flags;
     KfMapObjectOperation action;
-    u8 lighting_override_index;
+    KfLightingIndex lighting_override_index;
     u16 object_id;
     u16 action_timer;
     u16 phase_q12;

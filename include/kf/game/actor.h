@@ -4,6 +4,7 @@
 #include <kf/lib/bool.h>
 #include <kf/lib/math.h>
 #include <kf/lib/types.h>
+#include <kf/game/render_types.h>
 #include <psyq/sdk.h>
 
 enum {
@@ -552,8 +553,8 @@ typedef struct KfActor {
     u8 previous_target_type;
     u8 unknown_11;
     u8 unknown_12;
-    u8 render_mode;
-    u8 lighting_override;
+    KfRenderQueueMode render_mode;
+    KfLightingIndex lighting_override;
     u8 render_depth;
     s16 lighting_blend;
     u16 animation_phase;

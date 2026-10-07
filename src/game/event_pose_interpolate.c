@@ -631,10 +631,10 @@ magic_action: {
         map_object_reset(object);
         game_counter_decrement(command);
         object->object_id = command;
-        object->render_queue_mode = 1;
+        object->render_queue_mode = KF_RENDER_QUEUE_BLEND_ADD;
         object->layer_mask = 3;
         object->action = KF_MAP_OBJECT_OP_NONE;
-        object->lighting_override_index = 0x42;
+        object->lighting_override_index = KF_LIGHTING_PRESET_42;
         object->rotation.vz = 0;
         object->rotation.vy = 0;
         object->rotation.vx = 0;

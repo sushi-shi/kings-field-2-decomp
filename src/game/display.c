@@ -76,20 +76,20 @@ KfNotificationQuad notification_quads[7] = {
 
 DATA(0x80066888, 0x21c, ".data")
 KfRenderModelRow render_model_rows[KF_RENDER_MODEL_ROW_COUNT] = {
-    {1, 0, 0x40,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, NULL},
-    {1, 0, 0x41,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  2, 0, {256, 256,256, 0}, { 28, 42, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 52, 25, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 64, 25, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 76, 25, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 52, 42, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 64, 42, 32, 0}, {0}, NULL},
-    {1, 0, 0x41,  3, 0, {256, 256,256, 0}, { 76, 42, 32, 0}, {0}, NULL},
-    {1, 0, 0x41, 13, 0, { 64,   8,  2, 0}, { 16, 35, 24, 0}, {0}, NULL},
-    {1, 0, 0x41, 14, 0, { 64,   8,  2, 0}, { 16, 52, 24, 0}, {0}, NULL},
-    {1, 0, 0x41, 15, 0, {204,   8,  2, 0}, { 16, 35, 32, 0}, {0}, NULL},
-    {1, 0, 0x41, 15, 0, {204,   8,  2, 0}, { 16, 52, 32, 0}, {0}, NULL},
-    {1, 0, 0x48, 16, 0, {178, 200,  2, 0}, {  5, 12, 40, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD_COMPASS,  0, 0, { 85,  85, 85, 0}, {290, 32, 50, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD,  1, 0, {256, 256,256, 0}, { 28, 25, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD,  2, 0, {256, 256,256, 0}, { 28, 42, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 52, 25, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 64, 25, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 76, 25, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 52, 42, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 64, 42, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD,  3, 0, {256, 256,256, 0}, { 76, 42, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD, 13, 0, { 64,   8,  2, 0}, { 16, 35, 24, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD, 14, 0, { 64,   8,  2, 0}, { 16, 52, 24, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD, 15, 0, {204,   8,  2, 0}, { 16, 35, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_HUD, 15, 0, {204,   8,  2, 0}, { 16, 52, 32, 0}, {0}, NULL},
+    {1, 0, KF_LIGHTING_PRESET_48, 16, 0, {178, 200,  2, 0}, {  5, 12, 40, 0}, {0}, NULL},
     {KF_RENDER_MODEL_END}
 };
 
@@ -523,13 +523,14 @@ void tmd_project_vertices(s32 count)
 #define TMD_XY(vertex) (*(long *)(vertex))
 
 ADDRESS(0x8002ddb4, 0x728)
-void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mode)
+void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
+                   KF_ENUM_PARAM(KfRenderQueueMode, s32) render_mode)
 {
     KfTmdObject *object;
     u8 *normals;
     u8 *packet;
     u32 remaining;
-    u16 blend_bits = (u16)render_mode << 5;
+    u16 blend_bits = KF_ENUM_ENCODE(u16, render_mode) << 5;
 
     object = tmd_get_object(object_index);
     packet = TMD_SECTION(game_graphics_runtime.tmd_state.current_asset, object->primitive_offset);
@@ -1828,7 +1829,7 @@ void render_active_model_rows(void)
     }
     do {
         if (entry->state == KF_RENDER_MODEL_ACTIVE) {
-            lighting = &game_graphics_runtime.collision_rows[entry->lighting_index];
+            lighting = &game_graphics_runtime.collision_rows[KF_ENUM_ENCODE(u8, entry->lighting_index)];
             model.t[0] = entry->translation.vx;
             model.t[1] = entry->translation.vy;
             model.t[2] = entry->translation.vz;
@@ -2026,8 +2027,8 @@ ADDRESS(0x80031850, 0x53c)
 void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
                    const struct KfEulerAngles *rotation, const SVECTOR *scale,
                    KfPoolRecord **cache, MATRIX *world_matrix, u16 clip,
-                   u16 phase, u8 lighting_override, s16 lighting_blend,
-                   u8 render_mode, s32 depth)
+                   u16 phase, KfLightingIndex lighting_override, s16 lighting_blend,
+                   KfRenderQueueMode render_mode, s32 depth)
 {
     /* Retail reads vy after a null world_matrix path without initializing it. */
     SVECTOR relative;
@@ -2079,8 +2080,8 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         }
     }
 
-    if (render_mode == 0x80) {
-        render_mode = 0xff;
+    if (render_mode == KF_RENDER_QUEUE_TEXTURED_UNBIASED) {
+        render_mode = KF_RENDER_QUEUE_TEXTURED;
     } else if (relative.vy <= 0) {
         depth += 240;
     }
@@ -2093,8 +2094,8 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
         ScaleMatrix(&model, &scale_vector);
     }
 
-    if (lighting_override != 0xff) {
-        override = &game_graphics_runtime.collision_rows[lighting_override];
+    if (lighting_override != KF_LIGHTING_NONE) {
+        override = &game_graphics_runtime.collision_rows[KF_ENUM_ENCODE(u8, lighting_override)];
         if (override->motion.values[0] != -1) {
             fixed_lerp_nine_halfwords_q12(lighting->motion.values, override->motion.values,
                           color_matrix.m[0], lighting_blend);
@@ -2160,9 +2161,9 @@ void render_world_model(u8 map_layer, u16 asset_index, const VECTOR *position,
     } else {
         tmd_transform_vertices_depth(object->vertex_count, depth);
     }
-    if (render_mode == 0xff) {
+    if (render_mode == KF_RENDER_QUEUE_TEXTURED) {
         render_enqueue_textured_tmd(object_index, depth);
-    } else if (render_mode == 0xfe) {
+    } else if (render_mode == KF_RENDER_QUEUE_CLIPPED) {
         render_enqueue_tmd_with_clipping(object_index, depth, NULL);
     } else {
         render_enqueue_blended_tmd(object_index, depth, render_mode);
@@ -2538,7 +2539,7 @@ map_sound_outside:
             goto map_object_next;
         }
 map_ordinary_object: {
-            u8 render_mode;
+            KfRenderQueueMode render_mode;
             KfMapObjectTemplate *object_template;
             SVECTOR *scale;
             if (object->collision_flags & 2) goto map_radius_check;
@@ -2555,7 +2556,7 @@ map_ordinary_visible:
                 rotation.z = object->rotation.vz;
                 render_mode = object->render_queue_mode;
                 if (object->collision_flags & 1) {
-                    render_mode = (visibility & 0x80) ? 0xfe : 0xff;
+                    render_mode = (visibility & 0x80) ? KF_RENDER_QUEUE_CLIPPED : KF_RENDER_QUEUE_TEXTURED;
                 }
                 render_world_model(object->layer_mask, object->object_id + 0x100,
                                &object->position, &rotation, scale,
@@ -2650,8 +2651,8 @@ effect_next:
                                placed->model_index + KF_MAP_PLACED_ASSET_BASE,
                                &placed->position, &rotation, NULL, NULL,
                                &game_graphics_runtime.render_state.pitch_matrix,
-                               placed->frame_index + KF_MAP_PLACED_CLIP_BASE, 0, 0x46,
-                               0x1000, 1, 0);
+                               placed->frame_index + KF_MAP_PLACED_CLIP_BASE, 0, KF_LIGHTING_MAP_PLACED,
+                               0x1000, KF_RENDER_QUEUE_BLEND_ADD, 0);
             }
             if (placed->frame_period != KF_MAP_PLACED_ANIMATION_DISABLED &&
                 game_graphics_runtime.map_placed_frame_counter % placed->frame_period == 0) {

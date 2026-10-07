@@ -20,8 +20,8 @@ KfActor	0xf	0x1	target_action_state	u8	supported	actor_set_target;actor_select_b
 KfActor	0x10	0x1	previous_target_type	u8	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
 KfActor	0x11	0x1	unknown_11	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
 KfActor	0x12	0x1	unknown_12	u8	opaque	game/actor.h;retail GAME actor chain	offset and width observed; meaning unresolved
-KfActor	0x13	0x1	render_mode	u8	supported	render_resource_dispatch render_world_model render_mode argument;actor_initialization	Actor model render mode
-KfActor	0x14	0x1	lighting_override	u8	supported	render_resource_dispatch render_world_model lighting_override argument;actor behavior lighting transition	Actor lighting override index
+KfActor	0x13	0x1	render_mode	KfRenderQueueMode	supported	render_resource_dispatch render_world_model render_mode argument;actor_initialization;render_types.h	Actor model render mode
+KfActor	0x14	0x1	lighting_override	KfLightingIndex	supported	render_resource_dispatch render_world_model lighting_override argument;actor behavior lighting transition;render_types.h	Actor lighting override index
 KfActor	0x15	0x1	render_depth	u8	supported	actor_load_records group+0x09 copy;render_resource_dispatch;render_world_model depth argument	Signed render depth/order value carried by each actor
 KfActor	0x16	0x2	lighting_blend	s16	supported	GAME 0x8003247c signed halfword;render_world_model lighting_blend argument;actor behavior transition	Actor lighting blend amount
 KfActor	0x18	0x2	animation_phase	u16	supported	game/actor.h;retail GAME actor chain	member used by reconstructed actor code
@@ -359,10 +359,10 @@ KfEffectRecord	0x5	0x1	unknown_05	u8	opaque	game/effect.h;asm;effect pool;game_m
 KfEffectRecord	0x6	0x1	damage_multiplier_tenths	u8	candidate	game/effect.h;GAME 0x800403c8;player_apply_damage consumer	constructor callers normally supply 10; actor script supplies target word +0x18; damage callee scales total by this value divided by 10
 KfEffectRecord	0x7	0x1	phase	u8	supported	game/effect.h;GAME 0x80042650 kind/phase dispatch;0x80041d7c spawn	Checked effect phase byte; dispatcher selects five phase handlers at 0x80044f60.
 KfEffectRecord	0x8	0x1	render_flags	u8	candidate	game/effect.h;GAME 0x80032c6c/0x80032ca4;effect constructor/update	low two bits govern draw eligibility/visibility test; bits 2-3 select render path
-KfEffectRecord	0x9	0x1	render_queue_mode	u8	candidate	game/effect.h;asm 0x8003259c/0x80040468;render_world_model consumer	0xff constructor default selects textured queue; constructor/update value 1 selects blended queue; renderer also handles 0xfe clipped mode
+KfEffectRecord	0x9	0x1	render_queue_mode	KfRenderQueueMode	candidate	game/effect.h;asm 0x8003259c/0x80040468;render_world_model consumer;render_types.h	0xff constructor default selects textured queue; constructor/update value 1 selects blended queue; renderer also handles 0xfe clipped mode
 KfEffectRecord	0xa	0x1	map_layer_mask	u8	candidate	game/effect.h;asm 0x8004037c/0x800423ec;render_scene_and_update_resources	constructor default 3 selects both layers; collision step selects 1 or 2; renderer masks map-cell visibility and passes layer to render_world_model
 KfEffectRecord	0xb	0x1	cooldown	u8	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
-KfEffectRecord	0xc	0x1	lighting_override_index	u8	candidate	game/effect.h;asm 0x80032bbc/0x80040464;render_world_model consumer	0xff disables lighting-row override; other values index game_graphics_runtime.collision_rows during model rendering
+KfEffectRecord	0xc	0x1	lighting_override_index	KfLightingIndex	candidate	game/effect.h;asm 0x80032bbc/0x80040464;render_world_model consumer;render_types.h	0xff disables lighting-row override; other values index game_graphics_runtime.collision_rows during model rendering
 KfEffectRecord	0xd	0x1	midpoint_collision_enabled	u8	candidate	game/effect.h;asm 0x8004049c/0x80042308/0x80042430;effect constructor and collision helpers	constructor enables midpoint collision for fast motion and kinds 4/7/49; collision step probes midpoint and backtrack uses stored half-step
 KfEffectRecord	0xe	0x2	updates_remaining	s16	supported	game/effect.h;asm;effect pool;game_main_loop startup clear	checked effect-pool field; semantic meaning provisional
 KfEffectRecord	0x10	0x2	lighting_blend_q12	s16	candidate	game/effect.h;GAME 0x80032d58;render_world_model arg 11	constructor uses 0/0x1000; runtime ramps by 256 to 4096; renderer passes signed halfword as lighting blend
@@ -530,10 +530,10 @@ KfMapMaskShapePair	0x00	0x02	near	s16	supported	game/render_mask.h;GAME 0x8002c6
 KfMapMaskShapePair	0x02	0x02	far	s16	supported	game/render_mask.h;GAME 0x8002c6bc lh;DATA 0x80067874	Signed far shape halfword used as interpolation endpoint
 KfMapObject	0x00	0x01	layer_mask	u8	supported	asm;placement layer copy;map-cell layer selection;render visibility bit tests	1/2/3 layer mask initialized from placement or collision layer and tested by renderer
 KfMapObject	0x01	0x01	asset_clip_selector	u8	supported	render_world_model;render_animated_object;animation_sample_vertex	render_world_model uses values >=0x80 as static object selectors; lower values feed animation, while render_animated_object passes the byte as clip
-KfMapObject	0x02	0x01	render_queue_mode	u8	supported	render_scene_and_update_resources;render_world_model	0xff/0xfe/other selects textured, clipped, or blended render queue
+KfMapObject	0x02	0x01	render_queue_mode	KfRenderQueueMode	supported	render_scene_and_update_resources;render_world_model;render_types.h	0xff/0xfe/other selects textured, clipped, or blended render queue
 KfMapObject	0x03	0x01	collision_flags	u8	candidate	asm;map_object_find_interaction_target	bit 2 accepts a distance hit without angle filtering
 KfMapObject	0x04	0x01	action	KfMapObjectOperation	supported	asm;map_object_start_action_if_idle;map_object_update_actions;enum-domain-plan.md	dispatched operation; 255 idle; the loader copies the template selector here
-KfMapObject	0x05	0x01	lighting_override_index	u8	supported	render_scene_and_update_resources;render_world_model	0xff sentinel or index of override collision row
+KfMapObject	0x05	0x01	lighting_override_index	KfLightingIndex	supported	render_scene_and_update_resources;render_world_model;render_types.h	0xff sentinel or index of override collision row
 KfMapObject	0x06	0x02	object_id	u16	supported	asm;map_object_start_action_if_idle;map_object_effect_pool_acquire;map_object_play_spatial_sound	member used by reconstructed code
 KfMapObject	0x08	0x02	action_timer	u16	supported	asm;map_object_start_action_if_idle;map_object_effect_pool_acquire;map_object_play_spatial_sound	member used by reconstructed code
 KfMapObject	0x0a	0x02	phase_q12	u16	supported	map_object_update_actions;render_world_model	bounded 0..0x1000 phase for animation and motion
@@ -1066,7 +1066,7 @@ KfRenderMaskScanState	0x18	0x04	window_z	s32	supported	asm;update_current_map_ce
 KfRenderMaskScanState	0x1c	0x04	mask_cursor	u8 *	supported	asm;update_current_map_cell_layer_mask;build_camera_map_cell_layer_masks	24-by-24 window scan state
 KfRenderModelRow	0x00	0x01	state	u8	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row
 KfRenderModelRow	0x01	0x01	animation_clip	u8	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row
-KfRenderModelRow	0x02	0x01	lighting_index	u8	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row
+KfRenderModelRow	0x02	0x01	lighting_index	KfLightingIndex	supported	asm;retail row bytes;render_active_model_rows;render_types.h	36-byte render-model row
 KfRenderModelRow	0x04	0x02	asset_id	u16	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row
 KfRenderModelRow	0x06	0x02	animation_phase	u16	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row
 KfRenderModelRow	0x08	0x08	scale	SVECTOR	supported	asm;retail row bytes;render_active_model_rows	36-byte render-model row

@@ -3,6 +3,7 @@
 
 #include <kf/lib/types.h>
 #include <kf/game/pool.h>
+#include <kf/game/render_types.h>
 #include <psyq/sdk.h>
 
 enum { KF_RENDER_MODEL_ROW_COUNT = 15 };
@@ -11,7 +12,7 @@ enum { KF_RENDER_MODEL_ROW_COUNT = 15 };
 typedef struct KfRenderModelRow {
     u8 state;
     u8 animation_clip;
-    u8 lighting_index;
+    KfLightingIndex lighting_index;
     u16 asset_id;
     u16 animation_phase;
     SVECTOR scale;
@@ -36,8 +37,8 @@ struct KfEulerAngles;
 void render_world_model(u8 layer, u16 asset_index, const VECTOR *position,
                    const struct KfEulerAngles *rotation, const SVECTOR *scale,
                    KfPoolRecord **cache, MATRIX *world_matrix, u16 clip,
-                   u16 phase, u8 lighting_override, s16 lighting_blend,
-                   u8 render_mode, s32 depth);
+                   u16 phase, KfLightingIndex lighting_override, s16 lighting_blend,
+                   KfRenderQueueMode render_mode, s32 depth);
 void render_animated_object(u16 asset_index, const struct KfEulerAngles *rotation,
                    KfPoolRecord **cache, u16 clip, u16 phase,
                    s32 blend_mode, s32 lighting_flags, s16 depth);

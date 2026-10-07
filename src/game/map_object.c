@@ -46,7 +46,7 @@ void map_object_reset(KfMapObject *object)
 {
     object->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
     object->phase_q12 = 0;
-    object->render_queue_mode = KF_MAP_OBJECT_RENDER_TEXTURED;
+    object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED;
     object->layer_mask = 0;
     object->rotation.vz = 0;
     object->rotation.vx = 0;
@@ -54,7 +54,7 @@ void map_object_reset(KfMapObject *object)
     object->scale.vx = object->scale.vy = object->scale.vz = KF_FIXED12_ONE;
     object->action = KF_MAP_OBJECT_OP_NONE;
     object->render_depth_offset = 0;
-    object->lighting_override_index = KF_MAP_OBJECT_LIGHTING_OVERRIDE_NONE;
+    object->lighting_override_index = KF_LIGHTING_NONE;
     object->lighting_blend_q12 = 0;
 }
 
@@ -183,7 +183,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         object->action_timer = 0;
         object->asset_clip_selector = KF_MAP_OBJECT_STATIC_OBJECT_ZERO;
         object->phase_q12 = 0;
-        object->render_queue_mode = KF_MAP_OBJECT_RENDER_TEXTURED;
+        object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED;
         object->rotation.vz = 0;
         object->rotation.vx = 0;
         object->rotation.vy = -(s32)placements->rotation_y & 0xfff;
@@ -193,10 +193,10 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         object->layer_mask = placements->layer_mask;
         object->collision_flags = object_template->collision_flags;
         object->render_depth_offset = object_template->initial_render_depth_offset;
-        object->lighting_override_index = KF_MAP_OBJECT_LIGHTING_OVERRIDE_NONE;
+        object->lighting_override_index = KF_LIGHTING_NONE;
         object->lighting_blend_q12 = 0;
         if (object->collision_flags & 0x20) {
-            object->render_queue_mode = 0x80;
+            object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED_UNBIASED;
         }
         object->collision_height = object_template->interaction_height;
         object->position.vx = ((u32)placements->region_x << 11) + placements->local_x;
@@ -233,8 +233,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                 }
                 if (object->tail.fields.unknown_39 == 0) {
                     object->action = KF_MAP_OBJECT_OP_16;
-                    object->render_queue_mode = 1;
-                    object->lighting_override_index = 0x44;
+                    object->render_queue_mode = KF_RENDER_QUEUE_BLEND_ADD;
+                    object->lighting_override_index = KF_LIGHTING_EFFECT;
                     object->lighting_blend_q12 = KF_FIXED12_ONE;
                     object->extra_40.bob_base_y = object->position.vy;
                 }
@@ -380,8 +380,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             KfMapOccupancyLayer *kind59_layer;
 
             object->action = KF_MAP_OBJECT_OP_89;
-            object->render_queue_mode = 1;
-            object->lighting_override_index = 0x42;
+            object->render_queue_mode = KF_RENDER_QUEUE_BLEND_ADD;
+            object->lighting_override_index = KF_LIGHTING_PRESET_42;
             object->lighting_blend_q12 = KF_FIXED12_ONE;
             object->position.vy += 0x100;
             kind59_row = bss_801c7540.map_cells[object->position.vz >> 11];
@@ -404,7 +404,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         case KF_MAP_OBJECT_OP_48:
             object->action = KF_MAP_OBJECT_OP_48;
-            object->render_queue_mode = 1;
+            object->render_queue_mode = KF_RENDER_QUEUE_BLEND_ADD;
             object->position.vy -=
                 (u8)object->tail.fields.spawn_sequence * 0x100;
             break;
@@ -438,7 +438,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             break;
         }
         if (object->object_id == 0xa3) {
-            object->render_queue_mode = 3;
+            object->render_queue_mode = KF_RENDER_QUEUE_BLEND_ADD_QUARTER;
         }
     }
 }

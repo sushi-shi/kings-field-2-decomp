@@ -3,6 +3,7 @@
 
 #include <kf/lib/types.h>
 #include <kf/game/tmd.h>
+#include <kf/game/render_types.h>
 #include <psyq/sdk.h>
 
 /* Prepared TMD packet indices are byte offsets into projected vertices. */
@@ -297,7 +298,8 @@ typedef char kf_gpu_gt4_last_uv_offset[
     (u32)&((KfGpuGT4 *)0)->packed.uv3 == 48 ? 1 : -1];
 
 extern CVECTOR map_textured_primitive_color;
-void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias, s32 render_mode);
+void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
+                   KF_ENUM_PARAM(KfRenderQueueMode, s32) render_mode);
 void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias);
 void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_depth);
 void render_enqueue_map(u16 object_index);

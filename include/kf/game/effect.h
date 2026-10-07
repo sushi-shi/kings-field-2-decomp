@@ -3,6 +3,7 @@
 
 #include <kf/lib/types.h>
 #include <kf/game/audio.h>
+#include <kf/game/render_types.h>
 #include <psyq/sdk.h>
 
 struct KfPoolRecord;
@@ -291,10 +292,10 @@ typedef struct KfEffectRecord {
     u8 damage_multiplier_tenths;
     u8 phase;
     u8 render_flags;
-    u8 render_queue_mode;
+    KfRenderQueueMode render_queue_mode;
     u8 map_layer_mask;
     u8 cooldown;
-    u8 lighting_override_index;
+    KfLightingIndex lighting_override_index;
     u8 midpoint_collision_enabled;
     s16 updates_remaining;
     s16 lighting_blend_q12;

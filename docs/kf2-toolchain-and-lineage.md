@@ -87,6 +87,76 @@ objects that still use the old epilogue are excluded.)
   (1996-02-14). It's a candidate, not proven: GCC 2.6.x would also produce
   the new epilogue.
 
+### GCC 2.5.7 mechanisms behind source shape
+
+Matching against the `cc1psx-257` probe (`-O2 -mcpu=r2000`) traced these
+source-to-codegen links in the 2.5.7 sources and RTL dumps (`-dr -dL -dl
+-dg -dS`). They explain retail differences without a compiler change.
+
+- **Constant addresses (expr.c, explow.c).** A field read whose value is
+  used directly (`p = DISPLAY.primitive_buffer;`) goes through
+  `change_address`/`memory_address`, which forces the constant address into a
+  pseudo for CSE. The pointer operand of `->` is expanded with `EXPAND_SUM`
+  and builds `(mem (const ...))` without that pseudo. Both emit the same
+  `lui`/`lw`, but only the forced pseudo becomes a loop movable.
+- **Loop invariant hoisting (loop.c `move_movables`).** Threshold =
+  (call in loop ? 1 : 2) x (1 + 25 non-fixed GPRs) and drops by 3 for each
+  register moved. An invariant moves only if threshold x savings x lifetime
+  >= the loop's real insn count, which includes the `(use aN)` insns before
+  calls. Movables are tried in insn order. An extra address pseudo early in
+  the loop can therefore keep a later constant from being hoisted
+  (`menu_fade_transition`). An invariant that is used only once in a loop
+  with calls is substituted back into its use and costs nothing.
+- **CSE paths (cse.c `cse_end_of_basic_block`).** A path runs on through a
+  conditional branch around a block, so `x = a; if (c) x = b;` keeps earlier
+  constant pseudos live. That can push a shared `-1` into a saved register
+  across calls. An `if/else` whose arms end at a common join label stops the
+  path. Calls duplicated in both arms are cross-jumped back into one later
+  (`render_world_model`). A store to a global between a field store and its
+  re-read invalidates the memory equivalence and forces a reload.
+- **Strength reduction (loop.c).** Threshold = (call ? 1 : 2) x (3 + 25). A
+  giv is reduced only if lifetime x threshold x (benefit - add cost) >= insn
+  count. Identical givs combine, adding lifetimes and benefits. A
+  non-replaceable user-variable giv also pays a copy cost. A pointer the
+  source advances by hand, initialized before the loop, is set up ahead of the
+  reduced givs. Reduced givs are set up and incremented in reduction order.
+- **Register priority (local-alloc.c, global.c).** Priority =
+  floor_log2(refs) x refs / (live length x words). Ties go to the lower
+  pseudo number, so declaration order decides them. References inside a loop
+  count `loop_depth` times. A `do { } while (0)` contour or the copied entry
+  test of a `for`/`--n` loop therefore raises the weight of the uses in it.
+  `update_equiv_regs` doubles the live length of single-set constants and of
+  unmodified stack parameters. Reusing one local for two values merges their
+  live ranges. Local-alloc gives callee-saved registers to single-block
+  pseudos that cross calls before global-alloc runs. A block local in `s2`
+  therefore moves a global to `s3`.
+- **Caller-save (caller-save.c).** A call-clobbered register is kept across
+  calls only if refs > 4 x calls crossed.
+- **Scheduling (sched.c, backward list).** Priority is the longest latency
+  path. An insn that births a register gets `0x7f000001` once ready. Ties
+  then go by class relative to the last scheduled insn, then by highest LUID.
+  In block 0 the leading hard-register parameter copies are pinned until the
+  first non-copy, so a parameter copy that combine has deleted changes which
+  copies the scheduler may move. A read after a non-const call depends on
+  that call.
+- **Stack frame (function.c `assign_stack_temp`).** Block-scoped aggregates
+  reuse a free slot of the same size first, most recently freed first.
+  Otherwise they split the smallest larger slot in 8-byte units, and
+  adjacent free slots merge at the end of each statement or block. Block
+  nesting and declaration order therefore decide aggregate offsets. An
+  address-taken scalar gets a permanent slot and stays in memory. A union of
+  `u32`, `s16[2]` and `u8[4]` gets SImode and lives in a register. A pseudo
+  whose insns combine deleted can still get an 8-byte reload slot at the top
+  of the locals.
+- **Delay slots (reorg.c).** A redundant insn at a branch target is skipped,
+  so the slot is filled from the fall-through. A target insn is not copied
+  when its destination is live on the fall-through.
+- **Other folds.** Combine's nonzero-bits tracking covers only pseudos set
+  once, so `x = (x << 8) >> 12` on a reassigned variable stays `sll`/`sra`.
+  Reading a bitfield of a word defeats CSE against a plain read of that word.
+  `p + i * size` expanded as a value keeps the pointer first in `addu`. The
+  `EXPAND_SUM` address path puts the product first.
+
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 
 Psy-Q links game objects before the libraries, so everything from the load

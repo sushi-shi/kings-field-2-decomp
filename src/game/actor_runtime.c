@@ -1256,9 +1256,10 @@ check_diagonal:
     if (diagonal_attempted) {
         goto try_axis;
     }
-    switch (KF_COLLISION_CACHE_SHAPE->quarter_turns & 3) {
-    case 0:
-    case 2:
+    switch (KF_ENUM_DECODE(KfQuarterTurn,
+                           KF_COLLISION_CACHE_SHAPE->quarter_turns & KF_MAP_CELL_QUARTER_TURN_MASK)) {
+    case KF_QUARTER_TURN_0:
+    case KF_QUARTER_TURN_2:
         motion_x = (original_x + original_z) >> 1;
         motion_z = motion_x;
         break;

@@ -31,7 +31,6 @@
 enum { KF_MAP_CELL_SHIFT = 11 };
 
 enum {
-    KF_MAP_CELL_ORIENTATION_MASK = 3,
     KF_MAP_CELL_LIGHTING_MASK = 63,
     KF_MAP_CELL_PREPARED_LIMIT = 16
 };
@@ -1684,9 +1683,10 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
     long gte_flags;
     KfCollisionRow *lighting;
     u16 object_index;
-    s32 orientation;
+    KF_ENUM_STORAGE(KfQuarterTurn, s32) orientation;
 
-    orientation = shape->quarter_turns & KF_MAP_CELL_ORIENTATION_MASK;
+    orientation = KF_ENUM_DECODE(KfQuarterTurn,
+                                 shape->quarter_turns & KF_MAP_CELL_QUARTER_TURN_MASK);
     SetRotMatrix(&game_graphics_runtime.render_state.view_matrix);
     SetTransMatrix(&game_graphics_runtime.render_state.view_matrix);
     RotTrans(position, (VECTOR *)&cell_matrix.t, &gte_flags);
@@ -1697,7 +1697,7 @@ void render_map_cell_object(const KfMapCellShape *shape, SVECTOR *position,
 
     lighting = &game_graphics_runtime.collision_rows[
         shape->lighting_index & KF_MAP_CELL_LIGHTING_MASK];
-    SetLightMatrix((MATRIX *)&lighting->rotations[orientation]);
+    SetLightMatrix((MATRIX *)&lighting->rotations[KF_ENUM_ENCODE(s32, orientation)]);
     SetColorMatrix((MATRIX *)&lighting->motion);
     fog_set_near(lighting->filter.angle);
     SetBackColor(lighting->filter.kinds.types[0],

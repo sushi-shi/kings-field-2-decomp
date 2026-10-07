@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/quarter_turn.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/map_cell_pattern.h>
 #include <kf/game/player.h>
@@ -10,7 +11,6 @@ enum {
     KF_PATTERN_SKIP_OBJECT = 0xff,
     KF_PATTERN_LIGHTING_UNCHANGED = 0xff,
     KF_PATTERN_LAYER_FLAG_MASK = 0x7f,
-    KF_PATTERN_ORIENTATION_MASK = 0x03,
     KF_PATTERN_ORIENTATION_OTHER_BITS_MASK = 0xfc,
     KF_PATTERN_LIGHTING_INDEX_MASK = 0x3f,
     KF_PATTERN_LIGHTING_FLAGS_MASK = 0xc0
@@ -90,24 +90,24 @@ void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32
         return;
     }
     /* The rotation argument is reduced to quarter turns in place. */
-    rotation = -(rotation >> 10) & KF_PATTERN_ORIENTATION_MASK;
-    switch (rotation) {
-    case 0:
+    rotation = -(rotation >> 10) & KF_MAP_CELL_QUARTER_TURN_MASK;
+    switch (KF_ENUM_DECODE(KfQuarterTurn, rotation)) {
+    case KF_QUARTER_TURN_0:
         inner_step = 1;
         row_step = KF_MAP_WORLD_GRID_SIDE;
         break;
-    case 1:
+    case KF_QUARTER_TURN_1:
         inner_step = -KF_MAP_WORLD_GRID_SIDE;
         row_step = 1;
         destination_z += width - 1;
         break;
-    case 2:
+    case KF_QUARTER_TURN_2:
         inner_step = -1;
         row_step = -KF_MAP_WORLD_GRID_SIDE;
         destination_x += width - 1;
         destination_z += height - 1;
         break;
-    case 3:
+    case KF_QUARTER_TURN_3:
         inner_step = KF_MAP_WORLD_GRID_SIDE;
         row_step = -1;
         destination_x += height - 1;
@@ -135,7 +135,7 @@ void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32
                         (destination->layer[0].quarter_turns &
                          KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
                         ((source->layer[0].quarter_turns + rotation) &
-                         KF_PATTERN_ORIENTATION_MASK);
+                         KF_MAP_CELL_QUARTER_TURN_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
                     destination->layer[0].collision_shape_id = source->layer[0].collision_shape_id;
@@ -168,7 +168,7 @@ void map_cell_copy_rotated_fields(KfMapLayerMask layer_select, s32 source_x, s32
                         (destination->layer[1].quarter_turns &
                          KF_PATTERN_ORIENTATION_OTHER_BITS_MASK) |
                         ((source->layer[1].quarter_turns + rotation) &
-                         KF_PATTERN_ORIENTATION_MASK);
+                         KF_MAP_CELL_QUARTER_TURN_MASK);
                 }
                 if (field_mask & KF_MAP_CELL_COPY_COLLISION_SHAPE) {
                     destination->layer[1].collision_shape_id = source->layer[1].collision_shape_id;

@@ -5,6 +5,8 @@
 #include <kf/game/render_types.h>
 
 enum {
+    /* Low bits of KfMapOccupancyLayer.quarter_turns: the cell's KfQuarterTurn. */
+    KF_MAP_CELL_QUARTER_TURN_MASK = 3,
     KF_MAP_CELL_POSITION_SHIFT = 11,
     KF_MAP_CELL_ELEVATION_SHIFT = 7,
     KF_MAP_CELL_NO_OBJECT_INDEX = 0xff

@@ -580,11 +580,11 @@ void refresh_collision_row_rotations(void)
         index = KF_COLLISION_ROW_COUNT - 1;
         do {
             matrix_rotate_quarter_turns((MATRIX *)&row->rotations[0],
-                                        (MATRIX *)&row->rotations[1], 1);
+                                        (MATRIX *)&row->rotations[1], KF_QUARTER_TURN_1);
             matrix_rotate_quarter_turns((MATRIX *)&row->rotations[0],
-                                        (MATRIX *)&row->rotations[2], 2);
+                                        (MATRIX *)&row->rotations[2], KF_QUARTER_TURN_2);
             matrix_rotate_quarter_turns((MATRIX *)&row->rotations[0],
-                                        (MATRIX *)&row->rotations[3], 3);
+                                        (MATRIX *)&row->rotations[3], KF_QUARTER_TURN_3);
             index--;
             row++;
         } while (index != -1);

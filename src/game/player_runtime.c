@@ -1991,7 +1991,7 @@ s32 player_move_horizontal(s32 heading, s32 distance)
     s32 diagonal_retry;
     s32 high_collision;
     SVECTOR delta;
-    s32 diagonal_kind;
+    KF_ENUM_STORAGE(KfQuarterTurn, s32) diagonal_kind;
 
     diagonal_retry = slide_attempted = collision_retry = result = 0;
 
@@ -2090,9 +2090,9 @@ retry: {
                 }
                 diagonal_retry = 1;
             } while (0);
-            diagonal_kind =
-                KF_COLLISION_CACHE_SHAPE->quarter_turns & 3;
-            if (diagonal_kind == 0 || diagonal_kind == 2) {
+            diagonal_kind = KF_ENUM_DECODE(KfQuarterTurn,
+                KF_COLLISION_CACHE_SHAPE->quarter_turns & KF_MAP_CELL_QUARTER_TURN_MASK);
+            if (diagonal_kind == KF_QUARTER_TURN_0 || diagonal_kind == KF_QUARTER_TURN_2) {
                 dx = (initial_dx + initial_dz) >> 1;
                 dz = dx;
             } else {

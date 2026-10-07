@@ -28,7 +28,6 @@ enum {
     RESOURCE_STEP_QUEUE_TIM = 4,
     RESOURCE_STEP_FADE_AUDIO = 5,
     RESOURCE_STEP_FINISH_AUDIO = 6,
-    RESOURCE_MAP_CELL_QUARTER_TURN_MASK = 3,
     RESOURCE_SEQUENCE_FADE_START_VOLUME = 60,
     RESOURCE_SEQUENCE_FADE_STEP = 2
 };
@@ -501,8 +500,8 @@ phase_three:
                 KfMapOccupancyCell *cell = &bss_801c7540.map_cells[0][0];
                 index = KF_MAP_WORLD_GRID_SIDE * KF_MAP_WORLD_GRID_SIDE;
                 do {
-                    cell->layer[0].quarter_turns &= RESOURCE_MAP_CELL_QUARTER_TURN_MASK;
-                    cell->layer[1].quarter_turns &= RESOURCE_MAP_CELL_QUARTER_TURN_MASK;
+                    cell->layer[0].quarter_turns &= KF_MAP_CELL_QUARTER_TURN_MASK;
+                    cell->layer[1].quarter_turns &= KF_MAP_CELL_QUARTER_TURN_MASK;
                     index--;
                     cell++;
                 } while (index != 0);

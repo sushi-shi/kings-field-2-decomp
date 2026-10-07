@@ -4,6 +4,8 @@
 /* Game-owned fixed-point angle, vector, and matrix types and helpers. */
 
 #include <kf/lib/bool.h>
+#include <kf/lib/enum.h>
+#include <kf/lib/quarter_turn.h>
 #include <kf/lib/types.h>
 #include <psyq/sdk.h>
 
@@ -30,15 +32,6 @@ enum {
     KF_DISTANCE_OUTSIDE_REACH = -9999999
 };
 
-/* Quarter turns about Y applied by matrix_rotate_quarter_turns and
- * svector_rotate_quarter_turns. */
-enum {
-    KF_QUARTER_TURN_0 = 0,
-    KF_QUARTER_TURN_1 = 1,
-    KF_QUARTER_TURN_2 = 2,
-    KF_QUARTER_TURN_3 = 3
-};
-
 /* 32-bit X/Z pair; King's Field (SLPS-00017) used an s16 pair here. */
 struct KfVecXZi {
     s32 x;
@@ -56,8 +49,10 @@ s32 value_approach(s32 current, s32 target, s32 step);
 void vector_direction_scaled(VECTOR *from, VECTOR *to, s32 scale, SVECTOR *direction);
 s32 angle_velocity_step(s32 current, s32 target, s32 velocity, s32 acceleration, s32 damping);
 void angle_to_forward_xz(s16 angle, struct KfVecXZi *direction);
-void matrix_rotate_quarter_turns(MATRIX *source, MATRIX *destination, s32 turns);
-void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination, s32 turns);
+void matrix_rotate_quarter_turns(MATRIX *source, MATRIX *destination,
+    KF_ENUM_PARAM(KfQuarterTurn, s32) turns);
+void svector_rotate_quarter_turns(SVECTOR *source, SVECTOR *destination,
+    KF_ENUM_PARAM(KfQuarterTurn, s32) turns);
 void matrix_set_rotation_x(s16 angle, MATRIX *matrix);
 void matrix_set_rotation_y(s16 angle, MATRIX *matrix);
 void matrix_set_rotation_z(s16 angle, MATRIX *matrix);

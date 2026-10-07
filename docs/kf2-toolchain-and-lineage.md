@@ -254,6 +254,16 @@ Lane B6 traced these further links:
   register as a copy preference. `x /= 10` after a block-local `x % 10`
   keeps the quotient in a temporary until the copy, so the variable prefers
   the temporary's register over a parameter's (`memory_card_write_title_stats`).
+- **Dead reload slots come from combine splits (combine.c `try_combine`).**
+  Combine zeroes the use count of the middle insn's register only when the
+  result is a single insn. When it splits the result in two (`newi2pat`) and
+  that register disappears, its stale count makes reload give it an 8-byte
+  frame slot. The compare is not essential to the narrow-field case: any
+  sign extension of a narrow field whose narrow register is reused qualifies,
+  for example `a = rec->pad; rec->pad += d;` (no visible `move` remains;
+  `effect_update_dispatch`'s fifth slot). Other sources are the copied entry
+  test of `for (i = 0; i < n; i++)` and of `for (x = n - 1; x != -1; x--)`
+  over a parameter.
 
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 

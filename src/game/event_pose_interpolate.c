@@ -39,7 +39,7 @@ DATA(0x800679c0, 0x8, ".data")
 u8 event_magic_unlock_ids_5e[8] = {18, 19, 11, 12, 0xff, 0xff, 0xff, 0xff};
 
 DATA(0x8009a5e8, 0x78, ".bss")
-u8 game_counter_bytes[0x78];
+u8 game_counter_bytes[KF_ITEM_ID_COUNT];
 
 typedef void (*KfEventCommandCallback)(const VECTOR *position,
                                        const KfPlayerViewRotation *rotation,
@@ -1114,19 +1114,19 @@ void event_world_dispatch_interaction(const VECTOR *position,
         case KF_MAP_OBJECT_OP_SIGNAL_DOOR:
         case KF_MAP_OBJECT_OP_HINGE:
             if (object->action_timer == 0) {
-                if (object->tail.marker.marker_id >= 0xfc &&
-                    (((object->tail.marker.marker_id & 1) &&
+                if (object->tail.marker.marker_id >= KF_MAP_OBJECT_MARKER_OPEN_SIDES_FIRST &&
+                    (((object->tail.marker.marker_id & KF_MAP_OBJECT_MARKER_OPEN_FRONT) &&
                       angle_within_tolerance(rotation->angles[1],
                                              object->rotation.vy, 900)) ||
-                     ((object->tail.marker.marker_id & 2) &&
+                     ((object->tail.marker.marker_id & KF_MAP_OBJECT_MARKER_OPEN_BACK) &&
                       angle_within_tolerance(rotation->angles[1],
                                              object->rotation.vy + 0x800,
                                              900)))) {
                     object->action_timer = 1;
                     break;
                 }
-                if (object->tail.marker.marker_id == 0x0f && game_counter_bytes[KF_ENUM_ENCODE(u8,
-                    KF_OBJECT_15)] != 0) {
+                if (object->tail.marker.marker_id == KF_ENUM_ENCODE(u8, KF_OBJECT_15)
+                    && game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_15)] != 0) {
                     object->action_timer = 1;
                     break;
                 }

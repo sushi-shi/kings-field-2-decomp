@@ -188,11 +188,16 @@ KF_ENUM_END(KfMapObjectKind)
 
 /* Marker bytes hold the key-item or signal id an object waits for; a
  * consumed marker becomes CLEARED and a fired event TRIGGERED. Signal ids
- * 150..198 come in pairs that differ in bit 0. */
+ * 150..198 come in pairs that differ in bit 0. Doors read markers from
+ * OPEN_SIDES_FIRST up as side bits: FRONT opens facing the door's yaw and
+ * BACK from behind, so a cleared marker opens from both sides. */
 enum {
     KF_MAP_OBJECT_MARKER_TRIGGERED = 0xfe,
     KF_MAP_OBJECT_MARKER_CLEARED = 0xff,
-    KF_MAP_OBJECT_MARKER_PAIR_MASK = 0xfe
+    KF_MAP_OBJECT_MARKER_PAIR_MASK = 0xfe,
+    KF_MAP_OBJECT_MARKER_OPEN_SIDES_FIRST = 0xfc,
+    KF_MAP_OBJECT_MARKER_OPEN_FRONT = 1,
+    KF_MAP_OBJECT_MARKER_OPEN_BACK = 2
 };
 
 /* map_object_check_and_consume_marker: the object takes no marker, the

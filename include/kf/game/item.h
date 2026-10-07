@@ -39,6 +39,7 @@ KF_ENUM_BEGIN(KfObjectId, u16)
     KF_OBJECT_31 = 31,
     KF_OBJECT_44 = 44,
     KF_OBJECT_50 = 50,
+    KF_OBJECT_51 = 51,
     KF_ITEM_POISON_GUARD_ACCESSORY = 53,
     KF_ITEM_STATUS_GUARD_ACCESSORY = 54,
     KF_ITEM_ATTACK_BONUS_ACCESSORY = 55,
@@ -100,5 +101,32 @@ KF_ENUM_BEGIN(KfObjectId, u16)
     /* Serialized placement rows mark an empty slot with the full halfword. */
     KF_OBJECT_PLACEMENT_NONE = 0xffff
 KF_ENUM_END(KfObjectId)
+
+/* Inventory ID ranges: game_counter_bytes and the per-item menu tables cover
+ * KF_ITEM_ID_COUNT IDs. The equipment menu lists one inclusive range per
+ * category, the item-use menu the usable range, and menu_buy_owned_items
+ * the key items that map-object markers consume. */
+enum {
+    KF_ITEM_ID_COUNT = 0x78,
+    KF_ITEM_ID_LAST = KF_ITEM_ID_COUNT - 1,
+    KF_ITEM_WEAPON_FIRST = 0,
+    KF_ITEM_WEAPON_LAST = 20,
+    KF_ITEM_HEAD_FIRST = 21,
+    KF_ITEM_HEAD_LAST = 27,
+    KF_ITEM_BODY_FIRST = 28,
+    KF_ITEM_BODY_LAST = 33,
+    KF_ITEM_ARM_FIRST = 34,
+    KF_ITEM_ARM_LAST = 40,
+    KF_ITEM_LEG_FIRST = 41,
+    KF_ITEM_LEG_LAST = 46,
+    KF_ITEM_SHIELD_FIRST = 47,
+    KF_ITEM_SHIELD_LAST = 52,
+    KF_ITEM_ACCESSORY_FIRST = 53,
+    KF_ITEM_ACCESSORY_LAST = 59,
+    KF_ITEM_USABLE_FIRST = 70,
+    KF_ITEM_USABLE_LAST = 116,
+    KF_ITEM_KEY_FIRST = 99,
+    KF_ITEM_KEY_LAST = 109
+};
 
 #endif

@@ -352,14 +352,14 @@ extern KfMenuCursorAnimation menu_cursor_animation_direction;
 extern b32 menu_item_model_allocation_pending;
 /* Shared item quantity; original containing data object is unresolved. */
 extern s32 menu_item_quantity;
-extern KfMenuGlyphRow menu_glyph_rows[120];
+extern KfMenuGlyphRow menu_glyph_rows[KF_ITEM_ID_COUNT];
 extern KfMenuGlyphRow menu_glyph_rows_extra[20];
 extern KfMenuLabelSuffix menu_equipment_category_labels[10];
 extern KfMenuLabelSuffix menu_none_option_glyphs;
-extern u8 menu_item_mask_pages[6][120];
+extern u8 menu_item_mask_pages[6][KF_ITEM_ID_COUNT];
 void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows);
-extern u16 menu_item_code_primary[6][120];
-extern u16 menu_item_code_secondary[5][120];
+extern u16 menu_item_code_primary[6][KF_ITEM_ID_COUNT];
+extern u16 menu_item_code_secondary[5][KF_ITEM_ID_COUNT];
 
 void menu_list_init(KfMenuList *list, KfMenuWindowKind window_kind, s32 row);
 u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,

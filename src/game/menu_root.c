@@ -39,7 +39,6 @@ enum {
     MENU_LOCATION_LAYER_PLACE = 10000,
     MENU_LOCATION_CELL_X_PLACE = 100,
     MENU_MAP_ITEM_FIRST = 67,
-    MENU_ITEM_LAST_GLYPH_INDEX = 119,
     MENU_MAGIC_ACTION_FIRST = 14,
     MENU_MAGIC_ACTION_LAST = 19,
     MENU_MAGIC_ACTION_VISIBLE_ROWS = MENU_MAGIC_ACTION_LAST - MENU_MAGIC_ACTION_FIRST + 1,
@@ -211,7 +210,7 @@ s32 menu_item_selection_controller(void)
     u8 selected_item;
 
     count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, indices,
-                                          MENU_MAP_ITEM_FIRST, MENU_ITEM_LAST_GLYPH_INDEX);
+                                          MENU_MAP_ITEM_FIRST, KF_ITEM_ID_LAST);
     menu_list_init(&menu.list, KF_MENU_WINDOW_ROOT, KF_MENU_ROOT_USE_ITEM);
     menu.list.entry_count = count;
     menu.rows = rows;
@@ -690,38 +689,38 @@ void menu_equipment_category_controller(s32 category)
 
     switch (category) {
     case MENU_CATEGORY_WEAPON:
-        first = 0;
-        last = 20;
+        first = KF_ITEM_WEAPON_FIRST;
+        last = KF_ITEM_WEAPON_LAST;
         break;
     case MENU_CATEGORY_ARM:
-        first = 34;
-        last = 40;
+        first = KF_ITEM_ARM_FIRST;
+        last = KF_ITEM_ARM_LAST;
         break;
     case MENU_CATEGORY_HEAD:
-        first = 21;
-        last = 27;
+        first = KF_ITEM_HEAD_FIRST;
+        last = KF_ITEM_HEAD_LAST;
         break;
     case MENU_CATEGORY_BODY:
-        first = 28;
-        last = 33;
+        first = KF_ITEM_BODY_FIRST;
+        last = KF_ITEM_BODY_LAST;
         break;
     case MENU_CATEGORY_LEG:
-        first = 41;
-        last = 46;
+        first = KF_ITEM_LEG_FIRST;
+        last = KF_ITEM_LEG_LAST;
         break;
     case MENU_CATEGORY_SHIELD:
-        first = 47;
-        last = 52;
+        first = KF_ITEM_SHIELD_FIRST;
+        last = KF_ITEM_SHIELD_LAST;
         break;
     case MENU_CATEGORY_ACCESSORY:
     case MENU_CATEGORY_EXTRA:
         other_slot_item_id = KF_ENUM_ENCODE(u8, category == MENU_CATEGORY_ACCESSORY
                                         ? player_state.equipped_extra_id
                                         : player_state.equipped_accessory_id);
-        first = 53;
+        first = KF_ITEM_ACCESSORY_FIRST;
         if (other_slot_item_id != KF_EQUIPMENT_NONE)
             game_counter_bytes[other_slot_item_id]--;
-        last = 59;
+        last = KF_ITEM_ACCESSORY_LAST;
         break;
     }
 
@@ -897,7 +896,8 @@ void menu_item_magic_controller(void)
     saved_count_61 = game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_97)];
     game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)] = 0;
     game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_97)] = 0;
-    count = menu_collect_masked_item_rows(game_counter_bytes, rows, counts, item_ids, 70, 116);
+    count = menu_collect_masked_item_rows(game_counter_bytes, rows, counts, item_ids, KF_ITEM_USABLE_FIRST,
+        KF_ITEM_USABLE_LAST);
     game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)] = saved_count_60;
     game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_97)] = saved_count_61;
 
@@ -985,16 +985,16 @@ ADDRESS(0x8001a898, 0x204)
 void menu_item_use_controller(void)
 {
     KfItemMenuList menu;
-    KfMenuGlyphRow rows[120];
-    u8 values[120];
-    u8 indices[120];
+    KfMenuGlyphRow rows[KF_ITEM_ID_COUNT];
+    u8 values[KF_ITEM_ID_COUNT];
+    u8 indices[KF_ITEM_ID_COUNT];
     b32 confirmed = KF_FALSE;
     s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
     s32 frame;
     u8 selected_item;
 
-    count = menu_collect_available_item_rows(game_counter_bytes, rows, values, indices, 0, 119);
+    count = menu_collect_available_item_rows(game_counter_bytes, rows, values, indices, 0, KF_ITEM_ID_LAST);
     menu_list_init(&menu.list, KF_MENU_WINDOW_ROOT, KF_MENU_ROOT_DROP_ITEM);
     menu.list.entry_count = count;
     menu.rows = rows;
@@ -2117,7 +2117,7 @@ KfMenuLabelSuffix menu_label_suffixes[16] = {
     {{161, 271, 109, 263, 59, 82, 71, 4175, 74, 65}}
 };
 DATA(0x80064c30, 0xb40, ".data")
-KfMenuGlyphRow menu_glyph_rows[120] = {
+KfMenuGlyphRow menu_glyph_rows[KF_ITEM_ID_COUNT] = {
     {{4111, 4101, 45, -1, 0, 0, 0, 0, 0, 0, 0, 0}},
     {{11, 56, 45, 19, 14, 45, 4115, -1, 0, 0, 0, 0}},
     {{20, 1, 19, 14, 45, 4115, -1, 0, 0, 0, 0, 0}},
@@ -2263,7 +2263,7 @@ KfMenuGlyphRow menu_glyph_rows_extra[20] = {
     {{4123, 43, 12, -1, 0, 0, 0, 0, 0, 0, 0, 0}},
 };
 DATA(0x80065950, 0x2d0, ".data")
-u8 menu_item_mask_pages[6][120] = {
+u8 menu_item_mask_pages[6][KF_ITEM_ID_COUNT] = {
     {
         0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
         0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
@@ -2314,7 +2314,7 @@ u8 menu_item_mask_pages[6][120] = {
     },
 };
 DATA(0x80065c20, 0x5a0, ".data")
-u16 menu_item_code_primary[6][120] = {
+u16 menu_item_code_primary[6][KF_ITEM_ID_COUNT] = {
     {
         50000, 50000, 50000, 990, 50000, 2850, 50000, 50000, 50000, 50000, 50000, 50000,
         50000, 50000, 50000, 50000, 1830, 50000, 50000, 50000, 50000, 50000, 680, 2950,
@@ -2389,7 +2389,7 @@ u16 menu_item_code_primary[6][120] = {
     },
 };
 DATA(0x800661c0, 0x4b0, ".data")
-u16 menu_item_code_secondary[5][120] = {
+u16 menu_item_code_secondary[5][KF_ITEM_ID_COUNT] = {
     {
         70, 120, 520, 750, 2000, 2100, 2700, 0, 0, 13500, 12800, 13000,
         15000, 26000, 28500, 30000, 1750, 2800, 0, 0, 0, 130, 550, 2000,
@@ -2539,12 +2539,12 @@ void menu_item_buy_controller(s32 kind)
     u8 selected_item;
     u8 *counters = game_counter_bytes;
 
-    if (counters[0x33] == 0)
-        menu_item_mask_pages[3][51] = 1;
+    if (counters[KF_ENUM_ENCODE(u8, KF_OBJECT_51)] == 0)
+        menu_item_mask_pages[3][KF_ENUM_ENCODE(u8, KF_OBJECT_51)] = 1;
     else
-        menu_item_mask_pages[3][51] = 0;
+        menu_item_mask_pages[3][KF_ENUM_ENCODE(u8, KF_OBJECT_51)] = 0;
     count = menu_collect_masked_item_rows(menu_item_mask_pages[kind], rows, values, indices,
-        0, 119);
+        0, KF_ITEM_ID_LAST);
     menu_fill_item_counts_and_prices(counters, values, prices, indices, 0, count, kind);
     menu_list_init(&menu.list, KF_MENU_WINDOW_SHOP, 0);
     menu.list.entry_count = count;
@@ -2607,7 +2607,7 @@ void menu_fill_item_counts_and_prices(const u8 *source, u8 *counts, s32 *prices,
     const u16 *page;
 
     if (first < last) {
-        const u16 (*pages)[120] = menu_item_code_primary;
+        const u16 (*pages)[KF_ITEM_ID_COUNT] = menu_item_code_primary;
         page = pages[group];
         do {
             *counts++ = source[*indices];
@@ -2621,10 +2621,10 @@ ADDRESS(0x8001d3b4, 0x2a0)
 void menu_item_sell_controller(s32 kind)
 {
     KfItemMenuList menu;
-    KfMenuGlyphRow rows[120];
-    u8 values[120];
-    s32 prices[120];
-    u8 indices[120];
+    KfMenuGlyphRow rows[KF_ITEM_ID_COUNT];
+    u8 values[KF_ITEM_ID_COUNT];
+    s32 prices[KF_ITEM_ID_COUNT];
+    u8 indices[KF_ITEM_ID_COUNT];
     b32 confirmed = KF_FALSE;
     s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
@@ -2632,7 +2632,7 @@ void menu_item_sell_controller(s32 kind)
     s32 payment;
     u8 selected_item;
 
-    count = menu_collect_available_item_rows(game_counter_bytes, rows, values, indices, 0, 119);
+    count = menu_collect_available_item_rows(game_counter_bytes, rows, values, indices, 0, KF_ITEM_ID_LAST);
     menu_fill_item_prices(prices, indices, 0, count, kind);
     menu_list_init(&menu.list, KF_MENU_WINDOW_SHOP, 1);
     menu.list.entry_count = count;
@@ -2693,7 +2693,7 @@ void menu_fill_item_prices(s32 *prices, const u8 *indices, s32 first, s32 last, 
     const u16 *page;
 
     if (first < last) {
-        const u16 (*pages)[120] = menu_item_code_secondary;
+        const u16 (*pages)[KF_ITEM_ID_COUNT] = menu_item_code_secondary;
         page = pages[group];
         do {
             *prices++ = page[*indices++];
@@ -2706,9 +2706,9 @@ ADDRESS(0x8001d6a8, 0x228)
 s32 menu_choose_inventory_item(void)
 {
     KfItemMenuList menu;
-    KfMenuGlyphRow rows[120];
-    u8 values[120];
-    u8 indices[120];
+    KfMenuGlyphRow rows[KF_ITEM_ID_COUNT];
+    u8 values[KF_ITEM_ID_COUNT];
+    u8 indices[KF_ITEM_ID_COUNT];
     b32 confirmed = KF_FALSE;
     s32 result = KF_MENU_RESULT_PENDING;
     s32 count;
@@ -2716,7 +2716,7 @@ s32 menu_choose_inventory_item(void)
     s32 frame;
 
     menu_enter_display_state(1);
-    count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, indices, 0, 119);
+    count = menu_collect_masked_item_rows(game_counter_bytes, rows, values, indices, 0, KF_ITEM_ID_LAST);
     menu_list_init(&menu.list, KF_MENU_WINDOW_TRADE, 0);
     menu.list.entry_count = count;
     menu.rows = rows;
@@ -2785,7 +2785,7 @@ void menu_item_trade_controller(void)
 
     menu_enter_display_state(1);
     count = menu_collect_masked_item_rows(menu_item_mask_pages[4], rows, values, indices,
-        0, 119);
+        0, KF_ITEM_ID_LAST);
     menu_fill_item_counts_and_prices(counters, values, prices, indices, 0, count, 4);
     menu_list_init(&menu.list, KF_MENU_WINDOW_TRADE, 1);
     menu.list.entry_count = count;
@@ -2917,7 +2917,7 @@ void menu_buy_masked_stock_items(void)
     u8 selected_item;
 
     count = menu_collect_masked_item_rows(menu_item_mask_pages[5], rows, values, indices,
-        0, 119);
+        0, KF_ITEM_ID_LAST);
     menu_fill_item_counts_and_prices(counters, values, prices, indices, 0, count, 5);
     menu_list_init(&menu.list, KF_MENU_WINDOW_STOCK, 0);
     menu.list.entry_count = count;
@@ -2989,7 +2989,8 @@ void menu_buy_owned_items(void)
     s32 cost;
     u8 selected_item;
 
-    count = menu_collect_masked_item_rows(counters, rows, values, indices, 99, 109);
+    count = menu_collect_masked_item_rows(counters, rows, values, indices, KF_ITEM_KEY_FIRST,
+        KF_ITEM_KEY_LAST);
     menu_fill_item_prices(prices, indices, 0, count, 4);
     menu_list_init(&menu.list, KF_MENU_WINDOW_STOCK, 1);
     menu.list.entry_count = count;

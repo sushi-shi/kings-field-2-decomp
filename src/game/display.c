@@ -3579,9 +3579,8 @@ void tim_upload_images(u8 *tim_data)
 }
 
 #define MENU_FADE_NEXT_QUAD() { \
-    KfPrimitiveBuffer *buffer = game_graphics_runtime.display_state.primitive_buffer; \
-    quad = (POLY_FT4 *)buffer->cursor; \
-    buffer->cursor += sizeof(POLY_FT4); \
+    quad = (POLY_FT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor; \
+    game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_FT4); \
     if (game_graphics_runtime.display_state.primitive_buffer->cursor > \
         game_graphics_runtime.display_state.primitive_buffer->end) \
         goto present; \

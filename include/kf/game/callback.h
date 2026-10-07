@@ -1,6 +1,7 @@
 #ifndef KF_GAME_CALLBACK_H
 #define KF_GAME_CALLBACK_H
 
+#include <kf/lib/bool.h>
 #include <kf/lib/types.h>
 
 /* The initialized table has 32 function-pointer rows; the BSS table's extent
@@ -33,8 +34,8 @@ typedef struct KfState8017d118 {
     u8 current_map_region_id;
     KfCallback *active_table;
     u8 requested_resource_ids[KF_RESOURCE_SLOT_COUNT];
-    u8 world_shift_applied;
-    u8 tmd_object_limit_active;
+    b8 world_shift_applied;
+    b8 tmd_object_limit_active;
     KfResourceTransitionOffset transition_offset;
     s16 sequence_fade_volume;
 } KfState8017d118;

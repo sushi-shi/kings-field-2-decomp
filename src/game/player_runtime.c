@@ -840,7 +840,7 @@ void player_reset_status(void)
     player_state.curse_phase_limit = 0;
     player_state.curse_strength = 0;
     player_state.poison_timer = 0;
-    player_state.fatal_fall_latch = 0;
+    player_state.fatal_fall_latch = KF_FALSE;
     player_state.vitals.current_hp = player_state.vitals.maximum_hp;
     player_state.vitals.current_mp = player_state.vitals.maximum_mp;
     player_reset_view();
@@ -910,7 +910,7 @@ void game_initialize_session(void)
     player_state.compass_enabled = 1;
     player_state.item_preview_enabled = 1;
     player_state.walking_bob_enabled = 1;
-    player_state.force_actor_lifecycle_refresh = 0;
+    player_state.force_actor_lifecycle_refresh = KF_FALSE;
 }
 
 ADDRESS(0x800251f0, 0x44)
@@ -939,7 +939,7 @@ void player_sync_position_to_map(void)
                       player_state.camera_position.vz,
                       KF_PLAYER_COLLISION_RADIUS, KF_PLAYER_HEIGHT);
     player_update_collision_bounds();
-    player_state.force_actor_lifecycle_refresh = 1;
+    player_state.force_actor_lifecycle_refresh = KF_TRUE;
     player_state.vertical_motion_state = KF_PLAYER_VERTICAL_GROUNDED;
     player_state.vertical_velocity = 0;
     player_state.death_state = KF_PLAYER_REACTION_NORMAL;
@@ -1092,7 +1092,7 @@ void player_equip_weapon(u8 weapon_id)
     player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
     player_state.weapon_animation_cache = NULL;
     player_state.weapon_magic_shots_remaining = 0;
-    player_state.weapon_guard_active = 0;
+    player_state.weapon_guard_active = KF_FALSE;
     player_recalculate_combat_stats();
 }
 
@@ -1117,10 +1117,10 @@ void player_begin_weapon_attack(s32 mode)
     player_state.attack_charge_committed = player_state.attack_charge_current;
     if (player_state.attack_charge_current == KF_PLAYER_CHARGE_FULL
         && player_state.magic_charge == KF_PLAYER_CHARGE_FULL) {
-        player_state.weapon_attack_fully_charged = 1;
+        player_state.weapon_attack_fully_charged = KF_TRUE;
         player_state.weapon_magic_shots_configured = player_state.equipped_weapon_record->magic_shots;
     } else {
-        player_state.weapon_attack_fully_charged = 0;
+        player_state.weapon_attack_fully_charged = KF_FALSE;
     }
     player_state.attack_charge_current = 0;
     player_state.unknown_9c[0] = 0;
@@ -1730,12 +1730,12 @@ regular_weapon:
     if (player_state.weapon_attack_phase >= player_state.weapon_attack_window
         && player_state.weapon_attack_phase
              < player_state.weapon_attack_window + phase_step) {
-        player_state.weapon_guard_active = 0;
+        player_state.weapon_guard_active = KF_FALSE;
         if (player_state.weapon_attack_mode == 1) {
             if (player_state.equipped_weapon_id == 13
                 && (player_state.pad_buttons.current & PADRleft) != 0) {
                 player_state.weapon_attack_phase -= phase_step;
-                player_state.weapon_guard_active = 1;
+                player_state.weapon_guard_active = KF_TRUE;
                 return;
             }
             if (weapon->release_effect_id != WEAPON_MAGIC_EFFECT_NONE) {
@@ -2127,7 +2127,7 @@ void player_check_fall_death(void)
         && (KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy)
                > COLLISION_DEPTH_DEATH_LIMIT) {
         player_death_begin(NULL);
-        player_state.fatal_fall_latch = 1;
+        player_state.fatal_fall_latch = KF_TRUE;
     }
 }
 
@@ -2346,7 +2346,7 @@ s32 player_move_reaction_with_collision(void)
             && KF_COLLISION_CACHE_RESULT - player_state.camera_position.vy
                    > COLLISION_DEPTH_DEATH_LIMIT) {
             player_death_begin(NULL);
-            player_state.fatal_fall_latch = 1;
+            player_state.fatal_fall_latch = KF_TRUE;
         }
         player_state.camera_position.vx = next.vx;
         player_state.camera_position.vy = next.vy;

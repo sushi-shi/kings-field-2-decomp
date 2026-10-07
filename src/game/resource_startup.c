@@ -303,12 +303,12 @@ apply:
     state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = sequence_id;
     state_8017d118.transition_offset.x = offset_x;
     state_8017d118.transition_offset.z = offset_z;
-    state_8017d118.world_shift_applied = 0;
+    state_8017d118.world_shift_applied = KF_FALSE;
     state_8017d118.transition_offset.y = offset_y;
     if (tmd_id == KF_RESOURCE_REQUEST_KEEP) {
-        state_8017d118.tmd_object_limit_active = 0;
+        state_8017d118.tmd_object_limit_active = KF_FALSE;
     } else {
-        state_8017d118.tmd_object_limit_active = 1;
+        state_8017d118.tmd_object_limit_active = KF_TRUE;
     }
     return;
 
@@ -447,7 +447,7 @@ void resource_advance_transition(void)
         resource_copy_words((u32 *)KF_COLLISION_SHAPE_BANK,
             (u32 *)(buffer + 4), KF_COLLISION_SHAPE_BANK_BYTES / sizeof(u32));
         if (state_8017d118.transition_offset.x != KF_RESOURCE_OFFSET_NO_SHIFT) {
-            state_8017d118.world_shift_applied = 1;
+            state_8017d118.world_shift_applied = KF_TRUE;
             translate_active_world_positions(state_8017d118.transition_offset.x << KF_MAP_CELL_POSITION_SHIFT,
                 -state_8017d118.transition_offset.y * 128,
                 state_8017d118.transition_offset.z << KF_MAP_CELL_POSITION_SHIFT);
@@ -522,7 +522,7 @@ phase_three:
             map_placed_expand_sources((KfMapPlacedSource *)(stream + 4));
             event_world_state_restore_slot(state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION]);
             state_8017d118.active_table[5]();
-            player_state.force_actor_lifecycle_refresh = 1;
+            player_state.force_actor_lifecycle_refresh = KF_TRUE;
         }
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) return;
 
@@ -530,7 +530,7 @@ phase_three:
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TIM] != KF_RESOURCE_REQUEST_KEEP) {
             cd_map_stream_read(KF_RESOURCE_ARCHIVE_RTIM, state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_TIM]);
         }
-        state_8017d118.tmd_object_limit_active = 0;
+        state_8017d118.tmd_object_limit_active = KF_FALSE;
         if (state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_VAB] != KF_RESOURCE_REQUEST_KEEP ||
             state_8017d118.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP) {
             goto begin_phase_five;

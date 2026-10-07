@@ -386,7 +386,7 @@ typedef struct KfPlayerState {
     s32 next_level_experience;
     u8 level;
     u8 unknown_09;
-    u8 force_actor_lifecycle_refresh;
+    b8 force_actor_lifecycle_refresh;
     u8 weapon_charge_delay;
     u8 unknown_0c;
     u8 movement_speed_adjustment_decay_latch;
@@ -439,8 +439,8 @@ typedef struct KfPlayerState {
     u8 equipped_weapon_id;
     u8 unknown_9c[2];
     u8 weapon_magic_shots_configured;
-    u8 weapon_attack_fully_charged;
-    u8 weapon_guard_active;
+    b8 weapon_attack_fully_charged;
+    b8 weapon_guard_active;
     KfEquipmentRecord *equipped_head_record;
     KfEquipmentRecord *equipped_body_record;
     KfEquipmentRecord *equipped_arm_record;
@@ -465,7 +465,7 @@ typedef struct KfPlayerState {
     u8 unknown_ce[2];
     u8 vertical_motion_state;
     KfQueuedMagicAction queued_magic_action;
-    u8 fatal_fall_latch;
+    b8 fatal_fall_latch;
     VECTOR camera_position;
     SVECTOR frame_displacement;
     KfPlayerViewRotation camera_rotation;

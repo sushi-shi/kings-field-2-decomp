@@ -488,7 +488,7 @@ KfGraphicsRuntimeGame	0x14ca4	0x08	notification_message_ids	KfNotificationId[8]	
 KfGraphicsRuntimeGame	0x14cac	0x10	notification_payloads	u16[8]	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14cbc	0x04	notification_control	KfNotificationControl	supported	game headers;asm;xrefs	member used by reconstructed code
 KfGraphicsRuntimeGame	0x14cc0	0x01	notification_brightness	u8	supported	asm;notification_draw;notification_draw_quad	brightness replicated into notification RGB
-KfGraphicsRuntimeGame	0x14cc1	0x01	color_overlay_control	u8	supported	asm;render_set_color_overlay;render_color_overlay;display init	0xff disables the overlay; low bits select texture page and bit 7 selects ordering depth
+KfGraphicsRuntimeGame	0x14cc1	0x01	color_overlay_control	KfColorOverlayControl	supported	asm;render_set_color_overlay;render_color_overlay;display init	0xff disables the overlay; low bits select texture page and bit 7 selects ordering depth
 KfGraphicsRuntimeGame	0x14cc2	0x03	color_overlay_rgb	u8[3]	supported	asm;render_set_color_overlay;render_color_overlay	three RGB color bytes set by the overlay setter and read by its draw path
 KfGraphicsRuntimeGame	0x14cc5	0x01	color_overlay_sample_count	u8	supported	asm;accumulate_color_overlay;render_accumulated_color_overlay;reset_collision_rows_and_overlay	incremented per color sample and used as RGB-sum divisor
 KfGraphicsRuntimeGame	0x14cc6	0x02	color_overlay_red_sum	u16	supported	asm;accumulate_color_overlay;render_accumulated_color_overlay;reset_collision_rows_and_overlay	Q12-scaled red sum displayed as signed average

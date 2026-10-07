@@ -170,7 +170,7 @@ void display_reset(void)
         item->kind = KF_FLOOR_ITEM_NONE;
         item++;
     }
-    GRAPHICS.color_overlay_control = 0xff;
+    GRAPHICS.color_overlay_control = KF_COLOR_OVERLAY_OFF;
     GRAPHICS.map_placed_frame_counter = 0;
     pool_reset();
 }
@@ -1928,20 +1928,22 @@ void render_sliding_panel_secondary(void)
 ADDRESS(0x80031414, 0xc0)
 void render_color_overlay(void)
 {
-    if (game_graphics_runtime.color_overlay_control != 0xff) {
+    if (game_graphics_runtime.color_overlay_control != KF_COLOR_OVERLAY_OFF) {
         render_textured_quad(0, 0, 0x140, 0xf0,
                              0x80, 0xd0, 0xf, 0xf, 1,
-                             ((game_graphics_runtime.color_overlay_control & 3) << 5) | 0x17,
+                             (KF_ENUM_VALUE(game_graphics_runtime.color_overlay_control & KF_COLOR_OVERLAY_BLEND_MASK) << 5)
+                                 | 0x17,
                              0x7bdc,
                              game_graphics_runtime.color_overlay_rgb[0],
                              game_graphics_runtime.color_overlay_rgb[1],
                              game_graphics_runtime.color_overlay_rgb[2],
-                             (game_graphics_runtime.color_overlay_control & 0x80) ? 1 : 0x40);
+                             (game_graphics_runtime.color_overlay_control & KF_COLOR_OVERLAY_FRONT) != KF_COLOR_OVERLAY_NO_FLAGS
+                                 ? 1 : 0x40);
     }
 }
 
 ADDRESS(0x800314d4, 0x28)
-void render_set_color_overlay(u8 control, u8 red, u8 green, u8 blue)
+void render_set_color_overlay(KfColorOverlayControl control, u8 red, u8 green, u8 blue)
 {
     game_graphics_runtime.color_overlay_control = control;
     game_graphics_runtime.color_overlay_rgb[0] = red;

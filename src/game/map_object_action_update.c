@@ -43,7 +43,7 @@ enum {
 };
 
 ADDRESS(0x80036e24, 0xb0)
-void render_frames_with_color_overlay(s32 mode, s32 phase, s32 last_phase,
+void render_frames_with_color_overlay(KF_ENUM_PARAM(KfColorOverlayControl, s32) mode, s32 phase, s32 last_phase,
     s32 step)
 {
     VECTOR position;
@@ -1026,7 +1026,7 @@ void map_object_update_actions(void)
                     KfMapObject *candidate = map_object_state.objects;
                     s32 count = KF_MAP_OBJECT_CAPACITY;
                     audio_play_sound(0x14, 0x6e);
-                    render_frames_with_color_overlay(1, 0, 0x1000, 0x100);
+                    render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 0x1000, 0x100);
                     do {
                         if (candidate->action == KF_MAP_OBJECT_OP_34) {
                             candidate->extra_40.bytes[0] = 1;
@@ -1049,8 +1049,8 @@ void map_object_update_actions(void)
                         player_state.reaction_rotation_offset[1] +
                         player_state.view_rotation_offset.components[1] +
                         player_state.camera_yaw_roll_offsets[0];
-                    render_frames_with_color_overlay(1, 0x1000, 0, -0x100);
-                    render_set_color_overlay(0xff, 0, 0, 0);
+                    render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0x1000, 0, -0x100);
+                    render_set_color_overlay(KF_COLOR_OVERLAY_OFF, 0, 0, 0);
                 }
             } else {
                 object->extra_40.bytes[0] = 0;

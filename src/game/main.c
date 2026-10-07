@@ -99,7 +99,7 @@ void game_main_loop(void)
     /* The fixed arena base and exit word have unresolved original owners. */
     memory_arena_initialize_blocks(KF_GAME_RESOURCE_ARENA_BASE,
                                    KF_GAME_RESOURCE_ARENA_CAPACITY);
-    render_frames_with_color_overlay(0x82, 0x1000, 0, -128);
+    render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, 0x1000, 0, -128);
     game_main_exit_flag = GAME_MAIN_RUNNING;
 
     do {

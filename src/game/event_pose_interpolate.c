@@ -465,7 +465,7 @@ transition_action: {
             break;
         }
         player_state.vitals.current_mp -= 10;
-        render_frames_with_color_overlay(1, 0, 4096, 256);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 4096, 256);
         actor_disable_type3_transition_actors();
         previous_value = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id;
         do {
@@ -501,12 +501,12 @@ transition_action: {
         event_state.interaction_handled = KF_TRUE;
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
-        render_frames_with_color_overlay(1, 4096, 4096, 0);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 4096, 0);
         if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
             resource_tmd_queue_read(0, 0x101, 0x181);
         }
-        render_frames_with_color_overlay(1, 4096, 0, -256);
-        render_set_color_overlay(0xff, 0, 0, 0);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 0, -256);
+        render_set_color_overlay(KF_COLOR_OVERLAY_OFF, 0, 0, 0);
         resource_request_transition(0xff, 0xff, 0xff, previous_value, previous_value,
                       0x7f, 0x7f, 0x7f);
         break;

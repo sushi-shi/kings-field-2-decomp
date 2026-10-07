@@ -34,6 +34,19 @@ KF_ENUM_BEGIN(KfSpriteState, u8)
     KF_SPRITE_END = 0xff
 KF_ENUM_END(KfSpriteState)
 
+/* Full-screen colour overlay: the low bits are the tpage semi-transparency
+ * (ABR) of the quad, FRONT draws it at OT depth 1 instead of 0x40, OFF
+ * disables it. Fades add (1) or subtract in front (0x82). */
+KF_ENUM_BEGIN(KfColorOverlayControl, u8)
+    KF_COLOR_OVERLAY_NO_FLAGS = 0,
+    KF_COLOR_OVERLAY_ADD = 1,
+    KF_COLOR_OVERLAY_SUBTRACT = 2,
+    KF_COLOR_OVERLAY_BLEND_MASK = 3,
+    KF_COLOR_OVERLAY_FRONT = 0x80,
+    KF_COLOR_OVERLAY_OFF = 0xff
+KF_ENUM_END(KfColorOverlayControl)
+KF_ENUM_FLAGS(KfColorOverlayControl, u8)
+
 /* render_world_model's queue selector. 0xff and 0xfe pick the textured and
  * clipping enqueues; 0x80 is textured without the below-view depth bias.
  * Other values reach render_enqueue_blended_tmd, which shifts them into the

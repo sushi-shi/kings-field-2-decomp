@@ -212,7 +212,7 @@ typedef struct KfGraphicsRuntimeGame {
     u16 notification_payloads[KF_NOTIFICATION_CAPACITY];
     KfNotificationControl notification_control;
     u8 notification_brightness;
-    u8 color_overlay_control;
+    KfColorOverlayControl color_overlay_control;
     u8 color_overlay_rgb[3];
     u8 color_overlay_sample_count;
     u16 color_overlay_red_sum;
@@ -297,7 +297,7 @@ enum {
 };
 
 void fog_set_near(s32 distance);
-void render_set_color_overlay(u8 control, u8 red, u8 green, u8 blue);
+void render_set_color_overlay(KfColorOverlayControl control, u8 red, u8 green, u8 blue);
 void menu_show_transition_image(u16 archive_slot, u16 archive_entry);
 void display_initialize(void);
 void display_reset(void);

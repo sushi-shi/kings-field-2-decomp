@@ -2155,8 +2155,6 @@ void player_update_vertical_motion(void)
     s32 bob;
     s32 movement_speed;
     const s32 *floor_result;
-    /* Retail reserves an unreferenced 8-byte frame slot. */
-    s16 frame_reserve[4];
 
     collision_probe_floor_height(player_state.camera_position.vx,
                   player_state.camera_position.vy,
@@ -2221,9 +2219,10 @@ void player_update_vertical_motion(void)
             collision_cache_load_hit_bounds();
             next_y = KF_COLLISION_CACHE_POSITION.vy
                    - KF_COLLISION_CACHE_INTERACTION_HEIGHT - 1;
-            if (collision_query_world(player_state.camera_position.vx, next_y,
+            collision_flags = collision_query_world(player_state.camera_position.vx, next_y,
                                player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
-                               KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK) == 0) {
+                               KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK);
+            if (collision_flags == 0) {
                 player_state.camera_position.vy = next_y;
             }
         }
@@ -2237,13 +2236,12 @@ landing:
         if (player_state.landing_vertical_offset > 0) {
             player_state.landing_vertical_offset += player_state.vertical_velocity >> 2;
         }
-        bob = player_state.vertical_motion_pitch_offset;
         player_state.vertical_velocity -= 100;
-        if (bob > 0) {
+        if (player_state.vertical_motion_pitch_offset > 0) {
             if (player_state.vertical_velocity > 0) {
-                player_state.vertical_motion_pitch_offset = bob + 10;
+                player_state.vertical_motion_pitch_offset += 10;
             } else {
-                player_state.vertical_motion_pitch_offset = bob - 30;
+                player_state.vertical_motion_pitch_offset -= 30;
             }
         }
         if (player_state.landing_vertical_offset <= 0
@@ -2281,10 +2279,11 @@ landing:
         if (height_difference <= 0) {
             goto finish;
         }
-        if (collision_query_world(player_state.camera_position.vx,
+        collision_flags = collision_query_world(player_state.camera_position.vx,
                            player_state.camera_position.vy + 1,
                            player_state.camera_position.vz, KF_PLAYER_COLLISION_RADIUS,
-                           KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK) != 0) {
+                           KF_PLAYER_HEIGHT, PLAYER_MOTION_COLLISION_MASK);
+        if (collision_flags != 0) {
             goto finish;
         }
         if (height_difference <= 256) {

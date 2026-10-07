@@ -2,6 +2,7 @@
 #define KF_GAME_MENU_H
 
 #include <kf/lib/types.h>
+#include <kf/lib/enum.h>
 #include <psyq/sdk.h>
 
 struct DIRENTRY;
@@ -13,6 +14,21 @@ enum {
     KF_MENU_LIST_TITLE_COPY_GLYPHS = 10,
     KF_MENU_SPRITE_COUNT = 20
 };
+
+/* Records of menu_window_layouts. Titles reuse the root row that opens the
+ * window: the memory-card window lists save/load/return and the titles of
+ * its sub-screens, the options window seven settings, the shop window
+ * buy/sell/return. The card browser's two-row prompt has no title; the last
+ * record is zero-filled. */
+KF_ENUM_BEGIN(KfMenuWindowKind, s32)
+    KF_MENU_WINDOW_ROOT = 0,
+    KF_MENU_WINDOW_MEMORY_CARD = 1,
+    KF_MENU_WINDOW_OPTIONS = 2,
+    KF_MENU_WINDOW_SHOP = 3,
+    KF_MENU_WINDOW_STOCK = 4,
+    KF_MENU_WINDOW_TRADE = 5,
+    KF_MENU_WINDOW_CARD_BROWSER = 6
+KF_ENUM_END(KfMenuWindowKind)
 
 enum {
     KF_MENU_SPRITE_NUMBER_ATLAS = 0,
@@ -206,6 +222,8 @@ typedef char kf_menu_render_byte_offset[(u32)&((KfMenuRenderList *)0)->byte_valu
 typedef char kf_menu_render_number_offset[(u32)&((KfMenuRenderList *)0)->number_values == 0x30 ? 1 : -1];
 
 extern KfMenuWindowLayout menu_window_layouts[KF_MENU_WINDOW_COUNT];
+/* The layout record of a KfMenuWindowKind. */
+#define menu_window_layout(kind) (&menu_window_layouts[KF_ENUM_ENCODE(s32, kind)])
 extern KfMenuLabelSuffix menu_header_labels[12];
 extern KfMenuLabelSuffix menu_label_suffixes[16];
 extern KfMenuSpriteDef menu_sprite_defs[KF_MENU_SPRITE_COUNT];
@@ -223,7 +241,7 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows);
 extern u16 menu_item_code_primary[6][120];
 extern u16 menu_item_code_secondary[5][120];
 
-void menu_list_init(KfMenuList *list, s32 window_kind, s32 row);
+void menu_list_init(KfMenuList *list, KfMenuWindowKind window_kind, s32 row);
 u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
     s32 *selection, s32 *result);
 s32 menu_preview_choice(const KfMenuList *list, s32 label_kind,
@@ -246,7 +264,8 @@ void menu_render_list_mode_8_9_noop(void);
 void menu_format_number(s32 value, s32 count, s32 padding_mode, s32 style, s16 *out);
 void menu_draw_two_option(const KfMenuGlyphString *accept_label,
     const KfMenuGlyphString *decline_label, s32 selected_choice, s32 confirmation);
-void menu_draw_window(s32 window_kind, s32 count, s32 highlight, s32 confirmation);
+void menu_draw_window(KfMenuWindowKind window_kind, s32 count, s32 highlight,
+    s32 confirmation);
 void menu_show_combat_attributes(void);
 s32 menu_collect_masked_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
     u8 *values, u8 *indices, s32 first, s32 last);

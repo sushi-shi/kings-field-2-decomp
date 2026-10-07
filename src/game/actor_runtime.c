@@ -1804,6 +1804,16 @@ enum {
     ACTOR_EFFECT_POSITION_TWO_VERTICES = -2
 };
 
+/* Type-25 effect-script words: control opcodes from 0x8000, otherwise the
+ * animation vertex to emit the script effect from. */
+enum {
+    ACTOR_SCRIPT_REWIND = 0x8000,
+    ACTOR_SCRIPT_REPEAT = 0x8001,
+    ACTOR_SCRIPT_ROTATED_OFFSET_EFFECT = 0x8002,
+    ACTOR_SCRIPT_SKIP = 0x8003,
+    ACTOR_SCRIPT_TWO_VERTEX_EFFECT = 0x8004
+};
+
 /* The script gives either three signed coordinates, two vertex indices and a
  * blend fraction, or one vertex index. The final pointer is used by the
  * coordinate form when an effect kind consumes an extra script halfword. */
@@ -1927,7 +1937,7 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
             KF_ACTOR_PITCH_TRACK_TARGET, 0x400, 1);
         effect_construct_record(damage_multiplier_tenths,
                                 KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
-                      KF_EFFECT_KIND9_TARGET_PLAYER);
+                      KF_EFFECT_TARGET_ACTOR_PLAYER);
         break;
     case KF_EFFECT_KIND_24:
         actor_compute_target_direction(current, player, 250, &position, &direction,
@@ -3032,19 +3042,19 @@ case3_motion:
                 u16 index = actor->tail_72.script.word_index;
                 actor->tail_72.script.word_index = index + 1;
 
-                if (opcode == 0x8000) {
+                if (opcode == ACTOR_SCRIPT_REWIND) {
                     cursor = ((const KfTargetCandidateAction25 *)target)->stream;
                     actor->tail_72.script.word_index = 0;
                     continue;
-                } else if (opcode == 0x8001) {
+                } else if (opcode == ACTOR_SCRIPT_REPEAT) {
                     repeat = *cursor++;
                     actor->tail_72.script.word_index = index + 2;
                     continue;
-                } else if (opcode == 0x8003) {
+                } else if (opcode == ACTOR_SCRIPT_SKIP) {
                     u16 skip = *cursor;
                     cursor += skip + 1;
                     continue;
-                } else if (opcode == 0x8002) {
+                } else if (opcode == ACTOR_SCRIPT_ROTATED_OFFSET_EFFECT) {
                     s16 x;
                     s16 y;
                     s16 z;
@@ -3056,14 +3066,15 @@ case3_motion:
                     z = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
                     actor_dispatch_group_effect(target->word_0c.script_effect.kind,
-                                   target->word_18.value, -1, x, y, z, cursor);
-                } else if (opcode == 0x8004) {
+                                   target->word_18.value, ACTOR_EFFECT_POSITION_ROTATED_OFFSET,
+                                   x, y, z, cursor);
+                } else if (opcode == ACTOR_SCRIPT_TWO_VERTEX_EFFECT) {
                     u16 first = *cursor++;
                     u16 second = *cursor++;
                     u16 third = *cursor++;
                     actor->tail_72.script.word_index = index + 4;
                     actor_dispatch_group_effect(target->word_0c.script_effect.kind,
-                                   target->word_18.value, -2,
+                                   target->word_18.value, ACTOR_EFFECT_POSITION_TWO_VERTICES,
                                    first, second, third);
                 } else {
                     actor_dispatch_group_effect(target->word_0c.script_effect.kind,

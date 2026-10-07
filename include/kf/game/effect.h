@@ -295,10 +295,12 @@ typedef struct KfEffectKind8State {
 typedef char kf_effect_kind8_state_size[sizeof(KfEffectKind8State) == 4 ? 1 : -1];
 typedef char kf_effect_kind8_vertical_step_offset[offsetof(KfEffectKind8State, vertical_step) == 2 ? 1 : -1];
 
-/* Kind 9 targets an actor; 0xfe selects the player camera, 0xff no target. */
+/* Actor-index payload bytes of kinds 5, 9, 105 and 111 (and the player
+ * dispatcher's optional target word): 0xff names no actor, which kind 111
+ * treats as its own position; kind 9 also accepts 0xfe for the player. */
 enum {
-    KF_EFFECT_KIND9_TARGET_PLAYER = 0xfe,
-    KF_EFFECT_KIND9_TARGET_NONE = 0xff
+    KF_EFFECT_TARGET_ACTOR_PLAYER = 0xfe,
+    KF_EFFECT_TARGET_ACTOR_NONE = 0xff
 };
 
 typedef struct KfEffectKind9Target {

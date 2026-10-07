@@ -1880,7 +1880,7 @@ void effect_update_dispatch(void)
         SVECTOR spawn_direction;
         s32 spread;
 
-        if (record->cache_tail.payload.kind111.actor_index == 0xff) {
+        if (record->cache_tail.payload.kind111.actor_index == KF_EFFECT_TARGET_ACTOR_NONE) {
             work_position.vx = record->position.vx;
             work_position.vy = record->position.vy;
             work_position.vz = record->position.vz;
@@ -2217,7 +2217,7 @@ void effect_update_dispatch(void)
         switch (initial_phase) {
         case 0: {
             progress = 0;
-            if (record->cache_tail.payload.kind5.actor_index != 0xff) {
+            if (record->cache_tail.payload.kind5.actor_index != KF_EFFECT_TARGET_ACTOR_NONE) {
                 goto kind5_actor_count;
             }
         kind5_default_count:
@@ -2308,7 +2308,7 @@ void effect_update_dispatch(void)
         if (initial_phase == 2) {
             goto kind105_phase2;
         }
-        if (record->cache_tail.payload.kind105.actor_index == 0xff) {
+        if (record->cache_tail.payload.kind105.actor_index == KF_EFFECT_TARGET_ACTOR_NONE) {
             goto kind105_collision;
         }
         actor = &actor_state.actors[record->cache_tail.payload.kind105.actor_index];
@@ -2381,7 +2381,7 @@ void effect_update_dispatch(void)
             &record->cache_tail.payload.kind9;
         u8 actor_index = target->actor_index;
 
-        if (actor_index == KF_EFFECT_KIND9_TARGET_PLAYER) {
+        if (actor_index == KF_EFFECT_TARGET_ACTOR_PLAYER) {
             VECTOR target_position;
 
             target_position.vx = player_state.camera_position.vx;
@@ -2389,7 +2389,7 @@ void effect_update_dispatch(void)
             target_position.vz = player_state.camera_position.vz;
             motion = effect_target_motion(&target_position, 400, 60,
                                        3000, 0, 10, KF_COLLISION_HEIGHT_CHECK_FLOOR);
-        } else if (actor_index != KF_EFFECT_KIND9_TARGET_NONE) {
+        } else if (actor_index != KF_EFFECT_TARGET_ACTOR_NONE) {
             VECTOR target_position;
             const KfActor *actor = &actor_state.actors[actor_index];
 

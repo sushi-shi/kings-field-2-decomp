@@ -1248,7 +1248,7 @@ case3_emit:
     case KF_EFFECT_KIND_0:
         actor = player_probe_view_target_and_vectors(5000, &position, &direction, &distance);
         if (actor == NULL) {
-            kind = 255;
+            kind = KF_EFFECT_TARGET_ACTOR_NONE;
         } else {
             kind = actor - actor_state.actors;
         }
@@ -1306,7 +1306,7 @@ emit_rotation_effect:
 select_actor_effect:
         actor = player_probe_view_target_and_vectors(target_scale, &position, &direction, &distance);
         if (actor == NULL) {
-            kind = 255;
+            kind = KF_EFFECT_TARGET_ACTOR_NONE;
         } else {
             kind = actor - actor_state.actors;
         }

@@ -640,34 +640,29 @@ void menu_build_equipped_label_rows(KfMenuLabelSuffix *rows)
     selected[MENU_CATEGORY_SHIELD] = KF_ENUM_ENCODE(u8, player_state.equipped_shield_id);
     selected[MENU_CATEGORY_ACCESSORY] = KF_ENUM_ENCODE(u8, player_state.equipped_accessory_id);
     selected[MENU_CATEGORY_EXTRA] = KF_ENUM_ENCODE(u8, player_state.equipped_extra_id);
-    if (player_state.secondary_magic_shortcut_id == KF_MAGIC_NONE)
-        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8,
-                                                                    player_state.secondary_item_shortcut_id);
-    else
-        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] = KF_ENUM_ENCODE(u8,
-                                                                    player_state.secondary_magic_shortcut_id);
+    if (player_state.secondary_magic_shortcut_id == KF_MAGIC_NONE) {
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] =
+            KF_ENUM_ENCODE(u8, player_state.secondary_item_shortcut_id);
+    } else {
+        selected[MENU_CATEGORY_SECONDARY_SHORTCUT] =
+            KF_ENUM_ENCODE(u8, player_state.secondary_magic_shortcut_id);
+    }
 
     entry = selected;
     for (i = 0; i < MENU_CATEGORY_COUNT; rows++, i++, entry++) {
         u32 id = *entry;
 
-        if (id == KF_EQUIPMENT_NONE)
-            goto missing;
-        if (i == MENU_CATEGORY_PRIMARY_MAGIC)
-            goto extra;
-        if (i != MENU_CATEGORY_SECONDARY_SHORTCUT)
-            goto base;
-        if (player_state.secondary_magic_shortcut_id == KF_MAGIC_NONE)
-            goto base;
-    extra:
-        *rows = *(const KfMenuLabelSuffix *)menu_glyph_rows_extra[id].codes;
-        goto next;
-    base:
-        *rows = *(const KfMenuLabelSuffix *)menu_glyph_rows[id].codes;
-        goto next;
-    missing:
-        rows->codes[0] = -1;
-    next:;
+        if (id != KF_EQUIPMENT_NONE) {
+            if (i == MENU_CATEGORY_PRIMARY_MAGIC
+                || (i == MENU_CATEGORY_SECONDARY_SHORTCUT
+                    && player_state.secondary_magic_shortcut_id != KF_MAGIC_NONE)) {
+                *rows = *(const KfMenuLabelSuffix *)menu_glyph_rows_extra[id].codes;
+            } else {
+                *rows = *(const KfMenuLabelSuffix *)menu_glyph_rows[id].codes;
+            }
+        } else {
+            rows->codes[0] = -1;
+        }
     }
 }
 
@@ -1697,18 +1692,19 @@ void menu_card_save_slot(s32 slot)
         if (result != KF_CARD_PROBE_CREATE_FAILED) {
             menu_prepare_card_io_error_rows(rows);
             MENU_CARD_DIALOG_WAIT(rows, 3, 178, 81, width);
-            goto wait_release;
+            input_wait_release();
+            return;
         }
         if (menu_confirm_card_format(KF_MENU_CARD_FORMAT_WITH_NOTICE) == KF_MENU_RESULT_ACCEPTED) {
             memory_card_format();
-            goto write_file;
+        } else {
+            menu_prepare_card_format_declined_rows(rows);
+            MENU_CARD_DIALOG_WAIT(rows, 3, 192, 66, width);
+            input_wait_release();
+            return;
         }
-        menu_prepare_card_format_declined_rows(rows);
-        MENU_CARD_DIALOG_WAIT(rows, 3, 192, 66, width);
-        goto wait_release;
     }
 
-write_file:
     menu_prepare_card_write_rows(rows);
     width = 178;
     overlap_x = 2;
@@ -1722,7 +1718,6 @@ write_file:
         menu_prepare_card_write_full_rows(rows);
     MENU_CARD_DIALOG_WAIT(rows, 3, width, 81, overlap_x);
 
-wait_release:
     input_wait_release();
 }
 

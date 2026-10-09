@@ -484,7 +484,7 @@ s32 vector_distance_to_point(
             if (position->vy >= point_y - point_height) {
                 goto horizontal_distance;
             }
-            goto reject;
+            return KF_DISTANCE_NONE;
         }
         if (point_y < position->vy - height) {
             goto reject;

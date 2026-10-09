@@ -2393,7 +2393,9 @@ void effect_update_dispatch(void)
             goto kind9_unbound;
         }
         if (motion != KF_EFFECT_MOTION_BLOCKED) {
-            goto kind9_no_collision;
+            effect_spawn_motion(record, -1, -3, 0xed8, -80,
+                                6, 8, 0, 0x400);
+            break;
         }
     kind9_impact:
         {
@@ -2415,7 +2417,6 @@ void effect_update_dispatch(void)
         if (collision != KF_COLLISION_HIT_NONE) {
             goto kind9_impact;
         }
-    kind9_no_collision:
         effect_spawn_motion(record, -1, -3, 0xed8, -80,
                        6, 8, 0, 0x400);
         break;

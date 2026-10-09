@@ -239,7 +239,8 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
     case KF_ACTOR_TARGET_9:
         if (target->word_0c.value < player_distance) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         if ((u32)(player_state.camera_position.vy - actor->position.vy + 1023) < 2047 &&
             rand() >= 4096) {
@@ -259,17 +260,20 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case KF_ACTOR_TARGET_132:
         if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) != KF_ACTOR_FLAGS_NONE ||
             target->word_1a.value < player_distance) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         if (!directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
         if (!angle_within_tolerance(actor->rotation.y, angle,
                                     target->word_10.bytes.fallback_offset << 4)) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         if (target == actor->target) {
             score = random_triangular_scaled(target->word_02.target_selection.continuing_score_scale);
@@ -307,7 +311,8 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
     case KF_ACTOR_TARGET_11:
         if (target->word_1a.value < player_distance) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
@@ -2258,7 +2263,9 @@ dispatch_action:
             }
             actor->state_70.signed_state++;
             if (old_state < 20) {
-                goto case3_motion;
+                actor_damp_horizontal_motion(group->movement_step * 2,
+                                             KF_ACTOR_MOVE_STORE_MOTION | KF_ACTOR_MOVE_SLIDE);
+                break;
             }
             if (old_state == 20) {
                 actor->lighting_override = KF_LIGHTING_PRESET_42;
@@ -2286,7 +2293,6 @@ dispatch_action:
                 }
             }
         }
-case3_motion:
         actor_damp_horizontal_motion(group->movement_step * 2,
                                      KF_ACTOR_MOVE_STORE_MOTION | KF_ACTOR_MOVE_SLIDE);
         break;

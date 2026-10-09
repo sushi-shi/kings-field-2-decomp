@@ -1408,7 +1408,9 @@ s32 menu_card_browser(void)
         input_wait_release();
         while (PadRead(1) == 0) {}
         input_wait_release();
-        goto no_file;
+        memory_card_stop();
+        menu_exit_display_state(KF_FALSE);
+        return KF_MENU_RESULT_CANCELLED;
     }
 
     status = memory_card_scan_save_entries(entries, &matching_count);
@@ -1420,7 +1422,6 @@ s32 menu_card_browser(void)
             while (PadRead(1) == 0) {}
             input_wait_release();
         }
-no_file:
         memory_card_stop();
         menu_exit_display_state(KF_FALSE);
         return KF_MENU_RESULT_CANCELLED;

@@ -136,7 +136,8 @@ void cd_request_service_stream(void)
             request->location = request->initial_location;
             cd_stream_limit_chunk(request);
             request->phase = KF_CD_REQUEST_PHASE_SEEK;
-            goto seek;
+            CdSeekP(&request->location);
+            return;
         }
 
         consumed += KF_CD_IMAGE_RECORD_HEADER_BYTES;
@@ -155,20 +156,18 @@ next_read:
     request->phase = KF_CD_REQUEST_PHASE_SEEK;
     DrawSync(0);
 
-seek:
     CdSeekP(&request->location);
-    goto done;
+    return;
 
 complete:
     DrawSync(0);
     request->sector_count = 0;
     cd_request_advance(request);
-    goto done;
+    return;
 
 leave_critical:
     ExitCriticalSection();
 
-done:
     return;
 }
 

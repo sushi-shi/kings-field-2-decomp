@@ -2601,7 +2601,7 @@ void effect_update_dispatch(void)
 
         switch (initial_phase) {
         case 0:
-            goto kind10_phase0;
+            break;
         case 1:
             goto kind10_phase1;
         case 5:

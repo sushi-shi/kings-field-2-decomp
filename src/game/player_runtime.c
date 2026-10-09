@@ -3139,7 +3139,7 @@ void player_update_frame(void)
     }
 update_reaction_view:
         player_handle_interaction_and_menu();
-        goto after_reaction;
+        break;
     case KF_PLAYER_REACTION_MAP_OBJECT_APPROACH: {
         KfMapObject *object;
         s32 fraction;
@@ -3167,7 +3167,7 @@ update_reaction_view:
         if (step > 31) {
             player_begin_map_object_view_follow(player_state.reaction.view.map_object_index);
         }
-        goto after_reaction;
+        break;
     }
     case KF_PLAYER_REACTION_POSITION_RECOVERY: {
         s32 fraction;
@@ -3186,7 +3186,7 @@ update_reaction_view:
         if (player_state.reaction.position.recovery_step > 15) {
             player_reset_reaction_state();
         }
-        goto after_reaction;
+        break;
     }
     case KF_PLAYER_REACTION_ROTATION:
         if (player_move_reaction_with_collision()) {
@@ -3294,9 +3294,9 @@ update_reaction_pose:
                 }
             }
         }
-        goto after_reaction;
+        break;
     default:
-        goto after_reaction;
+        break;
     }
 
 after_reaction:

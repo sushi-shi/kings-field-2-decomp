@@ -139,15 +139,12 @@ u8 event_target_stream_find_marker(const KfTargetCandidate *candidate, u8 marker
     for (;;) {
         s32 code = *cursor++;
 
-        if (code == KF_EVENT_STREAM_MARKER_RECORD) {
-            goto marker_record;
+        if (code != KF_EVENT_STREAM_MARKER_RECORD) {
+            if (code == KF_EVENT_STREAM_END) {
+                return candidate->word_10.bytes.fallback_offset;
+            }
+            continue;
         }
-        if (code == KF_EVENT_STREAM_END) {
-            return candidate->word_10.bytes.fallback_offset;
-        }
-        continue;
-
-marker_record:
         if (*cursor == marker) {
             const u8 *base = &candidate->word_12.bytes.marker_state;
             return cursor - base;
@@ -166,22 +163,19 @@ u8 *event_target_stream_resolve_cursor(KfActor *actor)
     for (;;) {
         u8 code = *cursor;
 
-        if (code == KF_EVENT_STREAM_CONDITIONAL_MARKER) {
-            goto marker_record;
-        }
-        if (code != KF_EVENT_STREAM_START) {
-            /* Retail retries this byte; the stream must supply a control code. */
-            continue;
-        }
-        if (candidate->word_10.bytes.fallback_offset == 0) {
-            cursor++;
-            candidate->word_10.bytes.fallback_offset = cursor - candidate->word_14.bytes;
-            return cursor;
-        }
+        if (code != KF_EVENT_STREAM_CONDITIONAL_MARKER) {
+            if (code != KF_EVENT_STREAM_START) {
+                /* Retail retries this byte; the stream must supply a control code. */
+                continue;
+            }
+            if (candidate->word_10.bytes.fallback_offset == 0) {
+                cursor++;
+                candidate->word_10.bytes.fallback_offset = cursor - candidate->word_14.bytes;
+                return cursor;
+            }
 use_fallback:
-        return candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
-
-marker_record:
+            return candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
+        }
         if (event_state.control.bytes[cursor[1]] == cursor[2]) {
             u8 offset = event_target_stream_find_marker(candidate, cursor[3]);
             if (candidate->word_10.bytes.fallback_offset < offset) {
@@ -238,7 +232,7 @@ void event_target_stream_execute(KfActor *actor)
             u8 count = cursor[1];
             candidate->word_10.bytes.fallback_offset -= count;
             cursor -= count;
-            break;
+            continue;
         }
         case KF_EVENT_STREAM_BRANCH - KF_EVENT_STREAM_REWIND_MARKER:
             if (event_state.control.bytes[cursor[1]] == cursor[2]) {
@@ -248,57 +242,53 @@ void event_target_stream_execute(KfActor *actor)
                 cursor += 4;
                 candidate->word_10.bytes.fallback_offset += 4;
             }
-            break;
+            continue;
         case KF_EVENT_STREAM_MARKER_RECORD - KF_EVENT_STREAM_REWIND_MARKER:
             cursor += 2;
             candidate->word_10.bytes.fallback_offset += 2;
-            break;
+            continue;
         case KF_EVENT_STREAM_SKIP - KF_EVENT_STREAM_REWIND_MARKER:
-            goto advance;
+            break;
         case KF_EVENT_STREAM_CALLBACK - KF_EVENT_STREAM_REWIND_MARKER:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             ((void (*)(KfActor *, s32))resource_state.active_table[4])(actor, *cursor);
-            goto advance;
+            break;
         case KF_EVENT_STREAM_REPEAT - KF_EVENT_STREAM_REWIND_MARKER:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             repeat = *cursor;
-            goto advance;
+            break;
         case KF_EVENT_STREAM_RESET_MARKER - KF_EVENT_STREAM_REWIND_MARKER:
             event_state.control.fields.stream_actor_definition_id = actor->definition_id;
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             candidate->word_12.bytes.marker_state = 0;
-            break;
+            continue;
         case KF_EVENT_STREAM_SET_CONTROL - KF_EVENT_STREAM_REWIND_MARKER:
             event_state.control.bytes[cursor[1]] = cursor[2];
             cursor += 2;
             candidate->word_10.bytes.fallback_offset += 2;
-            goto advance;
+            break;
         case KF_EVENT_STREAM_END - KF_EVENT_STREAM_REWIND_MARKER:
             goto after_script;
         default:
-            goto execute;
-        }
-        continue;
-
-execute:
-        if (!restore_state && candidate->animation_id != KF_ANIMATION_CLIP_NONE) {
-            s32 phase = actor->animation_phase;
-            saved_state = actor->animation_id;
-            if (phase != 0) {
-                actor_animation_seek_phase(actor, actor->animation_id,
-                              phase, 0, actor->animation_step);
+            if (!restore_state && candidate->animation_id != KF_ANIMATION_CLIP_NONE) {
+                s32 phase = actor->animation_phase;
+                saved_state = actor->animation_id;
+                if (phase != 0) {
+                    actor_animation_seek_phase(actor, actor->animation_id,
+                                  phase, 0, actor->animation_step);
+                }
+                actor_animation_seek_phase(actor, candidate->animation_id, 0,
+                              KF_ACTOR_ANIMATION_PHASE_MAX,
+                              candidate->animation_step);
+                restore_state = KF_TRUE;
             }
-            actor_animation_seek_phase(actor, candidate->animation_id, 0,
-                          KF_ACTOR_ANIMATION_PHASE_MAX,
-                          candidate->animation_step);
-            restore_state = KF_TRUE;
+            menu_show_transition_image(KF_RESOURCE_ARCHIVE_TALK, candidate->word_0c.value + *cursor);
+            break;
         }
-        menu_show_transition_image(KF_RESOURCE_ARCHIVE_TALK, candidate->word_0c.value + *cursor);
 
-advance:
         cursor++;
         candidate->word_10.bytes.fallback_offset++;
         if (repeat != 0) {
@@ -395,20 +385,21 @@ void event_scene_command_dispatch(const VECTOR *position,
             case KF_MAP_OBJECT_MARKER_CONSUMED:
                 audio_play_sound_64();
                 event_state.interaction_handled = KF_TRUE;
-                goto invoke_callback;
+                break;
             case KF_MAP_OBJECT_MARKER_MISMATCH:
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.interaction_handled = KF_TRUE;
-                goto invoke_callback;
+                break;
             case KF_MAP_OBJECT_MARKER_REFUSED:
                 notify_enqueue(KF_NOTIFICATION_4);
                 event_state.interaction_handled = KF_TRUE;
-                goto invoke_callback;
+                break;
             case KF_MAP_OBJECT_MARKER_NOT_APPLICABLE:
             default:
                 index++;
                 continue;
             }
+            break;
         }
         break;
     case KF_OBJECT_114:
@@ -699,7 +690,7 @@ decay_update:
                 break;
             }
             if (map_object_state.objects[index].object_id != KF_OBJECT_195) {
-                goto invoke_callback;
+                break;
             }
         }
         if (!game_counter_increment(KF_ITEM_RESTORE_HP_100)) {

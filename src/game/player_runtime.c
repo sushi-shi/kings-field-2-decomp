@@ -321,7 +321,7 @@ void player_increment_physical_power_training(void)
     if (player_state.physical_power_training >= KF_PLAYER_TRAINING_POINTS_PER_GAIN) {
         player_state.base_physical_power++;
         player_state.physical_power_training = 0;
-        if (player_state.base_physical_power >= KF_PLAYER_POWER_MAX + 1) {
+        if (player_state.base_physical_power > KF_PLAYER_POWER_MAX) {
             player_state.base_physical_power = KF_PLAYER_POWER_MAX;
         } else {
             notify_enqueue(KF_NOTIFICATION_PHYSICAL_POWER_INCREASED);
@@ -337,7 +337,7 @@ void player_increment_magic_training(void)
     if (player_state.magic_training >= KF_PLAYER_TRAINING_POINTS_PER_GAIN) {
         player_state.base_magic++;
         player_state.magic_training = 0;
-        if (player_state.base_magic >= KF_PLAYER_POWER_MAX + 1) {
+        if (player_state.base_magic > KF_PLAYER_POWER_MAX) {
             player_state.base_magic = KF_PLAYER_POWER_MAX;
         } else {
             notify_enqueue(KF_NOTIFICATION_MAGIC_POWER_INCREASED);
@@ -383,16 +383,16 @@ void player_add_experience(s16 amount)
             player_state.base_magic += growth->magic_step;
             player_state.next_level_experience = growth->experience_threshold;
         }
-        if (player_state.vitals.maximum_hp >= KF_PLAYER_VITAL_MAX + 1) {
+        if (player_state.vitals.maximum_hp > KF_PLAYER_VITAL_MAX) {
             player_state.vitals.maximum_hp = KF_PLAYER_VITAL_MAX;
         }
-        if (player_state.vitals.maximum_mp >= KF_PLAYER_VITAL_MAX + 1) {
+        if (player_state.vitals.maximum_mp > KF_PLAYER_VITAL_MAX) {
             player_state.vitals.maximum_mp = KF_PLAYER_VITAL_MAX;
         }
-        if (player_state.base_physical_power >= KF_PLAYER_POWER_MAX + 1) {
+        if (player_state.base_physical_power > KF_PLAYER_POWER_MAX) {
             player_state.base_physical_power = KF_PLAYER_POWER_MAX;
         }
-        if (player_state.base_magic >= KF_PLAYER_POWER_MAX + 1) {
+        if (player_state.base_magic > KF_PLAYER_POWER_MAX) {
             player_state.base_magic = KF_PLAYER_POWER_MAX;
         }
         player_recalculate_combat_stats();
@@ -512,7 +512,7 @@ void player_apply_damage_reaction(const VECTOR *origin, s32 damage, s32 reaction
     }
 
     duration = (KF_PLAYER_DAMAGE_DURATION_BASE - (intensity >> 1)) >> 2;
-    if (duration < KF_PLAYER_DAMAGE_DURATION_MIN + 1) {
+    if (duration <= KF_PLAYER_DAMAGE_DURATION_MIN) {
         duration = KF_PLAYER_DAMAGE_DURATION_MIN;
     }
     if (remaining == 0) {
@@ -597,13 +597,13 @@ ADDRESS(0x800247e4, 0xc4)
 void player_cap_status_components(KfPlayerStatusMask mask)
 {
     if ((mask & KF_PLAYER_STATUS_FIRST) != KF_PLAYER_STATUS_NONE) {
-        if (player_state.curse_strength >= KF_PLAYER_STATUS_CAP + 1) {
+        if (player_state.curse_strength > KF_PLAYER_STATUS_CAP) {
             player_state.curse_strength = KF_PLAYER_STATUS_CAP;
         }
         player_state.curse_phase_limit = 0;
     }
     if ((mask & KF_PLAYER_STATUS_SECOND) != KF_PLAYER_STATUS_NONE) {
-        if (player_state.darkness_phase >= KF_PLAYER_STATUS_CAP + 1) {
+        if (player_state.darkness_phase > KF_PLAYER_STATUS_CAP) {
             player_state.darkness_phase = KF_PLAYER_STATUS_CAP;
         }
         player_state.darkness_phase_limit = 0;
@@ -612,7 +612,7 @@ void player_cap_status_components(KfPlayerStatusMask mask)
         player_state.poison_timer = 0;
     }
     if ((mask & (KF_PLAYER_STATUS_FIRST | KF_PLAYER_STATUS_THIRD)) != KF_PLAYER_STATUS_NONE) {
-        if (player_state.slow_timer >= KF_PLAYER_STATUS_CAP + 1) {
+        if (player_state.slow_timer > KF_PLAYER_STATUS_CAP) {
             player_state.slow_timer = KF_PLAYER_STATUS_CAP;
         }
     }

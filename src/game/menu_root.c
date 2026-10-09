@@ -343,7 +343,7 @@ void menu_apply_item_effect(KF_ENUM_PARAM(KfObjectId, s32) item_id)
     if (item_id == KF_ITEM_RELIEVE_AILMENTS) {
         if (player_state.paralysis_timer > 0)
             player_state.paralysis_timer = 0;
-        if (player_state.slow_timer >= MENU_STATUS_RELIEF_CAP + 1)
+        if (player_state.slow_timer > MENU_STATUS_RELIEF_CAP)
             player_state.slow_timer = MENU_STATUS_RELIEF_CAP;
         player_cap_curse_strength();
         player_cap_darkness_phase();

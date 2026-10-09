@@ -420,7 +420,7 @@ u8 *memory_malloc_checked(u32 size)
 {
     u8 *block = (u8 *)malloc(size);
 
-    if ((u32)block + MEMORY_RAM_BASE > KF_MAIN_RAM_BYTES - 1) {
+    if ((u32)block + MEMORY_RAM_BASE >= KF_MAIN_RAM_BYTES) {
         return NULL;
     }
     return block;
@@ -729,7 +729,7 @@ void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
     size = cd_archive_entry_extent((u16)slot, (u16)entry, &location);
     request->remaining_sectors = size >> KF_CD_SECTOR_SHIFT;
     request->chunk_sectors = request->remaining_sectors;
-    if (request->remaining_sectors < KF_CD_STREAM_CHUNK_SECTORS + 1) {
+    if (request->remaining_sectors <= KF_CD_STREAM_CHUNK_SECTORS) {
         request->remaining_sectors = 0;
         cd_request_enqueue(KF_CD_REQUEST_IMAGE_STREAM, &location, size,
             (u_long *)destination, on_complete);

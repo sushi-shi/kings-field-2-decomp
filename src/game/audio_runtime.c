@@ -180,7 +180,7 @@ KfAudioPlaybackResult audio_play_spatial(
     if (level < AUDIO_SPATIAL_MIN_LEVEL) {
         return KF_AUDIO_NOT_PLAYED;
     }
-    if (level >= AUDIO_VOLUME_MAX + 1) {
+    if (level > AUDIO_VOLUME_MAX) {
         level = AUDIO_VOLUME_MAX;
     }
 
@@ -198,11 +198,11 @@ KfAudioPlaybackResult audio_play_spatial(
     }
 
     left = (level * rsin(angle)) / AUDIO_SPATIAL_PAN_DIVISOR;
-    if (left >= AUDIO_VOLUME_MAX + 1) {
+    if (left > AUDIO_VOLUME_MAX) {
         left = AUDIO_VOLUME_MAX;
     }
     right = (level * rcos(angle)) / AUDIO_SPATIAL_PAN_DIVISOR;
-    if (right >= AUDIO_VOLUME_MAX + 1) {
+    if (right > AUDIO_VOLUME_MAX) {
         right = AUDIO_VOLUME_MAX;
     }
     audio_key_on(sound, left, right, note_offset);

@@ -1562,20 +1562,17 @@ void effect_update_dispatch(void)
     }
     case KF_EFFECT_KIND_4:
         collision = effect_collision_step(180, 0, 0);
-        if (collision == KF_COLLISION_HIT_NONE) {
-            goto kind4_zero_collision;
+        if (collision != KF_COLLISION_HIT_NONE) {
+            if ((collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+            if (record->cache_tail.payload.collision_latch.impact_handled == 0) {
+                record->cache_tail.payload.collision_latch.impact_handled = 1;
+                effect_apply_current_magic_backstep(collision);
+            }
+        } else {
+            record->cache_tail.payload.collision_latch.impact_handled = 0;
         }
-        if ((collision & KF_COLLISION_HIT_SHAPE_MASK) != KF_COLLISION_HIT_NONE) {
-            record->type = KF_EFFECT_SLOT_FREE;
-        }
-        if (record->cache_tail.payload.collision_latch.impact_handled == 0) {
-            record->cache_tail.payload.collision_latch.impact_handled = 1;
-            effect_apply_current_magic_backstep(collision);
-        }
-        goto kind4_rotate;
-    kind4_zero_collision:
-        record->cache_tail.payload.collision_latch.impact_handled = 0;
-    kind4_rotate:
         record->rotation.vy += 750;
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
         break;
@@ -2178,16 +2175,14 @@ void effect_update_dispatch(void)
         s32 phase = initial_phase;
 
         if (phase < 100) {
-            if ((u32)(phase - 4) < 67) {
-                goto kind100_collision;
+            if ((u32)(phase - 4) >= 67) {
+                record->direction.vy += 10;
+                if (effect_collision_step(100, 0, 0) == KF_COLLISION_HIT_NONE) {
+                    effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
+                    goto shared_phase_increment;
+                }
+                goto kind100_miss;
             }
-            record->direction.vy += 10;
-            if (effect_collision_step(100, 0, 0) == KF_COLLISION_HIT_NONE) {
-                effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
-                goto shared_phase_increment;
-            }
-            goto kind100_miss;
-        kind100_collision:
             if (effect_aim_and_move(600, 30, 64, 100,
                               0, 0x1000, 360, 0x800) != KF_EFFECT_MOTION_BLOCKED) {
                 goto kind100_success;
@@ -2305,23 +2300,21 @@ void effect_update_dispatch(void)
         VECTOR *position;
 
         record->rotation.vz += 800;
-        if (initial_phase == 2) {
-            goto kind105_phase2;
-        }
-        if (record->cache_tail.payload.kind105.actor_index == KF_EFFECT_TARGET_ACTOR_NONE) {
-            goto kind105_collision;
-        }
-        actor = &actor_state.actors[record->cache_tail.payload.kind105.actor_index];
+        if (initial_phase != 2) {
+            if (record->cache_tail.payload.kind105.actor_index == KF_EFFECT_TARGET_ACTOR_NONE) {
+                goto kind105_collision;
+            }
+            actor = &actor_state.actors[record->cache_tail.payload.kind105.actor_index];
 
-        actor_sample_rotated_animation_vertex(actor,
-                      record->cache_tail.payload.kind105.vertex_index,
-                      &vertex_offset);
-        position = actor_resolve_group_position(actor, &actor_position);
-        next_position.vx = vertex_offset.vx + position->vx;
-        next_position.vy = vertex_offset.vy + position->vy;
-        next_position.vz = vertex_offset.vz + position->vz;
-        goto kind105_actor_phase;
-    kind105_phase2:
+            actor_sample_rotated_animation_vertex(actor,
+                          record->cache_tail.payload.kind105.vertex_index,
+                          &vertex_offset);
+            position = actor_resolve_group_position(actor, &actor_position);
+            next_position.vx = vertex_offset.vx + position->vx;
+            next_position.vy = vertex_offset.vy + position->vy;
+            next_position.vz = vertex_offset.vz + position->vz;
+            goto kind105_actor_phase;
+        }
         record->scale_y = record->scale_x = record->scale_x - 128;
         record->direction.vy += 5;
     kind105_collision:
@@ -2332,14 +2325,12 @@ void effect_update_dispatch(void)
         }
         break;
     kind105_actor_phase:
-        if (initial_phase == 0) {
-            goto kind105_phase0;
+        if (initial_phase != 0) {
+            if (initial_phase == 1) {
+                goto kind105_phase1;
+            }
+            break;
         }
-        if (initial_phase == 1) {
-            goto kind105_phase1;
-        }
-        break;
-    kind105_phase0:
         motion = effect_target_motion(&next_position, 300, 50,
                                    500, 150, 10, 0);
         if (motion == KF_EFFECT_MOTION_ARRIVED) {
@@ -2456,14 +2447,12 @@ void effect_update_dispatch(void)
         break;
     }
     case KF_EFFECT_KIND_106:
-        if (initial_phase == 0) {
-            goto kind106_phase0;
+        if (initial_phase != 0) {
+            if (initial_phase == 1) {
+                goto kind106_phase1;
+            }
+            break;
         }
-        if (initial_phase == 1) {
-            goto kind106_phase1;
-        }
-        break;
-    kind106_phase0:
         record->direction.vy += 20;
         collision = effect_collision_step(140, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
         if (collision != KF_COLLISION_HIT_NONE) {

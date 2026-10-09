@@ -528,15 +528,12 @@ s32 vector_distance_between_with_reach(const VECTOR *first, s32 reach, const VEC
     y >>= KF_LENGTH_SQUARE_DOWNSHIFT;
     distance = SquareRoot0(x * x + z * z + y * y)
              << KF_LENGTH_SQUARE_DOWNSHIFT;
-    if (limit < distance) {
-        goto out_of_range;
+    if (limit >= distance) {
+        if (distance > offset) {
+            return distance - offset;
+        }
+        return 0;
     }
-    if (distance > offset) {
-        return distance - offset;
-    }
-    return 0;
-
-out_of_range:
     return KF_DISTANCE_OUTSIDE_REACH;
 }
 

@@ -1697,145 +1697,141 @@ special_idle:
     }
 
 regular_weapon:
-    if (player_state.weapon_attack_phase == KF_WEAPON_ATTACK_INACTIVE) {
-        goto regular_idle;
-    }
-
-    if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_FIRST) {
-        phase_step = weapon->attack_phase_step;
-        phase_end = weapon->normal_attack_end_phase;
-        sound_end = weapon->normal_attack_sound_phase;
-        hit_step = 0;
-        sound_step = 0;
-    } else {
-        phase_step = weapon->alternate_attack_phase_step;
-        phase_end = weapon->alternate_attack_end_phase;
-        hit_step = weapon->magic_phase_step;
-        sound_end = weapon->alternate_attack_sound_end_phase;
-        sound_step = weapon->alternate_attack_sound_phase_step;
-    }
-    player_state.weapon_attack_phase += phase_step;
-
-    if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_FIRST
-        && weapon->initial_effect_id != KF_MAGIC_NONE
-        && player_state.weapon_attack_fully_charged != 0
-        && player_meets_weapon_magic_power_requirement()
-        && (player_state.pad_buttons.current & PADRleft) != 0) {
-        if (player_state.weapon_attack_phase >= weapon->magic_window_start
-            && player_state.weapon_attack_phase <= weapon->magic_window_end) {
-            if (player_state.weapon_magic_shots_configured != 0) {
-                player_dispatch_weapon_magic(weapon->initial_effect_id,
-                               player_state.weapon_magic_shots_configured == weapon->magic_shots,
-                               player_state.weapon_magic_shots_configured);
-                player_state.weapon_magic_shots_configured--;
-            }
+    if (player_state.weapon_attack_phase != KF_WEAPON_ATTACK_INACTIVE) {
+        if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_FIRST) {
+            phase_step = weapon->attack_phase_step;
+            phase_end = weapon->normal_attack_end_phase;
+            sound_end = weapon->normal_attack_sound_phase;
+            hit_step = 0;
+            sound_step = 0;
         } else {
-            player_state.weapon_magic_shots_configured = 0;
+            phase_step = weapon->alternate_attack_phase_step;
+            phase_end = weapon->alternate_attack_end_phase;
+            hit_step = weapon->magic_phase_step;
+            sound_end = weapon->alternate_attack_sound_end_phase;
+            sound_step = weapon->alternate_attack_sound_phase_step;
         }
-    }
+        player_state.weapon_attack_phase += phase_step;
 
-    if (player_state.weapon_attack_phase >= player_state.weapon_next_sound_phase
-        && player_state.weapon_attack_phase
-             < player_state.weapon_next_sound_phase + phase_step) {
-        audio_play_sound(weapon->sound_id, 80);
-        if (player_state.weapon_next_sound_phase >= sound_end) {
-            player_state.weapon_next_sound_phase = WEAPON_ATTACK_EVENT_DISABLED_PHASE;
-        } else {
-            player_state.weapon_next_sound_phase += sound_step;
-        }
-    }
-
-    if (player_state.weapon_attack_phase >= player_state.weapon_attack_window
-        && player_state.weapon_attack_phase
-             < player_state.weapon_attack_window + phase_step) {
-        player_state.weapon_guard_active = KF_FALSE;
-        if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_SECOND) {
-            if (player_state.equipped_weapon_id == KF_OBJECT_13
-                && (player_state.pad_buttons.current & PADRleft) != 0) {
-                player_state.weapon_attack_phase -= phase_step;
-                player_state.weapon_guard_active = KF_TRUE;
-                return;
-            }
-            if (weapon->release_effect_id != KF_MAGIC_NONE) {
-                player_dispatch_weapon_magic(weapon->release_effect_id,
-                               player_state.weapon_attack_phase >= phase_end,
-                               (player_state.weapon_attack_phase - weapon->alternate_attack_window_start)
-                                   / hit_step);
+        if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_FIRST
+            && weapon->initial_effect_id != KF_MAGIC_NONE
+            && player_state.weapon_attack_fully_charged != 0
+            && player_meets_weapon_magic_power_requirement()
+            && (player_state.pad_buttons.current & PADRleft) != 0) {
+            if (player_state.weapon_attack_phase >= weapon->magic_window_start
+                && player_state.weapon_attack_phase <= weapon->magic_window_end) {
+                if (player_state.weapon_magic_shots_configured != 0) {
+                    player_dispatch_weapon_magic(weapon->initial_effect_id,
+                                   player_state.weapon_magic_shots_configured == weapon->magic_shots,
+                                   player_state.weapon_magic_shots_configured);
+                    player_state.weapon_magic_shots_configured--;
+                }
+            } else {
+                player_state.weapon_magic_shots_configured = 0;
             }
         }
 
-        if (player_state.weapon_attack_phase >= phase_end) {
-            s32 coordinate;
-
-            player_state.weapon_attack_window = WEAPON_ATTACK_EVENT_DISABLED_PHASE;
-            player_state.weapon_charge_delay = 10;
-            damage_amount = player_state.attack_charge_committed;
-            damage_origin = &damage_position;
-            player_state.attack_charge_current = 0;
-            coordinate = player_state.camera_position.vx;
-            damage_position.vx = coordinate;
-            damage_position.vy = player_state.camera_position.vy - 1000;
-            coordinate = player_state.camera_position.vz;
-            damage_position.vz = coordinate;
-        } else {
-            player_state.weapon_attack_window += hit_step;
-            damage_origin = NULL;
-            damage_amount = player_state.attack_charge_committed >> 2;
+        if (player_state.weapon_attack_phase >= player_state.weapon_next_sound_phase
+            && player_state.weapon_attack_phase
+                 < player_state.weapon_next_sound_phase + phase_step) {
+            audio_play_sound(weapon->sound_id, 80);
+            if (player_state.weapon_next_sound_phase >= sound_end) {
+                player_state.weapon_next_sound_phase = WEAPON_ATTACK_EVENT_DISABLED_PHASE;
+            } else {
+                player_state.weapon_next_sound_phase += sound_step;
+            }
         }
 
-        initial_vertex.vx = 0;
-        initial_vertex.vy = 0;
-        initial_vertex.vz = weapon->attack_angle;
-        rotation.x = -player_state.camera_rotation_target.angles[0];
-        rotation.y = player_state.camera_rotation_target.angles[1];
-        rotation.z = 0;
-        vector_rotate_yxz(&rotation, &initial_vertex, &step);
-        step.vy = ((3600 - weapon->attack_angle) * step.vy) / 1800;
-        step.vx /= 4;
-        step.vy /= 4;
-        step.vz /= 4;
-        world_position.vx = player_state.camera_position.vx;
-        world_position.vy = player_state.camera_position.vy - 800;
-        world_position.vz = player_state.camera_position.vz;
-        for (i = 3; i != -1; i--) {
-            world_position.vx += step.vx;
-            world_position.vy += step.vy;
-            world_position.vz += step.vz;
-            index = actor_find_overlap_excluding_target_type3(world_position.vx, world_position.vy,
-                                   world_position.vz, 400, 600);
-            if (index != KF_ACTOR_INDEX_NONE) {
-                KfActor *actor = &actor_state.actors[index];
-                KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
-                s32 bearing = vector_xz_to_angle(actor->position.vx - player_state.camera_position.vx,
-                                                  actor->position.vz - player_state.camera_position.vz);
-                if (angle_within_tolerance(player_state.camera_rotation.angles[1],
-                                           bearing, group->player_facing_tolerance)
-                    && angle_within_tolerance(actor->rotation.y,
-                                              bearing + 0x800, group->actor_facing_tolerance)) {
-                    actor_apply_magic_to_actor(index, player_state.physical_power,
-                                   player_state.attack_components[0],
-                                   player_state.attack_components[1],
-                                   player_state.attack_components[2],
-                                   player_state.attack_components[3],
-                                   player_state.attack_components[4],
-                                   player_state.attack_components[5],
-                                   player_state.attack_components[6],
-                                   player_state.attack_components[7],
-                                   damage_amount,
-                                   KF_ACTOR_DAMAGE_FROM_PLAYER | KF_ACTOR_DAMAGE_PHYSICAL, damage_origin);
-                    break;
+        if (player_state.weapon_attack_phase >= player_state.weapon_attack_window
+            && player_state.weapon_attack_phase
+                 < player_state.weapon_attack_window + phase_step) {
+            player_state.weapon_guard_active = KF_FALSE;
+            if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_SECOND) {
+                if (player_state.equipped_weapon_id == KF_OBJECT_13
+                    && (player_state.pad_buttons.current & PADRleft) != 0) {
+                    player_state.weapon_attack_phase -= phase_step;
+                    player_state.weapon_guard_active = KF_TRUE;
+                    return;
+                }
+                if (weapon->release_effect_id != KF_MAGIC_NONE) {
+                    player_dispatch_weapon_magic(weapon->release_effect_id,
+                                   player_state.weapon_attack_phase >= phase_end,
+                                   (player_state.weapon_attack_phase - weapon->alternate_attack_window_start)
+                                       / hit_step);
+                }
+            }
+
+            if (player_state.weapon_attack_phase >= phase_end) {
+                s32 coordinate;
+
+                player_state.weapon_attack_window = WEAPON_ATTACK_EVENT_DISABLED_PHASE;
+                player_state.weapon_charge_delay = 10;
+                damage_amount = player_state.attack_charge_committed;
+                damage_origin = &damage_position;
+                player_state.attack_charge_current = 0;
+                coordinate = player_state.camera_position.vx;
+                damage_position.vx = coordinate;
+                damage_position.vy = player_state.camera_position.vy - 1000;
+                coordinate = player_state.camera_position.vz;
+                damage_position.vz = coordinate;
+            } else {
+                player_state.weapon_attack_window += hit_step;
+                damage_origin = NULL;
+                damage_amount = player_state.attack_charge_committed >> 2;
+            }
+
+            initial_vertex.vx = 0;
+            initial_vertex.vy = 0;
+            initial_vertex.vz = weapon->attack_angle;
+            rotation.x = -player_state.camera_rotation_target.angles[0];
+            rotation.y = player_state.camera_rotation_target.angles[1];
+            rotation.z = 0;
+            vector_rotate_yxz(&rotation, &initial_vertex, &step);
+            step.vy = ((3600 - weapon->attack_angle) * step.vy) / 1800;
+            step.vx /= 4;
+            step.vy /= 4;
+            step.vz /= 4;
+            world_position.vx = player_state.camera_position.vx;
+            world_position.vy = player_state.camera_position.vy - 800;
+            world_position.vz = player_state.camera_position.vz;
+            for (i = 3; i != -1; i--) {
+                world_position.vx += step.vx;
+                world_position.vy += step.vy;
+                world_position.vz += step.vz;
+                index = actor_find_overlap_excluding_target_type3(world_position.vx, world_position.vy,
+                                       world_position.vz, 400, 600);
+                if (index != KF_ACTOR_INDEX_NONE) {
+                    KfActor *actor = &actor_state.actors[index];
+                    KfTargetGroup *group = &actor_state.target_groups[actor->group_index];
+                    s32 bearing = vector_xz_to_angle(actor->position.vx - player_state.camera_position.vx,
+                                                      actor->position.vz - player_state.camera_position.vz);
+                    if (angle_within_tolerance(player_state.camera_rotation.angles[1],
+                                               bearing, group->player_facing_tolerance)
+                        && angle_within_tolerance(actor->rotation.y,
+                                                  bearing + 0x800, group->actor_facing_tolerance)) {
+                        actor_apply_magic_to_actor(index, player_state.physical_power,
+                                       player_state.attack_components[0],
+                                       player_state.attack_components[1],
+                                       player_state.attack_components[2],
+                                       player_state.attack_components[3],
+                                       player_state.attack_components[4],
+                                       player_state.attack_components[5],
+                                       player_state.attack_components[6],
+                                       player_state.attack_components[7],
+                                       damage_amount,
+                                       KF_ACTOR_DAMAGE_FROM_PLAYER | KF_ACTOR_DAMAGE_PHYSICAL, damage_origin);
+                        break;
+                    }
                 }
             }
         }
-    }
 
-    if (player_state.weapon_attack_phase > KF_ANGLE_WRAP_MASK) {
-        player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
-        player_state.weapon_magic_shots_configured = 0;
+        if (player_state.weapon_attack_phase > KF_ANGLE_WRAP_MASK) {
+            player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
+            player_state.weapon_magic_shots_configured = 0;
+        }
+        return;
     }
-    return;
-
-regular_idle:
     if ((player_state.pad_buttons.current & PADRup) == 0) {
         if (player_state.weapon_charge_delay == 0) {
             s32 gain = player_charge_gain_for_rank(player_state.physical_power,

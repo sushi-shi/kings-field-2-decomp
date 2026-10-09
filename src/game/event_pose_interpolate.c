@@ -1610,11 +1610,11 @@ void card_payload_capture_game_state(u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy((void *)buffer, (const void *)resource_state.active_resource_ids,
+    memcpy(buffer, resource_state.active_resource_ids,
         sizeof resource_state.active_resource_ids);
-    memcpy((void *)&payload->camera_position, (const void *)&player_state.camera_position,
+    memcpy(&payload->camera_position, &player_state.camera_position,
         sizeof payload->camera_position);
-    memcpy((void *)(buffer + KF_CARD_SAVE_ROTATION_OFFSET),
+    memcpy((buffer + KF_CARD_SAVE_ROTATION_OFFSET),
         (const void *)&player_state.camera_rotation_target, sizeof player_state.camera_rotation_target);
 
     saved->experience = player_state.experience;
@@ -1667,13 +1667,13 @@ void card_payload_capture_game_state(u8 *buffer)
         *magic_flag++ = record->menu_available;
         ++record;
     }
-    memcpy((void *)payload->game_counters, (const void *)game_counter_bytes,
+    memcpy(payload->game_counters, game_counter_bytes,
         sizeof payload->game_counters);
-    memcpy((void *)payload->event_control, (const void *)event_state.control.bytes,
+    memcpy(payload->event_control, event_state.control.bytes,
         sizeof payload->event_control);
-    memcpy((void *)payload->event_arena, (const void *)event_state.arena.bytes,
+    memcpy(payload->event_arena, event_state.arena.bytes,
         sizeof payload->event_arena);
-    memcpy((void *)payload->saved_event_offsets, (const void *)event_state.saved_offsets,
+    memcpy(payload->saved_event_offsets, event_state.saved_offsets,
         sizeof payload->saved_event_offsets);
 }
 
@@ -1686,15 +1686,15 @@ void card_payload_restore_game_state(const u8 *buffer)
     KfMagicRecord *record = effect_state.magic_records;
     s32 i;
 
-    memcpy((void *)resource_state.active_resource_ids, (const void *)buffer,
+    memcpy(resource_state.active_resource_ids, buffer,
         sizeof resource_state.active_resource_ids);
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_TMD] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_VAB] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
     resource_state.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] = resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
-    memcpy((void *)&player_state.camera_position, (const void *)&payload->camera_position,
+    memcpy(&player_state.camera_position, &payload->camera_position,
         sizeof player_state.camera_position);
-    memcpy((void *)&player_state.camera_rotation_target,
+    memcpy(&player_state.camera_rotation_target,
         (const void *)(buffer + KF_CARD_SAVE_ROTATION_OFFSET), sizeof player_state.camera_rotation_target);
 
     player_state.experience = saved->experience;
@@ -1747,12 +1747,12 @@ void card_payload_restore_game_state(const u8 *buffer)
         record->menu_available = *magic_flag++;
         ++record;
     }
-    memcpy((void *)game_counter_bytes, (const void *)payload->game_counters,
+    memcpy(game_counter_bytes, payload->game_counters,
         sizeof payload->game_counters);
-    memcpy((void *)event_state.control.bytes, (const void *)payload->event_control,
+    memcpy(event_state.control.bytes, payload->event_control,
         sizeof payload->event_control);
-    memcpy((void *)event_state.arena.bytes, (const void *)payload->event_arena,
+    memcpy(event_state.arena.bytes, payload->event_arena,
         sizeof payload->event_arena);
-    memcpy((void *)event_state.saved_offsets, (const void *)payload->saved_event_offsets,
+    memcpy(event_state.saved_offsets, payload->saved_event_offsets,
         sizeof payload->saved_event_offsets);
 }

@@ -426,7 +426,7 @@ u8 *memory_allocate(u32 size)
 ADDRESS(0x8001777c, 0x20)
 void memory_free(u8 *data)
 {
-    free((void *)data);
+    free(data);
 }
 
 /* Services the VAB and stream requests at the head of the CD queue, then
@@ -532,7 +532,7 @@ void cd_data_ready_handler(void)
 
     if (request->kind != KF_CD_REQUEST_IDLE &&
         request->kind == KF_CD_REQUEST_SECTOR_CALLBACK) {
-        CdGetSector((void *)request->destination, KF_CD_SECTOR_WORDS);
+        CdGetSector(request->destination, KF_CD_SECTOR_WORDS);
         request->sector_count--;
         if (request->on_complete != NULL) {
             request->on_complete(request);
@@ -825,7 +825,7 @@ u8 *cd_file_load(const char *name)
     u32 size;
     u8 *data;
 
-    memcpy((void *)path, (const void *)cd_path_prefix, sizeof cd_path_prefix);
+    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
     strcat(path, name);
     strcat(path, cd_version_suffix);
     cd_request_wait_idle();
@@ -849,7 +849,7 @@ s32 cd_file_load_into(u_long *destination, const char *name, u32 size)
      * and retail keeps its frame slot. */
     CdlLOC start;
 
-    memcpy((void *)path, (const void *)cd_path_prefix, sizeof cd_path_prefix);
+    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
     strcat(path, name);
     strcat(path, cd_version_suffix);
     cd_request_wait_idle();
@@ -874,7 +874,7 @@ void cd_archive_open(u16 slot, const char *name)
     char path[CD_PATH_BYTES];
     KfCdArchive *archive = &cd_archives[slot];
 
-    memcpy((void *)path, (const void *)cd_path_prefix, sizeof cd_path_prefix);
+    memcpy(path, cd_path_prefix, sizeof cd_path_prefix);
     strcat(path, name);
     strcat(path, cd_version_suffix);
     if (CdSearchFile(&file, path) == NULL) {

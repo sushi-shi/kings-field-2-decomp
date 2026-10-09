@@ -122,7 +122,7 @@ b32 opening_draw_banner(KfTitleMode mode)
     primitive_buffer_begin_poly_ft4();
     setTPage(current_poly_ft4, 0, 1, 896, 0);
     current_poly_ft4->clut = getClut(0, 500);
-    SetSemiTrans((void *)current_poly_ft4, 1);
+    SetSemiTrans(current_poly_ft4, 1);
     setRGB0(current_poly_ft4, banner_level, banner_level, banner_level);
     setXYWH(current_poly_ft4, 160, 180, 320, 16);
     setUVWH(current_poly_ft4, 0, 0, 255, 16);
@@ -148,7 +148,7 @@ void opening_draw_prompt(KfTitleMode mode)
     primitive_buffer_begin_poly_ft4();
     setTPage(current_poly_ft4, 0, 1, 896, 0);
     current_poly_ft4->clut = getClut(0, 501);
-    SetSemiTrans((void *)current_poly_ft4, 1);
+    SetSemiTrans(current_poly_ft4, 1);
     if (mode == KF_TITLE_ANIMATE) {
         setRGB0(current_poly_ft4, prompt_level, prompt_level, prompt_level);
     }
@@ -205,6 +205,6 @@ void primitive_buffer_commit_poly_ft4(s32 depth)
         }
         setRGB0(current_poly_ft4, level, level, level);
     }
-    AddPrim((void *)&display_current->ordering_table[depth], (void *)current_poly_ft4);
+    AddPrim(&display_current->ordering_table[depth], current_poly_ft4);
     current_poly_ft4++;
 }

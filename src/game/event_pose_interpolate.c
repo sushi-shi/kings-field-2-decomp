@@ -674,7 +674,7 @@ decay_update:
             }
         }
         object->lighting_blend_q12 = 0;
-        do {
+        for (;;) {
             object->rotation.vy += spin;
             object->lighting_blend_q12 += 128;
             spin += 8;
@@ -684,7 +684,7 @@ decay_update:
             cd_request_service_vab();
             cd_request_service_stream();
             render_game_frame(NULL, NULL);
-        } while (1);
+        }
         object->object_id = KF_OBJECT_NONE;
         notify_enqueue(KF_NOTIFICATION_1);
         event_state.interaction_handled = KF_TRUE;

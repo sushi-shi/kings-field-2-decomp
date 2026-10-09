@@ -481,16 +481,13 @@ s32 vector_distance_to_point(
     }
     if (point_y != KF_DISTANCE_IGNORE_HEIGHT) {
         if (position->vy < point_y) {
-            if (position->vy >= point_y - point_height) {
-                goto horizontal_distance;
+            if (position->vy < point_y - point_height) {
+                return KF_DISTANCE_NONE;
             }
-            return KF_DISTANCE_NONE;
-        }
-        if (point_y < position->vy - height) {
+        } else if (point_y < position->vy - height) {
             goto reject;
         }
     }
-horizontal_distance:
     dx >>= KF_LENGTH_SQUARE_DOWNSHIFT;
     dz >>= KF_LENGTH_SQUARE_DOWNSHIFT;
     distance = SquareRoot0(dx * dx + dz * dz) << KF_LENGTH_SQUARE_DOWNSHIFT;

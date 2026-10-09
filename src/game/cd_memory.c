@@ -87,10 +87,8 @@ void cd_request_service_stream(void)
 
     EnterCriticalSection();
     request = cd_state.current;
-    if (request->kind != KF_CD_REQUEST_IMAGE_STREAM) {
-        goto leave_critical;
-    }
-    if (request->stream_complete != KF_CD_STREAM_CHUNK_READY) {
+    if (request->kind != KF_CD_REQUEST_IMAGE_STREAM
+        || request->stream_complete != KF_CD_STREAM_CHUNK_READY) {
         goto leave_critical;
     }
     consumed = 0;
@@ -114,7 +112,7 @@ void cd_request_service_stream(void)
                     request->payload.image_rect.h = height - rows;
                     request->payload.image_rect.y = rows + request->payload.image_rect.y;
                 }
-                goto next_read;
+                break;
             }
             request->payload.image_rect.h = height;
             LoadImage(&request->payload.image_rect, (u_long *)source);
@@ -125,7 +123,7 @@ void cd_request_service_stream(void)
         }
 
         if ((u32)available < KF_CD_IMAGE_RECORD_HEADER_BYTES) {
-            goto next_read;
+            break;
         }
         if (source[0] != source[4] || source[1] != source[5] ||
             source[2] != source[6] || source[3] != source[7] ||
@@ -142,14 +140,16 @@ void cd_request_service_stream(void)
 
         consumed += KF_CD_IMAGE_RECORD_HEADER_BYTES;
         if (source[0] == 0xffff) {
-            goto complete;
+            DrawSync(0);
+            request->sector_count = 0;
+            cd_request_advance(request);
+            return;
         }
         setRECT(&request->payload.image_rect, source[0], source[1],
                 source[2], source[3]);
         source += 8;
     }
 
-next_read:
     cd_location_add(&request->location, request->sector_count,
         &request->location);
     cd_stream_limit_chunk(request);
@@ -159,16 +159,8 @@ next_read:
     CdSeekP(&request->location);
     return;
 
-complete:
-    DrawSync(0);
-    request->sector_count = 0;
-    cd_request_advance(request);
-    return;
-
 leave_critical:
     ExitCriticalSection();
-
-    return;
 }
 
 ADDRESS(0x800171c8, 0x30)

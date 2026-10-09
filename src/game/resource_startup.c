@@ -341,12 +341,14 @@ handle_active:
             resource_advance_transition();
         }
     } else {
-        do {
+        for (;;) {
             EnterCriticalSection();
-            if (resource_state.transition_phase != KF_RESOURCE_TRANSITION_PENDING_IO) break;
+            if (resource_state.transition_phase != KF_RESOURCE_TRANSITION_PENDING_IO) {
+                break;
+            }
             ExitCriticalSection();
             cd_request_yield();
-        } while (1);
+        }
     }
     ExitCriticalSection();
     if (resource_state.world_shift_applied != 0 && map_region_id != KF_RESOURCE_REQUEST_KEEP &&
@@ -516,7 +518,10 @@ phase_three:
             resource_state.active_table[5]();
             player_state.force_actor_lifecycle_refresh = KF_TRUE;
         }
-        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) return;
+        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) {
+            return;
+        }
+        /* fall through */
 
     case KF_RESOURCE_TRANSITION_QUEUE_TIM:
         if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TIM] != KF_RESOURCE_REQUEST_KEEP) {
@@ -527,24 +532,28 @@ phase_three:
             resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP) {
             goto begin_phase_five;
         }
-        goto complete;
 
 complete:
-        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] != KF_RESOURCE_REQUEST_KEEP)
+        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] != KF_RESOURCE_REQUEST_KEEP) {
             resource_state.active_resource_ids[KF_RESOURCE_SLOT_MAP_REGION] =
                 resource_state.requested_resource_ids[KF_RESOURCE_SLOT_MAP_REGION];
-        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP)
+        }
+        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD] != KF_RESOURCE_REQUEST_KEEP) {
             resource_state.active_resource_ids[KF_RESOURCE_SLOT_TMD] =
                 resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TMD];
-        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TIM] != KF_RESOURCE_REQUEST_KEEP)
+        }
+        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TIM] != KF_RESOURCE_REQUEST_KEEP) {
             resource_state.active_resource_ids[KF_RESOURCE_SLOT_TIM] =
                 resource_state.requested_resource_ids[KF_RESOURCE_SLOT_TIM];
-        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_VAB] != KF_RESOURCE_REQUEST_KEEP)
+        }
+        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_VAB] != KF_RESOURCE_REQUEST_KEEP) {
             resource_state.active_resource_ids[KF_RESOURCE_SLOT_VAB] =
                 resource_state.requested_resource_ids[KF_RESOURCE_SLOT_VAB];
-        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP)
+        }
+        if (resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] != KF_RESOURCE_REQUEST_KEEP) {
             resource_state.active_resource_ids[KF_RESOURCE_SLOT_SEQUENCE] =
                 resource_state.requested_resource_ids[KF_RESOURCE_SLOT_SEQUENCE];
+        }
         resource_state.transition_active = KF_FALSE;
         return;
 
@@ -552,7 +561,7 @@ begin_phase_five:
         resource_state.transition_phase = KF_RESOURCE_TRANSITION_FADE_AUDIO;
         resource_state.sequence_fade_volume = RESOURCE_SEQUENCE_FADE_START_VOLUME;
         audio_state.sequence_ready = KF_FALSE;
-
+        /* fall through */
     case KF_RESOURCE_TRANSITION_FADE_AUDIO:
         if (audio_state.sequence_active) {
             resource_state.sequence_fade_volume -= RESOURCE_SEQUENCE_FADE_STEP;
@@ -562,7 +571,9 @@ begin_phase_five:
             SsSeqSetVol(audio_state.sequence_id,
                 resource_state.sequence_fade_volume,
                 resource_state.sequence_fade_volume);
-            if (resource_state.sequence_fade_volume != 0) return;
+            if (resource_state.sequence_fade_volume != 0) {
+                return;
+            }
             SsSeqStop(audio_state.sequence_id);
             SsSeqClose(audio_state.sequence_id);
             audio_state.sequence_active = KF_FALSE;

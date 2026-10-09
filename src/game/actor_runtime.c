@@ -1705,7 +1705,7 @@ void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
             actor_set_animation_if_changed(selected);
         }
     } else if (actor->animation_id == reverse) {
-        if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
+        if (actor->animation_phase < KF_ACTOR_ANIMATION_PHASE_PERIOD / 2) {
             actor_advance_animation_clamped(actor, phase_step);
         } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
@@ -1714,7 +1714,7 @@ void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
             }
         }
     } else if (actor->animation_id == forward) {
-        if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
+        if (actor->animation_phase < KF_ACTOR_ANIMATION_PHASE_PERIOD / 2) {
             actor_advance_animation_clamped(actor, phase_step);
         } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
@@ -1723,7 +1723,7 @@ void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
             }
         }
     } else if (actor->animation_id == fast) {
-        if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
+        if (actor->animation_phase < KF_ACTOR_ANIMATION_PHASE_PERIOD / 2) {
             actor_advance_animation_clamped(actor, phase_step);
         } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
@@ -1732,7 +1732,7 @@ void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
             }
         }
     } else if (actor->animation_id == slow) {
-        if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
+        if (actor->animation_phase < KF_ACTOR_ANIMATION_PHASE_PERIOD / 2) {
             actor_advance_animation_clamped(actor, phase_step);
         } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
@@ -2336,8 +2336,8 @@ dispatch_action:
             actor->tail_72.angles.x = 0;
             actor->tail_72.motion.baseline = actor->vertical_anchor_offset +
                 collision_sample_map_layer_height(actor->home_map_layer,
-                    (actor->home_cell_x << 11) + actor->word_24.home_local_x,
-                    (actor->home_cell_z << 11) + actor->word_22.home_local_z,
+                    (actor->home_cell_x << KF_MAP_CELL_POSITION_SHIFT) + actor->word_24.home_local_x,
+                    (actor->home_cell_z << KF_MAP_CELL_POSITION_SHIFT) + actor->word_22.home_local_z,
                     actor->collision_radius, actor->collision_height);
             actor_set_animation_if_changed(target->animation_id);
             actor_suspend_vertical_motion();
@@ -3114,8 +3114,8 @@ dispatch_action:
                 actor->state_70.signed_state = 1;
             } else {
                 actor->tail_72.signed_state = actor_turn_and_move_toward_point(
-                    (actor->home_cell_x << 11) + actor->word_24.home_local_x,
-                    (actor->home_cell_z << 11) + actor->word_22.home_local_z,
+                    (actor->home_cell_x << KF_MAP_CELL_POSITION_SHIFT) + actor->word_24.home_local_x,
+                    (actor->home_cell_z << KF_MAP_CELL_POSITION_SHIFT) + actor->word_22.home_local_z,
                     target->word_0e.value, target->word_10.value,
                     actor->tail_72.signed_state,
                     group->movement_step,

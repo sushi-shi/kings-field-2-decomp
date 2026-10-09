@@ -629,13 +629,13 @@ enum {
 
 /* The encoded low-nibble status kind is one greater than this switch index. */
 enum {
-    PLAYER_DAMAGE_STATUS_CURSE = 0,
-    PLAYER_DAMAGE_STATUS_DARKNESS = 1,
-    PLAYER_DAMAGE_STATUS_POISON = 2,
-    PLAYER_DAMAGE_STATUS_PARALYSIS = 3,
-    PLAYER_DAMAGE_STATUS_SLOW = 4,
-    PLAYER_DAMAGE_STATUS_MP_DRAIN = 5,
-    PLAYER_DAMAGE_STATUS_POISON_CLEAR = 6
+    PLAYER_DAMAGE_STATUS_CURSE = 1,
+    PLAYER_DAMAGE_STATUS_DARKNESS = 2,
+    PLAYER_DAMAGE_STATUS_POISON = 3,
+    PLAYER_DAMAGE_STATUS_PARALYSIS = 4,
+    PLAYER_DAMAGE_STATUS_SLOW = 5,
+    PLAYER_DAMAGE_STATUS_MP_DRAIN = 6,
+    PLAYER_DAMAGE_STATUS_POISON_CLEAR = 7
 };
 
 ADDRESS(0x800248a8, 0x3fc)
@@ -678,7 +678,7 @@ void player_apply_damage(u16 damage0, u16 damage1, u16 damage2, u16 damage_flags
         slow_duration = 600;
     }
 
-    switch ((flags & KF_PLAYER_DAMAGE_STATUS_MASK) - 1) {
+    switch (flags & KF_PLAYER_DAMAGE_STATUS_MASK) {
     case PLAYER_DAMAGE_STATUS_CURSE:
         player_state.curse_phase_limit = curse_phase_limit;
         player_state.curse_strength = 1;

@@ -717,7 +717,7 @@ void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
     cd_request_wait_done(request);
     request->payload.image_rect.h = 0;
     request->stream_complete = KF_CD_STREAM_WAITING;
-    size = cd_archive_entry_extent((u16)slot, (u16)entry, &location);
+    size = cd_archive_entry_extent(slot, entry, &location);
     request->remaining_sectors = size >> KF_CD_SECTOR_SHIFT;
     request->chunk_sectors = request->remaining_sectors;
     if (request->remaining_sectors <= KF_CD_STREAM_CHUNK_SECTORS) {

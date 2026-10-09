@@ -100,8 +100,8 @@ void map_object_set_cell_marker(KfMapObject *object, KfMapCellMarkerMode mode, u
     u8 *cell_marker;
 
     if (mode == KF_MAP_CELL_MARKER_PLACE && player_state.map_marker_visual_effect_timer == 0) {
-        s32 cell_z = object->position.vz >> 11;
-        s32 cell_x = object->position.vx >> 11;
+        s32 cell_z = object->position.vz >> KF_MAP_CELL_POSITION_SHIFT;
+        s32 cell_x = object->position.vx >> KF_MAP_CELL_POSITION_SHIFT;
         KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
         cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
@@ -111,8 +111,8 @@ void map_object_set_cell_marker(KfMapObject *object, KfMapCellMarkerMode mode, u
         *cell_marker = marker;
         object->scale.vx = object->scale.vy = object->scale.vz = 0;
     } else {
-        s32 cell_z = object->position.vz >> 11;
-        s32 cell_x = object->position.vx >> 11;
+        s32 cell_z = object->position.vz >> KF_MAP_CELL_POSITION_SHIFT;
+        s32 cell_x = object->position.vx >> KF_MAP_CELL_POSITION_SHIFT;
         KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
         cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
@@ -201,8 +201,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED_UNBIASED;
         }
         object->collision_height = object_template->interaction_height;
-        object->position.vx = ((u32)placements->region_x << 11) + placements->local_x;
-        object->position.vz = ((u32)placements->region_z << 11) + placements->local_z;
+        object->position.vx = ((u32)placements->region_x << KF_MAP_CELL_POSITION_SHIFT) + placements->local_x;
+        object->position.vz = ((u32)placements->region_z << KF_MAP_CELL_POSITION_SHIFT) + placements->local_z;
         row = bss_801c7540.map_cells[placements->region_z];
         cell = &row[placements->region_x];
         layer = cell->layer;
@@ -386,8 +386,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->lighting_override_index = KF_LIGHTING_PRESET_42;
             object->lighting_blend_q12 = KF_FIXED12_ONE;
             object->position.vy += 0x100;
-            kind59_row = bss_801c7540.map_cells[object->position.vz >> 11];
-            kind59_cell = &kind59_row[object->position.vx >> 11];
+            kind59_row = bss_801c7540.map_cells[object->position.vz >> KF_MAP_CELL_POSITION_SHIFT];
+            kind59_cell = &kind59_row[object->position.vx >> KF_MAP_CELL_POSITION_SHIFT];
             kind59_layer = kind59_cell->layer;
             if (object->layer_mask != KF_MAP_LAYER_FIRST) {
                 kind59_layer++;
@@ -798,8 +798,8 @@ void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTO
 ADDRESS(0x80036ad8, 0x90)
 b32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height)
 {
-    s32 camera_x = player_state.camera_position.vx >> 11;
-    s32 camera_z = player_state.camera_position.vz >> 11;
+    s32 camera_x = player_state.camera_position.vx >> KF_MAP_CELL_POSITION_SHIFT;
+    s32 camera_z = player_state.camera_position.vz >> KF_MAP_CELL_POSITION_SHIFT;
 
     if (camera_x < x || camera_x >= x + width ||
         camera_z < z || camera_z >= z + depth) {

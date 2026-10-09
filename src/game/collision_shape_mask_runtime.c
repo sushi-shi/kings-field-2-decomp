@@ -70,10 +70,10 @@ next_layer:
     records_left = *record++;
     while (--records_left != -1) {
         heights = &KF_COLLISION_CACHE.heights;
-        cell_x = x & 0x7ff;
-        cell_z = z & 0x7ff;
-        local_x = x & 0x7ff;
-        local_z = z & 0x7ff;
+        cell_x = x & KF_MAP_CELL_LOCAL_MASK;
+        cell_z = z & KF_MAP_CELL_LOCAL_MASK;
+        local_x = x & KF_MAP_CELL_LOCAL_MASK;
+        local_z = z & KF_MAP_CELL_LOCAL_MASK;
         switch (KF_ENUM_DECODE(KfShapeRecordKind, *record++)) {
         case KF_SHAPE_RECORD_FLOOR: {
             KfShapeHeightRecord *level = (KfShapeHeightRecord *)record;
@@ -132,12 +132,12 @@ next_layer:
                 }
                 break;
             case KF_QUARTER_TURN_1:
-                if (0x800 - wall->offset - radius <= cell_z) {
+                if (KF_MAP_CELL_SIZE - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
             case KF_QUARTER_TURN_2:
-                if (0x800 - wall->offset - radius <= cell_x) {
+                if (KF_MAP_CELL_SIZE - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
@@ -155,18 +155,18 @@ next_layer:
             switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
                 if (cell_x <= wall->offset + radius
-                    || 0x800 - wall->offset - radius <= cell_z) {
+                    || KF_MAP_CELL_SIZE - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
             case KF_QUARTER_TURN_1:
-                if (0x800 - wall->offset - radius <= cell_z
-                    || 0x800 - wall->offset - radius <= cell_x) {
+                if (KF_MAP_CELL_SIZE - wall->offset - radius <= cell_z
+                    || KF_MAP_CELL_SIZE - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
             case KF_QUARTER_TURN_2:
-                if (0x800 - wall->offset - radius <= cell_x
+                if (KF_MAP_CELL_SIZE - wall->offset - radius <= cell_x
                     || cell_z <= wall->offset + radius) {
                     goto wall_hit;
                 }
@@ -186,18 +186,18 @@ next_layer:
             switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
                 if (cell_x <= wall->offset + radius
-                    && 0x800 - wall->offset - radius <= cell_z) {
+                    && KF_MAP_CELL_SIZE - wall->offset - radius <= cell_z) {
                     goto wall_hit;
                 }
                 break;
             case KF_QUARTER_TURN_1:
-                if (0x800 - wall->offset - radius <= cell_z
-                    && 0x800 - wall->offset - radius <= cell_x) {
+                if (KF_MAP_CELL_SIZE - wall->offset - radius <= cell_z
+                    && KF_MAP_CELL_SIZE - wall->offset - radius <= cell_x) {
                     goto wall_hit;
                 }
                 break;
             case KF_QUARTER_TURN_2:
-                if (0x800 - wall->offset - radius <= cell_x
+                if (KF_MAP_CELL_SIZE - wall->offset - radius <= cell_x
                     && cell_z <= wall->offset + radius) {
                     goto wall_hit;
                 }
@@ -218,7 +218,7 @@ next_layer:
             wall_flags = KF_COLLISION_HIT_FLOOR | KF_COLLISION_HIT_DIAGONAL;
             switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + wall->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
-                reach = radius - 0x800;
+                reach = radius - KF_MAP_CELL_SIZE;
                 if (local_x - local_z <= wall->offset + reach) {
                     goto wall_hit;
                 }
@@ -230,7 +230,7 @@ next_layer:
                 }
                 break;
             case KF_QUARTER_TURN_2:
-                reach = radius - 0x800;
+                reach = radius - KF_MAP_CELL_SIZE;
                 if (local_z - local_x <= wall->offset + reach) {
                     goto wall_hit;
                 }
@@ -258,24 +258,24 @@ next_layer:
                 KF_SHAPE_LOWER_FLOOR(heights, floor, y, flags, KF_COLLISION_HIT_FLOOR);
                 break;
             case KF_QUARTER_TURN_1:
-                if (0x800 - slope->start + radius < local_z
-                    || local_z < 0x800 - slope->end - radius) {
+                if (KF_MAP_CELL_SIZE - slope->start + radius < local_z
+                    || local_z < KF_MAP_CELL_SIZE - slope->end - radius) {
                     break;
                 }
                 step = cell_x / slope->run;
                 goto stair_floor;
             case KF_QUARTER_TURN_2:
-                if (0x800 - slope->start + radius < local_x
-                    || local_x < 0x800 - slope->end - radius) {
+                if (KF_MAP_CELL_SIZE - slope->start + radius < local_x
+                    || local_x < KF_MAP_CELL_SIZE - slope->end - radius) {
                     break;
                 }
-                step = (0x800 - cell_z) / slope->run;
+                step = (KF_MAP_CELL_SIZE - cell_z) / slope->run;
                 goto stair_floor;
             case KF_QUARTER_TURN_3:
                 if (local_z < slope->start - radius || slope->end + radius < local_z) {
                     break;
                 }
-                step = (0x800 - cell_x) / slope->run;
+                step = (KF_MAP_CELL_SIZE - cell_x) / slope->run;
                 goto stair_floor;
             }
             break;
@@ -284,7 +284,7 @@ next_layer:
             record = (s16 *)(slope + 1);
             switch (KF_ENUM_DECODE(KfQuarterTurn, (layer->quarter_turns + slope->quarter_turns) & KF_MAP_CELL_QUARTER_TURN_MASK)) {
             case KF_QUARTER_TURN_0:
-                step = 0x800 - local_x + local_z;
+                step = KF_MAP_CELL_SIZE - local_x + local_z;
             ramp_floor:
                 if (step < slope->start) {
                     step = slope->start;
@@ -300,7 +300,7 @@ next_layer:
                 step = local_x + local_z;
                 goto ramp_floor;
             case KF_QUARTER_TURN_2:
-                step = 0x800 - local_z + local_x;
+                step = KF_MAP_CELL_SIZE - local_z + local_x;
                 goto ramp_floor;
             case KF_QUARTER_TURN_3:
                 step = 0x1000 - local_x - local_z;
@@ -338,10 +338,10 @@ next_layer:
                     distance = x_distance;
                     goto ledge_floor;
                 case KF_QUARTER_TURN_2:
-                    distance = 0x800 - cell_z;
+                    distance = KF_MAP_CELL_SIZE - cell_z;
                     goto ledge_floor;
                 case KF_QUARTER_TURN_3:
-                    distance = 0x800 - cell_x;
+                    distance = KF_MAP_CELL_SIZE - cell_x;
                     goto ledge_floor;
                 }
             }

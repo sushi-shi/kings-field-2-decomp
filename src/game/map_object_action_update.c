@@ -554,9 +554,9 @@ void map_object_update_actions(void)
                 object->extra_40.layer_fade.delay_frames_left = previous - 1;
                 if (previous == 0) {
                     KfMapOccupancyCell *row =
-                        bss_801c7540.map_cells[object->position.vz >> 11];
+                        bss_801c7540.map_cells[object->position.vz >> KF_MAP_CELL_POSITION_SHIFT];
                     KfMapOccupancyCell *cell =
-                        &row[object->position.vx >> 11];
+                        &row[object->position.vx >> KF_MAP_CELL_POSITION_SHIFT];
                     KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->action_timer = 3;
                     if (object->layer_mask != KF_MAP_LAYER_FIRST) {
@@ -588,9 +588,9 @@ void map_object_update_actions(void)
                 object->lighting_blend_q12 += 256;
                 if (object->lighting_blend_q12 >= 0x1000) {
                     KfMapOccupancyCell *row =
-                        bss_801c7540.map_cells[object->position.vz >> 11];
+                        bss_801c7540.map_cells[object->position.vz >> KF_MAP_CELL_POSITION_SHIFT];
                     KfMapOccupancyCell *cell =
-                        &row[object->position.vx >> 11];
+                        &row[object->position.vx >> KF_MAP_CELL_POSITION_SHIFT];
                     KfMapOccupancyLayer *layer = &cell->layer[0];
                     object->lighting_blend_q12 = 0x1000;
                     object->action_timer = 0;
@@ -676,8 +676,8 @@ void map_object_update_actions(void)
             break;
 
         case KF_MAP_OBJECT_OP_RESOURCE_TRIGGER:
-            if (player_camera_within_map_region(object->position.vx >> 11,
-                               object->position.vz >> 11,
+            if (player_camera_within_map_region(object->position.vx >> KF_MAP_CELL_POSITION_SHIFT,
+                               object->position.vz >> KF_MAP_CELL_POSITION_SHIFT,
                                object->tail.resource_trigger.region_width,
                                object->tail.resource_trigger.region_depth,
                                object->position.vy)) {
@@ -717,8 +717,8 @@ void map_object_update_actions(void)
                     object->phase_q12 = 0xfff;
                 } else if (object->tail.collision_probe.camera_region_width != KF_MAP_OBJECT_REGION_NEVER &&
                            (object->tail.collision_probe.camera_region_width == KF_MAP_OBJECT_REGION_ALWAYS ||
-                            player_camera_within_map_region(object->position.vx >> 11,
-                                            object->position.vz >> 11,
+                            player_camera_within_map_region(object->position.vx >> KF_MAP_CELL_POSITION_SHIFT,
+                                            object->position.vz >> KF_MAP_CELL_POSITION_SHIFT,
                                             object->tail.collision_probe.camera_region_width,
                                             object->tail.collision_probe.camera_region_depth,
                                             object->position.vy))) {
@@ -989,8 +989,8 @@ void map_object_update_actions(void)
             break;
 
         case KF_MAP_OBJECT_OP_REGION_TRIGGER:
-            if (player_camera_within_map_region(object->position.vx >> 11,
-                               object->position.vz >> 11,
+            if (player_camera_within_map_region(object->position.vx >> KF_MAP_CELL_POSITION_SHIFT,
+                               object->position.vz >> KF_MAP_CELL_POSITION_SHIFT,
                                object->tail.region_action.region_width,
                                object->tail.region_action.region_depth,
                                object->position.vy)) {
@@ -1037,9 +1037,9 @@ void map_object_update_actions(void)
                     map_cell_add_layer_occupancy(player_state.camera_position.vx,
                                    player_state.camera_position.vz, 800, -1);
                     player_state.camera_position.vx =
-                        object->tail.transition.destination_cell_x * 0x800 + 0x400;
+                        object->tail.transition.destination_cell_x * KF_MAP_CELL_SIZE + KF_MAP_CELL_SIZE / 2;
                     player_state.camera_position.vz =
-                        object->tail.transition.destination_cell_z * 0x800 + 0x400;
+                        object->tail.transition.destination_cell_z * KF_MAP_CELL_SIZE + KF_MAP_CELL_SIZE / 2;
                     player_state.map_layer_index =
                         object->tail.transition.destination_layer_code == 1 ? 0 : 5;
                     player_state.camera_rotation_target.angles[1] =

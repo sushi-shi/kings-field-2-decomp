@@ -2088,8 +2088,8 @@ void render_player_weapon(void)
         return;
     }
 
-    cell_z = player_state.camera_position.vz >> 11;
-    cell_x = player_state.camera_position.vx >> 11;
+    cell_z = player_state.camera_position.vz >> KF_MAP_CELL_POSITION_SHIFT;
+    cell_x = player_state.camera_position.vx >> KF_MAP_CELL_POSITION_SHIFT;
     layer = &bss_801c7540.map_cells[0][0].layer[0].lighting_index;
     row = &game_graphics_runtime.collision_rows[
         layer[cell_x * sizeof(KfMapOccupancyCell) +
@@ -2169,8 +2169,8 @@ void render_world_model(KfMapLayerMask map_layer, u16 asset_index, const VECTOR 
             u16 layer_offset = player_state.map_layer_index;
             u8 lighting_index = *(
                 &bss_801c7540.map_cells[
-                    game_graphics_runtime.render_state.view_position.vz >> 11][
-                    game_graphics_runtime.render_state.view_position.vx >> 11]
+                    game_graphics_runtime.render_state.view_position.vz >> KF_MAP_CELL_POSITION_SHIFT][
+                    game_graphics_runtime.render_state.view_position.vx >> KF_MAP_CELL_POSITION_SHIFT]
                     .layer[0].lighting_index + layer_offset);
             lighting = &game_graphics_runtime.collision_rows[lighting_index & KF_MAP_CELL_LIGHTING_MASK];
         }
@@ -2583,8 +2583,8 @@ actor_radius_check:
             s32 nearest;
             s32 volume;
 
-            if (player_camera_within_map_region(object->position.vx >> 11,
-                              object->position.vz >> 11,
+            if (player_camera_within_map_region(object->position.vx >> KF_MAP_CELL_POSITION_SHIFT,
+                              object->position.vz >> KF_MAP_CELL_POSITION_SHIFT,
                               object->tail.ambient_sound.region_width,
                               object->tail.ambient_sound.region_depth, 0x8000) != 0) {
                 sound = object->tail.ambient_sound.sound_id;

@@ -681,7 +681,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             }
             depth += depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)prim);
             }
             break;
         }
@@ -722,7 +722,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             }
             depth += depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)&prim->sdk);
             }
             break;
         }
@@ -769,7 +769,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             }
             depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)&prim->sdk);
             }
             break;
         }
@@ -811,7 +811,7 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             }
             depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)prim);
             }
             break;
         }
@@ -884,7 +884,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             }
             depth += depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)prim);
             }
             break;
         }
@@ -925,7 +925,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             }
             depth += depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)&prim->sdk);
             }
             break;
         }
@@ -972,7 +972,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             }
             depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)&prim->sdk);
             }
             break;
         }
@@ -1014,7 +1014,7 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             }
             depth = average + depth_bias;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)prim);
             }
             break;
         }
@@ -1085,7 +1085,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             prim->sdk.code = (mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT3;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
                         (void *)&prim->sdk);
             }
             break;
@@ -1129,7 +1129,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             prim->sdk.code = (mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT4;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
                         (void *)&prim->sdk);
             }
             break;
@@ -1162,7 +1162,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             prim->code = KF_TMD_MODE_G3;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
                         (void *)prim);
             }
             break;
@@ -1200,7 +1200,7 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             prim->code = KF_TMD_MODE_G4;
             depth_index = (s16)fixed_depth;
             if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth_index],
                         (void *)prim);
             }
             break;
@@ -1274,7 +1274,7 @@ void render_enqueue_map(u16 object_index)
             depth = ((va->sz + vb->sz + vc->sz + vd->sz) >> 2) +
                 KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth],
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth],
                         (void *)&prim->sdk);
             }
             break;
@@ -1313,7 +1313,7 @@ void render_enqueue_map(u16 object_index)
             prim->sdk.code = header.bytes.mode | KF_TMD_MODE_GT3;
             depth = (va->sz + vb->sz + vc->sz) / 3 + KF_MAP_OT_DEPTH_BIAS;
             if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
-                AddPrim(&game_graphics_runtime.display_state.ordering_table[depth],
+                AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth],
                         (void *)&prim->sdk);
             }
             break;
@@ -1385,7 +1385,7 @@ void render_enqueue_clipped_tmd_polygon(s32 vertex_count, SVECTOR *normal, u16 c
         if (depth < 16) {
             depth = 16;
         }
-        AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
+        AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
                 (void *)&packet->sdk);
 
         second = third;
@@ -1501,7 +1501,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     if (depth < 16) {
                         depth = 16;
                     }
-                    AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
+                    AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
                             (void *)&prim->sdk);
                 } else {
                     clipped_count = Clip4FTP(TMD_VECTOR(original_vertices, FT4_FACE->vertex0),
@@ -1568,7 +1568,7 @@ void render_enqueue_tmd_with_clipping(u16 object_index, s32 depth_bias,
                     if (depth < 16) {
                         depth = 16;
                     }
-                    AddPrim(&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
+                    AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth & 0x1fff],
                             (void *)&prim->sdk);
                 } else {
                     clipped_count = Clip3FTP(TMD_VECTOR(original_vertices, FT3_FACE->vertex0),
@@ -2033,7 +2033,7 @@ void render_textured_quad(s32 x, s32 y, s32 right, s32 bottom,
     quad->y2 = quad->y3 = bottom;
 
     if (depth > 0 && (u32)depth < KF_GAME_ORDERING_TABLE_LENGTH) {
-        AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], quad);
+        AddPrim((void *)&game_graphics_runtime.display_state.ordering_table[depth], (void *)quad);
     }
 }
 
@@ -2854,7 +2854,7 @@ void notification_draw_quad(const KfNotificationQuad *source, u16 tpage_flags, c
     quad->v0 = quad->v1 = source->texture_v;
     quad->v2 = quad->v3 = source->texture_v + source->texture_height;
     setRGB0(quad, color[0], color[1], color[2]);
-    AddPrim((game_graphics_runtime.display_state.ordering_table + 1), quad);
+    AddPrim((void *)(game_graphics_runtime.display_state.ordering_table + 1), (void *)quad);
 }
 
 ADDRESS(0x80033140, 0x90)
@@ -3553,7 +3553,7 @@ void pool_record_release(KfPoolRecord *record)
     record->state = KF_ANIMATION_CACHE_FREE;
     *record->owner_slot = NULL;
     if (record->cached_vertices != NULL) {
-        free(record->cached_vertices);
+        free((void *)record->cached_vertices);
         record->cached_vertices = NULL;
     }
 }
@@ -3678,7 +3678,7 @@ s32 menu_fade_transition(s32 level, s32 step)
         quad->clut = 0;
         setTPage(quad, 2, 0, 320, 0);
         setRGB0(quad, shade, shade, shade);
-        AddPrim((game_graphics_runtime.display_state.ordering_table + 2), quad);
+        AddPrim((void *)(game_graphics_runtime.display_state.ordering_table + 2), (void *)quad);
 
         MENU_FADE_NEXT_QUAD();
         setXYWH(quad, KF_MENU_FADE_FIRST_VRAM_SLICE_WIDTH, 0,
@@ -3688,25 +3688,25 @@ s32 menu_fade_transition(s32 level, s32 step)
         quad->clut = 0;
         setTPage(quad, 2, 0, 512, 0);
         setRGB0(quad, shade, shade, shade);
-        AddPrim((game_graphics_runtime.display_state.ordering_table + 2), quad);
+        AddPrim((void *)(game_graphics_runtime.display_state.ordering_table + 2), (void *)quad);
 
         MENU_FADE_NEXT_QUAD();
-        SetSemiTrans(quad, 1);
+        SetSemiTrans((void *)quad, 1);
         setXYWH(quad, 32, 112, 256, 128);
         setUVWH(quad, 0, 0, 255, 128);
         setClut(quad, 576, 511);
         setTPage(quad, 0, 1, 960, 256);
         setRGB0(quad, level, level, level);
-        AddPrim(game_graphics_runtime.display_state.ordering_table, quad);
+        AddPrim((void *)game_graphics_runtime.display_state.ordering_table, (void *)quad);
 
         MENU_FADE_NEXT_QUAD();
-        SetSemiTrans(quad, 1);
+        SetSemiTrans((void *)quad, 1);
         setXYWH(quad, 32, 112, 256, 128);
         setUVWH(quad, 0, 0, 255, 128);
         setClut(quad, 576, 511);
         setTPage(quad, 0, 2, 960, 256);
         setRGB0(quad, level, level, level);
-        AddPrim((game_graphics_runtime.display_state.ordering_table + 1), quad);
+        AddPrim((void *)(game_graphics_runtime.display_state.ordering_table + 1), (void *)quad);
 
 present:
         DrawSync(0);

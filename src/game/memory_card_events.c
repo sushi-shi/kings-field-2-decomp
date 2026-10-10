@@ -187,7 +187,7 @@ b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
     s32 slot;
 
     first_entry = entries;
-    memset(first_entry, 0, sizeof(ordered));
+    memset((void *)first_entry, 0, sizeof(ordered));
     *matching_count = 0;
     if (firstfile("bu00:*", first_entry) == first_entry) {
         do {
@@ -200,16 +200,16 @@ b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
     }
 
     entries = first_entry;
-    memset(ordered, 0, sizeof(ordered));
+    memset((void *)ordered, 0, sizeof(ordered));
     for (i = 0; i < KF_CARD_DIRECTORY_CAPACITY; ++i) {
         if (strncmp(entries->name, memory_card_file_prefix, CARD_FILENAME_PREFIX_LENGTH) == 0) {
             slot_digit[0] = entries->name[CARD_FILENAME_PREFIX_LENGTH];
             slot = atoi(slot_digit) - 1;
-            memcpy(&ordered[slot], entries, sizeof(*entries));
+            memcpy((void *)&ordered[slot], (const void *)entries, sizeof(*entries));
         }
         ++entries;
     }
-    memcpy(first_entry, ordered, sizeof(ordered));
+    memcpy((void *)first_entry, (const void *)ordered, sizeof(ordered));
     return total_size > CARD_USED_BYTES_LIMIT_FOR_NEW_FILE;
 }
 
@@ -230,7 +230,7 @@ b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     }
     strcat(path, filename);
     handle = open(path, FREAD);
-    if (handle == -1 || read(handle, &header, sizeof(header)) != sizeof(header)) {
+    if (handle == -1 || read(handle, (void *)&header, sizeof(header)) != sizeof(header)) {
         return KF_TRUE;
     }
     close(handle);
@@ -238,7 +238,7 @@ b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     *experience = 0;
     weight = 100000;
     for (i = 0; i < CARD_TITLE_EXPERIENCE_DIGITS; ++i) {
-        memcpy(&encoded, &header.title[CARD_TITLE_EXPERIENCE_FIRST_BYTE + i * 2], sizeof(encoded));
+        memcpy((void *)&encoded, (const void *)&header.title[CARD_TITLE_EXPERIENCE_FIRST_BYTE + i * 2], sizeof(encoded));
         if (encoded != CARD_SHIFT_JIS_SPACE_LE) {
             encoded = ((s32)encoded >> 8) - CARD_SHIFT_JIS_ZERO_TRAIL;
             *experience += encoded * weight;
@@ -249,7 +249,7 @@ b32 memory_card_read_slot_summary(const char *filename, s32 *experience, s32 *le
     *level = 0;
     weight = 10;
     for (i = 0; i < CARD_TITLE_LEVEL_DIGITS; ++i) {
-        memcpy(&encoded, &header.title[CARD_TITLE_LEVEL_FIRST_BYTE + i * 2], sizeof(encoded));
+        memcpy((void *)&encoded, (const void *)&header.title[CARD_TITLE_LEVEL_FIRST_BYTE + i * 2], sizeof(encoded));
         if (encoded != CARD_SHIFT_JIS_SPACE_LE) {
             encoded = ((s32)encoded >> 8) - CARD_SHIFT_JIS_ZERO_TRAIL;
             *level += encoded * weight;
@@ -284,7 +284,7 @@ retry:
     path[CARD_PATH_SLOT_DIGIT_OFFSET] = slot + '0';
     path[CARD_PATH_SLOT_DIGIT_OFFSET + 1] = '\0';
     handle = open(path, FREAD);
-    if (handle == -1 || read(handle, memory_card_buffer, KF_CARD_BLOCK_BYTES)
+    if (handle == -1 || read(handle, (void *)memory_card_buffer, KF_CARD_BLOCK_BYTES)
             != KF_CARD_BLOCK_BYTES) {
         status = KF_CARD_READ_IO_FAILURE;
     } else {
@@ -321,8 +321,8 @@ s32 memory_card_write_slot(s32 slot)
     s32 entry_slot;
     s32 handle;
 
-    memset(occupied, 0, sizeof(occupied));
-    memset(entries, 0, sizeof(entries));
+    memset((void *)occupied, 0, sizeof(occupied));
+    memset((void *)entries, 0, sizeof(entries));
     card_full = memory_card_scan_save_entries(entries, &matching_count);
     present = KF_FALSE;
 
@@ -359,7 +359,7 @@ s32 memory_card_write_slot(s32 slot)
     strcpy(header.title, memory_card_assets.title);
     memory_card_write_title_stats(&header, slot);
     /* Retail indexes the seven stored palettes directly with the one-based slot. */
-    memcpy(header.icon_palette, memory_card_assets.icon_palette[slot - 1],
+    memcpy((void *)header.icon_palette, (const void *)memory_card_assets.icon_palette[slot - 1],
         sizeof(header.icon_palette));
 
     setRECT(&icon_rect, CARD_ICON_VRAM_X,
@@ -371,11 +371,11 @@ s32 memory_card_write_slot(s32 slot)
     icon_rect.x = CARD_ICON_VRAM_X + CARD_ICON_VRAM_WIDTH * 2;
     StoreImage(&icon_rect, (u_long *)header.icon_frames[2]);
 
-    memset(memory_card_buffer, 0, KF_CARD_BLOCK_BYTES);
+    memset((void *)memory_card_buffer, 0, KF_CARD_BLOCK_BYTES);
     card_payload_capture_game_state(memory_card_buffer + KF_CARD_HEADER_BYTES);
     header.payload_checksum = memory_card_payload_byte_sum(
         memory_card_buffer + KF_CARD_HEADER_BYTES);
-    memcpy(memory_card_buffer, &header, sizeof(header));
+    memcpy((void *)memory_card_buffer, (const void *)&header, sizeof(header));
 
     if (!present) {
         handle = open(path, FCREAT | (KF_CARD_FILE_BLOCKS << 16));
@@ -388,7 +388,7 @@ s32 memory_card_write_slot(s32 slot)
     if (handle == -1) {
         return KF_CARD_WRITE_IO_FAILURE;
     }
-    if (write(handle, memory_card_buffer, KF_CARD_BLOCK_BYTES) != KF_CARD_BLOCK_BYTES) {
+    if (write(handle, (const void *)memory_card_buffer, KF_CARD_BLOCK_BYTES) != KF_CARD_BLOCK_BYTES) {
         return KF_CARD_WRITE_IO_FAILURE;
     }
     close(handle);

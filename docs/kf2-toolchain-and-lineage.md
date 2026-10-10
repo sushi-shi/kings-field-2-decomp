@@ -317,6 +317,36 @@ Lane A5 traced these further links:
   both loads in source order and in one register
   (`player_update_weapon_attack`).
 
+The readability pass traced these source shapes:
+
+- **Switch compare trees (stmt.c `balance_case_nodes`).** A small switch
+  compiles to a balanced compare tree over its case values sorted in order.
+  The pivot is node (n + ranges + 1) / 2 - 1. A range is tested as `< low`
+  then `<= high`, and the cost table applies only when every value is
+  printable ASCII. A goto chain that tests one value against constants in
+  that order was a switch. An empty case still counts as a node: the
+  FALLING pivot in `actor_update_vertical_motion` needs the SUSPENDED case,
+  and the special-weapon test in `player_update_weapon_attack` is
+  `case 16: case 17:`.
+- **Range folds (fold-const.c).** `x >= a && x < b`, and two equality tests
+  on adjacent constants, compile to the unsigned subtract-and-compare form.
+  A `(u32)(x - a) < n` spelling was therefore the compiler's fold, not source.
+- **Jump threading.** A `break` that lands on another `break` or `continue`
+  threads into one jump. So does a goto to the label right after the
+  enclosing loop or switch. `for` loops with `continue` and `break`
+  therefore reproduce hand-written `next:` tails
+  (`render_scene_and_update_resources`, `event_target_stream_execute`).
+- **Cross-jumped single calls.** A call repeated in several arms that end at
+  a common join merges back into one (`actor_play_target_sound`). A goto to
+  a one-call block can therefore be written as the call itself.
+- **Backward gotos are not loops.** loop.c sees only loops opened by `for`,
+  `while` and `do`. A `retry:` label keeps its body out of loop optimization:
+  `memory_card_read_slot` keeps a second register copy of `slot`. Retry
+  labels therefore stay.
+
+`docs/retained-gotos.tsv` lists the gotos that remain, their form and the
+rewrites that were tested and rejected.
+
 ## 3. Function counts (Ghidra 12 + ghidra_psx_ldr seed)
 
 Psy-Q links game objects before the libraries, so everything from the load

@@ -8,7 +8,7 @@
    contribution; the renderer passes the matrix as its world transform. */
 DATA(0x80063dcc, 0x20, ".data")
 MATRIX render_world_identity_matrix = {
-    {{0x1000, 0, 0}, {0, 0x1000, 0}, {0, 0, 0x1000}},
+    {{KF_FIXED12_ONE, 0, 0}, {0, KF_FIXED12_ONE, 0}, {0, 0, KF_FIXED12_ONE}},
     {0, 0, 0}
 };
 
@@ -387,7 +387,7 @@ KfBool angle_within_tolerance(int lhs, int rhs, s16 range)
 ADDRESS(0x800152e8, 0x10)
 KfBool angle_mod_delta_le_half_turn(int lhs, int rhs)
 {
-    return ((lhs - rhs) & KF_ANGLE_WRAP_MASK) < (KF_ANGLE_HALF_TURN + 1);
+    return ((lhs - rhs) & KF_ANGLE_WRAP_MASK) <= KF_ANGLE_HALF_TURN;
 }
 
 /* Signed turn from FROM to TO in -0x7ff..0x800. */
@@ -481,16 +481,13 @@ s32 vector_distance_to_point(
     }
     if (point_y != KF_DISTANCE_IGNORE_HEIGHT) {
         if (position->vy < point_y) {
-            if (position->vy >= point_y - point_height) {
-                goto horizontal_distance;
+            if (position->vy < point_y - point_height) {
+                return KF_DISTANCE_NONE;
             }
-            goto reject;
-        }
-        if (point_y < position->vy - height) {
+        } else if (point_y < position->vy - height) {
             goto reject;
         }
     }
-horizontal_distance:
     dx >>= KF_LENGTH_SQUARE_DOWNSHIFT;
     dz >>= KF_LENGTH_SQUARE_DOWNSHIFT;
     distance = SquareRoot0(dx * dx + dz * dz) << KF_LENGTH_SQUARE_DOWNSHIFT;
@@ -528,15 +525,12 @@ s32 vector_distance_between_with_reach(const VECTOR *first, s32 reach, const VEC
     y >>= KF_LENGTH_SQUARE_DOWNSHIFT;
     distance = SquareRoot0(x * x + z * z + y * y)
              << KF_LENGTH_SQUARE_DOWNSHIFT;
-    if (limit < distance) {
-        goto out_of_range;
+    if (limit >= distance) {
+        if (distance > offset) {
+            return distance - offset;
+        }
+        return 0;
     }
-    if (distance > offset) {
-        return distance - offset;
-    }
-    return 0;
-
-out_of_range:
     return KF_DISTANCE_OUTSIDE_REACH;
 }
 
@@ -648,21 +642,18 @@ KF_ENUM_PARAM(KfTrajectoryResult, s32) trajectory_solve_motion_between_points(
     s32 source_x, s32 source_y, s32 source_z, s32 target_x, s32 target_y, s32 target_z,
     s32 speed, s32 amplitude, s16 *result, s16 *motion_x, s16 *motion_z)
 {
-    union {
-        s32 word;
-        u16 half;
-    } result_value;
+    s32 travel_time;
     s32 angle;
     KF_ENUM_PARAM(KfTrajectoryResult, s32) status;
     s32 distance = fixed_vector2_length(target_x - source_x,
                                        target_z - source_z);
 
     status = trajectory_solve_time_angle(mode, distance, source_y - target_y,
-                           speed, amplitude, &result_value.word, &angle);
+                           speed, amplitude, &travel_time, &angle);
     if (status == KF_TRAJECTORY_SOLVED) {
         *motion_x = (amplitude * rcos(angle)) >> KF_FIXED12_BITS;
         *motion_z = (amplitude * -rsin(angle)) >> KF_FIXED12_BITS;
-        *result = result_value.half;
+        *result = travel_time;
     }
     return status;
 }

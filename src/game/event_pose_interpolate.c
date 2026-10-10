@@ -8,6 +8,7 @@
 #include <kf/game/event_counter.h>
 #include <kf/game/event_state.h>
 #include <kf/game/graphics.h>
+#include <kf/game/map_cell.h>
 #include <kf/game/menu.h>
 #include <kf/lib/math.h>
 #include <kf/game/audio.h>
@@ -139,15 +140,12 @@ u8 event_target_stream_find_marker(const KfTargetCandidate *candidate, u8 marker
     for (;;) {
         s32 code = *cursor++;
 
-        if (code == KF_EVENT_STREAM_MARKER_RECORD) {
-            goto marker_record;
+        if (code != KF_EVENT_STREAM_MARKER_RECORD) {
+            if (code == KF_EVENT_STREAM_END) {
+                return candidate->word_10.bytes.fallback_offset;
+            }
+            continue;
         }
-        if (code == KF_EVENT_STREAM_END) {
-            return candidate->word_10.bytes.fallback_offset;
-        }
-        continue;
-
-marker_record:
         if (*cursor == marker) {
             const u8 *base = &candidate->word_12.bytes.marker_state;
             return cursor - base;
@@ -166,22 +164,19 @@ u8 *event_target_stream_resolve_cursor(KfActor *actor)
     for (;;) {
         u8 code = *cursor;
 
-        if (code == KF_EVENT_STREAM_CONDITIONAL_MARKER) {
-            goto marker_record;
-        }
-        if (code != KF_EVENT_STREAM_START) {
-            /* Retail retries this byte; the stream must supply a control code. */
-            continue;
-        }
-        if (candidate->word_10.bytes.fallback_offset == 0) {
-            cursor++;
-            candidate->word_10.bytes.fallback_offset = cursor - candidate->word_14.bytes;
-            return cursor;
-        }
+        if (code != KF_EVENT_STREAM_CONDITIONAL_MARKER) {
+            if (code != KF_EVENT_STREAM_START) {
+                /* Retail retries this byte; the stream must supply a control code. */
+                continue;
+            }
+            if (candidate->word_10.bytes.fallback_offset == 0) {
+                cursor++;
+                candidate->word_10.bytes.fallback_offset = cursor - candidate->word_14.bytes;
+                return cursor;
+            }
 use_fallback:
-        return candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
-
-marker_record:
+            return candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
+        }
         if (event_state.control.bytes[cursor[1]] == cursor[2]) {
             u8 offset = event_target_stream_find_marker(candidate, cursor[3]);
             if (candidate->word_10.bytes.fallback_offset < offset) {
@@ -229,18 +224,18 @@ void event_target_stream_execute(KfActor *actor)
     }
 
     for (;;) {
-        switch (*cursor - KF_EVENT_STREAM_REWIND_MARKER) {
-        case KF_EVENT_STREAM_REWIND_MARKER - KF_EVENT_STREAM_REWIND_MARKER:
+        switch (*cursor) {
+        case KF_EVENT_STREAM_REWIND_MARKER:
             candidate->word_12.bytes.marker_state = 1;
             /* The two rewind opcodes share their byte-count operand. */
-        case KF_EVENT_STREAM_REWIND - KF_EVENT_STREAM_REWIND_MARKER:
+        case KF_EVENT_STREAM_REWIND:
         {
             u8 count = cursor[1];
             candidate->word_10.bytes.fallback_offset -= count;
             cursor -= count;
-            break;
+            continue;
         }
-        case KF_EVENT_STREAM_BRANCH - KF_EVENT_STREAM_REWIND_MARKER:
+        case KF_EVENT_STREAM_BRANCH:
             if (event_state.control.bytes[cursor[1]] == cursor[2]) {
                 candidate->word_10.bytes.fallback_offset = event_target_stream_find_marker(candidate, cursor[3]);
                 cursor = candidate->word_14.bytes + candidate->word_10.bytes.fallback_offset;
@@ -248,57 +243,53 @@ void event_target_stream_execute(KfActor *actor)
                 cursor += 4;
                 candidate->word_10.bytes.fallback_offset += 4;
             }
-            break;
-        case KF_EVENT_STREAM_MARKER_RECORD - KF_EVENT_STREAM_REWIND_MARKER:
+            continue;
+        case KF_EVENT_STREAM_MARKER_RECORD:
             cursor += 2;
             candidate->word_10.bytes.fallback_offset += 2;
+            continue;
+        case KF_EVENT_STREAM_SKIP:
             break;
-        case KF_EVENT_STREAM_SKIP - KF_EVENT_STREAM_REWIND_MARKER:
-            goto advance;
-        case KF_EVENT_STREAM_CALLBACK - KF_EVENT_STREAM_REWIND_MARKER:
+        case KF_EVENT_STREAM_CALLBACK:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             ((void (*)(KfActor *, s32))resource_state.active_table[4])(actor, *cursor);
-            goto advance;
-        case KF_EVENT_STREAM_REPEAT - KF_EVENT_STREAM_REWIND_MARKER:
+            break;
+        case KF_EVENT_STREAM_REPEAT:
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             repeat = *cursor;
-            goto advance;
-        case KF_EVENT_STREAM_RESET_MARKER - KF_EVENT_STREAM_REWIND_MARKER:
+            break;
+        case KF_EVENT_STREAM_RESET_MARKER:
             event_state.control.fields.stream_actor_definition_id = actor->definition_id;
             cursor++;
             candidate->word_10.bytes.fallback_offset++;
             candidate->word_12.bytes.marker_state = 0;
-            break;
-        case KF_EVENT_STREAM_SET_CONTROL - KF_EVENT_STREAM_REWIND_MARKER:
+            continue;
+        case KF_EVENT_STREAM_SET_CONTROL:
             event_state.control.bytes[cursor[1]] = cursor[2];
             cursor += 2;
             candidate->word_10.bytes.fallback_offset += 2;
-            goto advance;
-        case KF_EVENT_STREAM_END - KF_EVENT_STREAM_REWIND_MARKER:
+            break;
+        case KF_EVENT_STREAM_END:
             goto after_script;
         default:
-            goto execute;
-        }
-        continue;
-
-execute:
-        if (!restore_state && candidate->animation_id != KF_ANIMATION_CLIP_NONE) {
-            s32 phase = actor->animation_phase;
-            saved_state = actor->animation_id;
-            if (phase != 0) {
-                actor_animation_seek_phase(actor, actor->animation_id,
-                              phase, 0, actor->animation_step);
+            if (!restore_state && candidate->animation_id != KF_ANIMATION_CLIP_NONE) {
+                s32 phase = actor->animation_phase;
+                saved_state = actor->animation_id;
+                if (phase != 0) {
+                    actor_animation_seek_phase(actor, actor->animation_id,
+                                  phase, 0, actor->animation_step);
+                }
+                actor_animation_seek_phase(actor, candidate->animation_id, 0,
+                              KF_ACTOR_ANIMATION_PHASE_MAX,
+                              candidate->animation_step);
+                restore_state = KF_TRUE;
             }
-            actor_animation_seek_phase(actor, candidate->animation_id, 0,
-                          KF_ACTOR_ANIMATION_PHASE_MAX,
-                          candidate->animation_step);
-            restore_state = KF_TRUE;
+            menu_show_transition_image(KF_RESOURCE_ARCHIVE_TALK, candidate->word_0c.value + *cursor);
+            break;
         }
-        menu_show_transition_image(KF_RESOURCE_ARCHIVE_TALK, candidate->word_0c.value + *cursor);
 
-advance:
         cursor++;
         candidate->word_10.bytes.fallback_offset++;
         if (repeat != 0) {
@@ -395,20 +386,21 @@ void event_scene_command_dispatch(const VECTOR *position,
             case KF_MAP_OBJECT_MARKER_CONSUMED:
                 audio_play_sound_64();
                 event_state.interaction_handled = KF_TRUE;
-                goto invoke_callback;
+                break;
             case KF_MAP_OBJECT_MARKER_MISMATCH:
                 notify_enqueue(object->tail.notification.linked_notification);
                 event_state.interaction_handled = KF_TRUE;
-                goto invoke_callback;
+                break;
             case KF_MAP_OBJECT_MARKER_REFUSED:
                 notify_enqueue(KF_NOTIFICATION_4);
                 event_state.interaction_handled = KF_TRUE;
-                goto invoke_callback;
+                break;
             case KF_MAP_OBJECT_MARKER_NOT_APPLICABLE:
             default:
                 index++;
                 continue;
             }
+            break;
         }
         break;
     case KF_OBJECT_114:
@@ -467,7 +459,7 @@ transition_action: {
             break;
         }
         player_state.vitals.current_mp -= 10;
-        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 4096, 256);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, KF_FIXED12_ONE, 256);
         actor_disable_type3_transition_actors();
         previous_value = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id;
         do {
@@ -499,15 +491,15 @@ transition_action: {
         player_state.camera_position.vx = object->position.vx + forward.x;
         player_state.camera_position.vz = object->position.vz + forward.z;
         player_state.camera_position.vy = object->position.vy;
-        yaw = object->rotation.vy + 2048;
+        yaw = object->rotation.vy + KF_ANGLE_HALF_TURN;
         event_state.interaction_handled = KF_TRUE;
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
-        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 4096, 0);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, KF_FIXED12_ONE, KF_FIXED12_ONE, 0);
         if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
             resource_tmd_queue_read(KF_RESOURCE_ARCHIVE_MO, 0x101, 0x181);
         }
-        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 0, -256);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, KF_FIXED12_ONE, 0, -256);
         render_set_color_overlay(KF_COLOR_OVERLAY_OFF, 0, 0, 0);
         resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, previous_value, previous_value,
                       KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
@@ -649,7 +641,7 @@ magic_action: {
                       player_state.camera_rotation.angles[1], 0, 0,
                       &near_position);
         spin = 0;
-        for (fraction = 0; fraction < 4096; fraction += 64) {
+        for (fraction = 0; fraction < KF_FIXED12_ONE; fraction += 64) {
             scene_pose_interpolate(object, &near_position,
                           &far_position, NULL, NULL, fraction);
             object->rotation.vy += spin;
@@ -674,17 +666,17 @@ decay_update:
             }
         }
         object->lighting_blend_q12 = 0;
-        do {
+        for (;;) {
             object->rotation.vy += spin;
             object->lighting_blend_q12 += 128;
             spin += 8;
-            if (object->lighting_blend_q12 >= 4096) {
+            if (object->lighting_blend_q12 >= KF_FIXED12_ONE) {
                 break;
             }
             cd_request_service_vab();
             cd_request_service_stream();
             render_game_frame(NULL, NULL);
-        } while (1);
+        }
         object->object_id = KF_OBJECT_NONE;
         notify_enqueue(KF_NOTIFICATION_1);
         event_state.interaction_handled = KF_TRUE;
@@ -699,7 +691,7 @@ decay_update:
                 break;
             }
             if (map_object_state.objects[index].object_id != KF_OBJECT_195) {
-                goto invoke_callback;
+                break;
             }
         }
         if (!game_counter_increment(KF_ITEM_RESTORE_HP_100)) {
@@ -735,8 +727,8 @@ decay_update:
                     object->extra_40.saved_layer.layer_mask != side) {
                     continue;
                 }
-                if (player_camera_within_map_region(object->position.vx >> 11,
-                                  object->position.vz >> 11,
+                if (player_camera_within_map_region(object->position.vx >> KF_MAP_CELL_POSITION_SHIFT,
+                                  object->position.vz >> KF_MAP_CELL_POSITION_SHIFT,
                                   object->tail.scene_inspect.region_width,
                                   object->tail.scene_inspect.region_depth, 0x8000)) {
                     menu_show_transition_image(KF_RESOURCE_ARCHIVE_ITEM, object->tail.scene_inspect.transition_image_id + 510);
@@ -814,7 +806,7 @@ void color_overlay_transition(s32 step, s32 first, s32 second, s32 third,
         accumulate_color_overlay(current_first, current_second, current_third, 0x800);
         render_game_frame(NULL, NULL);
         fraction += step;
-    } while (fraction < 4096);
+    } while (fraction < KF_FIXED12_ONE);
 
     reset_collision_rows_and_overlay();
     accumulate_color_overlay(target_first, target_second, target_third, 0x800);
@@ -882,7 +874,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         object->object_id = KF_OBJECT_13;
     }
 
-    first_yaw = player_state.camera_rotation.angles[0] & 0xfff;
+    first_yaw = player_state.camera_rotation.angles[0] & KF_ANGLE_WRAP_MASK;
     target_yaw = first_yaw;
     if (first_yaw < 0x800) {
         if (first_yaw > 0x100) {
@@ -910,7 +902,7 @@ void event_map_object_interact(KfMapObject *object, ...)
                       &next_position);
         next_angles.vz = 0;
         next_angles.vx = 0;
-        for (fraction = 0; fraction <= 0x1000; fraction += 0x200) {
+        for (fraction = 0; fraction <= KF_FIXED12_ONE; fraction += 0x200) {
             buttons = PadRead(1);
             if (previous_buttons == 0 && buttons != 0) {
                 goto button_pressed;
@@ -984,7 +976,7 @@ return_pose:
     buttons = 0;
     while (!angle_within_tolerance(object->rotation.vy,
                                    first_angles.vy, 0x80)) {
-        object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
+        object->rotation.vy = (object->rotation.vy + 0x100) & KF_ANGLE_WRAP_MASK;
         render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
     }
     object->rotation.vy = first_angles.vy;
@@ -993,7 +985,7 @@ interpolate_back:
     next_angles = object->rotation;
     next_position = object->position;
     current_yaw = player_state.camera_rotation.angles[0];
-    for (fraction = 0; fraction <= 0x1000; fraction += 0x200) {
+    for (fraction = 0; fraction <= KF_FIXED12_ONE; fraction += 0x200) {
         scene_pose_interpolate(object, &next_position,
                       &first_position, &next_angles, &first_angles,
                       fraction);
@@ -1120,7 +1112,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                                              object->rotation.vy, 900)) ||
                      ((object->tail.marker.marker_id & KF_MAP_OBJECT_MARKER_OPEN_BACK) &&
                       angle_within_tolerance(rotation->angles[1],
-                                             object->rotation.vy + 0x800,
+                                             object->rotation.vy + KF_ANGLE_HALF_TURN,
                                              900)))) {
                     object->action_timer = 1;
                     break;
@@ -1142,7 +1134,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
         case KF_MAP_OBJECT_OP_HINGED_CONTAINER:
         case KF_MAP_OBJECT_OP_SLIDING_CONTAINER:
             if (!angle_within_tolerance(rotation->angles[1],
-                                        object->rotation.vy + 0x800, 0x155)) {
+                                        object->rotation.vy + KF_ANGLE_HALF_TURN, 0x155)) {
                 break;
             }
             /* Kind five enters the same state handler without the angle gate. */
@@ -1528,16 +1520,16 @@ void event_world_state_restore_slot(s32 save_slot)
         u16 y;
         u16 z;
 
-        switch (opcode - KF_EVENT_WORLD_SAVE_ACTION_60) {
-        case KF_EVENT_WORLD_SAVE_EMPTY - KF_EVENT_WORLD_SAVE_ACTION_60:
+        switch (opcode) {
+        case KF_EVENT_WORLD_SAVE_EMPTY:
             object->object_id = KF_OBJECT_NONE;
             break;
-        case KF_EVENT_WORLD_SAVE_EFFECT - KF_EVENT_WORLD_SAVE_ACTION_60:
+        case KF_EVENT_WORLD_SAVE_EFFECT:
             object->tail.event_effect.pending_event_command = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId),
                 *stream++);
             object->tail.event_effect.effect_object_index = *stream++;
             break;
-        case KF_EVENT_WORLD_SAVE_ACTION_60 - KF_EVENT_WORLD_SAVE_ACTION_60: {
+        case KF_EVENT_WORLD_SAVE_ACTION_60: {
             s32 x_high;
             s32 z_high;
             s32 y_high;
@@ -1569,7 +1561,7 @@ apply_position:
             object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
             break;
         }
-        case KF_EVENT_WORLD_SAVE_ACTION_61 - KF_EVENT_WORLD_SAVE_ACTION_60:
+        case KF_EVENT_WORLD_SAVE_ACTION_61:
             map_object_reset(object);
             object->action = KF_MAP_OBJECT_OP_FALL_AND_SPIN;
             object->object_id = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), *stream++);
@@ -1580,7 +1572,7 @@ apply_position:
             y = *stream++;
             y |= *stream++ << 8;
             goto apply_position;
-        case KF_EVENT_WORLD_SAVE_ACTION_62 - KF_EVENT_WORLD_SAVE_ACTION_60:
+        case KF_EVENT_WORLD_SAVE_ACTION_62:
             map_object_reset(object);
             object->action = KF_MAP_OBJECT_OP_BOUNCE;
             object->object_id = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), *stream++);
@@ -1596,12 +1588,12 @@ apply_position:
                 object->rotation.vx = KF_ANGLE_QUARTER_TURN;
             }
             goto apply_position;
-        case KF_EVENT_WORLD_SAVE_ACTION_70 - KF_EVENT_WORLD_SAVE_ACTION_60:
+        case KF_EVENT_WORLD_SAVE_ACTION_70:
             map_object_reset(object);
             object->action = KF_MAP_OBJECT_OP_OFFSET_MOTION;
             object->object_id = KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), *stream++);
             /* The next byte is also the body of opcode 0xfd. */
-        case KF_EVENT_WORLD_SAVE_STATE_BYTE - KF_EVENT_WORLD_SAVE_ACTION_60:
+        case KF_EVENT_WORLD_SAVE_STATE_BYTE:
             object->tail.fields.unknown_38 = *stream++;
             break;
         default:

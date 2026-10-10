@@ -87,10 +87,8 @@ void cd_request_service_stream(void)
 
     EnterCriticalSection();
     request = cd_state.current;
-    if (request->kind != KF_CD_REQUEST_IMAGE_STREAM) {
-        goto leave_critical;
-    }
-    if (request->stream_complete != KF_CD_STREAM_CHUNK_READY) {
+    if (request->kind != KF_CD_REQUEST_IMAGE_STREAM
+        || request->stream_complete != KF_CD_STREAM_CHUNK_READY) {
         goto leave_critical;
     }
     consumed = 0;
@@ -114,7 +112,7 @@ void cd_request_service_stream(void)
                     request->payload.image_rect.h = height - rows;
                     request->payload.image_rect.y = rows + request->payload.image_rect.y;
                 }
-                goto next_read;
+                break;
             }
             request->payload.image_rect.h = height;
             LoadImage(&request->payload.image_rect, (u_long *)source);
@@ -125,7 +123,7 @@ void cd_request_service_stream(void)
         }
 
         if ((u32)available < KF_CD_IMAGE_RECORD_HEADER_BYTES) {
-            goto next_read;
+            break;
         }
         if (source[0] != source[4] || source[1] != source[5] ||
             source[2] != source[6] || source[3] != source[7] ||
@@ -136,40 +134,33 @@ void cd_request_service_stream(void)
             request->location = request->initial_location;
             cd_stream_limit_chunk(request);
             request->phase = KF_CD_REQUEST_PHASE_SEEK;
-            goto seek;
+            CdSeekP(&request->location);
+            return;
         }
 
         consumed += KF_CD_IMAGE_RECORD_HEADER_BYTES;
         if (source[0] == 0xffff) {
-            goto complete;
+            DrawSync(0);
+            request->sector_count = 0;
+            cd_request_advance(request);
+            return;
         }
         setRECT(&request->payload.image_rect, source[0], source[1],
                 source[2], source[3]);
         source += 8;
     }
 
-next_read:
     cd_location_add(&request->location, request->sector_count,
         &request->location);
     cd_stream_limit_chunk(request);
     request->phase = KF_CD_REQUEST_PHASE_SEEK;
     DrawSync(0);
 
-seek:
     CdSeekP(&request->location);
-    goto done;
-
-complete:
-    DrawSync(0);
-    request->sector_count = 0;
-    cd_request_advance(request);
-    goto done;
+    return;
 
 leave_critical:
     ExitCriticalSection();
-
-done:
-    return;
 }
 
 ADDRESS(0x800171c8, 0x30)
@@ -420,7 +411,7 @@ u8 *memory_malloc_checked(u32 size)
 {
     u8 *block = (u8 *)malloc(size);
 
-    if ((u32)block + MEMORY_RAM_BASE > KF_MAIN_RAM_BYTES - 1) {
+    if ((u32)block + MEMORY_RAM_BASE >= KF_MAIN_RAM_BYTES) {
         return NULL;
     }
     return block;
@@ -726,10 +717,10 @@ void cd_archive_read_chunked(u16 slot, u16 entry, u8 *destination,
     cd_request_wait_done(request);
     request->payload.image_rect.h = 0;
     request->stream_complete = KF_CD_STREAM_WAITING;
-    size = cd_archive_entry_extent((u16)slot, (u16)entry, &location);
+    size = cd_archive_entry_extent(slot, entry, &location);
     request->remaining_sectors = size >> KF_CD_SECTOR_SHIFT;
     request->chunk_sectors = request->remaining_sectors;
-    if (request->remaining_sectors < KF_CD_STREAM_CHUNK_SECTORS + 1) {
+    if (request->remaining_sectors <= KF_CD_STREAM_CHUNK_SECTORS) {
         request->remaining_sectors = 0;
         cd_request_enqueue(KF_CD_REQUEST_IMAGE_STREAM, &location, size,
             (u_long *)destination, on_complete);

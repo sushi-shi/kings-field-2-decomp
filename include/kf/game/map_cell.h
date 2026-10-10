@@ -10,6 +10,8 @@ enum {
     /* Low bits of KfMapOccupancyLayer.lighting_index: the lighting row. */
     KF_MAP_CELL_LIGHTING_MASK = 0x3f,
     KF_MAP_CELL_POSITION_SHIFT = 11,
+    KF_MAP_CELL_SIZE = 1 << KF_MAP_CELL_POSITION_SHIFT,
+    KF_MAP_CELL_LOCAL_MASK = KF_MAP_CELL_SIZE - 1,
     KF_MAP_CELL_ELEVATION_SHIFT = 7,
     KF_MAP_CELL_NO_OBJECT_INDEX = 0xff,
     /* An object index of 0xf0 or more draws nothing; 0xfe is a cleared marker. */

@@ -239,9 +239,11 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
     case KF_ACTOR_TARGET_9:
         if (target->word_0c.value < player_distance) {
-            goto zero_score;
+            score = 0;
+            break;
         }
-        if ((u32)(player_state.camera_position.vy - actor->position.vy + 1023) < 2047 &&
+        if (player_state.camera_position.vy - actor->position.vy > -1024 &&
+            player_state.camera_position.vy - actor->position.vy < 1024 &&
             rand() >= 4096) {
             break;
         }
@@ -259,17 +261,20 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
     case KF_ACTOR_TARGET_132:
         if ((actor->flags & KF_ACTOR_FLAG_BLOCK_PLAYER_TARGETING) != KF_ACTOR_FLAGS_NONE ||
             target->word_1a.value < player_distance) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         if (!directed_intervals_overlap(actor->position.vy, actor->collision_height,
                             player_state.camera_position.vy + 200, 0x834)) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
         if (!angle_within_tolerance(actor->rotation.y, angle,
                                     target->word_10.bytes.fallback_offset << 4)) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         if (target == actor->target) {
             score = random_triangular_scaled(target->word_02.target_selection.continuing_score_scale);
@@ -307,7 +312,8 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
 
     case KF_ACTOR_TARGET_11:
         if (target->word_1a.value < player_distance) {
-            goto zero_score;
+            score = 0;
+            break;
         }
         angle = vector_xz_to_angle(player_state.camera_position.vx - actor->position.vx,
                                    player_state.camera_position.vz - actor->position.vz);
@@ -534,7 +540,10 @@ void actor_update_lifecycle_for_player_range(void)
         if (actor_find_overlap_excluding_target_type3(actor->position.vx, actor->position.vy,
                           actor->position.vz, group->collision_radius,
                           group->collision_height) != KF_ACTOR_INDEX_NONE) {
-            goto set_dormant;
+            if (slot_state != KF_ACTOR_SLOT_RESPAWNING) {
+                actor->lifecycle = KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT;
+            }
+            return;
         }
 
         actor_prepare_and_initialize(actor_state.current);
@@ -761,18 +770,16 @@ update_motion:
     }
     if (position != NULL && motion_divisor < 0xf0) {
         struct KfEulerAngles angles;
-        SVECTOR *motion = &actor->motion.vector;
-
         vector_displacement_to_pitch_yaw(actor->position.vx - position->vx,
                       actor->position.vy - (actor->collision_height >> 1) - position->vy,
                       actor->position.vz - position->vz, &angles);
-        pitch_yaw_to_forward_vector(&angles, motion);
+        pitch_yaw_to_forward_vector(&angles, &actor->motion.vector);
         damage = SquareRoot0(SquareRoot0(damage << 11));
         damage = (((damage << 10) / motion_divisor) << 5) / motion_divisor;
         if (damage > 512) {
             damage = 512;
         }
-        vector3s_scale_shift12(damage, motion);
+        vector3s_scale_shift12(damage, &actor->motion.vector);
         actor->motion.vector.vx >>= 3;
         actor->motion.vector.vz >>= 3;
         actor->motion.vector.vy >>= 6;
@@ -989,12 +996,12 @@ s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
             alternate.vz = actor->position.vz;
             alternate.vy = actor->position.vy + actor->vertical_anchor_offset;
             if (vector_distance_to_point(&alternate, x, y, z,
-                actor->collision_radius + radius, actor->collision_height, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != KF_DISTANCE_NONE) {
                 return index;
             }
         } else {
             if (vector_distance_to_point(&actor->position, x, y, z,
-                actor->collision_radius + radius, actor->collision_height, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != KF_DISTANCE_NONE) {
                 return index;
             }
         }
@@ -1024,12 +1031,12 @@ s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height)
             alternate.vz = actor->position.vz;
             alternate.vy = actor->position.vy + actor->vertical_anchor_offset;
             if (vector_distance_to_point(&alternate, x, y, z,
-                actor->collision_radius + radius, actor->collision_height, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != KF_DISTANCE_NONE) {
                 return index;
             }
         } else {
             if (vector_distance_to_point(&actor->position, x, y, z,
-                actor->collision_radius + radius, actor->collision_height, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != KF_DISTANCE_NONE) {
                 return index;
             }
         }
@@ -1196,9 +1203,9 @@ retry_move:
             KF_COLLISION_CACHE_POSITION.vz - actor->position.vz);
         movement_angle = vector_xz_to_angle(motion_x, motion_z);
         if (angle_mod_delta_le_half_turn(movement_angle, obstacle_angle)) {
-            obstacle_angle = (obstacle_angle + 1024) & KF_ANGLE_WRAP_MASK;
+            obstacle_angle = (obstacle_angle + KF_ANGLE_QUARTER_TURN) & KF_ANGLE_WRAP_MASK;
         } else {
-            obstacle_angle = (obstacle_angle - 1024) & KF_ANGLE_WRAP_MASK;
+            obstacle_angle = (obstacle_angle - KF_ANGLE_QUARTER_TURN) & KF_ANGLE_WRAP_MASK;
         }
         length = SquareRoot0(motion_x * motion_x + motion_z * motion_z);
         motion_x = -(rsin(obstacle_angle) * length) >> 13;
@@ -1363,17 +1370,8 @@ void actor_update_vertical_motion(void)
     }
 
     vertical_state = actor->vertical_motion_state;
-    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_FALLING) goto state_20;
-    /* Retail splits the remaining states with a "below FALLING + 1" test. */
-    if (KF_ENUM_ENCODE(s32, vertical_state) < KF_ENUM_ENCODE(s32, KF_ACTOR_VERTICAL_MOTION_FALLING) + 1) {
-        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_NONE) goto state_0;
-        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_VELOCITY) goto state_10;
-        return;
-    }
-    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_BALLISTIC) goto state_30;
-    return;
-
-state_0: {
+    switch (vertical_state) {
+    case KF_ACTOR_VERTICAL_MOTION_NONE: {
         s32 next_y;
         next_y = KF_COLLISION_CACHE_RESULT - actor->position.vy;
         if (next_y < 0) {
@@ -1386,7 +1384,7 @@ state_0: {
         return;
     }
 
-state_10: {
+    case KF_ACTOR_VERTICAL_MOTION_VELOCITY: {
         s32 next_y;
         KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
         next_y = actor->position.vy + actor->motion.vector.vy;
@@ -1408,7 +1406,9 @@ state_10: {
         if ((collision & KF_COLLISION_HIT_FLOOR) != KF_COLLISION_HIT_NONE) {
             if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) {
                 s32 floor_y = KF_COLLISION_CACHE_HEIGHT;
-                if (actor->position.vy < floor_y) goto advance_rise;
+                if (actor->position.vy < floor_y) {
+                    goto advance_rise;
+                }
                 actor->position.vy = floor_y;
             } else {
                 actor->position.vy = KF_COLLISION_CACHE_RESULT;
@@ -1416,11 +1416,13 @@ state_10: {
             actor->motion.vector.vy = 0;
             goto reset_vertical_motion_state;
         }
-        if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) goto advance_rise;
+        if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) {
+            goto advance_rise;
+        }
         goto reset_vertical_motion_state;
     }
 
-state_20:
+    case KF_ACTOR_VERTICAL_MOTION_FALLING:
         actor->position.vy += actor->motion.vector.vy;
         actor->motion.vector.vy += 5;
         if (KF_COLLISION_CACHE_RESULT < actor->position.vy &&
@@ -1432,7 +1434,7 @@ reset_vertical_motion_state:
         actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
         return;
 
-state_30: {
+    case KF_ACTOR_VERTICAL_MOTION_BALLISTIC: {
         s32 phase;
         s32 launch_speed;
         s32 next_y;
@@ -1459,6 +1461,9 @@ state_30: {
         actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
         actor->motion.ballistic.phase = 0;
         return;
+    }
+    case KF_ACTOR_VERTICAL_MOTION_SUSPENDED:
+        break;
     }
 }
 
@@ -1700,7 +1705,7 @@ void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
             actor_set_animation_if_changed(selected);
         }
     } else if (actor->animation_id == reverse) {
-        if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
+        if (actor->animation_phase < KF_ACTOR_ANIMATION_PHASE_PERIOD / 2) {
             actor_advance_animation_clamped(actor, phase_step);
         } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
@@ -1709,7 +1714,7 @@ void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
             }
         }
     } else if (actor->animation_id == forward) {
-        if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
+        if (actor->animation_phase < KF_ACTOR_ANIMATION_PHASE_PERIOD / 2) {
             actor_advance_animation_clamped(actor, phase_step);
         } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
@@ -1718,7 +1723,7 @@ void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
             }
         }
     } else if (actor->animation_id == fast) {
-        if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
+        if (actor->animation_phase < KF_ACTOR_ANIMATION_PHASE_PERIOD / 2) {
             actor_advance_animation_clamped(actor, phase_step);
         } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
@@ -1727,7 +1732,7 @@ void actor_update_motion_animation(KF_ENUM_PARAM(KfAnimationClip, s32) first,
             }
         }
     } else if (actor->animation_id == slow) {
-        if (actor->animation_phase < KF_ANGLE_HALF_TURN) {
+        if (actor->animation_phase < KF_ACTOR_ANIMATION_PHASE_PERIOD / 2) {
             actor_advance_animation_clamped(actor, phase_step);
         } else if (selected != actor->animation_id) {
             actor_advance_animation_clamped(actor, phase_step);
@@ -1890,7 +1895,9 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
         effect = effect_construct_record(damage_multiplier_tenths,
                                          KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind,
                                          &position, &direction);
-        if (effect != NULL) effect->cooldown = 3;
+        if (effect != NULL) {
+            effect->cooldown = 3;
+        }
         break;
     case KF_EFFECT_KIND_121:
         actor_compute_target_direction(current, player, 600, &position, &direction,
@@ -1899,7 +1906,9 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
                                         position.vy - player->vy,
                                         position.vz - player->vz);
         distance = (distance - 2000) / 600;
-        if (distance < 0) distance = 0;
+        if (distance < 0) {
+            distance = 0;
+        }
         effect_construct_record(damage_multiplier_tenths,
                                 KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
                       distance);
@@ -1968,7 +1977,9 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
         effect = effect_construct_record(damage_multiplier_tenths,
                                          KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER,
                                          KF_EFFECT_KIND_7, &position, &direction);
-        if (effect != NULL) effect->cooldown = 5;
+        if (effect != NULL) {
+            effect->cooldown = 5;
+        }
         break;
     case KF_EFFECT_KIND_1:
     case KF_EFFECT_KIND_28:
@@ -2165,30 +2176,24 @@ void actor_update_behavior(void)
         switch (target->sound_trigger.value & KF_TARGET_SOUND_TRIGGER_MODE_MASK) {
         case KF_TARGET_SOUND_TRIGGER_ANIMATION_PHASE:
             if (actor_animation_crossed_phase(actor, interval)) {
-                goto play_sound;
+                actor_play_target_sound(actor);
             }
             break;
         case KF_TARGET_SOUND_TRIGGER_RANDOM:
             if ((rand() >> 3) < interval) {
-                goto play_sound;
+                actor_play_target_sound(actor);
             }
             break;
         case KF_TARGET_SOUND_TRIGGER_STAGGERED: {
             s32 phase = (interval * actor_state.current_actor_slot_index / 3) % interval;
 
             if ((s32)actor_state.actor_update_frame_count % interval == phase) {
-                goto play_sound;
+                actor_play_target_sound(actor);
             }
             break;
         }
         }
     }
-    goto dispatch_action;
-
-play_sound:
-    actor_play_target_sound(actor);
-
-dispatch_action:
 
     switch (actor->target_type) {
     case KF_ACTOR_TARGET_2:
@@ -2258,7 +2263,9 @@ dispatch_action:
             }
             actor->state_70.signed_state++;
             if (old_state < 20) {
-                goto case3_motion;
+                actor_damp_horizontal_motion(group->movement_step * 2,
+                                             KF_ACTOR_MOVE_STORE_MOTION | KF_ACTOR_MOVE_SLIDE);
+                break;
             }
             if (old_state == 20) {
                 actor->lighting_override = KF_LIGHTING_PRESET_42;
@@ -2286,7 +2293,6 @@ dispatch_action:
                 }
             }
         }
-case3_motion:
         actor_damp_horizontal_motion(group->movement_step * 2,
                                      KF_ACTOR_MOVE_STORE_MOTION | KF_ACTOR_MOVE_SLIDE);
         break;
@@ -2330,8 +2336,8 @@ case3_motion:
             actor->tail_72.angles.x = 0;
             actor->tail_72.motion.baseline = actor->vertical_anchor_offset +
                 collision_sample_map_layer_height(actor->home_map_layer,
-                    (actor->home_cell_x << 11) + actor->word_24.home_local_x,
-                    (actor->home_cell_z << 11) + actor->word_22.home_local_z,
+                    (actor->home_cell_x << KF_MAP_CELL_POSITION_SHIFT) + actor->word_24.home_local_x,
+                    (actor->home_cell_z << KF_MAP_CELL_POSITION_SHIFT) + actor->word_22.home_local_z,
                     actor->collision_radius, actor->collision_height);
             actor_set_animation_if_changed(target->animation_id);
             actor_suspend_vertical_motion();
@@ -2418,7 +2424,7 @@ case3_motion:
                 group->movement_step,
                 group->turn_acceleration, mode);
         } else {
-            motion_flags = actor_move_along_heading((s16)angle + 2048,
+            motion_flags = actor_move_along_heading((s16)angle + KF_ANGLE_HALF_TURN,
                 target->word_0c.value,
                 group->movement_step, mode);
         }
@@ -2478,7 +2484,7 @@ case3_motion:
                           KF_ACTOR_MOVE_NO_STEP_UP | KF_ACTOR_MOVE_SLIDE_KEEP_SPEED);
         } else {
             opposite.vx = -512;
-            opposite.vy = actor->tail_72.angles.y + 2048;
+            opposite.vy = actor->tail_72.angles.y + KF_ANGLE_HALF_TURN;
             opposite.vz = 0;
             actor_turn_and_move_along_euler_angles((struct KfEulerAngles *)&opposite, target->word_0c.value,
                           target->word_0e.value,
@@ -2505,7 +2511,7 @@ case3_motion:
         }
         switch (actor->state_70.signed_state) {
         case 0:
-            if (actor_move_along_heading(actor->rotation.y + 2048,
+            if (actor_move_along_heading(actor->rotation.y + KF_ANGLE_HALF_TURN,
                               target->word_12.value,
                               group->movement_step,
                               KF_ACTOR_MOVE_AVOID_LEDGE | KF_ACTOR_MOVE_SLIDE_KEEP_SPEED) ==
@@ -2902,7 +2908,7 @@ case3_motion:
             actor->state_70.signed_state = target->word_12.value;
             actor_set_animation_if_changed(target->animation_id);
         }
-        if (actor_move_along_heading(actor->rotation.y + 2048,
+        if (actor_move_along_heading(actor->rotation.y + KF_ANGLE_HALF_TURN,
                           target->word_10.value, 1000,
                           KF_ACTOR_MOVE_AVOID_LEDGE | KF_ACTOR_MOVE_SLIDE_KEEP_SPEED) !=
             KF_COLLISION_HIT_NONE) {
@@ -3108,8 +3114,8 @@ case3_motion:
                 actor->state_70.signed_state = 1;
             } else {
                 actor->tail_72.signed_state = actor_turn_and_move_toward_point(
-                    (actor->home_cell_x << 11) + actor->word_24.home_local_x,
-                    (actor->home_cell_z << 11) + actor->word_22.home_local_z,
+                    (actor->home_cell_x << KF_MAP_CELL_POSITION_SHIFT) + actor->word_24.home_local_x,
+                    (actor->home_cell_z << KF_MAP_CELL_POSITION_SHIFT) + actor->word_22.home_local_z,
                     target->word_0e.value, target->word_10.value,
                     actor->tail_72.signed_state,
                     group->movement_step,
@@ -3220,7 +3226,12 @@ case3_motion:
             actor->position.vx = next.vx;
             actor->position.vy = next.vy;
             actor->position.vz = next.vz;
-            goto case30_advance;
+            actor_advance_animation_clamped(actor, target->animation_step);
+            if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
+                actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
+                actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
+            }
+            break;
         } else if ((collision & KF_COLLISION_HIT_PLAYER) != KF_COLLISION_HIT_NONE) {
             player_apply_damage(target->word_0e.value, target->word_10.value,
                            target->word_12.value, target->word_0c.value,
@@ -3233,7 +3244,6 @@ case3_motion:
             actor->motion.vector.vy = 0;
             actor->motion.vector.vx = 0;
         }
-    case30_advance:
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
             actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);

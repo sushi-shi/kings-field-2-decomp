@@ -77,7 +77,7 @@ void map_object_set_property(s32 index, KfMapObjectProperty property, ...)
         object->layer_mask = KF_MAP_LAYER_NONE;
         object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_DISARMED;
         if (object_template->kind == KF_MAP_OBJECT_KIND_10) {
-            object->rotation.vz = 0x400;
+            object->rotation.vz = KF_ANGLE_QUARTER_TURN;
         }
         break;
     case KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK:
@@ -100,8 +100,8 @@ void map_object_set_cell_marker(KfMapObject *object, KfMapCellMarkerMode mode, u
     u8 *cell_marker;
 
     if (mode == KF_MAP_CELL_MARKER_PLACE && player_state.map_marker_visual_effect_timer == 0) {
-        s32 cell_z = object->position.vz >> 11;
-        s32 cell_x = object->position.vx >> 11;
+        s32 cell_z = object->position.vz >> KF_MAP_CELL_POSITION_SHIFT;
+        s32 cell_x = object->position.vx >> KF_MAP_CELL_POSITION_SHIFT;
         KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
         cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
@@ -111,8 +111,8 @@ void map_object_set_cell_marker(KfMapObject *object, KfMapCellMarkerMode mode, u
         *cell_marker = marker;
         object->scale.vx = object->scale.vy = object->scale.vz = 0;
     } else {
-        s32 cell_z = object->position.vz >> 11;
-        s32 cell_x = object->position.vx >> 11;
+        s32 cell_z = object->position.vz >> KF_MAP_CELL_POSITION_SHIFT;
+        s32 cell_x = object->position.vx >> KF_MAP_CELL_POSITION_SHIFT;
         KfMapOccupancyCell *row = bss_801c7540.map_cells[cell_z];
         cell = &row[cell_x];
         cell_marker = &cell->layer[0].object_index;
@@ -188,7 +188,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED;
         object->rotation.vz = 0;
         object->rotation.vx = 0;
-        object->rotation.vy = -(s32)placements->rotation_y & 0xfff;
+        object->rotation.vy = -(s32)placements->rotation_y & KF_ANGLE_WRAP_MASK;
         object->scale.vz = KF_FIXED12_ONE;
         object->scale.vy = KF_FIXED12_ONE;
         object->scale.vx = KF_FIXED12_ONE;
@@ -201,15 +201,15 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED_UNBIASED;
         }
         object->collision_height = object_template->interaction_height;
-        object->position.vx = ((u32)placements->region_x << 11) + placements->local_x;
-        object->position.vz = ((u32)placements->region_z << 11) + placements->local_z;
+        object->position.vx = ((u32)placements->region_x << KF_MAP_CELL_POSITION_SHIFT) + placements->local_x;
+        object->position.vz = ((u32)placements->region_z << KF_MAP_CELL_POSITION_SHIFT) + placements->local_z;
         row = bss_801c7540.map_cells[placements->region_z];
         cell = &row[placements->region_x];
         layer = cell->layer;
         if (object->layer_mask != KF_MAP_LAYER_FIRST) {
             layer++;
         }
-        object->position.vy = placements->height - ((s32)layer->elevation << 7);
+        object->position.vy = placements->height - ((s32)layer->elevation << KF_MAP_CELL_ELEVATION_SHIFT);
         object->tail.placement.copy_words = placements->tail_words;
         memset((void *)&object->extra_40, 0xff, sizeof object->extra_40);
 
@@ -310,7 +310,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                     (s8)placements->local_z - (s8)placements->region_z;
                 object->extra_40.resource_offsets.offset_y =
                     (s8)placements->height -
-                    (s8)(-object->position.vy >> 7);
+                    (s8)(-object->position.vy >> KF_MAP_CELL_ELEVATION_SHIFT);
             }
             break;
         case KF_MAP_OBJECT_OP_WARP:
@@ -386,8 +386,8 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
             object->lighting_override_index = KF_LIGHTING_PRESET_42;
             object->lighting_blend_q12 = KF_FIXED12_ONE;
             object->position.vy += 0x100;
-            kind59_row = bss_801c7540.map_cells[object->position.vz >> 11];
-            kind59_cell = &kind59_row[object->position.vx >> 11];
+            kind59_row = bss_801c7540.map_cells[object->position.vz >> KF_MAP_CELL_POSITION_SHIFT];
+            kind59_cell = &kind59_row[object->position.vx >> KF_MAP_CELL_POSITION_SHIFT];
             kind59_layer = kind59_cell->layer;
             if (object->layer_mask != KF_MAP_LAYER_FIRST) {
                 kind59_layer++;
@@ -467,7 +467,7 @@ s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 poin
         if (vector_distance_to_point(
                 &object->position, x, y, z,
                 map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)].collision_radius + radius,
-                object->collision_height, point_height) != -1) {
+                object->collision_height, point_height) != KF_DISTANCE_NONE) {
             return index;
         }
     }
@@ -489,8 +489,7 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
     s32 direction;
 
     object = &map_object_state.objects[first_index];
-    index = first_index;
-    for (; index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
+    for (index = first_index; index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
         if (object->object_id == KF_OBJECT_NONE) {
             continue;
         }
@@ -506,7 +505,7 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
             if (vector_distance_to_point(&object->position,
                                          rotated.vx, position->vy, rotated.vz,
                                          object_template->interaction_radius + radius,
-                                         object->collision_height, point_height) == -1) {
+                                         object->collision_height, point_height) == KF_DISTANCE_NONE) {
                 continue;
             }
             direction = vector_xz_to_angle(
@@ -519,7 +518,7 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
             if (vector_distance_to_point(&object->position,
                                          position->vx, position->vy, position->vz,
                                          object_template->interaction_radius + radius,
-                                         object_template->interaction_height, point_height) == -1) {
+                                         object_template->interaction_height, point_height) == KF_DISTANCE_NONE) {
                 continue;
             }
             if ((object->collision_flags & KF_MAP_OBJECT_INTERACTION_ANY_ANGLE) == KF_MAP_OBJECT_FLAGS_NONE) {
@@ -636,24 +635,21 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
                                        s32 height_offset)
 {
     KfMapObject *object;
-    u16 sequence;
     u16 angle;
 
     object = map_object_effect_pool_acquire(KF_MAP_OBJECT_SCATTER_POOL_FIRST,
                                             KF_MAP_OBJECT_EFFECT_POOL_SIZE,
                                             map_object_state.spawn_sequence_pool_15e);
     map_object_reset(object);
-    sequence = map_object_state.spawn_sequence_pool_15e;
-    map_object_state.spawn_sequence_pool_15e = sequence + 1;
-    object->tail.scattered_effect.spawn_sequence = sequence;
+    object->tail.scattered_effect.spawn_sequence = map_object_state.spawn_sequence_pool_15e++;
     object->object_id = KF_OBJECT_70;
     object->tail.scattered_effect.effect_id = effect_id;
     angle = (u16)(rand() >> KF_RANDOM_ANGLE_SHIFT);
     object->position.vx = origin->vx +
-        ((rsin(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> 12);
+        ((rsin(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> KF_FIXED12_BITS);
     object->position.vy = origin->vy + height_offset;
     object->position.vz = origin->vz +
-        ((rcos(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> 12);
+        ((rcos(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> KF_FIXED12_BITS);
     object->rotation.vy = rand() >> KF_RANDOM_ANGLE_SHIFT;
     object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
     map_object_start_action_if_idle(object, KF_MAP_OBJECT_OP_BOUNCE);
@@ -703,7 +699,7 @@ void map_object_apply_marker_signal(u8 identifier)
         case KF_MAP_OBJECT_OP_LIFT_DOOR:
         case KF_MAP_OBJECT_OP_SIGNAL_DOOR:
         case KF_MAP_OBJECT_OP_HINGE:
-            if ((u8)(identifier + 106) < 49) {
+            if (identifier >= 150 && identifier < 199) {
                 if ((object->tail.marker.marker_id & KF_MAP_OBJECT_MARKER_PAIR_MASK) == identifier) {
                     object->tail.marker.marker_id ^= 1;
                 }
@@ -783,12 +779,12 @@ void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTO
         KF_ENUM_ENCODE(u16, object->object_id) + 0x100, object->asset_clip_selector, object->phase_q12,
         vertex_index, &vertex);
 
-    vertex.vx = (vertex.vx * object->scale.vx) >> 12;
-    vertex.vy = (vertex.vy * object->scale.vy) >> 12;
-    vertex.vz = (vertex.vz * object->scale.vz) >> 12;
+    vertex.vx = (vertex.vx * object->scale.vx) >> KF_FIXED12_BITS;
+    vertex.vy = (vertex.vy * object->scale.vy) >> KF_FIXED12_BITS;
+    vertex.vz = (vertex.vz * object->scale.vz) >> KF_FIXED12_BITS;
 
     angles.x = object->rotation.vx;
-    angles.y = object->rotation.vy + 0x800;
+    angles.y = object->rotation.vy + KF_ANGLE_HALF_TURN;
     angles.z = object->rotation.vz;
     vector_rotate_yxz(&angles, &vertex, result);
 
@@ -798,8 +794,8 @@ void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTO
 ADDRESS(0x80036ad8, 0x90)
 b32 player_camera_within_map_region(s32 x, s32 z, s32 width, s32 depth, s32 height)
 {
-    s32 camera_x = player_state.camera_position.vx >> 11;
-    s32 camera_z = player_state.camera_position.vz >> 11;
+    s32 camera_x = player_state.camera_position.vx >> KF_MAP_CELL_POSITION_SHIFT;
+    s32 camera_z = player_state.camera_position.vz >> KF_MAP_CELL_POSITION_SHIFT;
 
     if (camera_x < x || camera_x >= x + width ||
         camera_z < z || camera_z >= z + depth) {
@@ -865,7 +861,7 @@ b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
 
     if (brighten) {
         target->phase_q12 += KF_MAP_OBJECT_MOTION_STEP;
-        if (target->phase_q12 >= 0x1000) {
+        if (target->phase_q12 >= KF_FIXED12_ONE) {
             target->phase_q12 = KF_MAP_OBJECT_MOTION_LIMIT;
         }
     }
@@ -874,7 +870,7 @@ b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
     vector_rotate_yxz((const struct KfEulerAngles *)&source->rotation,
                       end_offset, &end_position);
     source->extra_40.offset_motion.elapsed_frames++;
-    fraction = ((s32)source->extra_40.offset_motion.elapsed_frames << 12) / duration;
+    fraction = ((s32)source->extra_40.offset_motion.elapsed_frames << KF_FIXED12_BITS) / duration;
     target->position.vx = source->position.vx +
         fixed_lerp_q12(start_position.vx, end_position.vx, fraction);
     target->position.vy = source->position.vy +

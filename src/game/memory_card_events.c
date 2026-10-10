@@ -174,8 +174,7 @@ s32 memory_card_probe_temporary_file(void)
     handle = open(path, FCREAT);
     close(handle);
     bios_delete(path);
-    /* KF_CARD_PROBE_CREATE_FAILED when the create failed, else OK. */
-    return (handle == -1) << 1;
+    return handle == -1 ? KF_CARD_PROBE_CREATE_FAILED : KF_CARD_PROBE_OK;
 }
 ADDRESS(0x800226ec, 0x1dc)
 b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
@@ -332,14 +331,16 @@ s32 memory_card_write_slot(s32 slot)
             slot_digit[0] = entries[index].name[CARD_FILENAME_PREFIX_LENGTH];
             entry_slot = atoi(slot_digit);
             occupied[entry_slot - 1] = KF_TRUE;
-            if (entry_slot == slot)
+            if (entry_slot == slot) {
                 present = KF_TRUE;
+            }
         }
     }
 
     if (!present) {
-        if (card_full == KF_TRUE)
+        if (card_full == KF_TRUE) {
             return KF_CARD_WRITE_NO_SPACE;
+        }
         for (index = 0; index < KF_CARD_DIRECTORY_CAPACITY; index++) {
             if (occupied[index] == KF_FALSE) {
                 slot = index + 1;
@@ -378,15 +379,18 @@ s32 memory_card_write_slot(s32 slot)
 
     if (!present) {
         handle = open(path, FCREAT | (KF_CARD_FILE_BLOCKS << 16));
-        if (handle == -1)
+        if (handle == -1) {
             return KF_CARD_WRITE_IO_FAILURE;
+        }
         close(handle);
     }
     handle = open(path, FWRITE);
-    if (handle == -1)
+    if (handle == -1) {
         return KF_CARD_WRITE_IO_FAILURE;
-    if (write(handle, (const void *)memory_card_buffer, KF_CARD_BLOCK_BYTES) != KF_CARD_BLOCK_BYTES)
+    }
+    if (write(handle, (const void *)memory_card_buffer, KF_CARD_BLOCK_BYTES) != KF_CARD_BLOCK_BYTES) {
         return KF_CARD_WRITE_IO_FAILURE;
+    }
     close(handle);
     memory_card_loaded_slot = slot;
     return KF_CARD_WRITE_OK;
@@ -407,8 +411,9 @@ void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph)
         header->title[(CARD_TITLE_EXPERIENCE_LAST_PAIR - index) * 2] = CARD_SHIFT_JIS_DIGIT_LEAD;
         header->title[1 + (CARD_TITLE_EXPERIENCE_LAST_PAIR - index) * 2] = digit + CARD_SHIFT_JIS_ZERO_TRAIL;
         experience /= 10;
-        if (experience == 0)
+        if (experience == 0) {
             index = CARD_TITLE_EXPERIENCE_DIGITS;
+        }
     }
 
     for (index = 0; index < CARD_TITLE_LEVEL_DIGITS; index++) {
@@ -417,8 +422,9 @@ void memory_card_write_title_stats(KfCardHeader *header, s32 slot_glyph)
         header->title[(CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = CARD_SHIFT_JIS_DIGIT_LEAD;
         header->title[1 + (CARD_TITLE_LEVEL_LAST_PAIR - index) * 2] = digit + CARD_SHIFT_JIS_ZERO_TRAIL;
         level /= 10;
-        if (level == 0)
+        if (level == 0) {
             index = CARD_TITLE_LEVEL_DIGITS;
+        }
     }
 }
 
@@ -428,10 +434,8 @@ u32 memory_card_payload_byte_sum(const u8 *payload)
     u32 sum = 0;
     s32 index;
 
-    for (index = KF_CARD_PAYLOAD_BYTES - 1; index >= 0;) {
+    for (index = KF_CARD_PAYLOAD_BYTES - 1; index >= 0; index--, payload++) {
         sum += *payload;
-        index--;
-        payload++;
     }
     return sum;
 }

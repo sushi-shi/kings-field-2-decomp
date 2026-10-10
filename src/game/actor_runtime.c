@@ -1367,25 +1367,8 @@ void actor_update_vertical_motion(void)
     }
 
     vertical_state = actor->vertical_motion_state;
-    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_FALLING) {
-        goto state_20;
-    }
-    /* Retail splits the remaining states with a "below FALLING + 1" test. */
-    if (KF_ENUM_ENCODE(s32, vertical_state) < KF_ENUM_ENCODE(s32, KF_ACTOR_VERTICAL_MOTION_FALLING) + 1) {
-        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_NONE) {
-            goto state_0;
-        }
-        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_VELOCITY) {
-            goto state_10;
-        }
-        return;
-    }
-    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_BALLISTIC) {
-        goto state_30;
-    }
-    return;
-
-state_0: {
+    switch (vertical_state) {
+    case KF_ACTOR_VERTICAL_MOTION_NONE: {
         s32 next_y;
         next_y = KF_COLLISION_CACHE_RESULT - actor->position.vy;
         if (next_y < 0) {
@@ -1398,7 +1381,7 @@ state_0: {
         return;
     }
 
-state_10: {
+    case KF_ACTOR_VERTICAL_MOTION_VELOCITY: {
         s32 next_y;
         KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision;
         next_y = actor->position.vy + actor->motion.vector.vy;
@@ -1436,7 +1419,7 @@ state_10: {
         goto reset_vertical_motion_state;
     }
 
-state_20:
+    case KF_ACTOR_VERTICAL_MOTION_FALLING:
         actor->position.vy += actor->motion.vector.vy;
         actor->motion.vector.vy += 5;
         if (KF_COLLISION_CACHE_RESULT < actor->position.vy &&
@@ -1448,7 +1431,7 @@ reset_vertical_motion_state:
         actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_NONE;
         return;
 
-state_30: {
+    case KF_ACTOR_VERTICAL_MOTION_BALLISTIC: {
         s32 phase;
         s32 launch_speed;
         s32 next_y;
@@ -1475,6 +1458,9 @@ state_30: {
         actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
         actor->motion.ballistic.phase = 0;
         return;
+    }
+    case KF_ACTOR_VERTICAL_MOTION_SUSPENDED:
+        break;
     }
 }
 

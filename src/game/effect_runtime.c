@@ -107,7 +107,7 @@ void effect_dispatch_magic_impact(KF_ENUM_PARAM(KfCollisionHitFlags, s32) kind,
             s32 angle = vector_xz_to_angle(
                 actor->position.vx - position->vx,
                 actor->position.vz - position->vz);
-            if (!angle_within_tolerance(actor->rotation.y, angle + 0x800,
+            if (!angle_within_tolerance(actor->rotation.y, angle + KF_ANGLE_HALF_TURN,
                                         group->actor_facing_tolerance)) {
                 return;
             }
@@ -2805,7 +2805,7 @@ void effect_update_dispatch(void)
                                    ((rcos(angle) * radius) >> 12);
                 row->position.vy = record->position.vy +
                                    (rsin(angle << 1) >> 4);
-                row->rotation.vy = -angle - 1024;
+                row->rotation.vy = -angle - KF_ANGLE_QUARTER_TURN;
                 row->rotation.vz = 0;
                 row->rotation.vx = rcos(angle << 1) >> 4;
             }

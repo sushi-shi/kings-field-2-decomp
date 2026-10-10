@@ -1201,9 +1201,9 @@ retry_move:
             KF_COLLISION_CACHE_POSITION.vz - actor->position.vz);
         movement_angle = vector_xz_to_angle(motion_x, motion_z);
         if (angle_mod_delta_le_half_turn(movement_angle, obstacle_angle)) {
-            obstacle_angle = (obstacle_angle + 1024) & KF_ANGLE_WRAP_MASK;
+            obstacle_angle = (obstacle_angle + KF_ANGLE_QUARTER_TURN) & KF_ANGLE_WRAP_MASK;
         } else {
-            obstacle_angle = (obstacle_angle - 1024) & KF_ANGLE_WRAP_MASK;
+            obstacle_angle = (obstacle_angle - KF_ANGLE_QUARTER_TURN) & KF_ANGLE_WRAP_MASK;
         }
         length = SquareRoot0(motion_x * motion_x + motion_z * motion_z);
         motion_x = -(rsin(obstacle_angle) * length) >> 13;
@@ -2442,7 +2442,7 @@ dispatch_action:
                 group->movement_step,
                 group->turn_acceleration, mode);
         } else {
-            motion_flags = actor_move_along_heading((s16)angle + 2048,
+            motion_flags = actor_move_along_heading((s16)angle + KF_ANGLE_HALF_TURN,
                 target->word_0c.value,
                 group->movement_step, mode);
         }
@@ -2502,7 +2502,7 @@ dispatch_action:
                           KF_ACTOR_MOVE_NO_STEP_UP | KF_ACTOR_MOVE_SLIDE_KEEP_SPEED);
         } else {
             opposite.vx = -512;
-            opposite.vy = actor->tail_72.angles.y + 2048;
+            opposite.vy = actor->tail_72.angles.y + KF_ANGLE_HALF_TURN;
             opposite.vz = 0;
             actor_turn_and_move_along_euler_angles((struct KfEulerAngles *)&opposite, target->word_0c.value,
                           target->word_0e.value,
@@ -2529,7 +2529,7 @@ dispatch_action:
         }
         switch (actor->state_70.signed_state) {
         case 0:
-            if (actor_move_along_heading(actor->rotation.y + 2048,
+            if (actor_move_along_heading(actor->rotation.y + KF_ANGLE_HALF_TURN,
                               target->word_12.value,
                               group->movement_step,
                               KF_ACTOR_MOVE_AVOID_LEDGE | KF_ACTOR_MOVE_SLIDE_KEEP_SPEED) ==
@@ -2926,7 +2926,7 @@ dispatch_action:
             actor->state_70.signed_state = target->word_12.value;
             actor_set_animation_if_changed(target->animation_id);
         }
-        if (actor_move_along_heading(actor->rotation.y + 2048,
+        if (actor_move_along_heading(actor->rotation.y + KF_ANGLE_HALF_TURN,
                           target->word_10.value, 1000,
                           KF_ACTOR_MOVE_AVOID_LEDGE | KF_ACTOR_MOVE_SLIDE_KEEP_SPEED) !=
             KF_COLLISION_HIT_NONE) {

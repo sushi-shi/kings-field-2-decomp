@@ -491,7 +491,7 @@ transition_action: {
         player_state.camera_position.vx = object->position.vx + forward.x;
         player_state.camera_position.vz = object->position.vz + forward.z;
         player_state.camera_position.vy = object->position.vy;
-        yaw = object->rotation.vy + 2048;
+        yaw = object->rotation.vy + KF_ANGLE_HALF_TURN;
         event_state.interaction_handled = KF_TRUE;
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
@@ -1112,7 +1112,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
                                              object->rotation.vy, 900)) ||
                      ((object->tail.marker.marker_id & KF_MAP_OBJECT_MARKER_OPEN_BACK) &&
                       angle_within_tolerance(rotation->angles[1],
-                                             object->rotation.vy + 0x800,
+                                             object->rotation.vy + KF_ANGLE_HALF_TURN,
                                              900)))) {
                     object->action_timer = 1;
                     break;
@@ -1134,7 +1134,7 @@ void event_world_dispatch_interaction(const VECTOR *position,
         case KF_MAP_OBJECT_OP_HINGED_CONTAINER:
         case KF_MAP_OBJECT_OP_SLIDING_CONTAINER:
             if (!angle_within_tolerance(rotation->angles[1],
-                                        object->rotation.vy + 0x800, 0x155)) {
+                                        object->rotation.vy + KF_ANGLE_HALF_TURN, 0x155)) {
                 break;
             }
             /* Kind five enters the same state handler without the angle gate. */

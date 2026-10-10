@@ -788,7 +788,7 @@ void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTO
     vertex.vz = (vertex.vz * object->scale.vz) >> 12;
 
     angles.x = object->rotation.vx;
-    angles.y = object->rotation.vy + 0x800;
+    angles.y = object->rotation.vy + KF_ANGLE_HALF_TURN;
     angles.z = object->rotation.vz;
     vector_rotate_yxz(&angles, &vertex, result);
 

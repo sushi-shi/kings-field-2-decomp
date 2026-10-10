@@ -343,7 +343,7 @@ void map_object_update_actions(void)
                     if (object->tail.marker.marker_id == KF_MAP_OBJECT_MARKER_TRIGGERED) {
                         struct KfVecXZi displacement;
                         object->rotation.vx = 0xd44;
-                        angle_to_forward_xz(object->rotation.vy + 0x800, &displacement);
+                        angle_to_forward_xz(object->rotation.vy + KF_ANGLE_HALF_TURN, &displacement);
                         vector2i_scale_shift11(0xa0, &displacement);
                         object->position.vx += displacement.x;
                         object->position.vz += displacement.z;
@@ -365,7 +365,7 @@ void map_object_update_actions(void)
                     break;
                 case 2: {
                     struct KfVecXZi displacement;
-                    angle_to_forward_xz(object->rotation.vy + 0x800, &displacement);
+                    angle_to_forward_xz(object->rotation.vy + KF_ANGLE_HALF_TURN, &displacement);
                     vector2i_scale_shift11(10, &displacement);
                     object->position.vx += displacement.x;
                     object->position.vz += displacement.z;

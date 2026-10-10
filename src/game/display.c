@@ -2573,7 +2573,7 @@ actor_visible:
                                actor->render_mode, (s8)actor->render_depth);
             } else {
                 rotation.x = actor->rotation.x;
-                rotation.y = actor->rotation.y + 0x800;
+                rotation.y = actor->rotation.y + KF_ANGLE_HALF_TURN;
                 rotation.z = actor->rotation.z;
                 render_world_model(actor->current_map_layer, actor->definition_id + 0x80,
                                position, &rotation, (SVECTOR *)&actor->model_scale_x,
@@ -2708,7 +2708,7 @@ map_ordinary_visible:
             scale = &object->scale;
             if (resource_registry_get(KF_ENUM_ENCODE(u16, object->object_id) + 0x100) != NULL) {
                 rotation.x = object->rotation.vx;
-                rotation.y = object->rotation.vy + 0x800;
+                rotation.y = object->rotation.vy + KF_ANGLE_HALF_TURN;
                 rotation.z = object->rotation.vz;
                 render_mode = object->render_queue_mode;
                 if ((object->collision_flags & KF_MAP_OBJECT_FLAG_NEAR_CLIP) != KF_MAP_OBJECT_FLAGS_NONE) {
@@ -2753,7 +2753,7 @@ map_radius_check:
         switch (effect->render_flags & KF_EFFECT_RENDER_TRANSFORM_MASK) {
         case KF_EFFECT_RENDER_WORLD_TRANSFORM:
             rotation.x = effect->rotation.vx;
-            rotation.y = effect->rotation.vy + 0x800;
+            rotation.y = effect->rotation.vy + KF_ANGLE_HALF_TURN;
             rotation.z = effect->rotation.vz;
             render_world_model(effect->map_layer_mask, KF_ENUM_ENCODE(u8, effect->render_id) + 0x28,
                            &effect->position, &rotation, (SVECTOR *)&effect->scale_x,

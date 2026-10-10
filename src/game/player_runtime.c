@@ -2897,7 +2897,7 @@ void player_apply_map_object_reaction(KfMapObject *object)
         player_begin_rotation_reaction(&rotation);
     } else {
         struct KfVecXZi offset;
-        angle_to_forward_xz(object->rotation.vy + 1024, &offset);
+        angle_to_forward_xz(object->rotation.vy + KF_ANGLE_QUARTER_TURN, &offset);
         vector2i_scale_shift11(900, &offset);
         player_state.death_state = KF_PLAYER_REACTION_POSITION_RECOVERY;
         player_state.reaction.position.recovery_step = 0;
@@ -3271,7 +3271,7 @@ update_reaction_pose:
         goto update_reaction_view;
     case KF_PLAYER_REACTION_DEATH:
         player_state.vitals.current_hp = 0;
-        value = angle_velocity_step(-1024, player_state.reaction_rotation_offset[0],
+        value = angle_velocity_step(-KF_ANGLE_QUARTER_TURN, player_state.reaction_rotation_offset[0],
                                     player_state.reaction.damage.motion.vx, 8, 4);
         player_state.reaction.damage.motion.vx = value;
         player_state.reaction_rotation_offset[0] += (value * 3) >> 1;

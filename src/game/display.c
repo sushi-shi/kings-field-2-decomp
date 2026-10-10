@@ -334,8 +334,9 @@ void display_set_view_transform(const VECTOR *position, const SVECTOR *rotation)
         GRAPHICS.render_state.view_cell_z =
             GRAPHICS.render_state.view_position.vz >> KF_FIXED11_BITS;
     }
-    if (rotation != NULL)
+    if (rotation != NULL) {
         GRAPHICS.render_state.view_rotation = *rotation;
+    }
 
     angles.x = GRAPHICS.render_state.view_rotation.vx;
     angles.y = -GRAPHICS.render_state.view_rotation.vy;
@@ -651,13 +652,15 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             va = TMD_VERTEX(vertices, face->ft3.vertex0);
             vb = TMD_VERTEX(vertices, face->ft3.vertex1);
             vc = TMD_VERTEX(vertices, face->ft3.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             prim = (POLY_FT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_FT3);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->clut = face->ft3.clut;
             prim->tpage = (face->ft3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             *(long *)&prim->x0 = TMD_XY(va);
@@ -673,11 +676,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             setlen(prim, 7);
             prim->code = KF_TMD_MODE_FT3 | KF_TMD_MODE_SEMI_TRANSPARENT;
             depth = (va->sz + vb->sz + vc->sz) / 3;
-            if (depth <= 0)
+            if (depth <= 0) {
                 break;
+            }
             depth += depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            }
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -686,13 +691,15 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             va = TMD_VERTEX(vertices, face->gt3.vertex0);
             vb = TMD_VERTEX(vertices, face->gt3.vertex1);
             vc = TMD_VERTEX(vertices, face->gt3.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT3);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->packed.clut = face->gt3.clut;
             prim->packed.tpage = (face->gt3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             prim->packed.xy0 = TMD_XY(va);
@@ -710,11 +717,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             setlen(&prim->sdk, 9);
             prim->sdk.code = KF_TMD_MODE_GT3 | KF_TMD_MODE_SEMI_TRANSPARENT;
             depth = (va->sz + vb->sz + vc->sz) / 3;
-            if (depth <= 0)
+            if (depth <= 0) {
                 break;
+            }
             depth += depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            }
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -723,14 +732,16 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             va = TMD_VERTEX(vertices, face->gt4.vertex0);
             vb = TMD_VERTEX(vertices, face->gt4.vertex1);
             vc = TMD_VERTEX(vertices, face->gt4.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             vd = TMD_VERTEX(vertices, face->gt4.vertex3);
             prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT4);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->packed.clut = face->gt4.clut;
             prim->packed.tpage = (face->gt4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             prim->packed.xy0 = TMD_XY(va);
@@ -753,11 +764,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             setlen(&prim->sdk, 12);
             prim->sdk.code = KF_TMD_MODE_GT4 | KF_TMD_MODE_SEMI_TRANSPARENT;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (average <= 0)
+            if (average <= 0) {
                 break;
+            }
             depth = average + depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            }
             break;
         }
         case KF_TMD_MODE_FT4: {
@@ -766,14 +779,16 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             va = TMD_VERTEX(vertices, face->ft4.vertex0);
             vb = TMD_VERTEX(vertices, face->ft4.vertex1);
             vc = TMD_VERTEX(vertices, face->ft4.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             vd = TMD_VERTEX(vertices, face->ft4.vertex3);
             prim = (POLY_FT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_FT4);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->clut = face->ft4.clut;
             prim->tpage = (face->ft4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_bits;
             *(long *)&prim->x0 = TMD_XY(va);
@@ -791,11 +806,13 @@ void render_enqueue_blended_tmd(u16 object_index, s32 depth_bias,
             setlen(prim, 9);
             prim->code = KF_TMD_MODE_FT4 | KF_TMD_MODE_SEMI_TRANSPARENT;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (average <= 0)
+            if (average <= 0) {
                 break;
+            }
             depth = average + depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            }
             break;
         }
         }
@@ -838,13 +855,15 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             va = TMD_VERTEX(vertices, face->ft3.vertex0);
             vb = TMD_VERTEX(vertices, face->ft3.vertex1);
             vc = TMD_VERTEX(vertices, face->ft3.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             prim = (POLY_FT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_FT3);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->clut = face->ft3.clut;
             prim->tpage = face->ft3.tpage;
             *(long *)&prim->x0 = TMD_XY(va);
@@ -860,11 +879,13 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             setlen(prim, 7);
             prim->code = mode;
             depth = (va->sz + vb->sz + vc->sz) / 3;
-            if (depth <= 0)
+            if (depth <= 0) {
                 break;
+            }
             depth += depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            }
             break;
         }
         case KF_TMD_MODE_GT3: {
@@ -873,13 +894,15 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             va = TMD_VERTEX(vertices, face->gt3.vertex0);
             vb = TMD_VERTEX(vertices, face->gt3.vertex1);
             vc = TMD_VERTEX(vertices, face->gt3.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT3);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->packed.clut = face->gt3.clut;
             prim->packed.tpage = face->gt3.tpage;
             prim->packed.xy0 = TMD_XY(va);
@@ -897,11 +920,13 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             setlen(&prim->sdk, 9);
             prim->sdk.code = mode;
             depth = (va->sz + vb->sz + vc->sz) / 3;
-            if (depth <= 0)
+            if (depth <= 0) {
                 break;
+            }
             depth += depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            }
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -910,14 +935,16 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             va = TMD_VERTEX(vertices, face->gt4.vertex0);
             vb = TMD_VERTEX(vertices, face->gt4.vertex1);
             vc = TMD_VERTEX(vertices, face->gt4.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             vd = TMD_VERTEX(vertices, face->gt4.vertex3);
             prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT4);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->packed.clut = face->gt4.clut;
             prim->packed.tpage = face->gt4.tpage;
             prim->packed.xy0 = TMD_XY(va);
@@ -940,11 +967,13 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             setlen(&prim->sdk, 12);
             prim->sdk.code = mode;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (average <= 0)
+            if (average <= 0) {
                 break;
+            }
             depth = average + depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], &prim->sdk);
+            }
             break;
         }
         case KF_TMD_MODE_FT4: {
@@ -953,14 +982,16 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             va = TMD_VERTEX(vertices, face->ft4.vertex0);
             vb = TMD_VERTEX(vertices, face->ft4.vertex1);
             vc = TMD_VERTEX(vertices, face->ft4.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             vd = TMD_VERTEX(vertices, face->ft4.vertex3);
             prim = (POLY_FT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_FT4);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->clut = face->ft4.clut;
             prim->tpage = face->ft4.tpage;
             *(long *)&prim->x0 = TMD_XY(va);
@@ -978,11 +1009,13 @@ void render_enqueue_textured_tmd(u16 object_index, s32 depth_bias)
             setlen(prim, 9);
             prim->code = mode;
             average = (va->sz + vb->sz + vc->sz + vd->sz) >> 2;
-            if (average <= 0)
+            if (average <= 0) {
                 break;
+            }
             depth = average + depth_bias;
-            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT)
+            if ((u32)depth < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth], prim);
+            }
             break;
         }
         }
@@ -1025,13 +1058,15 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             va = TMD_VERTEX(vertices, face->gt3.vertex0);
             vb = TMD_VERTEX(vertices, face->gt3.vertex1);
             vc = TMD_VERTEX(vertices, face->gt3.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             prim = (KfGpuGT3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT3);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->packed.clut = face->gt3.clut;
             prim->packed.tpage = (face->gt3.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
@@ -1049,9 +1084,10 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             setlen(&prim->sdk, 9);
             prim->sdk.code = (mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT3;
             depth_index = (s16)fixed_depth;
-            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
                         (void *)&prim->sdk);
+            }
             break;
         }
         case KF_TMD_MODE_GT4: {
@@ -1060,14 +1096,16 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             va = TMD_VERTEX(vertices, face->gt4.vertex0);
             vb = TMD_VERTEX(vertices, face->gt4.vertex1);
             vc = TMD_VERTEX(vertices, face->gt4.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             vd = TMD_VERTEX(vertices, face->gt4.vertex3);
             prim = (KfGpuGT4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_GT4);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             prim->packed.clut = face->gt4.clut;
             prim->packed.tpage = (face->gt4.tpage & KF_GPU_TPAGE_WITHOUT_ABR) | blend_mode;
             prim->packed.xy0 = TMD_XY(va);
@@ -1090,9 +1128,10 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             setlen(&prim->sdk, 12);
             prim->sdk.code = (mode & KF_TMD_MODE_SEMI_TRANSPARENT) | KF_TMD_MODE_GT4;
             depth_index = (s16)fixed_depth;
-            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
                         (void *)&prim->sdk);
+            }
             break;
         }
         case KF_TMD_MODE_G3: {
@@ -1101,13 +1140,15 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             va = TMD_VERTEX(vertices, face->g3.vertex0);
             vb = TMD_VERTEX(vertices, face->g3.vertex1);
             vc = TMD_VERTEX(vertices, face->g3.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             prim = (POLY_G3 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_G3);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             *(long *)&prim->x0 = TMD_XY(va);
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
@@ -1120,9 +1161,10 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             setlen(prim, 6);
             prim->code = KF_TMD_MODE_G3;
             depth_index = (s16)fixed_depth;
-            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
                         (void *)prim);
+            }
             break;
         }
         case KF_TMD_MODE_G4: {
@@ -1131,14 +1173,16 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             va = TMD_VERTEX(vertices, face->g4.vertex0);
             vb = TMD_VERTEX(vertices, face->g4.vertex1);
             vc = TMD_VERTEX(vertices, face->g4.vertex2);
-            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0)
+            if (NormalClip(TMD_XY(va), TMD_XY(vb), TMD_XY(vc)) <= 0) {
                 break;
+            }
             vd = TMD_VERTEX(vertices, face->g4.vertex3);
             prim = (POLY_G4 *)game_graphics_runtime.display_state.primitive_buffer->cursor;
             game_graphics_runtime.display_state.primitive_buffer->cursor += sizeof(POLY_G4);
             if (game_graphics_runtime.display_state.primitive_buffer->cursor >
-                game_graphics_runtime.display_state.primitive_buffer->end)
+                game_graphics_runtime.display_state.primitive_buffer->end) {
                 return;
+                }
             *(long *)&prim->x0 = TMD_XY(va);
             *(long *)&prim->x1 = TMD_XY(vb);
             *(long *)&prim->x2 = TMD_XY(vc);
@@ -1155,9 +1199,10 @@ void render_enqueue_tmd_fixed_depth(u16 object_index, s32 blend_mode, s32 fixed_
             setlen(prim, 8);
             prim->code = KF_TMD_MODE_G4;
             depth_index = (s16)fixed_depth;
-            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT)
+            if (depth_index > 0 && (u32)depth_index < KF_MAP_OT_DEPTH_LIMIT) {
                 AddPrim(&game_graphics_runtime.display_state.ordering_table[depth_index],
                         (void *)prim);
+            }
             break;
         }
         }
@@ -2507,8 +2552,12 @@ void render_scene_and_update_resources(void)
         } else {
             layer = actor->current_map_layer;
         }
-        if ((actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) != KF_ACTOR_FLAGS_NONE) goto actor_radius_check;
-        if ((map_cell_layer_mask(&actor->position) & layer) == KF_MAP_LAYER_NONE) continue;
+        if ((actor->flags & KF_ACTOR_FLAG_RENDER_RADIUS_VISIBILITY) != KF_ACTOR_FLAGS_NONE) {
+            goto actor_radius_check;
+        }
+        if ((map_cell_layer_mask(&actor->position) & layer) == KF_MAP_LAYER_NONE) {
+            continue;
+        }
 actor_visible:
         if (resource_registry_get(actor->definition_id + 0x80) != NULL) {
             position = actor_resolve_group_position(actor, &actor_position);
@@ -2542,7 +2591,9 @@ actor_visible:
         continue;
 actor_radius_check:
         if ((map_cell_layer_mask_radius(&actor->position, 3) &
-             actor->current_map_layer) != KF_MAP_LAYER_NONE) goto actor_visible;
+             actor->current_map_layer) != KF_MAP_LAYER_NONE) {
+                 goto actor_visible;
+             }
     }
     resource_tmd_update_range(KF_RESOURCE_ARCHIVE_MO, 0, 0x80, 0x80, tmd_flags);
     resource_vab_update_range(KF_RESOURCE_ARCHIVE_VAB, 0x20, 2, 0x40, vab_flags);
@@ -2643,10 +2694,13 @@ actor_radius_check:
             KfRenderQueueMode render_mode;
             KfMapObjectTemplate *object_template;
             SVECTOR *scale;
-            if ((object->collision_flags & KF_MAP_OBJECT_FLAG_RADIUS_VISIBLE) != KF_MAP_OBJECT_FLAGS_NONE)
+            if ((object->collision_flags & KF_MAP_OBJECT_FLAG_RADIUS_VISIBLE) != KF_MAP_OBJECT_FLAGS_NONE) {
                 goto map_radius_check;
+            }
             visibility = map_cell_layer_mask(&object->position);
-            if ((visibility & object->layer_mask) == KF_MAP_LAYER_NONE) continue;
+            if ((visibility & object->layer_mask) == KF_MAP_LAYER_NONE) {
+                continue;
+            }
             object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
 map_ordinary_visible:
             tmd_flags[KF_ENUM_ENCODE(u16, object->object_id)] = KF_TRUE;
@@ -2676,7 +2730,9 @@ map_radius_check:
             object_template = &map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)];
             visibility = map_cell_layer_mask_radius(&object->position,
                 object_template->params.marker.marker_action_05);
-            if ((visibility & object->layer_mask) != KF_MAP_LAYER_NONE) goto map_ordinary_visible;
+            if ((visibility & object->layer_mask) != KF_MAP_LAYER_NONE) {
+                goto map_ordinary_visible;
+            }
             break;
         }
         }
@@ -2762,7 +2818,9 @@ map_radius_check:
             if (placed->frame_period != KF_MAP_PLACED_ANIMATION_DISABLED &&
                 game_graphics_runtime.map_placed_frame_counter % placed->frame_period == 0) {
                 placed->frame_index++;
-                if (placed->frame_index >= placed->frame_count) placed->frame_index = 0;
+                if (placed->frame_index >= placed->frame_count) {
+                    placed->frame_index = 0;
+                }
             }
         }
         placed++;
@@ -3660,8 +3718,9 @@ present:
         }
         buttons = PadRead(1);
         if (state == KF_MENU_FADE_WAIT_FOR_RELEASE) {
-            if (buttons == 0)
+            if (buttons == 0) {
                 state = KF_MENU_FADE_WAIT_FOR_PRESS;
+            }
         } else if (buttons != 0) {
             DrawSync(0);
             return level;
@@ -3713,13 +3772,15 @@ void menu_show_transition_image(u16 archive_slot, u16 archive_entry)
         for (;;) {
             buttons = PadRead(1);
             if (frame == KF_MENU_FADE_WAIT_FOR_RELEASE) {
-                if (buttons != 0)
+                if (buttons != 0) {
                     continue;
+                }
                 frame = KF_MENU_FADE_WAIT_FOR_PRESS;
                 continue;
             }
-            if (buttons == 0)
+            if (buttons == 0) {
                 continue;
+            }
             frame = KF_MENU_TRANSITION_REVERSE_START_LEVEL;
             break;
         }

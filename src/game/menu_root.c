@@ -107,8 +107,9 @@ s32 menu_run_root_controller(void)
     input_wait_release();
 
     for (;;) {
-        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
+        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         switch (selection) {
         case KF_MENU_ROOT_USE_ITEM:
@@ -130,36 +131,41 @@ s32 menu_run_root_controller(void)
             choice_result = menu_run_card_choice();
 selection_result:
             result = choice_result;
-            if (choice_result == KF_MENU_RESULT_CANCELLED)
+            if (choice_result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
+            }
             break;
         case KF_MENU_ROOT_OPTIONS:
             menu_options_controller();
             break;
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         cursor = menu_poll_choice_input(cursor, KF_MENU_ROOT_CANCEL_ROW,
             &selection, &confirmed, &result);
         buttons = PadRead(1);
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if ((buttons & PADR1) != 0 && (buttons & PADL1) != 0)
+            if ((buttons & PADR1) != 0 && (buttons & PADL1) != 0) {
                 menu_draw_location_number();
+            }
             menu_draw_player_status();
             menu_draw_window(KF_MENU_WINDOW_ROOT, KF_MENU_ROOT_WINDOW_ROWS, cursor, confirmed);
             menu_present_frame();
         }
     }
 
-    if (result == KF_MENU_RESULT_CANCELLED)
+    if (result == KF_MENU_RESULT_CANCELLED) {
         menu_play_sound_cue(KF_MENU_SOUND_NONE);
-    if (result == KF_MENU_RESULT_GAME_LOADED)
+    }
+    if (result == KF_MENU_RESULT_GAME_LOADED) {
         menu_exit_display_state(KF_TRUE);
-    else
+    } else {
         menu_exit_display_state(KF_FALSE);
+    }
     if (result != KF_MENU_RESULT_CANCELLED &&
         result != KF_MENU_RESULT_GAME_LOADED &&
         (result & KF_MENU_MAGIC_ACTION_TAG) != 0) {
@@ -217,23 +223,27 @@ s32 menu_item_selection_controller(void)
     menu.values = values;
     menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
     if (menu.list.entry_count != 0
-        && menu_load_item_model(indices[menu.list.selected_index]) != 0)
+        && menu_load_item_model(indices[menu.list.selected_index]) != 0) {
         return KF_MENU_RESULT_CANCELLED;
+        }
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_USE, KF_MENU_LIST_USE_ITEM, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, indices, &confirmed, &result);
         selected_item = indices[menu.list.selected_index];
@@ -245,23 +255,26 @@ s32 menu_item_selection_controller(void)
                 menu_release_item_model();
                 menu_show_map_preview(selected_item);
                 menu_play_sound_cue(KF_MENU_SOUND_CANCEL);
-                if (menu_load_item_model(selected_item) != 0)
+                if (menu_load_item_model(selected_item) != 0) {
                     return KF_MENU_RESULT_CANCELLED;
+                }
                 confirmed = KF_FALSE;
             }
         }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_USE_ITEM);
             menu_present_frame();
         }
     }
 
     menu_release_item_model();
-    if ((u32)(result - KF_ENUM_ENCODE(s32, KF_ITEM_RELIEVE_AILMENTS)) < MENU_EFFECT_ITEM_COUNT)
+    if ((u32)(result - KF_ENUM_ENCODE(s32, KF_ITEM_RELIEVE_AILMENTS)) < MENU_EFFECT_ITEM_COUNT) {
         menu_apply_item_effect(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfObjectId), result));
+    }
     return result;
 }
 
@@ -314,8 +327,9 @@ s32 menu_collect_available_item_rows(const u8 *mask, KfMenuGlyphRow *rows,
                 || index == KF_ENUM_ENCODE(u8, player_state.equipped_shield_id)
                 || index == KF_ENUM_ENCODE(u8, player_state.equipped_accessory_id)
                 || index == KF_ENUM_ENCODE(u8, player_state.equipped_extra_id)
-                || index == KF_ENUM_ENCODE(u8, player_state.secondary_item_shortcut_id))
+                || index == KF_ENUM_ENCODE(u8, player_state.secondary_item_shortcut_id)) {
                 --*values;
+                }
             if (*values != 0) {
                 *rows = *glyph;
                 *indices = index;
@@ -337,14 +351,17 @@ void menu_apply_item_effect(KF_ENUM_PARAM(KfObjectId, s32) item_id)
 {
     u16 current_hp;
 
-    if (game_counter_bytes[KF_ENUM_ENCODE(s32, item_id)] == 0)
+    if (game_counter_bytes[KF_ENUM_ENCODE(s32, item_id)] == 0) {
         return;
+    }
 
     if (item_id == KF_ITEM_RELIEVE_AILMENTS) {
-        if (player_state.paralysis_timer > 0)
+        if (player_state.paralysis_timer > 0) {
             player_state.paralysis_timer = 0;
-        if (player_state.slow_timer > MENU_STATUS_RELIEF_CAP)
+        }
+        if (player_state.slow_timer > MENU_STATUS_RELIEF_CAP) {
             player_state.slow_timer = MENU_STATUS_RELIEF_CAP;
+        }
         player_cap_curse_strength();
         player_cap_darkness_phase();
     } else if (item_id == KF_ITEM_RESTORE_MP_40) {
@@ -376,25 +393,30 @@ void menu_apply_item_effect(KF_ENUM_PARAM(KfObjectId, s32) item_id)
         player_clear_and_cap_status_effects();
     }
 
-    if (player_state.vitals.current_hp > player_state.vitals.maximum_hp)
+    if (player_state.vitals.current_hp > player_state.vitals.maximum_hp) {
         player_state.vitals.current_hp = player_state.vitals.maximum_hp;
-    if (player_state.vitals.current_mp > player_state.vitals.maximum_mp)
+    }
+    if (player_state.vitals.current_mp > player_state.vitals.maximum_mp) {
         player_state.vitals.current_mp = player_state.vitals.maximum_mp;
+    }
 
     game_counter_bytes[KF_ENUM_ENCODE(s32, item_id)]--;
     if ((u32)(KF_ENUM_ENCODE(s32, item_id) - KF_ENUM_ENCODE(s32, KF_ITEM_RESTORE_HP_100)) < 2 ||
-        (u32)(KF_ENUM_ENCODE(s32, item_id) - KF_ENUM_ENCODE(s32, KF_ITEM_CLEAR_AILMENTS)) < 2)
+        (u32)(KF_ENUM_ENCODE(s32, item_id) - KF_ENUM_ENCODE(s32, KF_ITEM_CLEAR_AILMENTS)) < 2) {
         game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_82)]++;
+        }
     menu_play_sound_cue(KF_MENU_SOUND_ITEM_USED);
 }
 
 ADDRESS(0x80019240, 0x6c)
 void player_clear_and_cap_status_effects(void)
 {
-    if (player_state.paralysis_timer > 0)
+    if (player_state.paralysis_timer > 0) {
         player_state.paralysis_timer = 0;
-    if (player_state.slow_timer > MENU_STATUS_RELIEF_CAP)
+    }
+    if (player_state.slow_timer > MENU_STATUS_RELIEF_CAP) {
         player_state.slow_timer = MENU_STATUS_RELIEF_CAP;
+    }
     player_state.poison_timer = 0;
     player_cap_curse_strength();
     player_cap_darkness_phase();
@@ -460,8 +482,9 @@ void menu_show_map_preview(s32 menu_code)
 
         index = ((player_state.camera_rotation.angles[1] & KF_ANGLE_WRAP_MASK)
                        + MENU_MAP_FACING_TILE_HALF_ANGLE) >> MENU_MAP_FACING_TILE_SHIFT;
-        if (index == MENU_MAP_FACING_TILE_COUNT)
+        if (index == MENU_MAP_FACING_TILE_COUNT) {
             index = 0;
+        }
         u0 = index * MENU_MAP_FACING_TILE_U_STRIDE
              - MENU_MAP_FACING_TILE_COUNT * MENU_MAP_FACING_TILE_U_STRIDE;
         setUVWH(current_poly_ft4, u0, 0x90, 15, 15);
@@ -501,23 +524,27 @@ s32 menu_choose_magic_action(void)
     menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_USE, KF_MENU_LIST_USE_MAGIC, 0xff);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = indices[menu.list.selected_index];
+            }
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, NULL, &confirmed, &result);
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_render_list(&menu.list, KF_MENU_LIST_USE_MAGIC);
@@ -525,8 +552,9 @@ s32 menu_choose_magic_action(void)
         }
     }
 
-    if (result != KF_MENU_RESULT_CANCELLED)
+    if (result != KF_MENU_RESULT_CANCELLED) {
         result |= KF_MENU_MAGIC_ACTION_TAG;
+    }
     return result;
 }
 
@@ -595,26 +623,30 @@ void menu_equipment_list_controller(void)
     menu.list.list_y = 39;
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             choice = menu.list.selected_index;
-            if (choice == MENU_CATEGORY_PRIMARY_MAGIC)
+            if (choice == MENU_CATEGORY_PRIMARY_MAGIC) {
                 menu_choose_primary_magic_shortcut();
-            else if (choice == MENU_CATEGORY_SECONDARY_SHORTCUT)
+            } else if (choice == MENU_CATEGORY_SECONDARY_SHORTCUT) {
                 menu_item_magic_controller();
-            else
+            } else {
                 menu_equipment_category_controller(choice);
+            }
             menu_build_equipped_label_rows(current_rows);
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, NULL, &confirmed, &result);
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_render_list(&menu.list, KF_MENU_LIST_EQUIPMENT);
@@ -713,8 +745,9 @@ void menu_equipment_category_controller(s32 category)
                                         ? player_state.equipped_extra_id
                                         : player_state.equipped_accessory_id);
         first = KF_ITEM_ACCESSORY_FIRST;
-        if (other_slot_item_id != KF_EQUIPMENT_NONE)
+        if (other_slot_item_id != KF_EQUIPMENT_NONE) {
             game_counter_bytes[other_slot_item_id]--;
+        }
         last = KF_ITEM_ACCESSORY_LAST;
         break;
     }
@@ -734,32 +767,38 @@ void menu_equipment_category_controller(s32 category)
     menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
 
     if (menu.list.entry_count != 0
-        && menu_load_item_model(item_ids[menu.list.selected_index]) != 0)
+        && menu_load_item_model(item_ids[menu.list.selected_index]) != 0) {
         return;
+        }
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_EQUIP, KF_MENU_LIST_EQUIPMENT_CATEGORY, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, item_ids, &confirmed, &result);
         selected_item = item_ids[menu.list.selected_index];
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_EQUIPMENT_CATEGORY);
             menu_present_frame();
         }
@@ -803,8 +842,9 @@ void menu_equipment_category_controller(s32 category)
     }
 
     if ((u32)(category - MENU_CATEGORY_ACCESSORY) < 2 &&
-        other_slot_item_id != KF_EQUIPMENT_NONE)
+        other_slot_item_id != KF_EQUIPMENT_NONE) {
         game_counter_bytes[other_slot_item_id]++;
+        }
 }
 
 ADDRESS(0x8001a2f4, 0x1fc)
@@ -835,23 +875,27 @@ void menu_choose_primary_magic_shortcut(void)
     menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_EQUIP, KF_MENU_LIST_MAGIC_SHORTCUT, 0xff);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = indices[menu.list.selected_index];
+            }
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, NULL, &confirmed, &result);
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_render_list(&menu.list, KF_MENU_LIST_MAGIC_SHORTCUT);
@@ -859,8 +903,9 @@ void menu_choose_primary_magic_shortcut(void)
         }
     }
 
-    if (result != KF_MENU_RESULT_CANCELLED)
+    if (result != KF_MENU_RESULT_CANCELLED) {
         player_set_primary_magic_shortcut_id(KF_ENUM_DECODE(KF_ENUM_PROMOTED(KfEffectKind), result));
+    }
 }
 
 ADDRESS(0x8001a4f0, 0x30c)
@@ -910,33 +955,39 @@ void menu_item_magic_controller(void)
     menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
 
     if (menu.list.entry_count != 0
-        && menu_load_item_model(item_ids[menu.list.selected_index]) != 0)
+        && menu_load_item_model(item_ids[menu.list.selected_index]) != 0) {
         return;
+        }
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_EQUIP, KF_MENU_LIST_ITEM_MAGIC, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = menu.list.selected_index;
+            }
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, item_ids, &confirmed, &result);
         selected_item = item_ids[menu.list.selected_index];
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
+        }
 
         for (index = 0; index < 2; index++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_ITEM_MAGIC);
             menu_present_frame();
         }
@@ -996,41 +1047,48 @@ void menu_item_use_controller(void)
     menu.values = values;
     menu.list.glyphs_per_entry = KF_MENU_GLYPHS_PER_ROW;
     if (menu.list.entry_count != 0
-        && menu_load_item_model(indices[menu.list.selected_index]) != 0)
+        && menu_load_item_model(indices[menu.list.selected_index]) != 0) {
         return;
+        }
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_DROP, KF_MENU_LIST_DROP_ITEM,
                 indices[menu.list.selected_index]);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, indices, &confirmed, &result);
         selected_item = indices[menu.list.selected_index];
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_DROP_ITEM);
             menu_present_frame();
         }
     }
 
     menu_release_item_model();
-    if (result != KF_MENU_RESULT_CANCELLED)
+    if (result != KF_MENU_RESULT_CANCELLED) {
         game_counter_bytes[result]--;
+    }
 }
 
 ADDRESS(0x8001aa9c, 0x1e4)
@@ -1045,27 +1103,32 @@ s32 menu_run_card_choice(void)
     s32 volume;
 
     for (;;) {
-        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
+        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         switch (selection) {
         case KF_MENU_SYSTEM_LOAD_ROW:
             result = menu_card_load_browser();
-            if (result == KF_MENU_RESULT_ACCEPTED)
+            if (result == KF_MENU_RESULT_ACCEPTED) {
                 result = KF_MENU_RESULT_GAME_LOADED;
+            }
             break;
         case KF_MENU_SYSTEM_QUIT_ROW:
             result = menu_prompt_two_option();
-            if (result == KF_MENU_RESULT_ACCEPTED)
+            if (result == KF_MENU_RESULT_ACCEPTED) {
                 result = KF_MENU_RESULT_QUIT_GAME;
+            }
             break;
         }
 
-        if (selection != KF_MENU_SELECTION_NONE && result == KF_MENU_RESULT_CANCELLED)
+        if (selection != KF_MENU_SELECTION_NONE && result == KF_MENU_RESULT_CANCELLED) {
             result = KF_MENU_RESULT_PENDING;
+        }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         cursor = menu_poll_choice_input(cursor, KF_MENU_SYSTEM_RETURN_ROW,
             &selection, &confirmed, &result);
@@ -1125,22 +1188,26 @@ s32 menu_card_load_browser(void)
     menu.experience_values = experience_values;
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_LOAD, KF_MENU_LIST_CARD_LOAD, CARD_MENU_NO_PREVIEW_ITEM);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = slot_ids[menu.list.selected_index];
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, NULL, &confirmed, &result);
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_render_list(&menu.list, KF_MENU_LIST_CARD_LOAD);
@@ -1215,8 +1282,9 @@ void menu_show_dialog_panel(s32 panel, const KfMenuGlyphString *rows, s32 count,
             menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], title);
         }
         current = rows;
-        for (row = 0; row < count; row++, current++)
+        for (row = 0; row < count; row++, current++) {
             menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], current);
+        }
         menu_draw_nine_slice_panel(detail0, detail1, detail2, detail3, detail4, detail5);
         menu_present_frame();
         frame++;
@@ -1251,8 +1319,9 @@ s32 menu_prompt_two_option(void)
     labels[1].glyphs.codes[3] = KF_MENU_TEXT_END;
 
     for (;;) {
-        if (selected != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
+        if (selected != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         switch (selected) {
         case KF_MENU_CHOICE_ACCEPT:
@@ -1263,8 +1332,9 @@ s32 menu_prompt_two_option(void)
             break;
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
         current = menu_poll_choice_input(current, KF_MENU_CHOICE_DECLINE,
             &selected, &confirmed, &result);
         for (frame = 0; frame < 2; frame++) {
@@ -1334,17 +1404,19 @@ void menu_options_controller(void)
         if (buttons & PADLup) {
             menu_cursor_animation_direction = KF_MENU_CURSOR_ANIMATION_FORWARD;
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
-            if (choice != 0)
+            if (choice != 0) {
                 choice--;
-            else
+            } else {
                 choice = last_row;
+            }
         } else if (buttons & PADLdown) {
             menu_cursor_animation_direction = KF_MENU_CURSOR_ANIMATION_FORWARD;
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
-            if (choice != last_row)
+            if (choice != last_row) {
                 choice++;
-            else
+            } else {
                 choice = 0;
+            }
         } else if ((buttons & PADRright) || (buttons & PADLright)
             || (buttons & PADLleft)) {
             if (choice < last_row) {
@@ -1425,8 +1497,9 @@ s32 menu_card_browser(void)
     menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
     input_wait_release();
     for (;;) {
-        if (selection != KF_MENU_SELECTION_NONE)
+        if (selection != KF_MENU_SELECTION_NONE) {
             input_wait_release();
+        }
         switch (selection) {
         case KF_MENU_CARD_BROWSER_START_ROW:
             result = KF_MENU_RESULT_CANCELLED;
@@ -1439,18 +1512,20 @@ s32 menu_card_browser(void)
             }
             break;
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         input_wait_brief_release();
         buttons = input_read_mark_active();
         if ((buttons & PADLup) || (buttons & PADLdown)) {
             menu_cursor_animation_direction = KF_MENU_CURSOR_ANIMATION_FORWARD;
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
-            if (cursor == KF_MENU_CARD_BROWSER_START_ROW)
+            if (cursor == KF_MENU_CARD_BROWSER_START_ROW) {
                 cursor = KF_MENU_CARD_BROWSER_LOAD_ROW;
-            else
+            } else {
                 cursor = KF_MENU_CARD_BROWSER_START_ROW;
+            }
         } else if (buttons & PADRright) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
             confirmed = KF_TRUE;
@@ -1497,22 +1572,26 @@ s32 menu_card_load_slot_browser(void)
     menu.experience_values = experience_values;
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_LOAD, KF_MENU_LIST_CARD_LOAD, CARD_MENU_NO_PREVIEW_ITEM);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = slot_ids[menu.list.selected_index];
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, NULL, &confirmed, &result);
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_render_list(&menu.list, KF_MENU_LIST_CARD_LOAD);
@@ -1645,21 +1724,25 @@ void menu_card_save_browser(void)
     input_wait_release();
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_SAVE, KF_MENU_LIST_CARD_SAVE, CARD_MENU_NO_PREVIEW_ITEM);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = menu.list.selected_index;
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, NULL, &confirmed, &result);
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
             menu_render_list(&menu.list, KF_MENU_LIST_CARD_SAVE);
@@ -1667,8 +1750,9 @@ void menu_card_save_browser(void)
         }
     }
 
-    if (result != KF_MENU_RESULT_CANCELLED)
+    if (result != KF_MENU_RESULT_CANCELLED) {
         menu_card_save_slot(slot_ids[result]);
+    }
     memory_card_stop();
     menu_exit_display_state(KF_FALSE);
 }
@@ -1710,12 +1794,14 @@ void menu_card_save_slot(s32 slot)
     overlap_x = 2;
     menu_draw_card_dialog_rows(rows, 2, 70, 87, width, 66, overlap_x, 0);
     result = memory_card_write_slot(slot);
-    if (result == KF_CARD_WRITE_OK)
+    if (result == KF_CARD_WRITE_OK) {
         return;
-    if (result == KF_CARD_WRITE_IO_FAILURE)
+    }
+    if (result == KF_CARD_WRITE_IO_FAILURE) {
         menu_prepare_card_io_error_rows(rows);
-    else
+    } else {
         menu_prepare_card_write_full_rows(rows);
+    }
     MENU_CARD_DIALOG_WAIT(rows, 3, width, 81, overlap_x);
 
     input_wait_release();
@@ -1762,8 +1848,9 @@ s32 menu_confirm_card_format(s32 kind)
     }
 
     for (;;) {
-        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
+        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
         switch (selection) {
         case KF_MENU_CHOICE_ACCEPT:
             result = KF_MENU_RESULT_ACCEPTED;
@@ -1772,8 +1859,9 @@ s32 menu_confirm_card_format(s32 kind)
             result = KF_MENU_RESULT_CANCELLED;
             break;
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         cursor = menu_poll_choice_input(cursor, KF_MENU_CHOICE_DECLINE,
             &selection, &confirmed, &result);
@@ -1957,8 +2045,9 @@ void menu_draw_card_dialog_rows(const KfMenuGlyphString *rows, s32 count,
         menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS],
             &menu_window_layout(KF_MENU_WINDOW_SYSTEM)->rows[KF_MENU_SYSTEM_SAVE_TITLE]);
         current = rows;
-        for (row = 0; row < count; row++, current++)
+        for (row = 0; row < count; row++, current++) {
             menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], current);
+        }
         menu_draw_nine_slice_panel(x, y, width, height, overlap_x, overlap_y);
         menu_present_frame();
     }
@@ -2497,8 +2586,9 @@ void menu_item_buy_sell_controller(s32 kind)
     menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
     input_wait_release();
     for (;;) {
-        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
+        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         switch (selection) {
         case KF_MENU_SHOP_BUY_ROW:
@@ -2509,8 +2599,9 @@ void menu_item_buy_sell_controller(s32 kind)
             break;
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
         cursor = menu_poll_choice_input(cursor, KF_MENU_SHOP_RETURN_ROW,
             &selection, &confirmed, &result);
         for (frame = 0; frame < 2; frame++) {
@@ -2538,10 +2629,11 @@ void menu_item_buy_controller(s32 kind)
     u8 selected_item;
     u8 *counters = game_counter_bytes;
 
-    if (counters[KF_ENUM_ENCODE(u8, KF_OBJECT_51)] == 0)
+    if (counters[KF_ENUM_ENCODE(u8, KF_OBJECT_51)] == 0) {
         menu_item_mask_pages[3][KF_ENUM_ENCODE(u8, KF_OBJECT_51)] = 1;
-    else
+    } else {
         menu_item_mask_pages[3][KF_ENUM_ENCODE(u8, KF_OBJECT_51)] = 0;
+    }
     count = menu_collect_masked_item_rows(menu_item_mask_pages[kind], rows, values, indices,
         0, KF_ITEM_ID_LAST);
     menu_fill_item_counts_and_prices(counters, values, prices, indices, 0, count, kind);
@@ -2552,22 +2644,26 @@ void menu_item_buy_controller(s32 kind)
     menu.prices = prices;
     menu.list.glyphs_per_entry = 12;
 
-    if (menu_load_item_model(indices[menu.list.selected_index]) != 0)
+    if (menu_load_item_model(indices[menu.list.selected_index]) != 0) {
         return;
+    }
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_BUY, KF_MENU_LIST_SHOP_BUY, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, indices, &confirmed, &result);
         selected_item = indices[menu.list.selected_index];
@@ -2584,8 +2680,9 @@ void menu_item_buy_controller(s32 kind)
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_SHOP_BUY);
             menu_present_frame();
         }
@@ -2641,22 +2738,26 @@ void menu_item_sell_controller(s32 kind)
     menu.list.glyphs_per_entry = 12;
 
     if (menu.list.entry_count != 0
-            && menu_load_item_model(indices[menu.list.selected_index]) != 0)
+            && menu_load_item_model(indices[menu.list.selected_index]) != 0) {
         return;
+            }
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_SELL, KF_MENU_LIST_SHOP_SELL, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, indices, &confirmed, &result);
         selected_item = indices[menu.list.selected_index];
@@ -2671,8 +2772,9 @@ void menu_item_sell_controller(s32 kind)
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_SHOP_SELL);
             menu_present_frame();
         }
@@ -2722,13 +2824,15 @@ s32 menu_choose_inventory_item(void)
     menu.values = values;
     menu.list.glyphs_per_entry = 12;
     selected_item = indices[menu.list.selected_index];
-    if (menu_load_item_model(selected_item) != 0)
+    if (menu_load_item_model(selected_item) != 0) {
         return KF_MENU_RESULT_CANCELLED;
+    }
 
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
-        if (menu.list.entry_count != 0)
+        if (menu.list.entry_count != 0) {
             menu_update_item_preview(selected_item);
+        }
         menu_render_list(&menu.list, KF_MENU_LIST_INVENTORY);
         menu_present_frame();
     }
@@ -2736,27 +2840,32 @@ s32 menu_choose_inventory_item(void)
     input_wait_release();
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_LABEL_8, KF_MENU_LIST_INVENTORY, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, indices, &confirmed, &result);
         selected_item = indices[menu.list.selected_index];
-        if (confirmed == KF_TRUE)
+        if (confirmed == KF_TRUE) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
+        }
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_INVENTORY);
             menu_present_frame();
         }
@@ -2794,13 +2903,15 @@ void menu_item_trade_controller(void)
     menu.list.glyphs_per_entry = 12;
 
     selected_item = indices[menu.list.selected_index];
-    if (menu_load_item_model(selected_item) != 0)
+    if (menu_load_item_model(selected_item) != 0) {
         return;
+    }
 
     for (frame = 0; frame < 2; frame++) {
         menu_frame_begin();
-        if (menu.list.entry_count != 0)
+        if (menu.list.entry_count != 0) {
             menu_update_item_preview(selected_item);
+        }
         menu_render_list(&menu.list, KF_MENU_LIST_TRADE);
         menu_present_frame();
     }
@@ -2808,18 +2919,21 @@ void menu_item_trade_controller(void)
     input_wait_release();
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_LABEL_9, KF_MENU_LIST_TRADE, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, indices, &confirmed, &result);
         selected_item = indices[menu.list.selected_index];
@@ -2838,8 +2952,9 @@ void menu_item_trade_controller(void)
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_TRADE);
             menu_present_frame();
         }
@@ -2849,10 +2964,11 @@ void menu_item_trade_controller(void)
     if (result != KF_MENU_RESULT_CANCELLED) {
         cost = menu.prices[menu.list.selected_index] * menu_item_quantity;
         counters[KF_ENUM_ENCODE(u8, KF_OBJECT_96)] -= cost;
-        if (result == KF_ENUM_ENCODE(s32, KF_OBJECT_117))
+        if (result == KF_ENUM_ENCODE(s32, KF_OBJECT_117)) {
             counters[KF_ENUM_ENCODE(u8, KF_OBJECT_117)] += menu_item_quantity * 10;
-        else
+        } else {
             counters[result] += (u8)menu_item_quantity;
+        }
     }
     menu_exit_display_state(KF_FALSE);
 }
@@ -2874,8 +2990,9 @@ void menu_item_stock_choice_controller(void)
     menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
     input_wait_release();
     for (;;) {
-        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING)
+        if (selection != KF_MENU_SELECTION_NONE || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         switch (selection) {
         case KF_MENU_STOCK_BUY_ROW:
@@ -2886,8 +3003,9 @@ void menu_item_stock_choice_controller(void)
             break;
         }
 
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
         cursor = menu_poll_choice_input(cursor, KF_MENU_STOCK_RETURN_ROW,
             &selection, &confirmed, &result);
         for (frame = 0; frame < 2; frame++) {
@@ -2925,22 +3043,26 @@ void menu_buy_masked_stock_items(void)
     menu.prices = prices;
     menu.list.glyphs_per_entry = 12;
 
-    if (menu_load_item_model(indices[menu.list.selected_index]) != 0)
+    if (menu_load_item_model(indices[menu.list.selected_index]) != 0) {
         return;
+    }
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_BUY, KF_MENU_LIST_STOCK_BUY, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, indices, &confirmed, &result);
         selected_item = indices[menu.list.selected_index];
@@ -2957,8 +3079,9 @@ void menu_buy_masked_stock_items(void)
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_STOCK_BUY);
             menu_present_frame();
         }
@@ -2998,22 +3121,26 @@ void menu_buy_owned_items(void)
     menu.prices = prices;
     menu.list.glyphs_per_entry = 12;
 
-    if (menu_load_item_model(indices[menu.list.selected_index]) != 0)
+    if (menu_load_item_model(indices[menu.list.selected_index]) != 0) {
         return;
+    }
 
     for (;;) {
-        if (confirmed || result != KF_MENU_RESULT_PENDING)
+        if (confirmed || result != KF_MENU_RESULT_PENDING) {
             input_wait_release();
+        }
 
         if (confirmed == KF_TRUE) {
             result = menu_preview_choice(&menu.list, KF_MENU_CONFIRM_LABEL_10, KF_MENU_LIST_STOCK_OWNED, selected_item);
-            if (result == KF_MENU_RESULT_CANCELLED)
+            if (result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;
-            else
+            } else {
                 result = selected_item;
+            }
         }
-        if (result != KF_MENU_RESULT_PENDING)
+        if (result != KF_MENU_RESULT_PENDING) {
             break;
+        }
 
         menu_update_list_input(&menu.list, indices, &confirmed, &result);
         selected_item = indices[menu.list.selected_index];
@@ -3030,8 +3157,9 @@ void menu_buy_owned_items(void)
 
         for (frame = 0; frame < 2; frame++) {
             menu_frame_begin();
-            if (menu.list.entry_count != 0)
+            if (menu.list.entry_count != 0) {
                 menu_update_item_preview(selected_item);
+            }
             menu_render_list(&menu.list, KF_MENU_LIST_STOCK_OWNED);
             menu_present_frame();
         }
@@ -3057,24 +3185,27 @@ s32 menu_poll_choice_input(s32 index, s32 last, s32 *selection, b32 *confirmed,
     if (buttons & PADLup) {
         menu_cursor_animation_direction = KF_MENU_CURSOR_ANIMATION_FORWARD;
         menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
-        if (index != 0)
+        if (index != 0) {
             index--;
-        else
+        } else {
             index = last;
+        }
     } else if (buttons & PADLdown) {
         menu_cursor_animation_direction = KF_MENU_CURSOR_ANIMATION_FORWARD;
         menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
-        if (index != last)
+        if (index != last) {
             index++;
-        else
+        } else {
             index = 0;
+        }
     } else if (buttons & PADRright) {
         menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
         *confirmed = KF_TRUE;
-        if (index < last)
+        if (index < last) {
             *selection = index;
-        else
+        } else {
             *cancelled = KF_MENU_RESULT_CANCELLED;
+        }
     } else if (buttons & PADRdown) {
         menu_play_sound_cue(KF_MENU_SOUND_CANCEL);
         *cancelled = KF_MENU_RESULT_CANCELLED;
@@ -3101,10 +3232,11 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
         menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
         if (list->selected_index != 0) {
             list->selected_index--;
-            if (list->cursor_row == 0)
+            if (list->cursor_row == 0) {
                 list->scroll_offset--;
-            else
+            } else {
                 list->cursor_row--;
+            }
         } else {
             list->selected_index = list->entry_count - 1;
             if (list->entry_count < list->visible_rows) {
@@ -3115,23 +3247,26 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
                 list->cursor_row = list->visible_rows - 1;
             }
         }
-        if (item_ids != NULL && menu_load_item_model(item_ids[list->selected_index]) != 0)
+        if (item_ids != NULL && menu_load_item_model(item_ids[list->selected_index]) != 0) {
             *result = KF_MENU_RESULT_CANCELLED;
+        }
     } else if (buttons & PADLdown) {
         menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
         if (list->selected_index < list->entry_count - 1) {
             list->selected_index++;
-            if (list->cursor_row == list->visible_rows - 1)
+            if (list->cursor_row == list->visible_rows - 1) {
                 list->scroll_offset++;
-            else
+            } else {
                 list->cursor_row++;
+            }
         } else {
             list->selected_index = 0;
             list->scroll_offset = 0;
             list->cursor_row = 0;
         }
-        if (item_ids != NULL && menu_load_item_model(item_ids[list->selected_index]) != 0)
+        if (item_ids != NULL && menu_load_item_model(item_ids[list->selected_index]) != 0) {
             *result = KF_MENU_RESULT_CANCELLED;
+        }
     } else if (buttons & PADLright) {
         if (menu_item_quantity < 99) {
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
@@ -3198,8 +3333,9 @@ u32 menu_update_list_input(KfMenuList *list, const u8 *item_ids,
             menu_item_preview_translation.vz += 16;
         }
         if (buttons & PADRleft) {
-            if (menu_item_preview_translation.vz > 500)
+            if (menu_item_preview_translation.vz > 500) {
                 menu_item_preview_translation.vz -= 16;
+            }
             input_press_pending = KF_FALSE;
         }
     }
@@ -3293,18 +3429,19 @@ void menu_draw_player_status(void)
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &heading);
     amount.position.x = heading.position.x + 56;
     amount.position.y += row_step;
-    if (player_state.paralysis_timer != 0)
+    if (player_state.paralysis_timer != 0) {
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[5].codes);
-    else if (player_state.curse_strength != 0)
+    } else if (player_state.curse_strength != 0) {
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[6].codes);
-    else if (player_state.slow_timer != 0)
+    } else if (player_state.slow_timer != 0) {
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[7].codes);
-    else if (player_state.poison_timer != 0)
+    } else if (player_state.poison_timer != 0) {
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[8].codes);
-    else if (player_state.darkness_phase != 0)
+    } else if (player_state.darkness_phase != 0) {
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[9].codes);
-    else
+    } else {
         menu_copy_prefix12(amount.glyphs.codes, menu_header_labels[10].codes);
+    }
     menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &amount);
 
     heading.position.y += row_step;
@@ -3636,10 +3773,11 @@ labels_ready:
         if ((buttons & PADLup) || (buttons & PADLdown)) {
             menu_cursor_animation_direction = KF_MENU_CURSOR_ANIMATION_FORWARD;
             menu_play_sound_cue(KF_MENU_SOUND_CURSOR);
-            if (choice != KF_MENU_CHOICE_ACCEPT)
+            if (choice != KF_MENU_CHOICE_ACCEPT) {
                 choice = KF_MENU_CHOICE_ACCEPT;
-            else
+            } else {
                 choice = KF_MENU_CHOICE_DECLINE;
+            }
         } else if (buttons & PADRright) {
             menu_play_sound_cue(KF_MENU_SOUND_CONFIRM);
             confirmed = KF_TRUE;
@@ -3676,12 +3814,14 @@ void menu_draw_window(KfMenuWindowKind window_kind, s32 count, s32 highlight,
     if (count > 0) {
         index = 0;
         do {
-            if (index == highlight && confirmation == KF_TRUE)
+            if (index == highlight && confirmation == KF_TRUE) {
                 menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_CONFIRMED_ROW], &row->position);
-            else
+            } else {
                 menu_blit_sprite_translucent(&menu_sprite_defs[KF_MENU_SPRITE_PANEL_BACKGROUND], &row->position);
-            if (index == highlight)
+            }
+            if (index == highlight) {
                 menu_blit_sprite(&menu_sprite_defs[KF_MENU_SPRITE_SELECTION_CURSOR], &row->position);
+            }
             menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], row);
             row++;
             index++;
@@ -3719,15 +3859,17 @@ void menu_render_list(const KfMenuList *menu, KfMenuListMode render_mode)
             text.position.x = list->list_x + 5;
             text.position.y = list->list_y + 5 + row * 14;
             out_codes = text.glyphs.codes;
-            for (code = 0; code < list->glyphs_per_entry; code++)
+            for (code = 0; code < list->glyphs_per_entry; code++) {
                 *out_codes++ = *row_glyphs++;
+            }
             menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &text);
 
             if (render_mode == KF_MENU_LIST_EQUIPMENT) {
                 text.position.x += 84;
                 out_codes = text.glyphs.codes;
-                for (code = 0; code < 10; code++)
+                for (code = 0; code < 10; code++) {
                     *out_codes++ = *detail_codes++;
+                }
                 *out_codes = KF_MENU_TEXT_END;
                 menu_draw_string(&menu_sprite_defs[KF_MENU_SPRITE_GLYPH_ATLAS], &text);
             }
@@ -3739,12 +3881,13 @@ void menu_render_list(const KfMenuList *menu, KfMenuListMode render_mode)
                 && render_mode != KF_MENU_LIST_INVENTORY) {
                 value = *number_values;
                 text.position.x += 140;
-                if (render_mode == KF_MENU_LIST_TRADE)
+                if (render_mode == KF_MENU_LIST_TRADE) {
                     menu_format_number(value, 6, KF_FORMAT_PAD_SPACES,
                         KF_MENU_FORMAT_STYLE_TRAILING_11, text.glyphs.codes);
-                else
+                } else {
                     menu_format_number(value, 6, KF_FORMAT_PAD_SPACES,
                         KF_MENU_FORMAT_STYLE_TRAILING_13, text.glyphs.codes);
+                }
                 menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &text);
                 number_values++;
             }
@@ -3848,12 +3991,14 @@ void menu_render_list(const KfMenuList *menu, KfMenuListMode render_mode)
     primitive_buffer_commit_poly_ft4(KF_MENU_WIDGET_OT_DEPTH);
 
     if (render_mode == KF_MENU_LIST_SHOP_BUY || render_mode == KF_MENU_LIST_SHOP_SELL
-        || render_mode == KF_MENU_LIST_STOCK_BUY || render_mode == KF_MENU_LIST_STOCK_OWNED)
+        || render_mode == KF_MENU_LIST_STOCK_BUY || render_mode == KF_MENU_LIST_STOCK_OWNED) {
         menu_draw_status_counters(KF_MENU_COUNTERS_GOLD);
-    else if (render_mode == KF_MENU_LIST_TRADE)
+    } else if (render_mode == KF_MENU_LIST_TRADE) {
         menu_draw_status_counters(KF_MENU_COUNTERS_OBJECT_96);
-    if (render_mode == KF_MENU_LIST_CARD_LOAD || render_mode == KF_MENU_LIST_CARD_SAVE)
+    }
+    if (render_mode == KF_MENU_LIST_CARD_LOAD || render_mode == KF_MENU_LIST_CARD_SAVE) {
         menu_render_list_mode_8_9_noop();
+    }
 }
 enum { KF_PREVIEW_ANGLE_MASK = 0xfff };
 
@@ -3967,13 +4112,14 @@ void menu_draw_status_counters(s32 kind)
 
     amount.position.x = heading.position.x + 56;
     amount.position.y = heading.position.y;
-    if (kind == KF_MENU_COUNTERS_OBJECT_96)
+    if (kind == KF_MENU_COUNTERS_OBJECT_96) {
         menu_format_number(game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_96)], 7, KF_FORMAT_PAD_SPACES,
             KF_MENU_FORMAT_STYLE_TRAILING_11,
                            amount.glyphs.codes);
-    else
+    } else {
         menu_format_number(player_state.gold, 7, KF_FORMAT_PAD_SPACES,
             KF_MENU_FORMAT_STYLE_TRAILING_13, amount.glyphs.codes);
+    }
     menu_draw_number(&menu_sprite_defs[KF_MENU_SPRITE_NUMBER_ATLAS], &amount);
 
     if (kind != KF_MENU_COUNTERS_GOLD_ONLY) {
@@ -4290,8 +4436,9 @@ void menu_enter_display_state(s32 mode)
     DrawSync(0);
 
     menu_saved_music_enabled = player_state.audio_music_enabled;
-    if (player_state.audio_music_enabled == KF_PLAYER_OPTION_ON && audio_state.sequence_active == KF_TRUE)
+    if (player_state.audio_music_enabled == KF_PLAYER_OPTION_ON && audio_state.sequence_active == KF_TRUE) {
         SsSeqPause(audio_state.sequence_id);
+    }
 }
 
 ADDRESS(0x80021e00, 0x110)
@@ -4313,10 +4460,11 @@ void menu_exit_display_state(b32 stop_sequence)
     } else {
         music_enabled = player_state.audio_music_enabled;
         if (music_enabled != menu_saved_music_enabled) {
-            if (music_enabled == KF_PLAYER_OPTION_OFF)
+            if (music_enabled == KF_PLAYER_OPTION_OFF) {
                 audio_stop_sequence();
-            else
+            } else {
                 audio_start_sequence();
+            }
         } else if (music_enabled == KF_PLAYER_OPTION_ON && audio_state.sequence_active == KF_TRUE) {
             SsSeqReplay(audio_state.sequence_id);
         }
@@ -4439,8 +4587,9 @@ s32 menu_load_item_model(u8 item_id)
     u8 *allocation;
 
     menu_item_quantity = 1;
-    if (player_state.item_preview_enabled == KF_PLAYER_OPTION_OFF)
+    if (player_state.item_preview_enabled == KF_PLAYER_OPTION_OFF) {
         return 0;
+    }
 
     menu_release_item_model();
     if (item_id != 0xff) {

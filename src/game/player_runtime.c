@@ -295,23 +295,57 @@ void player_recalculate_combat_stats(void)
     } else if (player_state.magic >= PLAYER_POWER_CAP_THRESHOLD) {
         player_state.magic = KF_PLAYER_POWER_MAX;
     }
-    if (player_state.attack_components[0] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.attack_components[0] = 0;
-    if (player_state.attack_components[1] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.attack_components[1] = 0;
-    if (player_state.attack_components[2] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.attack_components[2] = 0;
-    if (player_state.attack_components[3] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.attack_components[3] = 0;
-    if (player_state.attack_components[4] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.attack_components[4] = 0;
-    if (player_state.attack_components[5] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.attack_components[5] = 0;
-    if (player_state.attack_components[6] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.attack_components[6] = 0;
-    if (player_state.attack_components[7] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.attack_components[7] = 0;
-    if (player_state.combat_components[0] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[0] = 0;
-    if (player_state.combat_components[1] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[1] = 0;
-    if (player_state.combat_components[2] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[2] = 0;
-    if (player_state.combat_components[3] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[3] = 0;
-    if (player_state.combat_components[4] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[4] = 0;
-    if (player_state.combat_components[5] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[5] = 0;
-    if (player_state.combat_components[6] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[6] = 0;
-    if (player_state.combat_components[7] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[7] = 0;
-    if (player_state.combat_components[8] > PLAYER_BONUS_OVERFLOW_LIMIT) player_state.combat_components[8] = 0;
+    if (player_state.attack_components[0] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.attack_components[0] = 0;
+    }
+    if (player_state.attack_components[1] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.attack_components[1] = 0;
+    }
+    if (player_state.attack_components[2] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.attack_components[2] = 0;
+    }
+    if (player_state.attack_components[3] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.attack_components[3] = 0;
+    }
+    if (player_state.attack_components[4] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.attack_components[4] = 0;
+    }
+    if (player_state.attack_components[5] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.attack_components[5] = 0;
+    }
+    if (player_state.attack_components[6] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.attack_components[6] = 0;
+    }
+    if (player_state.attack_components[7] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.attack_components[7] = 0;
+    }
+    if (player_state.combat_components[0] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[0] = 0;
+    }
+    if (player_state.combat_components[1] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[1] = 0;
+    }
+    if (player_state.combat_components[2] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[2] = 0;
+    }
+    if (player_state.combat_components[3] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[3] = 0;
+    }
+    if (player_state.combat_components[4] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[4] = 0;
+    }
+    if (player_state.combat_components[5] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[5] = 0;
+    }
+    if (player_state.combat_components[6] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[6] = 0;
+    }
+    if (player_state.combat_components[7] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[7] = 0;
+    }
+    if (player_state.combat_components[8] > PLAYER_BONUS_OVERFLOW_LIMIT) {
+        player_state.combat_components[8] = 0;
+    }
 }
 
 ADDRESS(0x80024034, 0x98)

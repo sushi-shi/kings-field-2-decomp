@@ -1368,14 +1368,22 @@ void actor_update_vertical_motion(void)
     }
 
     vertical_state = actor->vertical_motion_state;
-    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_FALLING) goto state_20;
+    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_FALLING) {
+        goto state_20;
+    }
     /* Retail splits the remaining states with a "below FALLING + 1" test. */
     if (KF_ENUM_ENCODE(s32, vertical_state) < KF_ENUM_ENCODE(s32, KF_ACTOR_VERTICAL_MOTION_FALLING) + 1) {
-        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_NONE) goto state_0;
-        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_VELOCITY) goto state_10;
+        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_NONE) {
+            goto state_0;
+        }
+        if (vertical_state == KF_ACTOR_VERTICAL_MOTION_VELOCITY) {
+            goto state_10;
+        }
         return;
     }
-    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_BALLISTIC) goto state_30;
+    if (vertical_state == KF_ACTOR_VERTICAL_MOTION_BALLISTIC) {
+        goto state_30;
+    }
     return;
 
 state_0: {
@@ -1413,7 +1421,9 @@ state_10: {
         if ((collision & KF_COLLISION_HIT_FLOOR) != KF_COLLISION_HIT_NONE) {
             if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) {
                 s32 floor_y = KF_COLLISION_CACHE_HEIGHT;
-                if (actor->position.vy < floor_y) goto advance_rise;
+                if (actor->position.vy < floor_y) {
+                    goto advance_rise;
+                }
                 actor->position.vy = floor_y;
             } else {
                 actor->position.vy = KF_COLLISION_CACHE_RESULT;
@@ -1421,7 +1431,9 @@ state_10: {
             actor->motion.vector.vy = 0;
             goto reset_vertical_motion_state;
         }
-        if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) goto advance_rise;
+        if ((actor->flags & KF_ACTOR_FLAG_USE_MAP_LAYER_FLOOR) != KF_ACTOR_FLAGS_NONE) {
+            goto advance_rise;
+        }
         goto reset_vertical_motion_state;
     }
 
@@ -1895,7 +1907,9 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
         effect = effect_construct_record(damage_multiplier_tenths,
                                          KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind,
                                          &position, &direction);
-        if (effect != NULL) effect->cooldown = 3;
+        if (effect != NULL) {
+            effect->cooldown = 3;
+        }
         break;
     case KF_EFFECT_KIND_121:
         actor_compute_target_direction(current, player, 600, &position, &direction,
@@ -1904,7 +1918,9 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
                                         position.vy - player->vy,
                                         position.vz - player->vz);
         distance = (distance - 2000) / 600;
-        if (distance < 0) distance = 0;
+        if (distance < 0) {
+            distance = 0;
+        }
         effect_construct_record(damage_multiplier_tenths,
                                 KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER, kind, &position, &direction,
                       distance);
@@ -1973,7 +1989,9 @@ void actor_dispatch_group_effect(KF_ENUM_PARAM(KfEffectKind, s32) kind, s32 dama
         effect = effect_construct_record(damage_multiplier_tenths,
                                          KF_EFFECT_SOURCE_HAZARD | KF_EFFECT_TARGET_ACTORS_AND_PLAYER,
                                          KF_EFFECT_KIND_7, &position, &direction);
-        if (effect != NULL) effect->cooldown = 5;
+        if (effect != NULL) {
+            effect->cooldown = 5;
+        }
         break;
     case KF_EFFECT_KIND_1:
     case KF_EFFECT_KIND_28:

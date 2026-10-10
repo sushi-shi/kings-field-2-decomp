@@ -865,7 +865,7 @@ b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
 
     if (brighten) {
         target->phase_q12 += KF_MAP_OBJECT_MOTION_STEP;
-        if (target->phase_q12 >= 0x1000) {
+        if (target->phase_q12 >= KF_FIXED12_ONE) {
             target->phase_q12 = KF_MAP_OBJECT_MOTION_LIMIT;
         }
     }

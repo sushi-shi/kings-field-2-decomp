@@ -138,12 +138,12 @@ void player_reload_map_resources(
 
     player_sync_position_to_map();
     reset_collision_rows_and_overlay();
-    render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, 0x1000, 0x1000, 0);
+    render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, KF_FIXED12_ONE, KF_FIXED12_ONE, 0);
     if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
         resource_tmd_queue_read(KF_RESOURCE_ARCHIVE_MO, 0x101, 0x181);
     }
     cd_request_wait_idle();
-    render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, 0x1000, 0, -128);
+    render_frames_with_color_overlay(KF_COLOR_OVERLAY_SUBTRACT | KF_COLOR_OVERLAY_FRONT, KF_FIXED12_ONE, 0, -128);
     resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP,
                                 KF_RESOURCE_REQUEST_KEEP, fourth, fifth,
                                 KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT,
@@ -3289,9 +3289,9 @@ update_reaction_pose:
                 || player_state.equipped_extra_id == KF_ITEM_STATUS_GUARD_ACCESSORY)
             && game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_83)] != 0) {
             game_counter_bytes[KF_ENUM_ENCODE(u8, KF_OBJECT_83)]--;
-            render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 4096, 512);
+            render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, KF_FIXED12_ONE, 512);
             player_reset_status();
-            render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 0, -512);
+            render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, KF_FIXED12_ONE, 0, -512);
         }
         if (player_state.death_transition_frame > 31) {
             if (player_state.death_transition_frame < 65) {

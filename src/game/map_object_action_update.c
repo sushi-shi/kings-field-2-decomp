@@ -448,7 +448,7 @@ void map_object_update_actions(void)
                     break;
                 case 2:
                     object->phase_q12 += 256;
-                    if (object->phase_q12 < 0x1000) {
+                    if (object->phase_q12 < KF_FIXED12_ONE) {
                         break;
                     }
                     object->phase_q12 = 0xfff;
@@ -534,7 +534,7 @@ void map_object_update_actions(void)
                     break;
                 case 3:
                     object->phase_q12 += 64;
-                    if (object->phase_q12 >= 0x1000) {
+                    if (object->phase_q12 >= KF_FIXED12_ONE) {
                         object->phase_q12 = 0xfff;
                         object->action_timer = 99;
                     }
@@ -586,13 +586,13 @@ void map_object_update_actions(void)
                 }
                 case 5:
                     object->lighting_blend_q12 += 256;
-                    if (object->lighting_blend_q12 >= 0x1000) {
+                    if (object->lighting_blend_q12 >= KF_FIXED12_ONE) {
                         KfMapOccupancyCell *row =
                             bss_801c7540.map_cells[object->position.vz >> KF_MAP_CELL_POSITION_SHIFT];
                         KfMapOccupancyCell *cell =
                             &row[object->position.vx >> KF_MAP_CELL_POSITION_SHIFT];
                         KfMapOccupancyLayer *layer = &cell->layer[0];
-                        object->lighting_blend_q12 = 0x1000;
+                        object->lighting_blend_q12 = KF_FIXED12_ONE;
                         object->action_timer = 0;
                         if (object->layer_mask != KF_MAP_LAYER_FIRST) {
                             layer = &cell->layer[1];
@@ -631,9 +631,9 @@ void map_object_update_actions(void)
                                           (object->tail.action_84_pattern.pattern_flags & KF_MAP_OBJECT_PATTERN_VARIANT)],
                                       KF_MAP_OBJECT_PATTERN_ON, KF_PATTERN_LIGHTING_REVEAL_OTHER_LAYER);
                         object->action_timer = 1;
-                        object->scale.vz = 0x1000;
-                        object->scale.vy = 0x1000;
-                        object->scale.vx = 0x1000;
+                        object->scale.vz = KF_FIXED12_ONE;
+                        object->scale.vy = KF_FIXED12_ONE;
+                        object->scale.vx = KF_FIXED12_ONE;
                     }
                     break;
                 }
@@ -743,7 +743,7 @@ void map_object_update_actions(void)
                         }
                     }
                     if (object->tail.collision_probe.marker_trigger_state == KF_MAP_OBJECT_PROBE_STOPPED &&
-                        object->phase_q12 >= 0x1000 - increment) {
+                        object->phase_q12 >= KF_FIXED12_ONE - increment) {
                         object->action_timer = 2;
                         object->phase_q12 = 0;
                         object->asset_clip_selector = KF_ANIMATION_CLIP_SECOND;
@@ -893,7 +893,7 @@ void map_object_update_actions(void)
                         linked->scale.vy = scale;
                         linked->scale.vx = scale;
                         object->tail.scale_link.scale_step_code = (u16)linked->scale.vz >> 5;
-                        if (linked->scale.vx < 0x1000) {
+                        if (linked->scale.vx < KF_FIXED12_ONE) {
                             break;
                         }
                         goto start_action_19;
@@ -1027,7 +1027,7 @@ void map_object_update_actions(void)
                         KfMapObject *candidate = map_object_state.objects;
                         s32 count = KF_MAP_OBJECT_CAPACITY;
                         audio_play_sound(0x14, 0x6e);
-                        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 0x1000, 0x100);
+                        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, KF_FIXED12_ONE, 0x100);
                         do {
                             if (candidate->action == KF_MAP_OBJECT_OP_WARP) {
                                 candidate->extra_40.bytes[0] = KF_MAP_OBJECT_LATCH_SET;
@@ -1050,7 +1050,7 @@ void map_object_update_actions(void)
                             player_state.reaction_rotation_offset[1] +
                             player_state.view_rotation_offset.components[1] +
                             player_state.camera_yaw_roll_offsets[0];
-                        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0x1000, 0, -0x100);
+                        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, KF_FIXED12_ONE, 0, -0x100);
                         render_set_color_overlay(KF_COLOR_OVERLAY_OFF, 0, 0, 0);
                     }
                 } else {

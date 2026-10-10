@@ -459,7 +459,7 @@ transition_action: {
             break;
         }
         player_state.vitals.current_mp -= 10;
-        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, 4096, 256);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 0, KF_FIXED12_ONE, 256);
         actor_disable_type3_transition_actors();
         previous_value = ((KfEventControlObjectSlot *)&event_state.control.bytes[object_control_offset])->resource_id;
         do {
@@ -495,11 +495,11 @@ transition_action: {
         event_state.interaction_handled = KF_TRUE;
         player_state.camera_rotation_target.angles[1] = yaw;
         player_state.camera_rotation.angles[1] = yaw;
-        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 4096, 0);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, KF_FIXED12_ONE, KF_FIXED12_ONE, 0);
         if (game_graphics_runtime.asset_registry_entries[0x181] == NULL) {
             resource_tmd_queue_read(KF_RESOURCE_ARCHIVE_MO, 0x101, 0x181);
         }
-        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, 4096, 0, -256);
+        render_frames_with_color_overlay(KF_COLOR_OVERLAY_ADD, KF_FIXED12_ONE, 0, -256);
         render_set_color_overlay(KF_COLOR_OVERLAY_OFF, 0, 0, 0);
         resource_request_transition(KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, KF_RESOURCE_REQUEST_KEEP, previous_value, previous_value,
                       KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT, KF_RESOURCE_OFFSET_NO_SHIFT);
@@ -641,7 +641,7 @@ magic_action: {
                       player_state.camera_rotation.angles[1], 0, 0,
                       &near_position);
         spin = 0;
-        for (fraction = 0; fraction < 4096; fraction += 64) {
+        for (fraction = 0; fraction < KF_FIXED12_ONE; fraction += 64) {
             scene_pose_interpolate(object, &near_position,
                           &far_position, NULL, NULL, fraction);
             object->rotation.vy += spin;
@@ -670,7 +670,7 @@ decay_update:
             object->rotation.vy += spin;
             object->lighting_blend_q12 += 128;
             spin += 8;
-            if (object->lighting_blend_q12 >= 4096) {
+            if (object->lighting_blend_q12 >= KF_FIXED12_ONE) {
                 break;
             }
             cd_request_service_vab();
@@ -806,7 +806,7 @@ void color_overlay_transition(s32 step, s32 first, s32 second, s32 third,
         accumulate_color_overlay(current_first, current_second, current_third, 0x800);
         render_game_frame(NULL, NULL);
         fraction += step;
-    } while (fraction < 4096);
+    } while (fraction < KF_FIXED12_ONE);
 
     reset_collision_rows_and_overlay();
     accumulate_color_overlay(target_first, target_second, target_third, 0x800);
@@ -902,7 +902,7 @@ void event_map_object_interact(KfMapObject *object, ...)
                       &next_position);
         next_angles.vz = 0;
         next_angles.vx = 0;
-        for (fraction = 0; fraction <= 0x1000; fraction += 0x200) {
+        for (fraction = 0; fraction <= KF_FIXED12_ONE; fraction += 0x200) {
             buttons = PadRead(1);
             if (previous_buttons == 0 && buttons != 0) {
                 goto button_pressed;
@@ -985,7 +985,7 @@ interpolate_back:
     next_angles = object->rotation;
     next_position = object->position;
     current_yaw = player_state.camera_rotation.angles[0];
-    for (fraction = 0; fraction <= 0x1000; fraction += 0x200) {
+    for (fraction = 0; fraction <= KF_FIXED12_ONE; fraction += 0x200) {
         scene_pose_interpolate(object, &next_position,
                       &first_position, &next_angles, &first_angles,
                       fraction);

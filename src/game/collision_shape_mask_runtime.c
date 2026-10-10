@@ -939,7 +939,7 @@ void build_camera_map_cell_layer_masks(void)
     KfMapLayerMask *mask;
     s32 lighting_offset;
 
-    pitch_weight = 0x1000 - rcos(game_graphics_runtime.render_state.view_rotation.vx);
+    pitch_weight = KF_FIXED12_ONE - rcos(game_graphics_runtime.render_state.view_rotation.vx);
     pair = map_mask_pitch_shape_pairs;
     shape_cursor = shape;
     shape_index = 6;

@@ -224,7 +224,7 @@ next_layer:
                 }
                 break;
             case KF_QUARTER_TURN_1:
-                reach = radius - 0x1000;
+                reach = radius - 2 * KF_MAP_CELL_SIZE;
                 if (-local_x - local_z <= wall->offset + reach) {
                     goto wall_hit;
                 }
@@ -303,7 +303,7 @@ next_layer:
                 step = KF_MAP_CELL_SIZE - local_z + local_x;
                 goto ramp_floor;
             case KF_QUARTER_TURN_3:
-                step = 0x1000 - local_x - local_z;
+                step = 2 * KF_MAP_CELL_SIZE - local_x - local_z;
                 goto ramp_floor;
             }
             break;

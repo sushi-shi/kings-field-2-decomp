@@ -114,10 +114,18 @@ s32 menu_run_root_controller(void)
         switch (selection) {
         case KF_MENU_ROOT_USE_ITEM:
             choice_result = menu_item_selection_controller();
-            goto selection_result;
+            result = choice_result;
+            if (choice_result == KF_MENU_RESULT_CANCELLED) {
+                result = KF_MENU_RESULT_PENDING;
+            }
+            break;
         case KF_MENU_ROOT_USE_MAGIC:
             choice_result = menu_choose_magic_action();
-            goto selection_result;
+            result = choice_result;
+            if (choice_result == KF_MENU_RESULT_CANCELLED) {
+                result = KF_MENU_RESULT_PENDING;
+            }
+            break;
         case KF_MENU_ROOT_EQUIPMENT:
             menu_equipment_list_controller();
             break;
@@ -129,7 +137,6 @@ s32 menu_run_root_controller(void)
             break;
         case KF_MENU_ROOT_SYSTEM:
             choice_result = menu_run_card_choice();
-selection_result:
             result = choice_result;
             if (choice_result == KF_MENU_RESULT_CANCELLED) {
                 result = KF_MENU_RESULT_PENDING;

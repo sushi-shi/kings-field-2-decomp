@@ -3316,7 +3316,6 @@ update_reaction_pose:
         break;
     }
 
-after_reaction:
     player_state.pad_buttons.halves.previous = player_state.pad_buttons.current;
     if (player_state.poison_timer != 0) {
         if (player_state.poison_timer % 30 == 0) {

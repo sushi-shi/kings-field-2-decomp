@@ -540,7 +540,10 @@ void actor_update_lifecycle_for_player_range(void)
         if (actor_find_overlap_excluding_target_type3(actor->position.vx, actor->position.vy,
                           actor->position.vz, group->collision_radius,
                           group->collision_height) != KF_ACTOR_INDEX_NONE) {
-            goto set_dormant;
+            if (slot_state != KF_ACTOR_SLOT_RESPAWNING) {
+                actor->lifecycle = KF_ACTOR_LIFECYCLE_WAIT_FOR_RANGE_EXIT;
+            }
+            return;
         }
 
         actor_prepare_and_initialize(actor_state.current);
@@ -3229,7 +3232,12 @@ dispatch_action:
             actor->position.vx = next.vx;
             actor->position.vy = next.vy;
             actor->position.vz = next.vz;
-            goto case30_advance;
+            actor_advance_animation_clamped(actor, target->animation_step);
+            if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
+                actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);
+                actor->vertical_motion_state = KF_ACTOR_VERTICAL_MOTION_VELOCITY;
+            }
+            break;
         } else if ((collision & KF_COLLISION_HIT_PLAYER) != KF_COLLISION_HIT_NONE) {
             player_apply_damage(target->word_0e.value, target->word_10.value,
                            target->word_12.value, target->word_0c.value,
@@ -3242,7 +3250,6 @@ dispatch_action:
             actor->motion.vector.vy = 0;
             actor->motion.vector.vx = 0;
         }
-    case30_advance:
         actor_advance_animation_clamped(actor, target->animation_step);
         if (actor->animation_phase >= KF_ACTOR_ANIMATION_PHASE_MAX) {
             actor_select_target_type_in_own_group(actor, KF_ACTOR_TARGET_3);

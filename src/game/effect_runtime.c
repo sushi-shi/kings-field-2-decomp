@@ -576,10 +576,12 @@ KfEffectRecord *effect_construct_record(u8 damage_multiplier_tenths, KfEffectTyp
     }
     case KF_EFFECT_KIND_121:
         effect_pool_initialize_scaled(record, KF_EFFECT_MODEL_46, KF_FIXED12_ONE);
-        goto initialize_103_121;
+        record->updates_remaining = 100;
+        record->cache_tail.payload.kind103.remaining = va[1];
+        effect_play_spatial_sound(record, 0x28);
+        break;
     case KF_EFFECT_KIND_103:
         effect_pool_initialize_scaled(record, KF_EFFECT_MODEL_15, KF_FIXED12_ONE);
-    initialize_103_121:
         record->updates_remaining = 100;
         record->cache_tail.payload.kind103.remaining = va[1];
         effect_play_spatial_sound(record, 0x28);
@@ -1481,7 +1483,10 @@ void effect_update_dispatch(void)
                 break;
             }
             effect_scatter_lower_bound(&record->position, 3, 400, 0x2000, 0x2000, 0x400);
-            goto shared_growth_collision;
+            effect_collision_backtrack();
+            effect_apply_current_magic_backstep(collision);
+            record->phase = 1;
+            goto shared_growth_update;
         }
         if (initial_phase >= 3) {
             record->type = KF_EFFECT_SLOT_FREE;
@@ -1498,7 +1503,6 @@ void effect_update_dispatch(void)
         if (collision == KF_COLLISION_HIT_NONE) {
             goto kind13_no_collision;
         }
-    shared_growth_collision:
         effect_collision_backtrack();
         effect_apply_current_magic_backstep(collision);
         record->phase = 1;
@@ -2043,7 +2047,8 @@ void effect_update_dispatch(void)
                     interpolate_collision_filter_rows(200, 180, 160, 32000, strength);
                 }
             }
-            goto shared_phase_increment;
+            record->phase++;
+            break;
         }
     case KF_EFFECT_KIND_11:
     case KF_EFFECT_KIND_54: {
@@ -2177,7 +2182,8 @@ void effect_update_dispatch(void)
                 record->direction.vy += 10;
                 if (effect_collision_step(100, 0, 0) == KF_COLLISION_HIT_NONE) {
                     effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
-                    goto shared_phase_increment;
+                    record->phase++;
+                    break;
                 }
                 goto kind100_miss;
             }
@@ -2198,7 +2204,8 @@ void effect_update_dispatch(void)
         effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);
         record->rotation.vz += 128;
         effect_spawn_motion(record, 5, 0x400, 0x800, -150, 10, 8, 0);
-        goto shared_phase_increment;
+        record->phase++;
+        break;
     }
     case KF_EFFECT_KIND_5: {
         s32 count;
@@ -2607,7 +2614,6 @@ void effect_update_dispatch(void)
         default:
             goto shared_phase_increment;
         }
-    kind10_phase0:
         collision = effect_collision_step(250, KF_COLLISION_HEIGHT_CHECK_FLOOR, 0);
         if (collision != KF_COLLISION_HIT_NONE || record->updates_remaining < 2) {
             KfEffectRecord *child;

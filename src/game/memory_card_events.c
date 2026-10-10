@@ -174,8 +174,7 @@ s32 memory_card_probe_temporary_file(void)
     handle = open(path, FCREAT);
     close(handle);
     bios_delete(path);
-    /* KF_CARD_PROBE_CREATE_FAILED when the create failed, else OK. */
-    return (handle == -1) << 1;
+    return handle == -1 ? KF_CARD_PROBE_CREATE_FAILED : KF_CARD_PROBE_OK;
 }
 ADDRESS(0x800226ec, 0x1dc)
 b32 memory_card_scan_save_entries(struct DIRENTRY *entries, s32 *matching_count)
@@ -435,10 +434,8 @@ u32 memory_card_payload_byte_sum(const u8 *payload)
     u32 sum = 0;
     s32 index;
 
-    for (index = KF_CARD_PAYLOAD_BYTES - 1; index >= 0;) {
+    for (index = KF_CARD_PAYLOAD_BYTES - 1; index >= 0; index--, payload++) {
         sum += *payload;
-        index--;
-        payload++;
     }
     return sum;
 }

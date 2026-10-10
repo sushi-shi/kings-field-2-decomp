@@ -2452,45 +2452,38 @@ void effect_update_dispatch(void)
         break;
     }
     case KF_EFFECT_KIND_106:
-        if (initial_phase != 0) {
-            if (initial_phase == 1) {
-                goto kind106_phase1;
+        switch (initial_phase) {
+        case 0:
+            record->direction.vy += 20;
+            collision = effect_collision_step(140, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
+            if (collision != KF_COLLISION_HIT_NONE) {
+                record->position.vx -= record->direction.vx;
+                record->position.vy -= record->direction.vy;
+                record->position.vz -= record->direction.vz;
+                effect_spawn_radial_ring(1, 0, -400, 60);
+                effect_spawn_radial_ring(6, 60, -330, 56);
+                effect_spawn_radial_ring(8, 140, -170, 40);
+                effect_play_spatial_sound(record, 0x25);
+                record->cache_tail.payload.kind106.children_remaining = 15;
+                record->phase = 1;
+                record->render_flags = KF_EFFECT_RENDER_HIDDEN;
+            } else {
+                effect_spawn_motion(record, -1, -3, 6000, -800,
+                               6, 8, 0, -1024);
             }
             break;
-        }
-        record->direction.vy += 20;
-        collision = effect_collision_step(140, KF_COLLISION_HEIGHT_CHECK_FLOOR, -300);
-        if (collision != KF_COLLISION_HIT_NONE) {
-            record->position.vx -= record->direction.vx;
-            record->position.vy -= record->direction.vy;
-            record->position.vz -= record->direction.vz;
-            effect_spawn_radial_ring(1, 0, -400, 60);
-            effect_spawn_radial_ring(6, 60, -330, 56);
-            effect_spawn_radial_ring(8, 140, -170, 40);
-            effect_play_spatial_sound(record, 0x25);
-            record->cache_tail.payload.kind106.children_remaining = 15;
-            record->phase = 1;
-            record->render_flags = KF_EFFECT_RENDER_HIDDEN;
-        } else {
-            effect_spawn_motion(record, -1, -3, 6000, -800,
-                           6, 8, 0, -1024);
-        }
-        break;
-    kind106_phase1:
-        if (record->cache_tail.payload.kind106.children_remaining == 0) {
-            record->type = KF_EFFECT_SLOT_FREE;
+        case 1:
+            if (record->cache_tail.payload.kind106.children_remaining == 0) {
+                record->type = KF_EFFECT_SLOT_FREE;
+            }
+            break;
         }
         break;
     case KF_EFFECT_KIND_8: {
         KfEffectRecord *parent;
 
-        if (initial_phase != 0) {
-            if (initial_phase == 1) {
-                goto kind8_phase_one;
-            }
-            break;
-        }
-        {
+        switch (initial_phase) {
+        case 0: {
             const KfEffectKind8State *kind8 =
                 &record->cache_tail.payload.kind8;
             VECTOR next;
@@ -2556,8 +2549,9 @@ void effect_update_dispatch(void)
             record->rotation.vz = (record->rotation.vz + 300) & KF_ANGLE_WRAP_MASK;
             effect_spawn_motion(record, -1, 0x400, 0x1000, -500, 2, 8, 0);
             break;
+            break;
         }
-    kind8_phase_one: {
+        case 1: {
             const KfEffectKind8State *kind8 =
                 &record->cache_tail.payload.kind8;
             struct KfVecXZi forward;
@@ -2594,6 +2588,8 @@ void effect_update_dispatch(void)
                                12, 39, -17, 128, -64, 64,
                                -100, 128, -64);
             }
+            break;
+        }
         }
         break;
     }

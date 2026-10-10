@@ -2105,18 +2105,17 @@ retry: {
         if (!slide_attempted) {
             slide_distance = distance - PLAYER_MOVE_STEP;
             if (slide_distance >= 0) {
-                VECTOR *camera = &player_state.camera_position;
                 do {
-                    next.vx = camera->vx
+                    next.vx = player_state.camera_position.vx
                            + ((-rsin(heading) * slide_distance) >> 12);
-                    next.vz = camera->vz
+                    next.vz = player_state.camera_position.vz
                            + ((rcos(heading) * slide_distance) >> 12);
-                    if (collision_query_world(next.vx, camera->vy,
+                    if (collision_query_world(next.vx, player_state.camera_position.vy,
                                        next.vz, KF_PLAYER_COLLISION_RADIUS,
                                        KF_PLAYER_HEIGHT,
                                        PLAYER_MOVE_COLLISION_MODE) == KF_COLLISION_HIT_NONE) {
-                        camera->vx = next.vx;
-                        camera->vz = next.vz;
+                        player_state.camera_position.vx = next.vx;
+                        player_state.camera_position.vz = next.vz;
                         break;
                     }
                     slide_distance -= PLAYER_MOVE_STEP;

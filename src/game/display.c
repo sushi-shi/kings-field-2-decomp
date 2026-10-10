@@ -2923,16 +2923,14 @@ static inline void notification_dequeue_group(void)
 ADDRESS(0x80033284, 0x300)
 void notification_update(void)
 {
-    KfNotificationPhase *phase = &game_graphics_runtime.notification_control.effect_phase;
-
-    switch (*phase) {
+    switch (game_graphics_runtime.notification_control.effect_phase) {
     case KF_NOTIFICATION_IDLE: {
         u8 tail = game_graphics_runtime.notification_control.queue_tail;
         KfNotificationId id = game_graphics_runtime.notification_message_ids[tail];
         if (id == KF_NOTIFICATION_NONE) {
             break;
         }
-        *phase = KF_NOTIFICATION_FADE_IN;
+        game_graphics_runtime.notification_control.effect_phase = KF_NOTIFICATION_FADE_IN;
         game_graphics_runtime.notification_brightness = 0;
         game_graphics_runtime.notification_control.hold_frames = 15;
         if (id == KF_NOTIFICATION_PAYLOAD_ID) {
@@ -2967,7 +2965,7 @@ void notification_update(void)
     case KF_NOTIFICATION_FADE_IN:
         game_graphics_runtime.notification_brightness += 20;
         if (game_graphics_runtime.notification_brightness >= 100) {
-            *phase = KF_NOTIFICATION_HOLD;
+            game_graphics_runtime.notification_control.effect_phase = KF_NOTIFICATION_HOLD;
         }
         break;
     case KF_NOTIFICATION_HOLD:
@@ -2975,7 +2973,7 @@ void notification_update(void)
         u8 frames = game_graphics_runtime.notification_control.hold_frames - 1;
         game_graphics_runtime.notification_control.hold_frames = frames;
         if (frames == 0) {
-            *phase = KF_NOTIFICATION_FADE_OUT;
+            game_graphics_runtime.notification_control.effect_phase = KF_NOTIFICATION_FADE_OUT;
         }
         break;
     }

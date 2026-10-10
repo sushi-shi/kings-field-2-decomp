@@ -767,18 +767,16 @@ update_motion:
     }
     if (position != NULL && motion_divisor < 0xf0) {
         struct KfEulerAngles angles;
-        SVECTOR *motion = &actor->motion.vector;
-
         vector_displacement_to_pitch_yaw(actor->position.vx - position->vx,
                       actor->position.vy - (actor->collision_height >> 1) - position->vy,
                       actor->position.vz - position->vz, &angles);
-        pitch_yaw_to_forward_vector(&angles, motion);
+        pitch_yaw_to_forward_vector(&angles, &actor->motion.vector);
         damage = SquareRoot0(SquareRoot0(damage << 11));
         damage = (((damage << 10) / motion_divisor) << 5) / motion_divisor;
         if (damage > 512) {
             damage = 512;
         }
-        vector3s_scale_shift12(damage, motion);
+        vector3s_scale_shift12(damage, &actor->motion.vector);
         actor->motion.vector.vx >>= 3;
         actor->motion.vector.vz >>= 3;
         actor->motion.vector.vy >>= 6;

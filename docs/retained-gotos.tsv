@@ -67,10 +67,9 @@ src/game/effect_runtime.c	effect_update_dispatch	kind38_finish	2	shared tail	cop
 src/game/effect_runtime.c	effect_update_dispatch	kind_one_update	1	shared case tail	copied tail at each jump 91.2%
 src/game/effect_runtime.c	effect_update_dispatch	kind103_spawn	1	forward jump	no structured rewrite found: if/else, early-exit, break/continue and copied-tail scans
 src/game/effect_runtime.c	effect_update_dispatch	child_impact_update	1	shared case tail	copied tail at each jump 92.9%
-src/game/effect_runtime.c	effect_update_dispatch	kind12_scale	2	shared body before the jump	copied tail at each jump 93.1%
-src/game/effect_runtime.c	effect_update_dispatch	kind12_default	1	forward jump	copied tail at each jump 93.1%
-src/game/effect_runtime.c	effect_update_dispatch	kind12_reset	3	shared case tail	copied tail at each jump 93.0%
-src/game/effect_runtime.c	effect_update_dispatch	kind12_collision	1	forward jump	copied tail at each jump 99.4%
+src/game/effect_runtime.c	effect_update_dispatch	kind12_scale	1	shared body before the jump	copied tail at each jump 93.1%
+src/game/effect_runtime.c	effect_update_dispatch	kind12_reset	1	shared case tail	copied tail at each jump 93.0%
+src/game/effect_runtime.c	effect_update_dispatch	kind12_collision	1	shared case tail	copied tail at each jump 99.4%
 src/game/effect_runtime.c	effect_update_dispatch	kind100_miss	1	forward jump	no structured rewrite found: if/else, early-exit, break/continue and copied-tail scans
 src/game/effect_runtime.c	effect_update_dispatch	kind100_success	1	forward jump	copied tail at each jump 99.5%
 src/game/effect_runtime.c	effect_update_dispatch	kind5_default_count	1	shared body before the jump	jump2 keeps the later of two identical tails, so a body before its jumps was a goto target
@@ -86,10 +85,9 @@ src/game/effect_runtime.c	effect_update_dispatch	kind106_phase1	1	forward jump	c
 src/game/effect_runtime.c	effect_update_dispatch	kind8_reset_axes	1	forward jump	copied tail at each jump 94.9%
 src/game/effect_runtime.c	effect_update_dispatch	kind8_apply_next	1	forward jump	no structured rewrite found: if/else, early-exit, break/continue and copied-tail scans
 src/game/effect_runtime.c	effect_update_dispatch	kind8_phase_one	1	forward jump	no structured rewrite found: if/else, early-exit, break/continue and copied-tail scans
-src/game/effect_runtime.c	effect_update_dispatch	kind10_reset	2	shared case tail	case labels inside the if arm still need a goto
-src/game/effect_runtime.c	effect_update_dispatch	kind10_normal	1	forward jump	copied tail at each jump 99.4%
-src/game/effect_runtime.c	effect_update_dispatch	kind10_phase1	2	shared case tail	copied tail at each jump 95.1%
-src/game/effect_runtime.c	effect_update_dispatch	shared_phase_increment	3	shared case tail	copied tail at each jump 95.0%
+src/game/effect_runtime.c	effect_update_dispatch	kind10_normal	1	shared case tail	copied tail at each jump 99.4%
+src/game/effect_runtime.c	effect_update_dispatch	kind10_phase1	1	shared case tail	copied tail at each jump 95.1%
+src/game/effect_runtime.c	effect_update_dispatch	shared_phase_increment	1	shared case tail	copied tail at each jump 95.0%
 src/game/effect_runtime.c	effect_update_dispatch	kind6_phase3	2	shared body before the jump	jump2 keeps the later of two identical tails, so a body before its jumps was a goto target
 src/game/effect_runtime.c	effect_update_dispatch	phase_two	1	shared case tail	no structured rewrite found: if/else, early-exit, break/continue and copied-tail scans
 src/game/effect_runtime.c	effect_update_dispatch	kind6_release_actor	2	shared case tail	copied tail at each jump 96.2%

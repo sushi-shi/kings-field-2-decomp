@@ -841,7 +841,7 @@ void menu_equipment_category_controller(s32 category)
         }
     }
 
-    if ((u32)(category - MENU_CATEGORY_ACCESSORY) < 2 &&
+    if ((category == MENU_CATEGORY_ACCESSORY || category == MENU_CATEGORY_ACCESSORY + 1) &&
         other_slot_item_id != KF_EQUIPMENT_NONE) {
         game_counter_bytes[other_slot_item_id]++;
         }

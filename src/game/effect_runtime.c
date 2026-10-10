@@ -2175,7 +2175,7 @@ void effect_update_dispatch(void)
         s32 phase = initial_phase;
 
         if (phase < 100) {
-            if ((u32)(phase - 4) >= 67) {
+            if (phase < 4 || phase >= 71) {
                 record->direction.vy += 10;
                 if (effect_collision_step(100, 0, 0) == KF_COLLISION_HIT_NONE) {
                     effect_spawn_at_lower_bound(&record->position, 0x2000, 0x2000, 500);

@@ -125,7 +125,7 @@ void map_object_update_actions(void)
                 switch (object->action_timer) {
                 case 0: {
                     u8 phase_byte = object->tail.marker.marker_id;
-                    if ((u8)(phase_byte + 0x6a) < 0x31 && (phase_byte & 1)) {
+                    if (phase_byte >= 150 && phase_byte < 199 && (phase_byte & 1)) {
                         object->action_timer = 1;
                     }
                     break;
@@ -161,7 +161,7 @@ void map_object_update_actions(void)
                     break;
                 case 20: {
                     u8 phase_byte = object->tail.marker.marker_id;
-                    if (((u8)(phase_byte + 0x6a) > 0x30 || !(phase_byte & 1)) &&
+                    if ((phase_byte < 150 || phase_byte >= 199 || !(phase_byte & 1)) &&
                         collision_query_world(object->position.vx, object->position.vy,
                                        object->position.vz, 0x1130, 0xc80,
                                        KF_COLLISION_QUERY_ACTORS_INCLUDE_TYPE3 | KF_COLLISION_QUERY_PLAYER) == KF_COLLISION_HIT_NONE) {

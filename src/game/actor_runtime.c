@@ -242,7 +242,8 @@ s32 actor_score_target_candidate(KfTargetCandidate *target, s32 player_distance)
             score = 0;
             break;
         }
-        if ((u32)(player_state.camera_position.vy - actor->position.vy + 1023) < 2047 &&
+        if (player_state.camera_position.vy - actor->position.vy > -1024 &&
+            player_state.camera_position.vy - actor->position.vy < 1024 &&
             rand() >= 4096) {
             break;
         }

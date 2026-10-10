@@ -2639,7 +2639,8 @@ actor_radius_check:
                               object->tail.ambient_sound.region_width,
                               object->tail.ambient_sound.region_depth, 0x8000) != 0) {
                 sound = object->tail.ambient_sound.sound_id;
-                if ((u16)(audio_state.voices.params[sound].vab_slot_index - 0x42) < 0x40) {
+                if (audio_state.voices.params[sound].vab_slot_index >= 0x42
+                    && audio_state.voices.params[sound].vab_slot_index < 0x82) {
                     /* This update starts at VAB slot 0x42. */
                     vab_flags[audio_state.voices.params[sound].vab_slot_index - 0x42] = KF_TRUE;
                 }

@@ -703,7 +703,7 @@ void map_object_apply_marker_signal(u8 identifier)
         case KF_MAP_OBJECT_OP_LIFT_DOOR:
         case KF_MAP_OBJECT_OP_SIGNAL_DOOR:
         case KF_MAP_OBJECT_OP_HINGE:
-            if ((u8)(identifier + 106) < 49) {
+            if (identifier >= 150 && identifier < 199) {
                 if ((object->tail.marker.marker_id & KF_MAP_OBJECT_MARKER_PAIR_MASK) == identifier) {
                     object->tail.marker.marker_id ^= 1;
                 }

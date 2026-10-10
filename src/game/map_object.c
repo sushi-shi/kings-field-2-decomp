@@ -635,24 +635,21 @@ void map_object_spawn_scattered_effect(u16 effect_id, const VECTOR *origin,
                                        s32 height_offset)
 {
     KfMapObject *object;
-    u16 sequence;
     u16 angle;
 
     object = map_object_effect_pool_acquire(KF_MAP_OBJECT_SCATTER_POOL_FIRST,
                                             KF_MAP_OBJECT_EFFECT_POOL_SIZE,
                                             map_object_state.spawn_sequence_pool_15e);
     map_object_reset(object);
-    sequence = map_object_state.spawn_sequence_pool_15e;
-    map_object_state.spawn_sequence_pool_15e = sequence + 1;
-    object->tail.scattered_effect.spawn_sequence = sequence;
+    object->tail.scattered_effect.spawn_sequence = map_object_state.spawn_sequence_pool_15e++;
     object->object_id = KF_OBJECT_70;
     object->tail.scattered_effect.effect_id = effect_id;
     angle = (u16)(rand() >> KF_RANDOM_ANGLE_SHIFT);
     object->position.vx = origin->vx +
-        ((rsin(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> 12);
+        ((rsin(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> KF_FIXED12_BITS);
     object->position.vy = origin->vy + height_offset;
     object->position.vz = origin->vz +
-        ((rcos(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> 12);
+        ((rcos(angle) * KF_MAP_OBJECT_SCATTER_RADIUS) >> KF_FIXED12_BITS);
     object->rotation.vy = rand() >> KF_RANDOM_ANGLE_SHIFT;
     object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_ARMED;
     map_object_start_action_if_idle(object, KF_MAP_OBJECT_OP_BOUNCE);
@@ -782,9 +779,9 @@ void map_object_sample_world_vertex(KfMapObject *object, s32 vertex_index, VECTO
         KF_ENUM_ENCODE(u16, object->object_id) + 0x100, object->asset_clip_selector, object->phase_q12,
         vertex_index, &vertex);
 
-    vertex.vx = (vertex.vx * object->scale.vx) >> 12;
-    vertex.vy = (vertex.vy * object->scale.vy) >> 12;
-    vertex.vz = (vertex.vz * object->scale.vz) >> 12;
+    vertex.vx = (vertex.vx * object->scale.vx) >> KF_FIXED12_BITS;
+    vertex.vy = (vertex.vy * object->scale.vy) >> KF_FIXED12_BITS;
+    vertex.vz = (vertex.vz * object->scale.vz) >> KF_FIXED12_BITS;
 
     angles.x = object->rotation.vx;
     angles.y = object->rotation.vy + KF_ANGLE_HALF_TURN;
@@ -873,7 +870,7 @@ b32 map_object_step_offset_motion(KfMapObject *source, KfMapObject *target,
     vector_rotate_yxz((const struct KfEulerAngles *)&source->rotation,
                       end_offset, &end_position);
     source->extra_40.offset_motion.elapsed_frames++;
-    fraction = ((s32)source->extra_40.offset_motion.elapsed_frames << 12) / duration;
+    fraction = ((s32)source->extra_40.offset_motion.elapsed_frames << KF_FIXED12_BITS) / duration;
     target->position.vx = source->position.vx +
         fixed_lerp_q12(start_position.vx, end_position.vx, fraction);
     target->position.vy = source->position.vy +

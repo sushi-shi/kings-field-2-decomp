@@ -2113,9 +2113,9 @@ ADDRESS(0x80031634, 0x94)
 void accumulate_color_overlay(s32 first, s32 second, s32 third, s32 scale)
 {
     game_graphics_runtime.color_overlay_sample_count++;
-    game_graphics_runtime.color_overlay_red_sum += (first * scale) >> 12;
-    game_graphics_runtime.color_overlay_green_sum += (second * scale) >> 12;
-    game_graphics_runtime.color_overlay_blue_sum += (third * scale) >> 12;
+    game_graphics_runtime.color_overlay_red_sum += (first * scale) >> KF_FIXED12_BITS;
+    game_graphics_runtime.color_overlay_green_sum += (second * scale) >> KF_FIXED12_BITS;
+    game_graphics_runtime.color_overlay_blue_sum += (third * scale) >> KF_FIXED12_BITS;
 }
 
 ADDRESS(0x800316c8, 0x188)
@@ -3490,9 +3490,9 @@ copy_object_vertex:
         ASSET_MORPH(asset, morph_offsets[keyframe->rest_index]),
         vertex_index);
     if (encoded != NULL) {
-        vertex.vx = (((*encoded++ - vertex.vx) * (s32)blend_fraction) >> 12) + vertex.vx;
-        vertex.vy = (((*encoded - vertex.vy) * (s32)blend_fraction) >> 12) + vertex.vy;
-        vertex.vz = (((encoded[1] - vertex.vz) * (s32)blend_fraction) >> 12) + vertex.vz;
+        vertex.vx = (((*encoded++ - vertex.vx) * (s32)blend_fraction) >> KF_FIXED12_BITS) + vertex.vx;
+        vertex.vy = (((*encoded - vertex.vy) * (s32)blend_fraction) >> KF_FIXED12_BITS) + vertex.vy;
+        vertex.vz = (((encoded[1] - vertex.vz) * (s32)blend_fraction) >> KF_FIXED12_BITS) + vertex.vz;
     }
     *output = vertex;
 finished:

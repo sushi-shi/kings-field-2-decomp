@@ -1,4 +1,5 @@
 #include <kf/lib/address.h>
+#include <kf/lib/math.h>
 #include <kf/lib/quarter_turn.h>
 #include <kf/game/map_cell.h>
 #include <kf/game/map_cell_pattern.h>
@@ -36,9 +37,9 @@ void map_cell_apply_rotated_pattern(KfMapLayerMask mode, s32 world_x, s32 world_
     while (patterns->variant[0].first_collision_shape_id != KF_PATTERN_END) {
         s32 local_x = patterns->offset_x;
         s32 local_z = patterns->offset_z;
-        s32 cell_x = ((local_x * cosine - local_z * sine) >> 12) +
+        s32 cell_x = ((local_x * cosine - local_z * sine) >> KF_FIXED12_BITS) +
                      world_x;
-        s32 cell_z = ((local_z * cosine + local_x * sine) >> 12) +
+        s32 cell_z = ((local_z * cosine + local_x * sine) >> KF_FIXED12_BITS) +
                      world_z;
         KfMapOccupancyCell *cell = &bss_801c7540.map_cells[cell_z][cell_x];
         const KfMapCellPatternVariant *variant = &patterns->variant[variant_index];

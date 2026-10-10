@@ -2010,8 +2010,8 @@ enum {
 ADDRESS(0x800274ec, 0x43c)
 b32 player_move_horizontal(s32 heading, s32 distance)
 {
-    s32 dx = (-rsin(heading) * distance) >> 12;
-    s32 dz = (rcos(heading) * distance) >> 12;
+    s32 dx = (-rsin(heading) * distance) >> KF_FIXED12_BITS;
+    s32 dz = (rcos(heading) * distance) >> KF_FIXED12_BITS;
     s32 initial_dx = dx;
     s32 initial_dz = dz;
     VECTOR next;
@@ -2077,8 +2077,8 @@ retry: {
                 : angle + (KF_ANGLE_HALF_TURN + PLAYER_MOVE_DEFLECTION_ANGLE);
             angle &= KF_ANGLE_WRAP_MASK;
             radius = KF_COLLISION_CACHE_RADIUS + PLAYER_MOVE_SLIDE_RADIUS;
-            delta.vx = (-rsin(angle) * radius) >> 12;
-            delta.vz = (rcos(angle) * radius) >> 12;
+            delta.vx = (-rsin(angle) * radius) >> KF_FIXED12_BITS;
+            delta.vz = (rcos(angle) * radius) >> KF_FIXED12_BITS;
             next.vx = KF_COLLISION_CACHE_POSITION.vx + delta.vx;
             next.vz = KF_COLLISION_CACHE_POSITION.vz + delta.vz;
             dx = next.vx - player_state.camera_position.vx;
@@ -2091,9 +2091,9 @@ retry: {
             if (slide_distance >= 0) {
                 do {
                     next.vx = player_state.camera_position.vx
-                           + ((-rsin(heading) * slide_distance) >> 12);
+                           + ((-rsin(heading) * slide_distance) >> KF_FIXED12_BITS);
                     next.vz = player_state.camera_position.vz
-                           + ((rcos(heading) * slide_distance) >> 12);
+                           + ((rcos(heading) * slide_distance) >> KF_FIXED12_BITS);
                     if (collision_query_world(next.vx, player_state.camera_position.vy,
                                        next.vz, KF_PLAYER_COLLISION_RADIUS,
                                        KF_PLAYER_HEIGHT,
@@ -3118,7 +3118,7 @@ void player_update_frame(void)
         }
     }
     player_state.movement_step_limit +=
-        (player_state.movement_speed_adjustment_q12 * player_state.movement_step_limit) >> 12;
+        (player_state.movement_speed_adjustment_q12 * player_state.movement_step_limit) >> KF_FIXED12_BITS;
     if (player_state.paralysis_timer != 0) {
         player_state.movement_step_limit = 0;
         player_state.turn_step_limit = 0;

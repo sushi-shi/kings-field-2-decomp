@@ -1186,9 +1186,9 @@ void effect_scale_step(s32 multiplier, s32 limit, s32 increment, s32 arg3, s32 a
     s32 scaled_size;
 
     record->scale_y = record->scale_z = record->scale_x += increment;
-    scaled_size = (multiplier * record->scale_x) >> 12;
+    scaled_size = (multiplier * record->scale_x) >> KF_FIXED12_BITS;
     effect_apply_radial_magic_damage(&record->position,
-                  scaled_size - ((multiplier * increment) >> 12),
+                  scaled_size - ((multiplier * increment) >> KF_FIXED12_BITS),
                   scaled_size - 1, arg5, arg3, 0x1000);
     if (record->scale_x >= limit) {
         record->type = KF_EFFECT_SLOT_FREE;
@@ -1315,8 +1315,8 @@ b32 effect_scatter_lower_bound(const VECTOR *origin, s32 count, s32 spread,
             position.vy = bss_801c7540.collision_cache.heights.lower_bound;
             magnitude = random_centered_triangular_scaled(variation) + 4096;
             effect_construct_record(10, KF_EFFECT_TYPE_NONE, KF_EFFECT_KIND_102, &position, &direction,
-                          scale_x * magnitude >> 12,
-                          scale_z * magnitude >> 12);
+                          scale_x * magnitude >> KF_FIXED12_BITS,
+                          scale_z * magnitude >> KF_FIXED12_BITS);
 
             count--;
             offset_x = (rand() * spread >> 14) - spread;
@@ -2804,9 +2804,9 @@ void effect_update_dispatch(void)
                 row = &record->cache_tail.payload.trail.rows[record->cache_tail.payload.trail.frame_index];
                 radius = (radius * 25 << 8) >> 12;
                 row->position.vx = record->position.vx +
-                                   ((rsin(angle) * radius) >> 12);
+                                   ((rsin(angle) * radius) >> KF_FIXED12_BITS);
                 row->position.vz = record->position.vz +
-                                   ((rcos(angle) * radius) >> 12);
+                                   ((rcos(angle) * radius) >> KF_FIXED12_BITS);
                 row->position.vy = record->position.vy +
                                    (rsin(angle << 1) >> 4);
                 row->rotation.vy = -angle - KF_ANGLE_QUARTER_TURN;

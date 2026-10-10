@@ -538,7 +538,7 @@ KF_ENUM_PARAM(KfCollisionHitFlags, s32) collision_query_world(s32 x, s32 y, s32 
         }
 
         if ((mode & KF_COLLISION_QUERY_PLAYER) != KF_COLLISION_QUERY_NONE &&
-            player_distance_to_point_with_margin(x, y, z, radius, height) != -1) {
+            player_distance_to_point_with_margin(x, y, z, radius, height) != KF_DISTANCE_NONE) {
             result |= KF_COLLISION_HIT_PLAYER;
         }
     } else {

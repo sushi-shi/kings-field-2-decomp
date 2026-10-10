@@ -996,12 +996,12 @@ s32 actor_find_overlap_excluding_target_type3(s32 x, s32 y, s32 z,
             alternate.vz = actor->position.vz;
             alternate.vy = actor->position.vy + actor->vertical_anchor_offset;
             if (vector_distance_to_point(&alternate, x, y, z,
-                actor->collision_radius + radius, actor->collision_height, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != KF_DISTANCE_NONE) {
                 return index;
             }
         } else {
             if (vector_distance_to_point(&actor->position, x, y, z,
-                actor->collision_radius + radius, actor->collision_height, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != KF_DISTANCE_NONE) {
                 return index;
             }
         }
@@ -1031,12 +1031,12 @@ s32 actor_find_overlap(s32 x, s32 y, s32 z, s32 radius, s32 height)
             alternate.vz = actor->position.vz;
             alternate.vy = actor->position.vy + actor->vertical_anchor_offset;
             if (vector_distance_to_point(&alternate, x, y, z,
-                actor->collision_radius + radius, actor->collision_height, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != KF_DISTANCE_NONE) {
                 return index;
             }
         } else {
             if (vector_distance_to_point(&actor->position, x, y, z,
-                actor->collision_radius + radius, actor->collision_height, height) != -1) {
+                actor->collision_radius + radius, actor->collision_height, height) != KF_DISTANCE_NONE) {
                 return index;
             }
         }

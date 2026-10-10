@@ -310,7 +310,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
                     (s8)placements->local_z - (s8)placements->region_z;
                 object->extra_40.resource_offsets.offset_y =
                     (s8)placements->height -
-                    (s8)(-object->position.vy >> 7);
+                    (s8)(-object->position.vy >> KF_MAP_CELL_ELEVATION_SHIFT);
             }
             break;
         case KF_MAP_OBJECT_OP_WARP:
@@ -467,7 +467,7 @@ s32 map_object_find_collision_at_point(s32 x, s32 y, s32 z, s32 radius, s32 poin
         if (vector_distance_to_point(
                 &object->position, x, y, z,
                 map_object_state.templates[KF_ENUM_ENCODE(u16, object->object_id)].collision_radius + radius,
-                object->collision_height, point_height) != -1) {
+                object->collision_height, point_height) != KF_DISTANCE_NONE) {
             return index;
         }
     }
@@ -489,8 +489,7 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
     s32 direction;
 
     object = &map_object_state.objects[first_index];
-    index = first_index;
-    for (; index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
+    for (index = first_index; index < KF_MAP_OBJECT_CAPACITY; index++, object++) {
         if (object->object_id == KF_OBJECT_NONE) {
             continue;
         }
@@ -506,7 +505,7 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
             if (vector_distance_to_point(&object->position,
                                          rotated.vx, position->vy, rotated.vz,
                                          object_template->interaction_radius + radius,
-                                         object->collision_height, point_height) == -1) {
+                                         object->collision_height, point_height) == KF_DISTANCE_NONE) {
                 continue;
             }
             direction = vector_xz_to_angle(
@@ -519,7 +518,7 @@ s32 map_object_find_interaction_target(s32 first_index, const VECTOR *position, 
             if (vector_distance_to_point(&object->position,
                                          position->vx, position->vy, position->vz,
                                          object_template->interaction_radius + radius,
-                                         object_template->interaction_height, point_height) == -1) {
+                                         object_template->interaction_height, point_height) == KF_DISTANCE_NONE) {
                 continue;
             }
             if ((object->collision_flags & KF_MAP_OBJECT_INTERACTION_ANY_ANGLE) == KF_MAP_OBJECT_FLAGS_NONE) {

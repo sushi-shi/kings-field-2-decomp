@@ -16,16 +16,16 @@ enum {
     AUDIO_MAIN_VAB_HEADER_BUFFER_BYTES = 0x2800,
     AUDIO_SEQUENCE_BUFFER_BYTES = 0x3000,
     AUDIO_PRIORITY_ABOVE_MAX = 1 << 16,
-    AUDIO_NOTE_MAX = 0x7f,
-    AUDIO_VOLUME_MAX = 0x7f,
+    AUDIO_NOTE_MAX = 127,
+    AUDIO_VOLUME_MAX = 127,
     AUDIO_VAB_TRANSFER_MORE_DATA = -2,
-    AUDIO_REVERB_DEPTH = 0x28,
-    AUDIO_SEQUENCE_VOLUME = 0x3c,
+    AUDIO_REVERB_DEPTH = 40,
+    AUDIO_SEQUENCE_VOLUME = 60,
     AUDIO_MAIN_VAB_SLOT = 0,
     AUDIO_SEQUENCE_VAB_SLOT = 1,
     AUDIO_SPATIAL_MIN_LEVEL = 20,
     AUDIO_SPATIAL_PAN_ATTENUATION_THRESHOLD = 64,
-    AUDIO_SPATIAL_PAN_DIVISOR = 0xd48
+    AUDIO_SPATIAL_PAN_DIVISOR = 3400
 };
 
 /* SDK-required 2-by-1 sequence workspace; original allocation extent is WIP. */
@@ -229,12 +229,8 @@ KfAudioPlaybackResult audio_play_spatial_range(
 ADDRESS(0x80013fb8, 0x78)
 void audio_key_off_handle(KfAudioVoiceHandle *handle)
 {
-    KfGameAudioState *state;
     KfAudioVoiceParams *voice = &audio_state.voices.params[(u8)handle->sound_id];
-    KfAudioVabSlot *vab;
-
-    state = &audio_state;
-    vab = &state->vab_slots[voice->vab_slot_index];
+    KfAudioVabSlot *vab = &audio_state.vab_slots[voice->vab_slot_index];
 
     if (vab->vab_id != KF_AUDIO_VAB_ID_NONE && vab->vab_id != KF_AUDIO_VAB_ID_STREAM_PENDING) {
         SsUtKeyOff(handle->voice_id, vab->vab_id, voice->program, voice->tone, voice->note);

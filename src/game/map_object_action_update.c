@@ -210,7 +210,7 @@ void map_object_update_actions(void)
                         s32 bearing = vector_xz_to_angle(
                             player_state.camera_position.vx - object->position.vx,
                             player_state.camera_position.vz - object->position.vz);
-                        if ((u32)((bearing - object->extra_40.hinge.base_yaw) & 0xfff) <= 0x800) {
+                        if ((u32)((bearing - object->extra_40.hinge.base_yaw) & KF_ANGLE_WRAP_MASK) <= KF_ANGLE_HALF_TURN) {
                             object->render_depth_offset = -200;
                         } else {
                             object->render_depth_offset = 0xf0;
@@ -222,7 +222,7 @@ void map_object_update_actions(void)
                             s32 bearing = vector_xz_to_angle(
                                 player_state.camera_position.vx - linked->position.vx,
                                 player_state.camera_position.vz - linked->position.vz);
-                            if ((u32)((bearing - object->extra_40.hinge.base_yaw) & 0xfff) <= 0x800) {
+                            if ((u32)((bearing - object->extra_40.hinge.base_yaw) & KF_ANGLE_WRAP_MASK) <= KF_ANGLE_HALF_TURN) {
                                 linked->render_depth_offset = 0xf0;
                             } else {
                                 linked->render_depth_offset = -200;
@@ -323,7 +323,7 @@ void map_object_update_actions(void)
                 case 2: {
                     s32 velocity = angle_velocity_step(0xa00, object->rotation.vx,
                                                         object->extra_40.angular_velocity_x, 8, 4);
-                    s32 angle = ((u16)object->rotation.vx + velocity) & 0xfff;
+                    s32 angle = ((u16)object->rotation.vx + velocity) & KF_ANGLE_WRAP_MASK;
                     object->extra_40.angular_velocity_x = velocity;
                     object->rotation.vx = angle;
                     if (angle < 0xc00) {

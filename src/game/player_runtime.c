@@ -3221,7 +3221,7 @@ update_reaction_view:
         player_state.camera_vertical_offset += -256
                                    + (s16)(rcos((s16)player_state.reaction.angle_phase) >> 4);
         player_state.view_rotation_offset.components[2] = rsin((s16)player_state.reaction.angle_phase) >> 6;
-        angle_phase = (player_state.reaction.angle_phase + 128) & 0xfff;
+        angle_phase = (player_state.reaction.angle_phase + 128) & KF_ANGLE_WRAP_MASK;
         player_state.reaction.angle_phase = angle_phase;
         if (angle_phase == 0) {
             player_state.view_rotation_offset.components[2] = 0;

@@ -77,7 +77,7 @@ void map_object_set_property(s32 index, KfMapObjectProperty property, ...)
         object->layer_mask = KF_MAP_LAYER_NONE;
         object->tail.fields.unknown_38 = KF_MAP_OBJECT_EVENT_DISARMED;
         if (object_template->kind == KF_MAP_OBJECT_KIND_10) {
-            object->rotation.vz = 0x400;
+            object->rotation.vz = KF_ANGLE_QUARTER_TURN;
         }
         break;
     case KF_MAP_OBJECT_PROPERTY_SET_LAYER_MASK:
@@ -188,7 +188,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         object->render_queue_mode = KF_RENDER_QUEUE_TEXTURED;
         object->rotation.vz = 0;
         object->rotation.vx = 0;
-        object->rotation.vy = -(s32)placements->rotation_y & 0xfff;
+        object->rotation.vy = -(s32)placements->rotation_y & KF_ANGLE_WRAP_MASK;
         object->scale.vz = KF_FIXED12_ONE;
         object->scale.vy = KF_FIXED12_ONE;
         object->scale.vx = KF_FIXED12_ONE;
@@ -209,7 +209,7 @@ void map_object_initialize_from_placements(const KfMapObjectPlacement *placement
         if (object->layer_mask != KF_MAP_LAYER_FIRST) {
             layer++;
         }
-        object->position.vy = placements->height - ((s32)layer->elevation << 7);
+        object->position.vy = placements->height - ((s32)layer->elevation << KF_MAP_CELL_ELEVATION_SHIFT);
         object->tail.placement.copy_words = placements->tail_words;
         memset(&object->extra_40, 0xff, sizeof object->extra_40);
 

@@ -874,7 +874,7 @@ void event_map_object_interact(KfMapObject *object, ...)
         object->object_id = KF_OBJECT_13;
     }
 
-    first_yaw = player_state.camera_rotation.angles[0] & 0xfff;
+    first_yaw = player_state.camera_rotation.angles[0] & KF_ANGLE_WRAP_MASK;
     target_yaw = first_yaw;
     if (first_yaw < 0x800) {
         if (first_yaw > 0x100) {
@@ -976,7 +976,7 @@ return_pose:
     buttons = 0;
     while (!angle_within_tolerance(object->rotation.vy,
                                    first_angles.vy, 0x80)) {
-        object->rotation.vy = (object->rotation.vy + 0x100) & 0xfff;
+        object->rotation.vy = (object->rotation.vy + 0x100) & KF_ANGLE_WRAP_MASK;
         render_game_frame(NULL, (const SVECTOR *)&player_state.camera_rotation);
     }
     object->rotation.vy = first_angles.vy;

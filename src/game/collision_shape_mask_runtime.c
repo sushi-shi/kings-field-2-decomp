@@ -357,7 +357,7 @@ next_layer:
                 layer = (KfMapOccupancyLayer *)
                     ((u8 *)KF_COLLISION_CACHE_CELL + *layer_offset);
             }
-            KF_COLLISION_CACHE_HEIGHT = -layer->elevation * 0x80;
+            KF_COLLISION_CACHE_HEIGHT = -layer->elevation * (1 << KF_MAP_CELL_ELEVATION_SHIFT);
             other_layer_visited = KF_TRUE;
             goto next_layer;
         case KF_SHAPE_RECORD_BASE_FLOOR: {

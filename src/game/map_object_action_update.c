@@ -550,9 +550,7 @@ void map_object_update_actions(void)
                     object->layer_mask = object->extra_40.layer_fade.original_layer_mask;
                     break;
                 case 2: {
-                    u16 previous = object->extra_40.layer_fade.delay_frames_left;
-                    object->extra_40.layer_fade.delay_frames_left = previous - 1;
-                    if (previous == 0) {
+                    if (object->extra_40.layer_fade.delay_frames_left-- == 0) {
                         KfMapOccupancyCell *row =
                             bss_801c7540.map_cells[object->position.vz >> KF_MAP_CELL_POSITION_SHIFT];
                         KfMapOccupancyCell *cell =
@@ -576,9 +574,7 @@ void map_object_update_actions(void)
                     }
                     break;
                 case 4: {
-                    u16 previous = object->extra_40.layer_fade.delay_frames_left;
-                    object->extra_40.layer_fade.delay_frames_left = previous - 1;
-                    if (previous == 0) {
+                    if (object->extra_40.layer_fade.delay_frames_left-- == 0) {
                         map_object_play_spatial_sound(object, 0xe3);
                         object->action_timer = 5;
                     }

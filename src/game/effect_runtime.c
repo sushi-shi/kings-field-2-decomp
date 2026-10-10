@@ -1997,9 +1997,7 @@ void effect_update_dispatch(void)
                 effect_play_spatial_sound(record, 0x17);
             }
         } else if (initial_phase == 0) {
-            u16 count = record->cache_tail.payload.kind103.remaining;
-            record->cache_tail.payload.kind103.remaining = count - 1;
-            if ((s16)count <= 0) {
+            if ((s16)record->cache_tail.payload.kind103.remaining-- <= 0) {
                 record->phase = 1;
             }
         }

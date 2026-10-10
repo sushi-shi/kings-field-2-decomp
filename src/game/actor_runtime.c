@@ -2176,30 +2176,24 @@ void actor_update_behavior(void)
         switch (target->sound_trigger.value & KF_TARGET_SOUND_TRIGGER_MODE_MASK) {
         case KF_TARGET_SOUND_TRIGGER_ANIMATION_PHASE:
             if (actor_animation_crossed_phase(actor, interval)) {
-                goto play_sound;
+                actor_play_target_sound(actor);
             }
             break;
         case KF_TARGET_SOUND_TRIGGER_RANDOM:
             if ((rand() >> 3) < interval) {
-                goto play_sound;
+                actor_play_target_sound(actor);
             }
             break;
         case KF_TARGET_SOUND_TRIGGER_STAGGERED: {
             s32 phase = (interval * actor_state.current_actor_slot_index / 3) % interval;
 
             if ((s32)actor_state.actor_update_frame_count % interval == phase) {
-                goto play_sound;
+                actor_play_target_sound(actor);
             }
             break;
         }
         }
     }
-    goto dispatch_action;
-
-play_sound:
-    actor_play_target_sound(actor);
-
-dispatch_action:
 
     switch (actor->target_type) {
     case KF_ACTOR_TARGET_2:

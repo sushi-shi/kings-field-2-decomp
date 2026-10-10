@@ -1306,7 +1306,7 @@ case3_emit:
         goto simple_effect;
     case KF_EFFECT_KIND_52:
         effect_id = KF_EFFECT_KIND_119;
-        goto simple_effect;
+        /* fall through */
     case KF_EFFECT_KIND_4:
 simple_effect:
         rotation_scale = 700;
@@ -2267,11 +2267,8 @@ void player_update_vertical_motion(void)
         }
         player_state.landing_vertical_offset = 1;
         player_state.vertical_motion_state = KF_PLAYER_VERTICAL_LANDING;
-        /* Enter the landing response in the same frame. */
-        goto landing;
-
+        /* Fall through: the landing response starts this frame. */
     case KF_PLAYER_VERTICAL_LANDING:
-landing:
         if (player_state.landing_vertical_offset > 0) {
             player_state.landing_vertical_offset += player_state.vertical_velocity >> 2;
         }

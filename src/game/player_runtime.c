@@ -1590,32 +1590,15 @@ void player_update_weapon_attack(void)
     s32 index;
     s32 i;
 
-    if (weapon_id < KF_OBJECT_16) {
-        goto regular_weapon;
-    }
-    if (weapon_id < KF_OBJECT_18) {
-        goto special_weapon;
-    }
-    if (weapon_id == KF_OBJECT_NONE) {
-        return;
-    }
-    goto regular_weapon;
-
-special_weapon: {
-        KF_ENUM_PROMOTED(KfAnimationClip) mode;
+    switch (weapon_id) {
+    case KF_OBJECT_16:
+    case KF_OBJECT_17:
         phase = player_state.weapon_attack_phase;
         if (phase == KF_WEAPON_ATTACK_INACTIVE) {
             goto special_idle;
         }
-        mode = player_state.weapon_attack_mode;
-        if (mode == KF_ANIMATION_CLIP_FIRST) {
-            goto special_mode_zero;
-        }
-        if (mode == KF_ANIMATION_CLIP_SECOND) {
-            goto special_mode_one;
-        }
-        return;
-special_mode_zero: {
+        switch (player_state.weapon_attack_mode) {
+        case KF_ANIMATION_CLIP_FIRST:
             if (phase == 0) {
                 KF_ENUM_PROMOTED(KfEffectKind) effect_kind;
                 KF_ENUM_PROMOTED(KfObjectId) counter;
@@ -1715,22 +1698,23 @@ special_mode_zero: {
             player_state.weapon_attack_mode = KF_ANIMATION_CLIP_SECOND;
             player_state.weapon_attack_phase = 0;
             return;
-        }
-special_mode_one: {
+        case KF_ANIMATION_CLIP_SECOND:
             player_state.weapon_attack_phase = phase + 400;
             if (player_state.weapon_attack_phase >= KF_ANGLE_WRAP_MASK) {
                 player_state.weapon_attack_phase = KF_WEAPON_ATTACK_INACTIVE;
                 player_state.attack_charge_current = 0;
             }
+            break;
         }
         return;
 special_idle:
         player_state.attack_charge_current = 0;
         player_state.weapon_charge_delay = 0;
         return;
+    case KF_OBJECT_NONE:
+        return;
     }
 
-regular_weapon:
     if (player_state.weapon_attack_phase != KF_WEAPON_ATTACK_INACTIVE) {
         if (player_state.weapon_attack_mode == KF_ANIMATION_CLIP_FIRST) {
             phase_step = weapon->attack_phase_step;
